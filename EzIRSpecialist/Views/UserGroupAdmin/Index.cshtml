@@ -1,0 +1,396 @@
+﻿    
+@{
+    ViewData["Title"] = "Phân nhóm người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#">
+                    <span>Báo cáo - tiên ích</span>
+                </a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#">
+                    <span>Phân quyền</span>
+                </a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="@Url.Action("Index","UserGroupAdmin")">
+                    <span>Phân nhóm người dùng</span>
+                </a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <div class="row">
+        <form class="col-12 nopadding">
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+                <div class="row padt20">
+                    <div class="col-md-12 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-2 nopadding">
+                                <label class="padt6">Nhóm</label>
+                            </div>
+                            <div class="col-md-10 nopadding">
+                                <select class="form-control" id="slGroup">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row  mt-3">
+        <div class="col-12 nopadding">
+            <h4 class="text-primary">Người dùng chưa thuộc Nhóm</h4>
+        </div>
+        <div class="content-tbl col-md-12 nopadding">
+            <table id="listUserNotInGroup" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th width="30px">
+                            <label>
+                                <input type="checkbox" id="cbAddAll" /><span></span>
+                            </label>
+                        </th>
+                        <th>Tên tài khoản</th>
+                        <th>Người tạo</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row col-12 d-flex justify-content-end nopadding">
+        <button id="btnAdd" class="btn btn-primary mz-3 col-md-2 col-sm-12">
+            Thêm
+        </button>
+        <button id="btnDelete" class="btn btn-primary mz-3 col-md-2 col-sm-12">
+            Xóa
+        </button>
+    </div>
+    <div class="row  mt-3">
+        <div class="col-12 nopadding">
+            <h4 class="text-primary">Người dùng đã thuộc Nhóm</h4>
+        </div>
+        <div class="content-tbl col-md-12 nopadding">
+            <table id="listUserInGroup" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th width="30px">
+                            <label>
+                                <input type="checkbox" id="cbDeleteAll" /><span></span>
+                            </label>
+                        </th>
+                        <th>Tên tài khoản</th>
+                        <th>Người tạo</th>
+                        <th>Ngày tạo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+
+<script>
+	$(document).ready( function() {
+
+        var renderColumnsNotInGroup = [
+            {
+                data: "username",
+                render: function (data) {
+                    return `<label><input type="checkbox" class="cbAdd" name=chkbx1 data-id="${data}"/><span></span></label>`;
+                }
+            },
+            {
+                data: "username",
+            },
+            {
+                data: "createBy",
+            },
+            {
+                data: "createOn",
+                render: function (data) { return formatDateTimeToDate(data); }
+            },
+        ]
+
+        var renderColumnsInGroup = [
+            {
+                data: "username",
+                render: function (data) {
+                    return `<label><input type="checkbox" class="cbDelete" name="chkbx2" data-id="${data}"/><span></span></label>`;
+                }
+            },
+            {
+                data: "username",
+            },
+            {
+                data: "createBy",
+            },
+            {
+                data: "createOn",
+                render: function (data) { return formatDateTimeToDate(data); }
+            },
+        ]
+
+        var UserGroupAdmin = function() {
+
+            this.init = function() {
+                loadData();
+                registerEvents();
+            }
+
+            var loadData = function () {
+                reloadData();
+            }
+
+            var registerEvents = function () {
+
+                // Action select Group
+                $("#slGroup").change(function () {
+                    let groupCode = $(this).children("option:selected").val();
+                    $('#listUserNotInGroup').prop('checked', false);
+                    loadUserGroup(groupCode);
+                });
+
+                // Check add all
+                $("#cbAddAll").change(function () {
+                    var checked = $(this).is(':checked');
+
+                    // Select all
+                    if (checked) {
+                        $('.cbAdd').each(function () {
+                            $(this).prop('checked', true);
+                        });
+                    } else {
+                        // Deselect All
+                        $('.cbAdd').each(function () {
+                            $(this).prop('checked', false);
+                        });
+                    }
+                });
+
+                // Check delete all
+                $("#cbDeleteAll").change(function () {
+                    var checked = $(this).is(':checked');
+
+                    // Select all
+                    if (checked) {
+                        $('.cbDelete').each(function () {
+                            $(this).prop('checked', true);
+                        });
+                    } else {
+                        // Deselect All
+                        $('.cbDelete').each(function () {
+                            $(this).prop('checked', false);
+                        });
+                    }
+                });
+
+                // Action click ADD record
+                $('body').on('click', '#btnAdd', function (e) {
+                    e.preventDefault();
+                    let listUserGroup = [];
+                    let groupCode = $('#slGroup').val();
+                    let usersToAdd = $(".cbAdd");
+
+                    for (let item of usersToAdd) {
+                        if ($(item).is(':checked')) {
+                            listUserGroup.push({ GroupCode: groupCode, AUsername: $(item).attr('data-id') });
+                        }
+                    }
+
+                    if (listUserGroup.length < 1) return;
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("InsertUserGroup", "UserGroupAdmin")',
+                        dataType: 'json',
+                        data: { listUserGroup } ,
+                        success: function (data) {
+                            loadUserGroup(groupCode);
+                            isMessageSuccess(data);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+
+                });
+
+                // Action click DELETE record
+                $('body').on('click', '#btnDelete', function (e) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Thông báo',
+                        text: 'Bạn có chắc chắn muốn xóa nhóm đang chọn?',
+                        type: 'warning',
+                        cancelButtonText: 'Hủy',
+                        showCancelButton: true,
+                        confirmButtonText: 'OK'
+                    }).then(result => {
+                        if (result.value) {
+
+                            let listUserGroup = [];
+                            let groupCode = $('#slGroup').val();
+                            let usersToDelete = $(".cbDelete");
+
+                            for (let item of usersToDelete) {
+                                if ($(item).is(':checked')) {
+                                    listUserGroup.push({ GroupCode: groupCode, AUsername: $(item).attr('data-id') });
+                                }
+                            }
+
+                            if (listUserGroup.length < 1) return;
+
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("DeleteUserGroup", "UserGroupAdmin")',
+                                dataType: 'json',
+                                data: { listUserGroup } ,
+                                success: function (data) {
+                                    loadUserGroup(groupCode);
+                                    isMessageSuccess(data);
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            });
+
+                        }
+                    });
+
+                });
+            }
+
+            function reloadData() {
+
+                $('#loading').addClass('loading');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetGroup", "GroupAdmin")',
+                    dataType: 'json',
+                    data: {} ,
+                    success: function (data) {
+                        console.log(data);
+                        if ($.isArray(data)) {
+                            $('#slGroup').empty();
+
+                            let html = '';
+
+                            //$.each(data, function (key, value) {
+
+                            //    html += "<option value=" + value.groupCode + " >" + value.groupName +"</option>";
+
+                            //});
+                            for (const item of data) {
+                                html += `<option value="${item.groupCode}">${item.groupName}</option>`;
+                            };
+                            $('#slGroup').append(html);
+                        } else {
+                            isMessageSuccess(data);
+                        }
+
+                        $('#loading').removeClass('loading');
+
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+
+                setTimeout(function () {
+                    let groupCode = $('#slGroup').val();
+                    loadUserGroup(groupCode);
+                }, 1000);
+
+            }
+
+            var loadUserGroup = function (groupCode) {
+                $('#cbAddAll').prop('checked', false);
+                $('#cbDeleteAll').prop('checked', false);
+
+                $('#loading').addClass('loading');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetUserGroup", "UserGroupAdmin")',
+                    dataType: 'json',
+                    data: { GroupCode: groupCode },
+                    success: function (data) {
+
+                        if ($.isArray(data)) {
+
+                            let userInGroupArr = [];
+                            let userNotInGroupArr = [];
+
+                            $.each(data, function (key, value) {
+
+                                if (value.isInGroup == true) userInGroupArr.push(value);
+                                if (value.isInGroup == false) userNotInGroupArr.push(value);
+
+                            });
+
+                            $('#listUserNotInGroup').DataTable({
+                                ordering: false,
+                                dom: "lti<'d-flex justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                lengthChange: false,
+                                className: 'dt-body-right',
+                                "bInfo": false,
+                                "pageLength": 10,
+                                data: userNotInGroupArr,
+                                columns: renderColumnsNotInGroup
+                            });
+
+                            $('#listUserInGroup').DataTable({
+                                ordering: false,
+                                dom: "lti<'d-flex justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                lengthChange: false,
+                                className: 'dt-body-right',
+                                "bInfo": false,
+                                "pageLength": 10,
+                                data: userInGroupArr,
+                                columns: renderColumnsInGroup
+                            });
+
+                        } else {
+                            isMessageSuccess(data);
+                        }
+
+                        $('#loading').removeClass('loading');
+
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+
+        }
+
+        var userGroupAdmin = new UserGroupAdmin();
+        userGroupAdmin.init();
+
+    });
+</script>

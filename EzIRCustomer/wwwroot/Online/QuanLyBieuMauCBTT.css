@@ -1,0 +1,169 @@
+
+div#k_tabs_1 {
+    padding: 0;
+}
+
+.dataTables_wrapper{
+    box-shadow: none !important;
+}
+
+.dataTables_wrapper .dataTable{
+    box-shadow: 0 0 10px #b9b8b8;
+}
+
+#updateTab {
+    padding: 35px 0;
+}
+
+.btn-section {
+    display: flex;
+}
+
+.btn-section > .btn {
+    border-radius: 2rem;
+}
+
+.create-btn {
+    background: #0FAD4C;
+    color: #ffffff !important;
+    margin-left: 19px;
+}
+
+.form-group > label {
+    padding-left: 0;
+}
+
+
+.d-flex.justify-content-center {
+    margin-top: 0rem;
+    float: right;
+}
+
+table {
+    border: none !important;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+
+table th, td {
+    text-align: center !important;
+}
+
+table th {
+    color: #347E9F !important;
+}
+
+thead > tr:first-child {
+    background: #0266B1;
+}
+
+thead > tr:first-child > th {
+    color: white !important;
+}
+
+.form-wrapper {
+    padding: 0rem 0rem;
+}
+
+.update-btn-section {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.update-btn {
+    border-radius: 2rem;
+    width: 8rem;
+}
+
+.input-file-container {
+    position: relative;
+    width: 225px;
+}
+
+/*.input-file-container {
+    padding: 0 30px 0 0;
+}*/
+
+.js .input-file {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 225px;
+    opacity: 0;
+    padding: 14px 0;
+    cursor: pointer;
+}
+
+.js .input-file-trigger {
+    display: block;
+    padding: 12px 39px;
+    background: #E5E5E5;
+    color: #000000;
+    font-size: 1em;
+    transition: all .4s;
+    cursor: pointer;
+}
+
+.js .file-return {
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #a1a8c3;
+}
+.file-return:not(:empty) {
+    margin: 4px 0;
+}
+
+.form-wrapper .form-group {
+    padding: 0;
+}
+
+.dataTables_wrapper .dataTable{
+    border-collapse: inherit !important;
+}
+
+@media screen and (min-width:768px){
+    .btn-section {
+        padding: 27px 0 !important;
+    }
+}
+
+@media screen and (max-width: 1023px){
+    .btn-section {
+        text-align: center !important;
+        display: block;
+    }
+
+    .form-section .form-group {
+        padding: 0 !important;
+    }
+}
+
+@media screen and (max-width: 767px){
+
+    #updateTab {
+        padding: 0px 0;
+    }
+
+    div#updateTab .form-wrapper .form-group > div {
+         padding: 0; 
+    }
+
+    .input-file-container {
+        padding: 0px 35px 0 0 !important;
+    }
+
+    .form-group{
+        padding-right: 0px !important;
+    }
+
+    .form-group > label {
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 575px){
+    .form-wrapper .form-text > div {
+        padding: 0;
+    }
+}

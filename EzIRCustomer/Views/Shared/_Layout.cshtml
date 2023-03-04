@@ -1,0 +1,393 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.Extensions.Configuration;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHtmlLocalizer<SharedResource> Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject IConfiguration _configuration
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures.Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName }).ToList();
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    var urlUserManual = ViewBag.userManual;
+
+
+    var requestValue = "";
+    var image = "";
+    var StockName = "";
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+        image = "icon-EN.png";
+        requestValue = "en-US";
+        StockName = @HttpContextAccessor.HttpContext.Session.GetString("StockName");
+    }
+    else
+    {
+        image = "icon-VI.svg.png";
+        requestValue = "vi-VN";
+        StockName = @HttpContextAccessor.HttpContext.Session.GetString("StockNameEn");
+    }
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cập nhật thông tin - EzIR</title>
+    <!-- Favicons -->
+    @*<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">*@
+    <link rel="stylesheet" type="text/css" href="~/css/min.css">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/assets/images/icons/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/assets/images/icons/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/assets/images/icons/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="~/assets/images/icons/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="~/assets/images/icons/faviconFPTS.png">
+    <link rel="stylesheet" type="text/css" href="~/assets/bootstrap/css/bootstrap.css">
+
+    <!-- HELPERS -->
+
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/backgrounds.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/grid.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/utils.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/colors.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/boilerplate.css">
+
+
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/admin/layout.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/admin/color-schemes/default.css">
+
+    <!-- Components theme -->
+    @*<link rel="stylesheet" type="text/css" href="~/assets/themes/components/default">*@
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/components/border-radius.css">
+
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/responsive-elements.css">
+    <link rel="stylesheet" type="text/css" href="~/css/admin-responsive.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/mobile-navigation.css">
+    <!-- CSS vendor   -->
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">*@
+    <link rel="stylesheet" type="text/css" href="~/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="~/assets/vendors/custom/datatables/datatables.bundle.css">
+    <link href="~/assets/vendors/general/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="~/assets/demo/demo3/base/font-awesome.min.css">
+    <link href="~/assets/vendors/custom/vendors/line-awesome/css/line-awesome.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/general/animate.css/animate.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/custom/vendors/fontawesome5/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/general/sweetalert2/dist/sweetalert2.css" rel="stylesheet" type="text/css">
+
+    <link href="~/assets/vendors/general/toastr/build/toastr.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="~/Online/style.bundle.css">
+    <link rel="stylesheet" href="~/css/siteStyle.css">
+    <link rel="stylesheet" href="~/css/layout.css">
+    <link rel="stylesheet" href="~/Online/navbar_responsive.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Online/select2_restyle.css">
+
+    <!-- cdn font-awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+
+    <!-- JS Core -->
+    <script type="text/javascript" src="~/assets/js-core/jquery-core.js"></script>
+    <script type="text/javascript" src="~/assets/bootstrap/js/bootstrap.js"></script>
+
+    <!-- For Chat Bot -->
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
+    <script src="~/js/jquery.min.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>*@
+    <script src="~/js/popper.js"></script>
+    @*<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>*@
+    <script src="~/js/bootstrap.min.js"></script>
+
+    <!--Sử dụng JS SaveFile, Xuất báo cáo-->
+    <script src="~/lib/filesaver/FileSaver.min.js"></script>
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/vendors/general/toastr/build/toastr.min.js"></script>
+    <script type="text/javascript" src="~/js/site.js"></script>
+</head>
+<body class="k-page--loading-enabled k-page--loading k-page--fixed k-header--fixed k-header--minimize-menu k-header-mobile--fixed" style="background-color: white">
+    <!-- begin::Page loader -->
+    <!-- end::Page Loader -->
+    <!-- begin:: Page -->
+    <!-- begin:: Header Mobile -->
+    <input type="hidden" id="LanThu" />
+    <div id="k_header_mobile" class="k-header-mobile">
+        <div class="fpts-header">
+            <div class="container d-flex ">
+                <div class="fpts-left d-flex">
+                    <span>
+                        <span style="text-transform:none">
+                            @StockName
+                        </span>
+                    </span>
+                </div>
+                <div class="fpts-right d-flex justify-content-end align-items-center">
+                    <div class="col-md-12 col-ipad">
+                        <div class="fpts-top-mobile">
+                            <span class="text-light">@HttpContextAccessor.HttpContext.Session.GetString("Username")</span>
+                            <a class="text-light" href="@_configuration["UrlLogout"]"><i class="fas fa-sign-out-alt"></i></a>
+                            <a class="fpts-language" href=''><img src="images/icon/icon-EN.png"></a>
+                        </div>
+
+                        <div class="fpts-bottom-mobile">
+                            <a class="text-light fpts-Support" href="@urlUserManual">Hướng dẫn sử dụng</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="k-header-mobile-bottom">
+            <div class="k-header-mobile__toolbar">
+                <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar" aria-expanded="false"><span></span></button>
+                </button>
+            </div>
+            <div class="k-header-mobile__logo">
+                <a href="">
+                    <img alt="Logo" src="assets/images/icons/logo.jpg" />
+                </a>
+            </div>
+            <div class="header-info d-flex align-items-center p-2">
+                <a class="mx-2" href="https://accounts.fpts.com.vn/Contact"><img src="images/icon/icon-message.png" /></a>
+                <a><img src="images/icon/icon-user.png" alt="User" /></a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- end:: Header Mobile -->
+    <div class="k-grid k-grid--hor k-grid--root">
+        <div class="k-grid__item k-grid__item--fluid k-grid k-grid--ver k-page">
+            <div class="k-grid__item k-grid__item--fluid k-grid k-grid--hor k-wrapper " id="k_wrapper">
+
+                <!-- begin:: Header -->
+                <div id="k_header" class="k-header k-grid__item  k-header--fixed " data-kheader-minimize="on">
+                    <div class="fpts-header-desktop">
+                        <div class=" container display-flex-spacebetween">
+                            <div class="fpts-left d-flex align-items-center">
+                                <span>
+                                    <span>
+                                        @StockName
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="fpts-right d-flex justify-content-end align-items-center">
+                                <div class="">
+                                    <span class="text-light">@HttpContextAccessor.HttpContext.Session.GetString("Username")</span>
+                                    <a class="text-light" href="@_configuration["UrlLogout"]"><i class="fas fa-sign-out-alt"></i></a>
+                                </div>
+                                <div class="" style="padding-right: 1rem;">
+                                    <form id="selectLanguage" asp-controller="Login" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal mb-0" role="form">
+                                        <input type="hidden" name="culture" asp-for="@requestValue" asp-items="cultureItems" />
+                                        <button type="submit" style="border-style: hidden; background-color: inherit;">
+                                            <a class="culture-image">
+                                                <img src="~/assets/images/icons/@image" />
+                                            </a>
+                                        </button>
+                                    </form>
+                                </div>
+                                <div class="" style="padding-right: 0px;">
+                                    <a class="text-light fpts-Support" href="@urlUserManual">@Localizer["UserManual"].Value</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="logo-header">
+                        <div class="container">
+                            <div class="logo-wrapper">
+                                <div class="logo-section">
+                                    <img src="assets/images/icons/logo.jpg" alt="" width="112" height="81">
+                                </div>
+                                <div class="text-section">
+                                    <h1>@Localizer["EZIR"].Value</h1>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- begin: Header Menu -->
+                    <div id="page-sidebar" class="bg-fpts fpts-menu--gsm">
+                        <div class="container">
+                            <div class="row">
+                                <div class="scroll-sidebar">
+                                    <ul id="sidebar-menu" class="sf-js-enabled sf-arrows">
+                                        <li style="padding-left:0!important">
+                                            <a href="@Url.Action("Index","CongBoThongTin")" title="">
+                                                <span id="ctl00_Label1">@Localizer["Information_Disclosure"].Value</span>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="@Url.Action("Index","ThuVienPhapLuat")" title="">
+                                                <span id="ctl00_Label1">@Localizer["Liberty_of_law"].Value</span>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="@Url.Action("Index","DanhMucBieuMau")" title="">
+                                                <span id="ctl00_Label1">@Localizer["List_of_forms"].Value</span>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li class="dropdownmenu nav-item dropdown fpts-dropdown" id="k_drdwn_mng_lv1">
+                                            <a href="#" title="" class="nav-link default-click" data-toggle="dropdown" id="dropdownMenu1">
+                                                <span id="ctl00_lblHome">@Localizer["Update_Infomation"].Value</span>
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                                <div class="triangle"></div>
+                                                <li class="dropdown-menu-item f1_dropdown dropdown-submenu" id="k_drdwn_mng_lv2_1">
+                                                    <a id="dropdownMenu2" class="dropdown-item dropdown dropdown-general" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" style="border-bottom: 1px solid gainsboro;">
+                                                        <span>@Localizer["Tong_Quan"].Value</span>
+                                                    </a>
+                                                    <ul aria-labelledby="dropdownMenu2" class="dropdown-menu fpts-submenu-lv2_1">
+                                                        <div class="triangle"></div>
+                                                        <li><a tabindex="-1" class="dropdown-item" href="@Url.Action("Index","ThongTinChung")" " style="border-bottom: 1px solid gainsboro !important;"><span>@Localizer["General_Information"].Value</span></a></li>
+                                                        <li><a class="dropdown-item" href="@Url.Action("Index", "TamNhinChienLuoc")"><span>@Localizer["Vision_Strategy"].Value</span></a></li>
+                                                        <li><a class="dropdown-item" href="@Url.Action("Index", "ToChucBoMayQuanLy")"><span>@Localizer["Management_Structure"].Value</span></a></li>
+                                                        <li><a class="dropdown-item" href="@Url.Action("Index","ThanhPhanLanhDao")"><span>@Localizer["Management_Board"].Value</span></a></li>
+                                                        <li><a class="dropdown-item bottom-mobile" href="@Url.Action("Index","CoCauSoHuu")"><span>@Localizer["Shareholder_structure"].Value</span></a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="dropdown-menu-item f2_dropdown dropdown-submenu" id="k_drdwn_mng_lv2_2">
+                                                    <a id="dropdownMenu2" class="dropdown-item dropdown dropdown-general" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">
+                                                        <span>@Localizer["Business"].Value</span>
+                                                    </a>
+                                                    <ul aria-labelledby="dropdownMenu2" class="dropdown-menu fpts-submenu-lv2_2">
+                                                        <li class="divider li-mobile"></li>
+                                                        <div class="triangle"></div>
+                                                        <li><a tabindex="-1" class="dropdown-item" href="@Url.Action("Index", "ThiTruongKhachHangDoiThu")" style="border-bottom: 1px solid gainsboro !important;"><span>@Localizer["Market_Customer_Competitor"].Value</span></a></li>
+                                                        <li><a class="dropdown-item" href="@Url.Action("Index", "TrinhDoCongNghe")"><span>@Localizer["Technological_Level"].Value</span></a></li>
+                                                        <li><a class="dropdown-item" href="@Url.Action("Index", "NangLucQuanLy")"><span>@Localizer["Management_Competencies"].Value</span></a></li>
+                                                        <li><a class="dropdown-item" href="@Url.Action("Index", "ThongTinDuAnDauTu")"><span>@Localizer["Project_Investments"].Value</span></a></li>
+                                                        <li><a class="dropdown-item" href="@Url.Action("Index", "PhanTichSWOT")"><span>@Localizer["SWOT_Analysis"].Value</span></a></li>
+                                                        <li><a class="dropdown-item" href="@Url.Action("Index", "ViTheDoanhNghiep")"><span>@Localizer["Company_Position"].Value</span></a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a href="@Url.Action("Index", "ChangePassword")">
+                                                <span id="ctl00_Label8">@Localizer["ChangePassword"].Value</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- end: Header Menu -->
+                        </div>
+                    </div>
+                    <!-- end:: Header -->
+                    <!-- begin:: Content -->
+                    <div class="container">
+                        @RenderBody()
+                        @await Html.PartialAsync("_CookieConsentPartial")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- begin::Scrolltop -->
+        <div class="ScrollTop" onclick="topFunction()" id="k_scrolltop"></div>
+        <!-- end::Scrolltop -->
+        <!-- begin:: Footer -->
+        <div class="k-footer k-grid__item" id="k_footer">
+            <div class="fpts-supporting-information">
+                <div class="k-container">
+                    @{
+                        if (returnUrl == "~/CongBoThongTin" || returnUrl == "~/DanhMucBieuMau" || returnUrl == "~/ChangePassword")
+                        {
+                            <p style="padding: 5px 0 5px !important;">@Localizer["Support_staff"].Value @HttpContextAccessor.HttpContext.Session.GetString("ExpertName") - @HttpContextAccessor.HttpContext.Session.GetString("ExpertPhone") - @HttpContextAccessor.HttpContext.Session.GetString("MailSpecialist") (HOTLINE: 19006446)</p>
+                        }
+                        else
+                        {
+                            <p style="color: #494949;padding: 5px 0 5px !important; font-size: 16px !important;"> @Localizer["Law"].Value <a onclick="newwin = window.open('../assets/html/LuuYDacBiet.html', 'Disclaimer', 'toolbar=no,scrollbars=yes,menubar=no,status=no,location=no,width=600,height=500');newwin.focus();"
+   href="javascript://">@Localizer["Luu_y"].Value</a></p>
+                        }
+                    }
+
+                </div>
+            </div>
+            <div class="k-footer__content">
+                <div class="k-container">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <p class="fpts-title" style="text-transform: uppercase;">@Localizer["Infomation_Gateway"].Value</p>
+                            <div>
+                                <p>@Localizer["So_Giay_Phep"].Value</p>
+                                <p>@Localizer["Chiu_trach_nhiem"].Value</p>
+                                <p class="location">@Localizer["DiaChi_HaNoi"].Value</p>
+                                <p class="phone">Hotline: 19006446 | Số máy lẻ CN Hà Nội: 4504/4502 | Fax : 024 3773 9058</p>
+                                <p class="mail">fptsecurities@fpts.com.vn</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="fpts-title">@Localizer["HoChiMinh_City"].Value</p>
+                            <div>
+                                <p class="location">@Localizer["DiaChi_TPHCM"].Value</p>
+                                <p class="phone">Hotline: 19006446 | Số máy lẻ CN Hồ Chí Minh: 8602/4591 | Fax : 028 6291 0607</p>
+                                <p class="mail">fptsecurities@fpts.com.vn</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="fpts-title">@Localizer["Danang_City"].Value</p>
+                            <div>
+                                <p class="location">@Localizer["DiaChi_Danang"].Value</p>
+                                <p class="phone">19006446 | Fax : 0236 3553 888</p>
+                                <p class="mail">fptsecurities@fpts.com.vn</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fpts-securities">
+                <div class="k-container">
+                    <p>© 2021 @Localizer["FPTS"].Value</p>
+                </div>
+            </div>
+        </div>
+        <!-- end:: Footer -->
+        @*<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.js"></script>*@
+        <script type="text/javascript" src="~/js/FileSaver.js"></script>
+        <script type="text/javascript" src="~/js/jquery-ajax-native.js"></script>
+        <script type="text/javascript" src="~/js/dist/navbar_responsive.js"></script>
+        <script type="text/javascript" src="~/js/scrolltop.js"></script>
+        <script type="text/javascript" src="~/assets/vendors/custom/datatables/datatables.bundle.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/assets/vendors/general/sweetalert2/dist/sweetalert2.js" type="text/javascript"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+        <script src="~/js/select2.min.js"></script>
+        <script src="~/assets/vendors/custom/select2/select2.min.js"></script>
+        <script type="text/javascript">
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "20000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+        </script>
+        @RenderSection("Scripts", required: false)
+</body>
+</html>

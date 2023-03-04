@@ -1,0 +1,667 @@
+
+
+.form-wrapper {
+    padding: 1rem 0;
+    margin-bottom: 0rem;
+}
+
+/*.nav-pills.nav-tabs-btn.nav-pills-btn-success a.nav-link.active {
+    background-color: lightgray;
+}*/
+
+/*.nav-pills.nav-tabs-btn a.nav-link .nav-link-title {
+    color: #282a3c;
+}
+*/
+/*li.active span {
+    color: white !important;
+}*/
+/*
+#menustaff .col-lg-10 {
+    padding: 0;
+}
+*/
+
+.input-section{
+	padding-left: 0px !important;
+}
+
+.col-md-8.form-section > div {
+    padding-left: 0px ;
+    padding-right: 3rem ;
+}
+
+.btn-filter-section {
+    height: 100%;
+    position: relative;
+}
+
+.create-btn-section {
+    margin: 0.6rem 0 1rem 2rem;    
+}
+
+.tab-content {
+    margin-left: 0px;
+}
+
+.create-btn-section a {
+    color: white !important;
+}
+
+.filter-btn {
+    position: absolute;
+    right: 28%;
+    top: 1.94rem;
+    width: 9rem;
+    border-radius: 2rem;
+    background-color: #034E8F;
+}
+
+div#listEnterpriseAcc_wrapper .col-sm-12 {
+    padding: 0;
+}
+
+#listEnterpriseAcc_wrapper{
+    box-shadow: none !important;
+}
+
+#listEnterpriseAcc{
+    box-shadow: 0 0 10px #b9b8b8;
+}
+
+.tab-acc {
+    padding: 0;
+}
+
+.create-btn {
+    font-size: 9.5pt;
+    border-radius: 2rem;
+    background-color: #10AB4D;
+    width: 10rem;
+    padding: 8px 3px !important;
+}
+
+.form-create{
+	text-align: center;
+}
+
+.form-create > a:nth-child(2){
+	margin-left: 4rem;
+}
+
+input[type="radio"]:checked ~ label{
+	color: #0E7AAD;
+    font-weight: 600;  
+}
+.form-staff-wrapper{
+    vertical-align: bottom;
+    clear: both;
+    margin-top: 2rem;
+    padding: 0;
+}
+
+.form-staff-wrapper > form > .form-text{	
+    padding: 0 !important;
+    margin-bottom: 1.5rem;
+}
+
+.form-wrapper .form-group {
+    padding: 0;
+}
+
+.form-staff-wrapper .form-text > label{
+	padding: 6px;
+}
+
+.dataTables_wrapper .dataTables_info{
+    float: inherit !important;
+
+}
+
+.content-tbl {
+    margin-top: 3rem;
+}
+
+.form-staff-wrapper .form-check {
+    padding-left: 0;
+}
+
+.fpts_filter-wrapper {
+    padding-right: 0;
+}
+
+.form-filter-wrapper .form-group {
+    padding-right: 18px !important;
+}
+
+label.form-check-label {
+    margin-left: 29px;
+}
+
+table#listEnterpriseAcc {
+    border-radius: 10px;
+}
+
+table#listEnterpriseAcc thead th {
+    color: #ffffff;
+}
+table#listEnterpriseAcc thead {
+    background: #0266B1;
+}
+
+div#listAccount_length,div#listEnterprise_length  {
+    left: 100%;
+    position: absolute;
+    top: -4rem;
+}
+
+select.custom-select.custom-select-sm.form-control.form-control-sm {
+    width: 5rem;
+    font-size: 10pt;
+}
+
+label[for="ActiveAccount"]{
+    margin-left: 0px;
+    /*margin-right: 38px;*/
+}
+
+table#listAccount th, table#listEnterprise th {
+    padding: 15px 10px;
+    color: #2999ce;
+    font-weight: 500;
+}
+
+.d-inline-flex {
+    display: block !important;
+    /* display: inline-flex !important; */
+}
+
+
+/*table#listEnterpriseAcc th {
+    padding: 15px 10px;
+    color: white;
+    font-weight: 500;
+    background: #0266B1;
+}*/
+
+.update-btn-section{
+    margin-top: 1rem;
+    text-align: center;
+
+}
+.update-btn, .add-link-btn, .reset-btn {
+    background: #034F8D;
+    width: 9rem;
+    border-radius: 3rem;
+    margin: auto 5px;
+}
+
+#listEnterprise h5 {
+    font-size: 11pt;
+    color: #007DB7;
+}
+
+.company_info {
+    display: flex;
+}
+
+.company_info > div:last-child {
+    margin-left: 1rem;
+}
+
+.form-active {
+    padding: 0;
+}
+
+
+.form-filter{
+    padding: 0px;
+}
+
+.form-filter-wrapper {
+    padding-left: 4px;
+}
+
+.form-filter-wrapper > div{
+    padding-left: 0 !important;
+}
+
+#listEnterpriseAcc_wrapper {
+    padding-right: 12px;
+    width: 100%;
+}
+
+table#listEnterpriseAcc tbody td {
+    width:160px;
+    height:28px;
+    overflow:hidden;
+    word-wrap:break-word;
+}
+.dataTables_wrapper .dataTableNews {
+    border-collapse: separate !important;
+    overflow: hidden;
+    border-radius: 0px !important;
+}
+
+
+.dataTables_wrapper .dataTable{
+    border-collapse: separate !important;
+    overflow: hidden;
+}
+
+table.dataTable.no-footer {
+    border-bottom: 0px solid #111;
+}
+
+/*table#listAccount th, td {
+    text-align: center !important;
+}*/
+table#listdata th,td {
+    text-align: left !important;
+}
+table#listdata .title_center {
+    text-align: center !important;
+}
+table.dataTableNews tbody td {
+    padding: 8px 18px !important;
+}
+
+.btn-section {
+    margin-top: 1rem;
+    text-align: center;
+    width: 86%;
+}
+
+
+
+.remove-link-btn {
+    background: #4D4D4D !important;
+    border-radius: 2rem;
+}
+
+.add-link-btn {
+    margin: 0 9px;
+}
+
+.form-wrapper-staff {
+    float: left;
+    margin-top: 2rem;
+    /*width: 71rem;*/
+    padding-left: 0;
+}
+
+/*.form-group > div {
+    width: 50%;
+}*/
+
+.form-wrapper-staff > form > .form-text {
+    padding: 0 !important;
+    margin-bottom: 1.5rem;
+}
+
+.create-enterprise-btn{
+    max-width: 12rem;
+    font-size: 9.5pt;
+    border-radius: 2rem;
+    background-color: #10AB4D;
+    padding: 8px 3px !important;
+}
+
+
+#listEnterprise td {
+    text-align: left !important;
+}
+
+
+.form-group.row.form-text label {
+    padding: 0;
+}
+
+ul.filter-cate {
+    list-style-type: none;
+    margin-bottom: 3px;
+    padding-left: 20px;
+}
+ul.filter-cate > li:not(:first-child) > label {
+    font-weight: normal;
+    margin-left: 3rem;
+}
+
+.filter-wrapper {
+    background: #F2F2F2;
+    padding: 4px 0px;
+}
+
+ul.filter-cate > li {
+    margin: 6px 0px;
+}
+
+.form-text {
+    width: 100%;
+    padding: 0 !important;
+}
+
+
+.burger-checkbox-menu {
+    padding: 0 !important;
+}
+
+.btn-wrapper .update-btn, .add-link-btn, .reset-btn {
+    width: 7rem;
+}
+
+.burger-checkbox-menu > i{
+    font-size: 1.5rem;
+    padding: 0 !important;
+    color: #000000;
+}
+.burger-checkbox-menu-wrapper{
+    background: #D3D3D3;
+}
+
+.btn-filter-enterprise-section {
+    text-align: center;
+}
+
+.burger-checkbox-menu-wrapper-right{
+    background: #D3D3D3;
+}
+
+
+#menustaff .form-text div {
+    /*padding-right: 0.8rem !important;*/
+    padding: 0;
+}
+
+.burger-checkbox-menu-wrapper-right{
+    display: none;
+}
+
+@media screen and (max-width:991px) {
+    .tab-content {
+        margin-left: 0px;
+    }
+
+    label[for="ActiveAccount"]{
+        margin-top: 3px;
+    }
+
+    .form-row {
+        margin: auto;
+    }
+
+    .form-filter{
+        max-width: 100%;
+    }
+
+    .form-group{
+        max-width: 100%;
+    }
+
+    .create-btn-section {
+        margin: 0.6rem 0 1rem 3rem;    
+    }
+
+
+
+    .burger-checkbox-menu-wrapper {
+        display: block;
+        width: 3rem;
+        height: 2rem;
+        padding: 2px 10px;
+        position: absolute;
+        top: 22.2rem;
+        margin-left: 49rem;
+        border-radius: 0px 0px 13px 13px;
+    }
+
+    .filter-wrapper {
+        background: #F2F2F2;
+        padding: 25px 10px;
+        width: 20rem;
+        position: absolute;
+        top: -1rem;
+        left: 267%;
+        /*display: none;*/
+    }
+
+    .filter-btn {
+        right: 47%;
+    }
+
+    .content-tbl {
+        margin-top: 5rem;
+    }
+
+    /*.filter-wrapper-show{
+        display: block;
+    }*/
+
+}
+
+@media screen and (min-width:768px) and (max-width:991px) {
+    .form-section .form-group {
+        padding: 0 !important;
+    }
+
+
+
+}
+table#listEnterprise th {
+    padding-left: 9px;
+}
+
+.create-enterprise-btn-section > a {
+    color: white !important;
+}
+
+@media screen and (max-width:767px) {
+    .filter-wrapper{
+        top: -42.5rem;
+        left: 56%;
+    }
+   /* .btn-filter-enterprise-section{
+        margin-bottom: 5rem;
+    }*/
+
+    .filter-btn-enterprise, .filter-btn-chuyenvien{
+        right: 35rem;
+    }
+    .burger-checkbox-menu-wrapper{
+        margin-left: 34rem;
+    }
+
+}
+
+@media screen and (max-width:460px) {
+    .form-section{
+        margin: 0;
+    }
+
+    .form-staff-wrapper > form > .form-text{
+        margin-bottom: 0px;
+    }
+}
+
+@media screen and (max-width:575px) {
+    #menustaff .form-text div {
+        padding: 0;
+    }
+
+    .add-link-btn {
+        margin: 0 0px;
+    }
+
+    .burger-checkbox-menu-wrapper-right{
+        display: block;
+        width: 3rem;
+        height: 3rem;
+        padding: 0px 9px;
+        /*left: 1.7%;*/
+        position: absolute;
+        top: 17.2rem;
+        border-radius: 0px 13px 13px 0px;
+        opacity: 0.5;
+        transition: 0.8s ease;
+    }
+
+    .burger-checkbox-menu-wrapper-right:hover{
+        opacity: 1;
+    }
+
+    .burger-checkbox-menu-right{
+        padding: 6px 0px !important;
+    }
+
+    .burger-checkbox-menu-right > i {
+        font-size: 2rem;
+        padding: 0 !important;
+        color: #000000;
+    }
+
+    .burger-checkbox-menu-wrapper{
+        display: none;
+    }
+
+    .k-portlet__body{
+        overflow-x: hidden;
+    }
+
+    .filter-wrapper {
+        left: 0%;
+        transition: 0.800s ease;
+    }
+
+    
+}
+
+@media screen and (min-width:503px) and (max-width:575px){
+    .filter-wrapper {
+        top: -46.2rem;
+    }
+}
+
+@media screen and (min-width:461px) and (max-width:502px){
+    .filter-wrapper {
+        top: -48.2rem;
+    }
+}
+
+@media screen and (max-width:460px){
+    .filter-wrapper {
+        top: -49.9rem;
+    }
+}
+
+@media screen and (max-width:364px){
+    .burger-checkbox-menu-wrapper-right{
+        top: 18.6rem;
+    }
+}
+
+/*@media screen and (max-width:429px){
+    .filter-wrapper{
+        top: -49.9rem;
+    }
+}*/
+
+@media screen and (max-width:991px) {
+    .form-section {
+        padding: 0 !important;
+    }
+
+    #listEnterpriseAcc_wrapper{
+        padding: 0;
+    }
+}
+
+@media screen and (max-width:767px) {
+    .filter-btn {
+        right: 40%;
+    }
+
+    .form-section .form-group {
+        padding-right: 0px !important;
+    }
+
+    #CreateEnterpriseTab .form-filter-wrapper > div{
+        padding: 0 !important;
+    }
+}
+
+@media screen and (min-width:576px) and (max-width:767px){
+    .filter-wrapper {
+        top: -46.2rem;
+        left: 56%;
+    }
+}
+
+@media screen and (min-width:992px) {
+    .burger-checkbox-menu{
+        display: none;
+    }
+}
+
+@media screen and (max-width:899px) {
+    .burger-checkbox-menu-wrapper {
+        top: 17.21rem;
+    }
+}
+@media screen and (min-width:1023px){
+    .btn-wrapper{
+        text-align: left;
+    }
+}
+
+@media screen and (max-width:323px) {
+    .filter-wrapper {
+        top: -49.9rem;
+    }
+}
+
+@media screen and (max-width:1023px){
+    .filter-btn-enterprise, .filter-btn-chuyenvien{
+        position: initial;
+    }
+
+
+
+    .btn-filter-chuyenvien-section{
+        text-align: center;
+    }
+}
+
+@media screen and (min-width:992px) and (max-width:1023px) {
+   .fpts_filter-wrapper{
+        padding: 0px 0px;
+   }
+
+   .form-entprs > div {
+        padding: 0 !important;
+   }
+
+   .filter-wrapper {
+        background: #F2F2F2;
+        padding: 25px 0px;
+    }
+
+    label.form-check-label {
+        margin-top: 2px;
+    }
+
+   /* label[for="ActiveAccount"]{
+        margin-right: 66px;
+    }*/
+
+
+}
+
+@media screen and (min-width:1025px) and (max-width:1136px) {
+
+}
+
+@media screen and (min-width:768px) and (max-width:991px){
+    #CreateEnterpriseTab .form-filter-wrapper > div:nth-child(2){
+        padding: 0 !important;
+    }
+}

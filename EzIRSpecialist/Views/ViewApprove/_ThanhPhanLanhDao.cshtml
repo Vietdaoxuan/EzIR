@@ -1,0 +1,178 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Entities;
+@model List<Manager>;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHttpContextAccessor _httpContextAccessor;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration;
+@{
+    ViewData["Title"] = "_ThanhPhanLanhDao";
+    var data = Model.ToList();
+    var test = "https://localhost:44378/";
+    var urlfile = _configuration.GetSection("Upload").Value;
+}
+<!-- begin:: Content -->
+<div class="container">
+    <div class="k-portlet__body">
+        <div class="respon-mobile">
+            <div class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="dataTables_wrapper dt-bootstrap4 has-footer" style="padding-left: 0px; padding-right: 0px;">
+                        <table id="listdata" class="table table-striped dt-responsive dataTableNews has-footer dtr-inline" role="grid" style=" margin-left: 5px; padding-left: 0px; padding-right: 0px;">
+                            <thead>
+                                <tr>
+                                    <th style="color: #2999ce;font-weight: 500;width: 5%">STT</th>
+                                    <th style="color: #2999ce;font-weight: 500;width: 15%">Họ và tên</th>
+                                    <th style="color: #2999ce;font-weight: 500;width: 20%">Chức vụ</th>
+                                    <th style="color: #2999ce;font-weight: 500;width: 10%">Năm sinh</th>
+                                    <th style="color: #2999ce;font-weight: 500;width: 10%">Quốc sinh</th>
+                                    <th style="color: #2999ce;font-weight: 500;width: 17%">Trình độ chuyên môn</th>
+                                    <th style="color: #2999ce;font-weight: 500;width: 17%">Trình độ chuyên môn EN</th>
+                                    <th class="title_center" style="color: #2999ce;font-weight: 500;width: 9%;">Tải file</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Count == 0)
+                                {
+
+                                    <tr class="odd">
+                                        <td valign="top" colspan="6" style="text-align:center" class="dataTables_empty">No data available in table</td>
+                                    </tr>
+
+                                }
+                                else
+                                {
+                                    foreach (var item in Model.ToList())
+                                    {
+
+                                        <tr>
+                                            <td>@item.ORD</td>
+                                            <td>@item.MNGERNAME</td>
+                                            <td>@Html.Raw(item.LISTMANAGERORGOFMANAGER)</td>
+                                            <td>@item.DATEOFBIRTHVN</td>
+                                            <td>@item.NATIONALITY </td>
+                                            <td>@item.KNOWLEDGESPECIALLEVEL </td>
+                                            <td> @item.KNOWLEDGESPECIALLEVELEN </td>
+                                            @if(item.CVPATH != null)
+                    {
+                                        <td><a class='DownloadThanhphan btn text-primary' target="_blank" href="@urlfile@item.CVPATH.Replace("Images/","")" style="padding-left:0px" data-id='@item.CVPATH' data-mngername='@item.MNGERNAME'><i class="fas fa-download"></i></a></td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }                                           
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    label {
+        color: #333 !important;
+    }
+
+    .dataTables_wrapper .dataTable tbody tr, .dataTables_wrapper .dataTable thead tr {
+        border-left: 0px solid #fff;
+    }
+
+    .input-file {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 225px;
+        opacity: 0;
+        padding: 14px 0;
+        cursor: pointer;
+    }
+
+    .input-file-trigger {
+        display: block;
+        padding: 12px 39px;
+        background: #E5E5E5;
+        color: #494949;
+        font-size: 1em;
+        transition: all .4s;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .fa-download {
+        padding: 10px !important;
+    }
+</style>
+<!--<script>
+    //khi click download
+    downloadClick();
+    table.on('draw', downloadClick);
+    function downloadClick() {
+                    $('.DownloadThanhphan').off();
+                    $('.DownloadThanhphan').click(function () {
+                        $('#loading').addClass('loading');
+                        let cvpath = $(this).data('id');
+                        let mngername = $(this).data('mngername');
+                        var file_extension = '';
+                        file_extension = cvpath.split('.').pop();
+                        file_extension = file_extension.replace(/\s+/g, '');
+                        var filedown = '';
+                        if (file_extension.replace == 'doc') {
+                            filedown = `TPLD_${mngername}.doc`;
+                        }
+                        else if (file_extension == 'docx') {
+                            filedown = `TPLD_${mngername}.docx`;
+                        }
+                        else if (file_extension == 'pdf') {
+                            filedown = `TPLD_${mngername}.pdf`;
+                        }
+                        else if (file_extension == 'rar') {
+                            filedown = `TPLD_${mngername}.rar`;
+                        }
+                        else {
+                            filedown = '';
+                        }-->
+                        @*console.log(filedown);*@
+                        <!--return Promise.resolve(
+                            $.postNative('@Url.Action("DownloadFile", "ViewApprove")', {
+                                CVPATH: cvpath,
+                            })
+
+                                .done((response, statusCode, xhr) => {-->
+                                    @*console.log(response);*@
+                                    <!--if (response.code) {-->
+                                        @*console.log(response);*@
+                                        <!--return displayResponse(response);
+                                    }
+                                    const type = xhr.getResponseHeader('Content-Type');
+                                    const blob = new Blob([response], { type: type });
+
+                                    //check nếu là response message , không phải file thì hiển thị lỗi
+                                    if (type.includes("application/json")) {
+                                        //phải đọc file vì respone ở dạng arraybuffer
+                                        const fileReader = new FileReader();
+                                        fileReader.onload = function () {
+                                            $('#loading').removeClass('loading');
+                                            toastr.error("@Localizer["FileIsNotExist"].Value")
+                                            displayResponse(JSON.parse(this.result));
+                                        };
+                                        fileReader.readAsText(blob);
+                                        return;
+                                    }
+
+
+                                    saveAs(blob, filedown);
+                                    $('#loading').removeClass('loading');
+                                    swal.close();
+                                }).fail((response) => {-->
+                                    @*console.log(response);*@
+                                <!--})
+
+                        );
+
+                })
+            }
+</script>-->

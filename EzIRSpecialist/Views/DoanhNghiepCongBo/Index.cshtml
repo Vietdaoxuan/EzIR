@@ -1,0 +1,947 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model EzIRSpecialist.Models.ViewModel.QuanLyDoanhNghiepCongBo.DoanhNghiepCongBoViewModel
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var _UrlLink = ViewBag._UrlFileCommon;
+}
+<link href="~/Online/select2_restyle.css" rel="stylesheet" />
+<link href="~/Online/QuanLyDoanhNghiepCongBo.css" rel="stylesheet" />
+<link href="~/css/siteStyle.css" rel="stylesheet" />
+<style>
+
+
+    .content-tbl {
+        margin-top: 3rem;
+    }
+
+    div#listDoanhNghiepCongBo_length {
+        left: 100%;
+        position: absolute;
+        top: -4rem;
+    }
+
+    select.custom-select.custom-select-sm.form-control.form-control-sm {
+        width: 5rem;
+        font-size: 10pt;
+    }
+
+    label[for="Active"] {
+        margin-left: 0px;
+        /*margin-right: 38px;*/
+    }
+
+    table#listDoanhNghiepCongBo th {
+        padding: 15px 10px;
+        color: #2999ce;
+        font-weight: 500;
+    }
+</style>
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Quản lý doanh nghiệp công bố</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Thông tin doanh nghiệp công bố</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist">
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link active show " data-toggle="tab" data-target="#k_tabs_1" role="tab"
+               aria-selected="true">
+                <span class="nav-link-title text-uppercase">Thông tin doanh nghiệp công bố</span>
+            </a>
+        </li>
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link" data-toggle="tab" data-target="#updateTab" role="tab" aria-selected="false">
+                <span class="nav-link-title text-uppercase">Đăng tin mới</span>
+            </a>
+        </li>
+    </ul>
+    <div class="line_top col-md-12">
+
+    </div>
+    <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+        <div class="tab-content" style="margin-left: 7px;">
+            <div class="form-wrapper">
+                <form action="" id="formSearch">
+                    <div class="form-row">
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="stockCode">Mã CK</label>
+                            <select class="form-control select2-single" name="CompanyID" id="StockCode" asp-items="@(new SelectList(Model.listMCK,"CompanyID","AMack"))">
+                                <option selected>Tất cả</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="CompanyType">Loại hình</label>
+                            <select class="form-control" name="CompanyType" id="CompanyType" asp-items="@(new SelectList(Model.listCompanyType,"TypeCode","TypeName"))">
+                                <option selected>Tất cả</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="DocType">Loại tài liệu</label>
+                            <select id="DocType" name="DocType" class="form-control" asp-items="@(new SelectList(Model.listloaitl,"TypeCode","TypeName"))">
+                                <option selected>Tất cả</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="">Loại tin</label>
+                            <select id="NewType" class="form-control" name="NewType" asp-items="@(new SelectList(Model.listloaitin,"TypeCode","TypeName"))">
+                                <option selected>Tất cả</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="UserType">Loại tài khoản</label>
+                            <select id="UserType" name="UserType" class="form-control">
+                                <option selected>Tất cả</option>
+                                <option value="1">Chuyên viên</option>
+                                <option value="2">Doanh nghiệp</option>
+                            </select>
+                        </div>
+                        @*<div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                                <label for="IsPublic">Tình trạng</label>
+                                <select id="IsPublic" name="IsPublic" class="form-control">
+                                    <option selected>Tất cả</option>
+                                    <option value="1">Đã công bố</option>
+                                    <option value="2">Chưa công bố</option>
+                                </select>
+                            </div>*@
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="RegionID">Vùng miền</label>
+                            <select id="RegionID" class="form-control" name="RegionID" asp-items="@(new SelectList(Model.listRegion,"TypeCode","TypeName"))">
+                                <option selected>Tất cả</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="Expert">Người phụ trách</label>
+                            <input type="text" class="form-control" name="Expert" id="Expert">
+                        </div>
+
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="UserPost">Người đăng</label>
+                            <input type="text" class="form-control" name="UserPost" id="UserPost">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="FromDate">Từ ngày</label>
+                            <input type="date" class="form-control" id="FromDate" name="FromDate">
+                        </div>
+                        <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                            <label for="ToDate">Đến ngày</label>
+                            <input type="date" class="form-control" id="ToDate" name="ToDate">
+                        </div>
+                    </div>
+                    <div class="btn-section">
+                        <button class="btn btn-primary export-btn" id="btnExport">Xuất báo cáo</button>
+                        <button class="btn btn-primary search-btn" id="btnSearch">Tìm kiếm</button>
+                    </div>
+                </form>
+            </div>
+            <div class="content-tbl">
+                <table id="listDoanhNghiepCongBo"
+                       class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid"
+                       style="width: 1138px;">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Mã CK</th>
+                            <th>Người đăng</th>
+                            <th>Email</th>
+                            <th>Vùng miền</th>
+                            <th>Loại tài khoản</th>
+                            <th>Loại tài liệu</th>
+                            <th>Loại tin</th>
+                            <th>Tiêu đề tài liệu</th>
+                            <th>Năm</th>
+                            <th>Ngày đăng</th>
+                            <th>Người phụ trách</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div id="updateTab" class="tab-pane fade tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper">
+                <form action="" id="FormUpdate">
+                    <input type="text" class="form-control" id="newID" hidden>
+                    <input type="text" class="form-control" id="oldFileName" hidden>
+                    <input type="text" class="form-control" id="oldUrl" hidden>
+                    <input type="text" class="form-control" id="oldPath" hidden>
+                    <input type="text" class="form-control" id="sID" hidden>
+                    <div class="form-group row form-text">
+                        <label for="Index" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Mã chứng
+                            khoán
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <select class="form-control select2-single" name="CompanyID" id="stockCode" asp-items="@(new SelectList(Model.listMCK,"CompanyID","AMack"))">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="FormType" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Loại tài liệu</label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <select id="docType" name="DocType" class="form-control" asp-items="@(new SelectList(Model.listloaitl,"TypeCode","TypeName"))">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="FormType" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Loại tin</label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <select id="newType" class="form-control" name="NewType" asp-items="@(new SelectList(Model.listloaitin,"TypeCode","TypeName"))">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="title" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Tiêu đề <span>*</span></label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" placeholder="Tiêu đề không được quá 2000 ký tự" id="title">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Year" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Năm <span>*</span></label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="number" class="form-control" id="year">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="uploadDate" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Ngày đăng tin <span>*</span>
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="date" name="DatePub" class="form-control" id="datePub">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="FormFile" class="col-sm-3 col-md-3 col-lg-2  col-form-label">
+                            Tải file <span>*</span>
+                        </label>
+                        <div class="input-file-container col-sm-12 col-md-5 col-lg-5">
+                            <input class="input-file" id="my-file" type="file" name="file">
+                            <label tabindex="0" for="my-file" class="input-file-trigger">
+                                Chọn từ máy tính
+                            </label>
+                        </div>
+                        <p class="file-return">
+                            Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB.
+                        </p>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="" class="col-sm-3 col-md-3 col-lg-2 col-form-label"></label>
+                        <div class="update-btn-section col-sm-12 col-md-5 col-lg-5">
+                            <input type="button" class="btn btn-primary update-btn" id="btnUpload"
+                                   value="Tải lên">
+                            <input type="button" class="btn btn-primary update-btn" id="btnUpdate"
+                                   value="Sửa">
+                            <button class="btn btn-primary reset-btn" id="btnReset">Làm mới</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+<script>
+    $(document).ready(function () {
+
+        $(".nav-item.col.gsm-link-tab").first().addClass("active");
+        $("#btnUpdate").hide();
+        $('.select2-single').select2();
+
+        var renderColumns = [
+            {
+                data: "newID",
+            },
+            {
+                data: "stockCode",
+            },
+            {
+                data: "userPost",
+            }
+            ,
+            {
+                data: "email",
+            }
+            ,
+            {
+                data: "region",
+            }
+            ,
+            {
+                data: "accountType",
+            }
+            ,
+            {
+                data: "docTypeText",
+            }
+            ,
+            {
+                data: "newsTypeText",
+            }
+            ,
+            {
+                data: "title",
+            }
+            ,
+            {
+                data: "year",
+            }
+            ,
+            {
+                data: "datePublic",
+                render: (data) => (new Date(data)).toLocaleString().replace(",", "").replace("AM", "SA").replace("PM", "CH")
+            }
+            ,
+
+            {
+                data: "expert",
+            }
+            ,
+            {
+                data: "newID",
+                render: function (data, type, full) {
+                    return `<div class="d-inline-flex w-100">
+                            <a class='EditAccount btn text-primary' data-id='${data}' data-cpnyid='${full['companyID']}'><i class="far fa-edit"></i></a>
+                            <a class='DeleteAccount btn text-primary' data-id='${data}' data-cpnyid='${full['companyID']}' data-sid='${full['sid']}'><i class="fas fa-delete"></i></a>
+                            <a class="DownloadTemplate btn text-primary" data-id='${data}' data-url='${full['url']}' data-filename='${full['fileName']}'  data-code='${full['stockCode']}' data-path='${full['path']}' data-doctype='${full['docTypeText']}' href="@_UrlLink/${full['path']}" target="_blank" rel="noopener noreferrer"><i class="fas fa-download"></i></a>
+                            </div >`;
+
+
+                }
+            },
+        ];
+
+        var form = $("#formSearch");
+
+        var DNCongBo = function () {
+            this.init = function () {
+                loadData(null);
+                registerEvents();
+            }
+
+            var loadData = function (data) {
+
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListDoanhNghiepCongBo", "DoanhNghiepCongBo")',
+                    data: data,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        var table = $('#listDoanhNghiepCongBo').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: true,
+                            className: 'dt-body-right',
+                            "info": false,
+                            data: data,
+                            bAutoWidth: false,
+                            "lengthMenu": [10, 25, 50, 75, 100],
+                            language: {
+                                sLengthMenu: "_MENU_"
+                            },
+                            columns: renderColumns,
+                            'columnDefs': [
+                                {
+                                    'targets': 0,
+                                    'checkboxes': {
+                                        'selectRow': true
+                                    }
+                                }
+                            ],
+                            'select': {
+                                'style': 'multi'
+                            },
+                            'order': [[1, 'asc']]
+                        });
+                        $('#docType').trigger('change');
+
+                        function editClick() {
+                            $('.EditAccount').off();
+                            $('.EditAccount').click(function () {
+                                $('#loading').addClass('loading');
+                                let newID = $(this).data('id');
+                                let cpnyid = $(this).data('cpnyid');
+                                var the_return = document.querySelector(".file-return");
+                                //console.log(newID);
+                                $.ajax({
+                                    type: "GET",
+                                    url: '@Url.Action("ListDoanhNghiepCongBo", "DoanhNghiepCongBo")?NewID=' + newID + '&CompanyID=' + cpnyid + '&updclick=1',
+                                    success: function (data) {
+                                        $('#loading').removeClass('loading');
+                                        if (data.code == -1) {
+                                            toastr.error(data.message);
+                                        } else {
+                                            //console.log(data);
+                                            //console.log(data[0].username);
+                                            //chuyển sang tab edit
+                                            $('.nav-pills > li:first-child').removeClass('active');
+                                            $('.nav-pills > li:last-child').addClass('active');
+                                            //$('.nav-pills > li:last-child').tab('show');
+                                            jQuery('#updateTab').css('opacity', '1');
+                                            $('.nav-pills > li:last-child > a').trigger('click');
+                                            $("#btnUpdate").show();
+                                            $("#btnUpload").hide();
+                                            $("#stockCode").val(data[0].companyID).trigger('change');
+                                            $("#docType").val(data[0].docType).trigger('change');
+                                            $("#newType").val(data[0].newTypeCode);
+                                            $("#title").val(data[0].title);
+                                            $("#year").val(data[0].year);
+                                            $("#newID").val(data[0].newID);
+                                            $("#oldFileName").val(data[0].fileName);
+                                            $("#oldUrl").val(data[0].url);
+                                            $("#oldPath").val(data[0].path);
+                                            the_return.innerHTML = data[0].path.substring(0, 3) + "fakepath\\"  + data[0].fileName
+                                            $("#sID").val(data[0].sid);
+                                            $("#datePub").val(getFormattedDate1(data[0].datePublic));
+                                            var grCode = '@HttpContextAccessor.HttpContext.Session.GetString("GroupCode")'?? null;
+                                            if (grCode != 'ADMIN' && grCode != 'FCF Admin Group') {
+                                                $("#datePub").attr('readonly','readonly');
+                                            } else {
+                                                $("#datePub").attr("readonly", false);
+                                            }
+                                        }
+
+                                    },
+                                    error: function (err) {
+                                        $('#loading').removeClass('loading');
+                                        toastr.error('@SharedLocalizer["Tài khoản không tồn tại"]');
+                                    }
+                                });
+
+
+
+                            })
+                        }
+
+                        //khi click sửa
+                        editClick();
+                        table.on('draw', editClick);
+                        function deleteClick() {
+                            $('.DeleteAccount').off();
+                            $('.DeleteAccount').click(function () {
+                                let newID = $(this).data('id');
+                                let cpnyID = $(this).data('cpnyid');
+                                let sid = $(this).data('sid');
+                                //console.log(newID);
+                                Swal.fire({
+                                    title: 'Thông báo',
+                                    text: 'Bạn có chắc muốn xóa?',
+                                    type: 'warning',
+                                    cancelButtonText: 'Hủy',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'OK'
+                                }).then(result => {
+                                    if (result.dismiss == "cancel" || result.dismiss == "overlay") {
+                                        return;
+                                    }
+
+                                    $('#loading').addClass('loading');
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '@Url.Action("DeleteNews", "DoanhNghiepCongBo")?NewID=' + newID + '&CompanyID=' + cpnyID + '&Sid=' + sid,
+                                        success: function (data) {
+                                            $('#loading').removeClass('loading');
+                                            //console.log(data);
+                                            if (data.code == 0) {
+                                                toastr.success(data.message);
+                                            } else {
+                                                toastr.error(data.message);
+                                            }
+                                            loadData();
+                                        }
+                                    });
+                                });
+
+                            })
+                        };
+
+                        //khi click xóa
+                        deleteClick();
+                        table.on('draw', deleteClick);
+
+
+                        //download file sử dụng href trong thẻ
+                        function downloadTemplate() {
+                            $('.DownloadTemplate').off();
+                            $('table tbody').off().on("click", ".DownloadTemplate", function (e) {
+                                $('#loading').addClass('loading');
+                                //let stockcode = $(this).data('code');
+                                let Path = $(this).data('path');
+                                //let doctype = $(this).data('doctype');
+                                let FileName = $(this).data('filename');
+                                //let url = $(this).data('url');
+
+                                //Tải file không gọi controller-->
+                                @*var element = document.createElement('a');
+                                //var result = checkFileExist("@_UrlLink" + Path);
+                                //console.log(result);
+
+                                element.setAttribute('href', '@_UrlLink' + Path);
+                                element.setAttribute('download', FileName);
+
+                                document.body.appendChild(element);
+                                element.click();
+                                document.body.removeChild(element);*@
+
+                                //window.open('@_UrlLink' + Path);
+                                $('#loading').removeClass('loading');
+                                //toastr.success('Tải file thành công', 'Success');-->
+                                @*return Promise.resolve(
+                                        $.postNative('@Url.Action("DownloadFile", "DoanhNghiepCongBo")', {
+                                            FileName: FileName,
+                                            Url: url,
+                                            Path: Path,
+                                        })
+                                        .done((response, statusCode, xhr) => {
+                                            $('#loading').removeClass('loading');
+                                                //console.log(response);
+                                                if (response.code) {
+                                                    console.log(response);
+                                                    return isMessageSuccess(response);
+                                                }
+                                                const type = xhr.getResponseHeader('Content-Type');
+                                                const blob = new Blob([response], { type: type });
+
+                                                //check nếu là response message , không phải file thì hiển thị lỗi
+                                                if (type.includes("application/json")) {
+                                                    //phải đọc file vì respone ở dạng arraybuffer
+                                                    const fileReader = new FileReader();
+                                                    fileReader.onload = function () {
+                                                        $('#loading').removeClass('loading');
+                                                        isMessageSuccess(JSON.parse(this.result));
+                                                    };
+                                                    fileReader.readAsText(blob);
+                                                    return;
+                                                }
+                                                var filename;
+                                                const currentTime = new Date();
+                                                if (FileName.split('.').pop() == 'doc') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.doc`;
+                                                }
+                                                if (FileName.split('.').pop() == 'docx') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.docx`;
+                                                }
+                                                if (FileName.split('.').pop() == 'pdf') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.pdf`;
+                                                }
+                                                if (FileName.split('.').pop() == 'rar') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.rar`;
+                                                }
+                                                if (FileName.split('.').pop() == 'zip') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.zip`;
+                                                }
+
+                                                saveAs(blob, filename);
+                                                    $('#loading').removeClass('loading');
+                                                    swal.close();
+                                        }).fail((response) => {
+                                            console.log(response);
+                                            $('#loading').removeClass('loading');
+                                        })
+                                );*@
+                            })
+                        }
+
+
+                        downloadTemplate();
+                        table.on('draw', downloadTemplate);
+
+                        $("#btnExport").unbind().click(function (e) {
+                            $('#loading').addClass('loading');
+                            e.preventDefault();
+                            var listNewsID = '';
+                            var listHeader = '';
+                            var listUsername = '';
+                            $("#listDoanhNghiepCongBo thead th").each(function (index) {
+                                listHeader += $(this).text() + ',';
+                            })
+                            // console.log(tblData.join(","));
+                            $.each(table.rows('.selected').nodes(), function (i, item) {
+                                var data = table.row(this).data();
+                                if (data.newID != null) {
+                                    listNewsID += data.newID + ',';
+                                }
+                                //if (data.region != null) {
+                                //    listRegionID += data.region + ',';
+                                //    listUsername += data.username + ',';
+                                //}
+
+                            });
+                            if (listNewsID == '') {
+                                toastr.error('Chưa chọn bản ghi nào');
+                                $('#loading').removeClass('loading');
+                                return false;
+                            }
+                            return Promise.resolve(
+                                $.postNative('@Url.Action("ExportExcel", "DoanhNghiepCongBo")', {
+                                    ListNewID: listNewsID,
+                                    ListHeader: listHeader,
+                                })
+                                    .done((response, statusCode, xhr) => {
+                                        $('#loading').removeClass('loading');
+                                    //console.log(response);
+                                    if (response.code) {
+                                        console.log(response);
+                                        return displayResponse(response);
+                                    }
+                                    const type = xhr.getResponseHeader('Content-Type');
+                                    const blob = new Blob([response], { type: type });
+
+                                    //check nếu là response message , không phải file thì hiển thị lỗi
+                                    if (type.includes("application/json")) {
+                                        //phải đọc file vì respone ở dạng arraybuffer
+                                        const fileReader = new FileReader();
+                                        fileReader.onload = function () {
+                                            $('#loading').removeClass('loading');
+                                            displayResponse(JSON.parse(this.result));
+                                        };
+                                        fileReader.readAsText(blob);
+                                        return;
+                                    }
+
+                                        const currentTime = new Date();
+                                        const filename = `baocao_doanhnghiepcongbo${currentTime.getSeconds()}.xlsx`;
+                                        saveAs(blob, filename);
+                                        $('#loading').removeClass('loading');
+                                        swal.close();
+                                }).fail((response) => {
+                                    console.log(response);
+                                    $('#loading').removeClass('loading');
+                                })
+                            );
+
+
+                        })
+
+                    }
+                })
+            }
+
+
+            var registerEvents = function () {
+
+                var now = new Date();
+                var day = ("0" + now.getDate()).slice(-2);
+                var month = ("0" + (now.getMonth() + 1)).slice(-2);
+                var today = now.getFullYear() + "-" + (month) + "-" + (day);
+                var grCode = '@HttpContextAccessor.HttpContext.Session.GetString(EzIRSpecialist.Commons.ConstantsSessionName.GROUP_CODE)'?? null;
+                if (grCode != 'ADMIN' && grCode != 'FCF Admin Group') {
+
+                    $("#datePub").val(today);
+                    $("#datePub").attr('readonly','readonly');
+                } else {
+                    $("#datePub").attr("readonly", false);
+                    $("#datePub").val(today);
+                }
+
+                document.querySelector("html").classList.add('js');
+
+                var fileInput = document.querySelector(".input-file"),
+                    button = document.querySelector(".input-file-trigger"),
+                    the_return = document.querySelector(".file-return");
+
+                button.addEventListener("keydown", function (event) {
+                    if (event.keyCode == 13 || event.keyCode == 32) {
+                        fileInput.focus();
+                    }
+                });
+                button.addEventListener("click", function (event) {
+                    fileInput.focus();
+                    return false;
+                });
+                fileInput.addEventListener("change", function (event) {
+                    the_return.innerHTML = this.value;
+                });
+
+                var inputYear = document.getElementById("year");
+
+                var invalidChars = [
+                    "-",
+                    "+",
+                    "e",
+                ];
+
+                inputYear.addEventListener("keydown", function (e) {
+                    if (invalidChars.includes(e.key)) {
+                        e.preventDefault();
+                    }
+                });
+
+                $('#DocType').change(function () {
+                    $('#loading').addClass('loading');
+
+                    var doctypeCode = $('#DocType').find(":selected").val();
+                    //console.log(doctypeCode);
+                    $.get("@Url.Action("Index", "DoanhNghiepCongBo")?value=" + doctypeCode, function (data) {
+                        //console.log(data);
+
+                        $('#loading').removeClass('loading');
+                        $("#NewType").html("");
+                        var htmlOption = `<option selected>Tất cả</option>`;
+                        if (doctypeCode != 'Tất cả') {
+                            $.each(data, function (index, value) {
+
+                                htmlOption = htmlOption + '<option value="' + value.typeCode + '" data-id="' + value.acategory + '">' + value.typeName + '</option>';
+                            });
+                        }
+                        else {
+                            htmlOption += ``
+                        }
+
+                        $("#NewType").html(htmlOption);
+
+                    });
+
+                });
+
+                $('#docType').change(function () {
+
+                    $('#loading').addClass('loading');
+                    var doctypeCode = $('#docType').find(":selected").val();
+                    //console.log(doctypeCode);
+                    $.get("@Url.Action("Index", "DoanhNghiepCongBo")?value=" + doctypeCode, function (data) {
+                        //console.log(data);
+
+                        $('#loading').removeClass('loading');
+                        $("#newType").html("");
+                        var htmlOption = '';
+                        $.each(data, function (index, value) {
+                            htmlOption = htmlOption + '<option value="' + value.typeCode + '" data-id="' + value.acategory + '">' + value.typeName + '</option>';
+                        });
+
+                        $("#newType").html(htmlOption);
+                    });
+                });
+
+
+                // Action search
+                $('#btnSearch').click(function (e) {
+                    e.preventDefault();
+                    //console.log(form.serialize());
+
+                    if (new Date($('#FromDate').val()) > new Date($('#ToDate').val())) {
+                        toastr.error('Khoảng thời gian tìm kiếm không hợp lệ');
+                        return false;
+                    } else {
+                        loadData(form.serialize());
+                    }
+                    $('input[type="datetime"]').val('');
+                    /*$('#formSearch').trigger("reset");*/
+                    //loadData(form.serialize());
+
+
+
+                });
+
+
+
+                $('#btnUpload').click(function (e) {
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+                    //var formUpdate = $("FormUpdate").serialize();
+                    let formData = new FormData();
+                    var file_data = $('#my-file').prop("files")[0];
+                    //console.log(file_data);
+                    //console.log(formData)
+                    formData.append("file", file_data);
+                    formData.append("CompanyID", $("#stockCode").val());
+                    formData.append("DocType", $("#docType").val());
+                    formData.append("NewType", $("#newType").val());
+                    formData.append("Title", $("#title").val());
+                    formData.append("Year", $("#year").val());
+                    formData.append("DatePub", $("#datePub").val());
+                    formData.append("NewID", $("#newID").val());
+                    //console.log($("#datePub").val());
+                    //console.log($("#year").val());
+                    var Check = Validate();
+                    if (Check) {
+                        $.ajax({
+                            url: '@Url.Action("InsertNews", "DoanhNghiepCongBo")',
+                            type: 'POST',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                //console.log(data);
+                                if (data.code == 0) {
+                                    $('.nav-pills > li:first-child').addClass('active');
+                                    $('.nav-pills > li:last-child').removeClass('active');
+                                    jQuery('#k_tabs_1').css('opacity', '1');
+                                    $('.nav-pills > li:first-child > a').trigger('click');
+                                    $('#FormUpdate').trigger("reset");
+                                    var today = now.getFullYear() + "-" + (month) + "-" + (day);
+                                    $("#datePub").val(today);
+                                    loadData(null);
+                                    the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB'
+                                    toastr.success(data.message);
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (err) {
+                                $('#loading').removeClass('loading');
+                                console.log(err);
+                            }
+                        });
+                    } else {
+                        $('#loading').removeClass('loading');
+                    }
+                });
+
+                $('#btnUpdate').click(function (e) {
+
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+                    //var formUpdate = $("FormUpdate").serialize();
+                    let formData = new FormData();
+                    var file_data = $('#my-file').prop("files")[0];
+                    //console.log(file_data);
+                    //console.log(formData)
+                    formData.append("file", file_data);
+                    formData.append("CompanyID", $("#stockCode").val());
+                    formData.append("DocType", $("#docType").val());
+                    formData.append("NewType", $("#newType").val());
+                    formData.append("Title", $("#title").val());
+                    formData.append("Year", $("#year").val());
+                    formData.append("DatePub", $("#datePub").val());
+                    formData.append("NewID", $("#newID").val());
+                    formData.append("OldFileName", $("#oldFileName").val());
+                    formData.append("OldUrl", $("#oldUrl").val());
+                    formData.append("OldPath", $("#oldPath").val());
+                    formData.append("Sid", $("#sID").val());
+                    var Check = Validate();
+                    if (Check) {
+                        $.ajax({
+                            url: '@Url.Action("UpdateNews", "DoanhNghiepCongBo")',
+                            type: 'POST',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                //console.log(data);
+                                if (data.code == 0) {
+                                    $('.nav-pills > li:first-child').addClass('active');
+                                    $('.nav-pills > li:last-child').removeClass('active');
+                                    jQuery('#k_tabs_1').css('opacity', '1');
+                                    $('.nav-pills > li:first-child > a').trigger('click');
+                                    $('#FormUpdate').trigger("reset");
+                                    var today = now.getFullYear() + "-" + (month) + "-" + (day);
+                                    $("#datePub").val(today);
+                                    $("#btnUpdate").hide();
+                                    $("#btnUpload").show();
+                                    loadData(null);
+                                    the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB'
+                                    toastr.success(data.message);
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (err) {
+                                console.log(err);
+                            }
+                        });
+                    } else {
+                        $('#loading').removeClass('loading');
+                    }
+                });
+
+
+                $('body').on('click', '#btnReset', function (e) {
+                    e.preventDefault();
+                    $('#FormUpdate').trigger("reset");
+                    $("#btnUpdate").hide();
+                    $("#btnUpload").show();
+                    if (grCode != 'ADMIN' && grCode != 'FCF Admin Group') {
+
+                        $("#datePub").val(today);
+                        $("#datePub").attr('readonly', 'readonly');
+                    } else {
+                        $("#datePub").attr("readonly", false);
+                        $("#datePub").val(today);
+                    }
+                    $("#docType").val(1).trigger('change');
+                    //$("#datePub").attr("readonly", false);
+                    //$("#datePub").val(today);
+                    the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB'
+                });
+
+                function Validate() {
+                    if ($('#title').val() == '') {
+                        toastr.error('@SharedLocalizer["TITLE_EMPTY"]');
+                        return false;
+                    }
+                    if ($('#title').val().length > 2000) {
+                        toastr.error('@SharedLocalizer["TITLE_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#year').val() == '') {
+                        toastr.error('@SharedLocalizer["YEAR_EMPTY"]');
+                        return false;
+                    }
+                    if ($('#year').val() > 4000) {
+                        toastr.error('@SharedLocalizer["YEAR_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#datePub').val() == '') {
+                        toastr.error('@SharedLocalizer["DATEPUB_EMPTY"]');
+                        return false;
+                    }
+                    var CurrentDate = new Date();
+                    if (new Date($('#datePub').val()) > CurrentDate) {
+                        toastr.error('@SharedLocalizer["DATEPUB_GREATER_THAN_CURDATE"]');
+                        return false;
+                    }
+
+                    var inputFile = document.getElementById('my-file');
+                    var file = inputFile.files[0];
+                    if (file != undefined) {
+                        if (file.size > 30e6) {
+                            toastr.error('@SharedLocalizer["FileIsOver30MB"]');
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
+            }
+
+
+        }
+
+
+
+        var dnCongBo = new DNCongBo();
+        dnCongBo.init();
+    });
+</script>

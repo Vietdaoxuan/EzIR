@@ -1,0 +1,318 @@
+﻿2022-03-10 10:12:45.932 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:TungTT;P_PASSWORD:87a07d0a58973f428f7c7b7a9dc2d462;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2022-03-10 10:12:46.822 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_SEARCH
+-----paramArr ---
+P_USERNAME:TungTT;P_FULLNAME:;P_EMAIL:;P_ACTIVE:;REFCURSOR:;
+
+2022-03-10 10:13:43.238 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 10:13:43.272 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-10 10:40:36.244 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_COMMONTYPE_GET_BY_CATEGORY
+-----paramArr ---
+P_ACATEGORY:1,3,4,11;REFCURSOR:;
+
+2022-03-10 10:40:36.761 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_COMMONTYPE_GET_BY_CATEGORY
+-----paramArr ---
+P_ACATEGORY:1,3,4,11;REFCURSOR:;
+
+2022-03-10 10:40:36.779 +07:00 [ERR] 
+-----SPname-----
+Spezir_News_Search
+-----paramArr ---
+P_ANewID:;P_ADocType:;P_ANewType:;P_FROMDATE:;P_TODATE:;P_ACreateBy:;P_ACpnyID:1295;P_Username:TungTT;Refcursor:;
+
+2022-03-10 10:40:38.667 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;P_APPROVE:;REFCURSOR:;
+
+2022-03-10 10:40:38.683 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;REFCURSOR:;
+
+2022-03-10 10:40:39.007 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_DEVELOPPROGRESS_LIST
+-----paramArr ---
+P_CPNYID:1295;P_STATUS:;P_LANGUAGE:VN;REFCURSOR:;
+
+2022-03-10 10:40:39.082 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_DEVELOPPROGRESS_LIST
+-----paramArr ---
+P_CPNYID:1295;P_LANGUAGE:VN;REFCURSOR:;
+
+2022-03-10 10:40:48.783 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 10:40:48.789 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-10 10:50:08.894 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 10:50:09.765 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-10 10:52:45.277 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 10:52:46.151 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-10 10:54:33.527 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 10:54:34.378 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-10 10:55:44.073 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 10:55:44.088 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-10 10:59:50.317 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 10:59:51.139 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-10 11:00:27.048 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;P_APPROVE:;REFCURSOR:;
+
+2022-03-10 11:00:27.048 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;P_APPROVE:;REFCURSOR:;
+
+2022-03-10 11:00:27.065 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;REFCURSOR:;
+
+2022-03-10 11:00:27.098 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;REFCURSOR:;
+
+2022-03-10 11:01:05.021 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_UPDATE
+-----paramArr ---
+P_AORGMODELID:1215;P_CPNYID:1295;P_AORGMODELDESC:test1;P_AORGMODELPATH:;P_AORGTYPE:1;P_ANOTE:test1;;p_MESSAGE:;p_ERRORCODE:;p_USERNAME:TungTT;p_RoleCode:TCBMQL;
+
+2022-03-10 11:01:05.021 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_UPDATE
+-----paramArr ---
+P_AORGMODELID:2832;P_CPNYID:1295;P_AORGMODELDESC:test2;P_AORGMODELPATH:Images\Model\File_1_petrolimex.jpg;P_AORGTYPE:2;P_ANOTE:test2;Images\Model\File_1_petrolimex.jpg;p_MESSAGE:;p_ERRORCODE:;p_USERNAME:TungTT;p_RoleCode:TCBMQL;
+
+2022-03-10 11:01:05.053 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:1295;P_KEY:ACONTENT;P_VALUE:test1;C:\fakepath\petrolimex.jpg;P_STATUS:2;P_KEYFUNCTION:Tổ chức bộ máy Quản lý - Sơ đồ bộ máy quản lý;P_MENUID:674;P_FUNCTION:Tổ chức bộ máy Quản lý;P_LEVELID:TQ;P_DETAILLEVELID:TCBMQL;p_MESSAGE:;p_ERRORCODE:;
+
+2022-03-10 11:01:05.059 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:1295;P_KEY:ACONTENT;P_VALUE:test2;Images\Model\File_1_petrolimex.jpg;P_STATUS:2;P_KEYFUNCTION:Tổ chức bộ máy Quản lý - Sơ đồ bộ máy quản lý;P_MENUID:674;P_FUNCTION:Tổ chức bộ máy Quản lý;P_LEVELID:TQ;P_DETAILLEVELID:TCBMQL;p_MESSAGE:;p_ERRORCODE:;
+
+2022-03-10 11:01:05.609 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 11:01:05.614 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-10 11:01:55.569 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;P_APPROVE:;REFCURSOR:;
+
+2022-03-10 11:01:55.569 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;P_APPROVE:;REFCURSOR:;
+
+2022-03-10 11:01:55.575 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;REFCURSOR:;
+
+2022-03-10 11:01:55.586 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;REFCURSOR:;
+
+2022-03-10 11:01:55.630 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_UPDATE
+-----paramArr ---
+P_AORGMODELID:1215;P_CPNYID:1295;P_AORGMODELDESC:test1;P_AORGMODELPATH:;P_AORGTYPE:1;P_ANOTE:test1;;p_MESSAGE:;p_ERRORCODE:;p_USERNAME:TungTT;p_RoleCode:TCBMQL;
+
+2022-03-10 11:01:55.632 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_UPDATE
+-----paramArr ---
+P_AORGMODELID:2832;P_CPNYID:1295;P_AORGMODELDESC:test2;P_AORGMODELPATH:Images\Model\File_1_petrolimex.jpg;P_AORGTYPE:2;P_ANOTE:test2;Images\Model\File_1_petrolimex.jpg;p_MESSAGE:;p_ERRORCODE:;p_USERNAME:TungTT;p_RoleCode:TCBMQL;
+
+2022-03-10 11:01:55.633 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:1295;P_KEY:ACONTENT;P_VALUE:test1;C:\fakepath\petrolimex.jpg;P_STATUS:2;P_KEYFUNCTION:Tổ chức bộ máy Quản lý - Sơ đồ bộ máy quản lý;P_MENUID:674;P_FUNCTION:Tổ chức bộ máy Quản lý;P_LEVELID:TQ;P_DETAILLEVELID:TCBMQL;p_MESSAGE:;p_ERRORCODE:;
+
+2022-03-10 11:01:55.635 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:1295;P_KEY:ACONTENT;P_VALUE:test2;Images\Model\File_1_petrolimex.jpg;P_STATUS:2;P_KEYFUNCTION:Tổ chức bộ máy Quản lý - Sơ đồ bộ máy quản lý;P_MENUID:674;P_FUNCTION:Tổ chức bộ máy Quản lý;P_LEVELID:TQ;P_DETAILLEVELID:TCBMQL;p_MESSAGE:;p_ERRORCODE:;
+
+2022-03-10 11:01:55.818 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 11:01:55.821 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-10 11:06:55.891 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;P_APPROVE:;REFCURSOR:;
+
+2022-03-10 11:06:55.891 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;P_APPROVE:;REFCURSOR:;
+
+2022-03-10 11:06:55.900 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;REFCURSOR:;
+
+2022-03-10 11:06:55.900 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_COMPANY_LIST
+-----paramArr ---
+P_CPNYID:1295;REFCURSOR:;
+
+2022-03-10 11:06:56.013 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_UPDATE
+-----paramArr ---
+P_AORGMODELID:2832;P_CPNYID:1295;P_AORGMODELDESC:test2;P_AORGMODELPATH:Images\Model\File_1_petrolimex.jpg;P_AORGTYPE:2;P_ANOTE:test2;Images\Model\File_1_petrolimex.jpg;p_MESSAGE:;p_ERRORCODE:;p_USERNAME:TungTT;p_RoleCode:TCBMQL;
+
+2022-03-10 11:06:56.013 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_UPDATE
+-----paramArr ---
+P_AORGMODELID:1215;P_CPNYID:1295;P_AORGMODELDESC:test3;P_AORGMODELPATH:;P_AORGTYPE:1;P_ANOTE:test3;;p_MESSAGE:;p_ERRORCODE:;p_USERNAME:TungTT;p_RoleCode:TCBMQL;
+
+2022-03-10 11:06:56.017 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:1295;P_KEY:ACONTENT;P_VALUE:test3;C:\fakepath\spotify.png;P_STATUS:2;P_KEYFUNCTION:Tổ chức bộ máy Quản lý - Sơ đồ bộ máy quản lý;P_MENUID:674;P_FUNCTION:Tổ chức bộ máy Quản lý;P_LEVELID:TQ;P_DETAILLEVELID:TCBMQL;p_MESSAGE:;p_ERRORCODE:;
+
+2022-03-10 11:06:56.018 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:1295;P_KEY:ACONTENT;P_VALUE:test2;Images\Model\File_1_petrolimex.jpg;P_STATUS:2;P_KEYFUNCTION:Tổ chức bộ máy Quản lý - Sơ đồ bộ máy quản lý;P_MENUID:674;P_FUNCTION:Tổ chức bộ máy Quản lý;P_LEVELID:TQ;P_DETAILLEVELID:TCBMQL;p_MESSAGE:;p_ERRORCODE:;
+
+2022-03-10 11:06:56.228 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-10 11:06:56.233 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+

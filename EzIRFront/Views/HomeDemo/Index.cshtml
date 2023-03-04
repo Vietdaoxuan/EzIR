@@ -1,0 +1,1574 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.Extensions.Configuration;
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHtmlLocalizer<SharedResource> Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject IConfiguration _configuration
+@{
+
+    ViewData["Title"] = "Cổng thông tin EzIR";
+    Layout = "~/Views/Shared/_LayoutHomeDemo.cshtml";
+
+    var imgURL = ViewBag.ImageURL;
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+        .ToList();
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}{Context.Request.QueryString.Value}";
+
+
+    var requestValue = "";
+    var image = "";
+    var StockName = "";
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+        image = "icon-EN.png";
+        requestValue = "en-US";
+
+    }
+    else
+    {
+        image = "iconVietnam.svg.png";
+        requestValue = "vi-VN";
+
+    }
+
+}
+<style>
+    .scrollable-element {
+        overflow-y: scroll;
+    }
+
+    .fp-tableCell {
+        display: unset;
+        vertical-align: unset;
+        width: auto;
+        height: auto;
+    }
+
+    /* Overwriting styles for control arrows for slides
+        * --------------------------------------- */
+    .fp-controlArrow.fp-prev {
+        left: 50px;
+    }
+
+    .fp-controlArrow.fp-next {
+        right: 50px;
+    }
+</style>
+
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <div class="main-container container px-4">
+        <a class="navbar-brand" href="#page-top"><img src="images/logo_ngang.png" width="155" height="44" /></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#trangchu">Trang chủ</a></li>
+                <li class="nav-item"><a class="nav-link" href="#ttcb">Thông tin công bố</a></li>
+                <li class="nav-item"><a class="nav-link" href="#tuvan">Tư vấn</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Liên hệ</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="header">
+    <div class="main-container hide-nav">
+        <div class="header-content">
+            <div class="brand">
+                <a title="Seerat Awan" target="_blank" href="http://fpts.com.vn/">
+                    <img src="images/logo_ngang.png" width="172" height="48" />
+                </a>
+            </div>
+            <ul id="navbar">
+
+                <li class="nav-item" data-menuanchor="contact">
+                    <a title="Liên hệ" href="#contact" class="nav-bar_child">
+                        Liên hệ
+                        <hr />
+                    </a>
+
+                </li>
+                <li class="nav-item" data-menuanchor="tuvan">
+                    <a title="Tư vấn" href="#tuvan" class="nav-bar_child">
+                        Tư vấn
+                        <hr />
+                    </a>
+
+                </li>
+                <li class="nav-item" data-menuanchor="ttcb">
+                    <a title="Công bố thông tin" href="#ttcb" class="nav-bar_child">
+                        Thông tin công bố
+                        <hr />
+                    </a>
+
+                </li>
+                <li class="nav-item" data-menuanchor="trangchu">
+                    <a title="Trang chủ" href="#trangchu" class="nav-bar_child">
+                        Trang chủ
+                        <hr />
+                    </a>
+
+                </li>
+            </ul>
+            <div class="Langgue">
+                <a>
+                    <img src="~/images/Flag_Vietnam.png" width="25" height="22" />
+                </a>
+                @*<i class="fa fa-caret-down" aria-hidden="true"></i>*@
+                <ul id="editor-dropdown-css" style="display:none;">
+                    <li class="editor-dropdown-list-item">
+                        <a title="">
+                            <img src="~/images/Flag_Vietnam.png" width="22" height="22" />
+                        </a>
+                    </li>
+                    <li class="editor-dropdown-list-item">
+                        <a title="">
+                            <img src="~/images/la-co-vuong-quoc-anh.jpg" width="22" height="22" />
+                        </a>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Xem tất cả -->
+<!--Begin-->
+<div id="main-dtdn" class="nav-transparent show-dtdn" style="display: none;">
+    <div class="main-container" style="height: auto">
+        <div class="dtdn-box">
+            <span class="close-btn">&times;</span>
+            <div class="section-box">
+                <div class="section-content dtdn-sc">
+                    <h2>Đối tác Doanh Nghiệp</h2>
+                </div>
+
+            </div>
+
+            <div class="content-box viewall">
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--End-->
+
+<div id="main-tvdn" class="nav-transparent show-tvdn" style="display: none;">
+    <div class="main-container" style="height: auto">
+        <div class="tvdn-box">
+            <div class="section-box">
+                <div class="section-content section_content_tvqt section_content_tvqt_box">
+                    <h1 class="advise_title advise_title_2 blue w-700 underline d-none"> Tư vấn Công bố thông tin và giải pháp EzIR</h1>
+                    <h1 class="advise_title advise_title_3 blue w-700 underline d-none"> Tư vấn Tổ chức ĐHĐCĐ và giải pháp EzGSM</h1>
+                    <h1 class="advise_title advise_title_4 blue w-700 underline d-none"> Tư vấn Quan hệ Nhà đầu tư</h1>
+                    <h1 class="advise_title advise_title_5 blue w-700 underline d-none"> Tư vấn Lập Báo cáo thường niên</h1>
+                    <h1 class="advise_title advise_title_6 blue w-700 underline d-none"> Tư vấn Lập Báo phát triển bền vững</h1>
+                    <h1 class="advise_title advise_title_7 blue w-700 underline d-none"> Tư vấn xây dựng, sửa đối Điều lệ và các quy chế quản trị công ty</h1>
+                </div>
+                <span class="close-btn-tvdn closed-button" style="display: none;" onclick="closeMore(0, 2)">&times;</span>
+                <span class="close-btn-tvdn1 closed-button" style="display: none;" onclick="closeMore(1, 3)">&times;</span>
+                <span class="close-btn-tvdn2 closed-button" style="display: none;" onclick="closeMore(2, 4)">&times;</span>
+                <span class="close-btn-tvdn3 closed-button" style="display: none;" onclick="closeMore(3, 5)">&times;</span>
+                <span class="close-btn-tvdn4 closed-button" style="display: none;" onclick="closeMore(4, 6)">&times;</span>
+                <span class="close-btn-tvdn5 closed-button" style="display: none;" onclick="closeMore(5, 7)">&times;</span>
+
+                <!--Xem thêm Tư vấn-->
+                <!--Begin-->
+                <!--box1-->
+                <div class="advise_box d-none" id="advise_box-more">
+                    <div class="advise_box-info">
+                        <h3 class="box_info-title">
+                            1. Lợi ích khi sử dụng dịch vụ tư vấn
+                        </h3>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                - Đảm bảo tuân thủ đúng quy định pháp luật về công bố thông tin: Chuyên viên FPTS trực tiếp tư vấn xây dựng
+                                Quy chế công bố thông tin cho doanh nghiệp, nhắc nhở công bố thông tin định kỳ, tư vấn trong tình huống phát
+                                sinh nghĩa vụ công bố thông tin bất thường, cập nhật cho doanh nghiệp các quy định mới nhất về công bố thông tin
+                                trên thị trường chứng khoán.
+                            </li>
+                            <li class="box_info-text dot">
+                                - Tiết kiệm thời gian, chi phí, nhân lực trong công tác công bố thông tin: Khách hàng được giải đáp nhanh chóng,
+                                hỗ trợ biểu mẫu; cung cấp công cụ để chủ động công bố thông tin trên website qua đó để kịp thời xử lý các tình huống công bố thông tin.
+                            </li>
+                            <li class="box_info-text dot">
+                                - Gia tăng cơ hội quảng bá thương hiệu thông qua Cổng Quan hệ nhà đầu tư trực tuyến EzIR:
+                            </li>
+                            <li class="box_info-text dot inline">
+                                Thông tin do doanh nghiệp đăng tải được công bố rộng rãi đến cộng đồng nhà đầu tư (hơn 200.000 nhà đầu tư
+                                mở tài khoản và giao dịch tại FPTS) với cấu trúc trang tin khoa học, khối lượng thông tin không hạn chế,
+                                bao gồm đầy đủ các báo cáo, thông tin tài chính – phi tài chính, thông tin cổ phiếu cập nhật chính xác – kịp thời;
+                            </li>
+                            <li class="box_info-text dot inline">
+                                Logo doanh nghiệp được quảng bá trên trang chủ của FPTS fpts.com.vn với hơn 90.000 lượt truy cập/ngày.
+                            </li>
+                        </ul>
+                        <h3 class="box_info-title">
+                            2. Dịch vụ cung cấp
+                        </h3>
+                        @*<p class="box_info-subtitle">
+                                a. Lorem ipsum dolor sit, amet consectetur
+                            </p>*@
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                Tư vấn Công bố thông tin;
+                            </li>
+                            <li class="box_info-text dot">
+                                Cung cấp công cụ để Khách hàng thực hiện công bố thông tin trên Cổng Quan hệ nhà đầu tư trực tuyến FPTS và cho phép
+                                Khách hàng liên kết mục Quan hệ cổ đông trên website của Khách hàng với Cổng Quan hệ Nhà đầu tư trực tuyến EzIR.
+                            </li>
+                            <li class="box_info-text dot">
+                                Hỗ trợ Khách hàng thực hiện công bố thông tin song ngữ Anh – Việt
+                                để đảm bảo truyền tải thông tin nhanh chóng và kịp thời cho cổ đông và nhà đầu tư nước ngoài.
+                            </li>
+                            @*<li class="box_info-text dot">
+                                    <strong>
+                                        * Cần tư vấn và hỗ trợ, vui lòng liên hệ&nbsp;
+                                        <a rel="noopener" href="http://www.fpts.com.vn/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/lien-he/"
+                                           target="_blank">Phòng Tư vấn Tài chính Doanh nghiệp</a>
+                                    </strong>
+                                </li>*@
+                            <li class="box_info-text dot">
+                                <span>
+                                    * Chi tiết về giải pháp EzIR - Quan hệ nhà đầu tư trực tuyến vui lòng xem
+                                    <a rel="noopener" data-udi="" href="/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/san-pham-dich-vu/tu-van-to-chuc-dhdcd-va-giai-phap-ezgsm/ezgsm-giai-phap-to-chuc-dai-hoi-co-dong-truc-tuyen/"
+                                       target="_blank" title="EzIR – Quan hệ nhà đầu tư trực tuyến">tại đây.</a>
+                                </span>
+                            </li>
+                            <li class="box_info-text dot">
+                                <span>
+                                    * Sử dụng dịch vụ EzIR, vui lòng truy cập
+                                    <a rel="noopener" href="http://ezir.fpts.com.vn" target="_blank" title="http://ezir.fpts.com.vn">http://ezir.fpts.com.vn</a>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <i class="bi bi-x all_partner-close"></i>
+                    <button class="box_info-close uppercase" onclick="closeMore(0, 2)">
+                        <a href="#advise" onclick="closeMore(0,2)"> Đóng </a>
+                    </button>
+
+                </div>
+                <!--box2-->
+                <div class="advise_box d-none" id="advise_box-more1">
+                    <div class="advise_box-info">
+                        <h3 class="box_info-title">
+                            1. Lợi ích khi sử dụng Dịch vụ Đại hội đồng Cổ đông trực tuyến của FPTS
+                        </h3>
+                        <p class="box_info-subtitle">
+                            a. Đối với Doanh nghiệp (Tổ chức phát hành)
+                        </p>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                - Được tư vấn tổ chức và hỗ trợ xuyên suốt quá trình tổ chức Đại hội đồng Cổ đông (ĐHĐCĐ)
+                                bởi đội ngũ chuyên viên tư vấn am hiểu sâu sắc về quy định pháp luật và quản trị công ty,
+                                đảm bảo thực hiện đúng và đầy đủ các thủ tục tổ chức ĐHĐCĐ theo quy định của Luật doanh nghiệp.
+                            </li>
+                            <li class="box_info-text dot">
+                                - Kiểm soát được số lượng cổ đông đăng ký dự Đại hội và ủy quyền dự Đại hội,
+                                cũng như tỷ lệ thay đổi trong quá trình diễn ra Đại hội ⇒ Nâng cao khả năng thành công của Đại hội.
+                            </li>
+                            <li class="box_info-text dot">
+                                - Tiết kiệm tối đa chi phí và nhân lực trong quá trình tổ chức Đại hội từ khâu check in,
+                                kiểm phiếu cho kết quả nhanh chóng, chính xác.
+                            </li>
+                            <li class="box_info-text dot">
+                                - “Giảm gánh lo” trong việc chuẩn bị cơ sở, vật chất tổ chức ĐHĐCĐ.
+                            </li>
+                        </ul>
+                        <p class="box_info-subtitle">
+                            b. Đối với Cổ đông
+                        </p>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                - Cổ đông không có điều kiện đến tham dự trực tiếp tại Đại hội vẫn có thể theo dõi diễn
+                                biến cuộc họp trực tiếp qua website tại bất cứ đâu mà không cần phải có mặt trực tiếp tại Đại hội.
+                            </li>
+                            <li class="box_info-text dot">
+                                - Thực hiện quyền lợi biểu quyết/bầu cử của mình dù ở bất cứ đâu.
+                                Tính năng đặc biệt này sẽ giúp gia tăng tỷ lệ cổ đông tham dự Đại hội và
+                                tăng khả năng Đại hội được tổ chức thành công cao hơn rất nhiều
+                            </li>
+                            <li class="box_info-text dot">
+                                - Có thể trao đổi (qua Internet) với doanh nghiệp về các vấn đề liên quan đến biểu quyết và các vấn đề khác nêu tại Đại hội
+                                trước khi đưa ra quyết định biểu quyết nhờ sự kết hợp giải pháp EzGSM với Cổng thông tin trực tuyến EzSearch.
+                                Qua đây, doanh nghiệp có thể trả lời cổ đông một cách thấu đáo, tránh trường hợp cổ đông bị bức xúc khi các vấn đề
+                                cần trao đổi không được đáp ứng ngay tại Đại hội do thời gian có hạn.
+                            </li>
+                        </ul>
+                        <h3 class="box_info-title">
+                            2. Dịch vụ cung cấp
+                        </h3>
+                        <p class="box_info-subtitle">
+                            a.Tư vấn tổ chức họp Đại hội đồng Cổ đông
+                        </p>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                Bao gồm việc giải đáp những vướng mắc về trình tự, thủ tục pháp lý liên quan tới tổ chức Đại hội,
+                                hỗ trợ xây dựng, rà soát các tài liệu trong chương trình Đại hội, tư vấn các nội dung phát sinh tại Đại hội;
+                                hỗ trợ thực hiện các thủ tục Công bố thông tin sau khi tổ chức Đại hội theo đúng quy định của pháp luật.
+                            </li>
+                        </ul>
+                        <p class="box_info-subtitle">
+                            b. Cung cấp giải pháp tổ chức Đại hội đồng Cổ đông trực tuyến (EzGSM)
+                        </p>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                EzGSM cung cấp tiện ích công nghệ giúp cổ đông có thể tham dự đại hội bằng hình thức bỏ phiếu điện tử,
+                                qua đó doanh nghiệp có thể tăng tối đa số lượng cổ đông tham dự và tiết kiệm chi phí tổ chức Đại hội;
+                            </li>
+                            <li class="box_info-text dot">
+                                EzGSM còn có khả năng hỗ trợ Doanh nghiệp tổ chức ĐHĐCĐ theo phương thức truyền thống- trực tiếp thông qua
+                                các tính năng chuyên biệt như: Quản lý Đại hội; quản lý thông tin ủy quyền; check in đại biểu;
+                                biểu quyết và bầu cử; kiểm phiếu…
+                            </li>
+                        </ul>
+                        <p class="box_info-subtitle">
+                            c. Hỗ trợ cơ sở, vật chất tổ chức họp Đại hội đồng Cổ đôngc. Hỗ trợ cơ sở, vật chất tổ chức họp Đại hội đồng Cổ đông
+                        </p>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                - Hỗ trợ doanh nghiệp địa điểm tổ chức ĐHĐCĐ với đầy đủ cơ sở, vật chất, trang thiết bị hiện đại:
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>Phòng họp với sức chứa gần 200 chỗ ngồi chuyên dụng trong việc tổ chức ĐHĐCĐ;</span>
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>
+                                    Thiết bị âm thanh, ánh sáng, máy chiếu hiện đại mới đầu tư đầu năm 2017,
+                                    hỗ trợ truyền hình trực tuyến diễn biến Đại hội. Hỗ trợ nhân sự tổ chức ĐHĐCĐ (đón tiếp đại biểu, kĩ thuật...);
+                                </span>
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>Địa điểm thuận tiện giao thông, có sân để ô tô xe máy miễn phí, hỗ trợ tiệc trà (theo yêu cầu).</span>
+                            </li>
+                            <li class="box_info-text dot">
+                                <p style="text-align: center;">
+                                    <img style="width: 100%; height: 450px; margin: 12px 0; object-fit: contain;" src="~/images/fpts_ezir.gif" alt="">
+                                </p>
+                            </li>
+                            @*<li class="box_info-text dot">
+                                    <strong>
+                                        * Cần tư vấn và hỗ trợ, vui lòng liên hệ&nbsp;
+                                        <a rel="noopener" href="http://www.fpts.com.vn/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/lien-he/"
+                                           target="_blank">Phòng Tư vấn Tài chính Doanh nghiệp</a>
+                                    </strong>
+                                </li>*@
+                            <li class="box_info-text dot">
+                                <span>
+                                    * Chi tiết về giải pháp EzGSM xem
+                                    <a rel="noopener" data-udi="" href="/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/san-pham-dich-vu/tu-van-to-chuc-dhdcd-va-giai-phap-ezgsm/ezgsm-giai-phap-to-chuc-dai-hoi-co-dong-truc-tuyen/"
+                                       target="_blank" title="EzGSM – Giải pháp tổ chức Đại hội cổ đông trực tuyến">tại đây.</a>
+                                </span>
+                            </li>
+                            <li class="box_info-text dot">
+                                <span>
+                                    * Sử dụng dịch vụ EzGSM, vui lòng truy cập
+                                    <a rel="noopener" href="https://ezgsm.fpts.com.vn/" target="_blank" title="https://ezgsm.fpts.com.vn/">https://ezgsm.fpts.com.vn/</a>
+                                </span>
+                            </li>
+                            <li class="box_info-text dot">
+                                <span>
+                                    * Tìm hiểu thêm về
+                                    <a rel="noopener" data-udi="" href="/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/san-pham-dich-vu/tu-van-to-chuc-dhdcd-va-giai-phap-ezgsm/lam-sao-de-to-chuc-dai-hoi-dong-co-dong-chuyen-nghiep/"
+                                       target="_blank" title="Làm sao để tổ chức Đại hội đồng Cổ đông chuyên nghiệp?">Làm sao để tổ chức đại hội đồng cổ đông chuyên nghiệp?</a>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <i class="bi bi-x all_partner-close"></i>
+                    <button class="box_info-close uppercase" onclick="closeMore(1, 3)">
+                        <a href="#advise" onclick="closeMore(1, 3)"> Đóng </a>
+                    </button>
+
+                </div>
+                <!--box3-->
+                <div class="advise_box d-none" id="advise_box-more2">
+                    <div class="advise_box-info">
+                        <h3 class="box_info-title">
+                            1. Lợi ích khi sử dụng sản phẩm dịch vụ
+                        </h3>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                - Chủ động tạo lập kênh thông tin chính thống, riêng biệt: định kỳ cập nhật cho thị trường,
+                                cộng đồng nhà đầu tư các thông tin: Tổng quan doanh nghiệp (thông tin chung; tầm nhìn - chiến lược;
+                                tổ chức bộ máy quản lý; thành phần lãnh đạo; cơ cấu sở hữu) và Thực trạng kinh doanh (thị trường/khách hàng/đối thủ;
+                                trình độ công nghệ; năng lực quản lý; thông tin dự án đầu tư; phân tích SWOT; vị thế doanh nghiệp),
+                                Đánh giá hiệu quả hoạt động doanh nghiệp thông qua việc phân tích các chỉ tiêu tài chính mỗi kỳ.
+                                Trên cơ sở đó, doanh nghiệp có nền tảng định hướng chiến lược IR trong ngắn hạn – dài hạn,
+                                hỗ trợ cộng đồng nhà đầu tư định giá đúng giá trị doanh nghiệp.
+                            </li>
+                            <li class="box_info-text dot">
+                                - Được tư vấn giải pháp xử lý với các thông tin sai lệch về doanh nghiệp trên thị trường: với sự hỗ trợ của FPTS,
+                                doanh nghiệp được trang bị đầy đủ phương tiện và chiến lược để xử lý kịp thời trong tình huống có tin đồn bất lợi
+                                và thông tin không chính xác, đảm bảo thông tin xác thực được truyền tải nhanh chóng đến cộng đồng nhà đầu tư.
+                            </li>
+                            <li class="box_info-text dot">
+                                - Trao đổi thông tin hai chiều với cộng đồng nhà đầu tư:
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>
+                                    Trợ giúp doanh nghiệp lựa chọn các phương tiện và chiến lược công bố thông tin hiệu quả nhất tới giới phân tích,
+                                    nhà đầu tư và công chúng, giúp thị trường đánh giá chính xác hơn về thế mạnh và tiềm năng của doanh nghiệp,
+                                    xây dựng hình ảnh bền vững của doanh nghiệp trên thị trường. EzSearch - Cổng thông tin trực tuyến độc lập,
+                                    khách quan, chuyên nghiệp - sẽ là phương tiện đắc lực giúp doanh nghiệp thực hiện mục tiêu này.
+                                </span>
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>
+                                    Ngoài ra, FPTS cũng trợ giúp doanh nghiệp trong các hình thức IR khác như họp báo, tổ chức đoàn giới thiệu (roadshow),
+                                    tổ chức hội thảo dành cho nhà đầu tư và giới phân tích chuyên nghiệp, gặp gỡ các tổ chức môi giới,
+                                    hỗ trợ xây dựng các tài liệu như company profile, factbook, annual report,…
+                                </span>
+                            </li>
+                            <li class="box_info-text dot">
+                                - Xây dựng mối quan hệ tốt đẹp cùng có lợi giữa doanh nghiệp với nhà đầu tư, giới phân tích và các tổ chức môi giới chứng khoán.
+                            </li>
+                        </ul>
+                        <h3 class="box_info-title">
+                            2. Dịch vụ cung cấp
+                        </h3>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                - Tư vấn Khách hàng công bố thông tin chủ động:
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>
+                                    Tư vấn cho Khách hàng khi có những thông tin ảnh hưởng đến doanh nghiệp (tin đồn, thông tin không chính xác về doanh nghiệp);
+                                </span>
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>
+                                    Tổ chức gặp mặt nhà đầu tư: FPTS chuẩn bị tài liệu, hội trường (Miễn phí tại sàn của FPTS; Theo phí của nơi tổ chức nếu thuê ngoài),
+                                    mời nhà đầu tư, lãnh đạo Khách hàng đến trao đổi, gặp gỡ nhà đầu tư.
+                                </span>
+                            </li>
+                            @*<li class="box_info-text dot">
+                                    <strong>
+                                        * Cần tư vấn và hỗ trợ, vui lòng liên hệ&nbsp;
+                                        <a rel="noopener" href="http://www.fpts.com.vn/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/lien-he/"
+                                           target="_blank">Phòng Tư vấn Tài chính Doanh nghiệp</a>
+                                    </strong>
+                                </li>*@
+                            <li class="box_info-text dot">
+                                <span>
+                                    * Chi tiết về giải pháp hỗ trợ EzSearch – Cổng thông tin trực tuyến, vui lòng xem
+                                    <a rel="noopener" data-udi="" href="http://www.fpts.com.vn/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/san-pham-dich-vu/tu-van-quan-he-nha-dau-tu-ir/ezsearch-cong-thong-tin-truc-tuyen/"
+                                       target="_blank" title="EzGSM – Giải pháp tổ chức Đại hội cổ đông trực tuyến">tại đây.</a>
+                                </span>
+                            </li>
+                            <li class="box_info-text dot">
+                                <span>
+                                    * Chi tiết về Cổng thông tin trực tuyến EzSearch, vui lòng truy cập
+                                    <a rel="noopener" href="http://ezsearch.fpts.com.vn/" target="_blank" title="http://ezsearch.fpts.com.vn/">http://ezsearch.fpts.com.vn/</a>
+                                </span>
+                            </li>
+                            <li class="box_info-text dot">
+                                <span>
+                                    * Tìm hiểu thêm về
+                                    <a rel="noopener" data-udi="" href="http://www.fpts.com.vn/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/san-pham-dich-vu/tu-van-quan-he-nha-dau-tu-ir/vai-tro-hoat-dong-ir-trong-viec-nang-cao-gia-tri-doanh-nghiep/"
+                                       target="_blank" title="Làm sao để tổ chức Đại hội đồng Cổ đông chuyên nghiệp?">Vai trò hoạt động IR trong việc nâng cao giá trị doanh nghiệp</a>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <i class="bi bi-x all_partner-close"></i>
+                    <button class="box_info-close uppercase" onclick="closeMore(2, 4)">
+                        <a href="#advise" onclick="closeMore(2, 4)"> Đóng </a>
+                    </button>
+
+                </div>
+                <!--box4-->
+                <div class="advise_box d-none" id="advise_box-more3">
+                    <div class="advise_box-info">
+                        <h3 class="box_info-title">
+                            1. Lợi ích khi sử dụng sản phẩm dịch vụ
+                        </h3>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                Đảm bảo tuân thủ nghĩa vụ công bố Báo cáo thường niên theo quy định của pháp luật:
+                                khách hàng được tư vấn lộ trình lập báo cáo, hỗ trợ toàn bộ nội dung và thiết kế để đảm bảo báo cáo
+                                được công bố đầy đủ, đúng thời hạn theo quy định về công bố thông tin.
+                            </li>
+                            <li class="box_info-text dot">
+                                Tài liệu công bố thông tin đắc lực phản ánh giá trị doanh nghiệp: với nội dung thông tin tài chính
+                                và phi tài chính được khai thác phong phú, phân tích chuyên sâu bởi đội ngũ chuyên viên dày dặn kinh nghiệm,
+                                Báo cáo thường niên là một trong những tài liệu có hàm lượng thông tin xác thực lớn nhất được doanh nghiệp gửi gắm
+                                đến cổ đông, nhà đầu tư vào cuối mỗi năm tài chính để trình bày kết quả đạt được và định hướng cho tương lai.
+                            </li>
+                            <li class="box_info-text dot">
+                                Thu hút sự quan tâm của nhà đầu tư nhờ tính thẩm mỹ của báo cáo: doanh nghiệp được hỗ trợ thiết kế Báo cáo
+                                thường niên nhằm nâng cao tính thẩm mỹ và truyền tải nội dung báo cáo đến độc giả một cách hiệu quả hơn.
+                            </li>
+                            <li class="box_info-text dot">
+                                Cơ hội phát triển bền vững và quảng bá thương hiệu: thông tin phát triển bền vững trong báo cáo thể hiện
+                                thiện chí của Ban lãnh đạo doanh nghiệp đối với sự phát triển chung của xã hội và môi trường,
+                                từ đó nâng cao cơ hội được cộng đồng ủng hộ và là nền tảng thúc đẩy các mục tiêu chiến lược.
+                            </li>
+                        </ul>
+                        <h3 class="box_info-title">
+                            2. Dịch vụ cung cấp
+                        </h3>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                Lập Báo cáo Thường niên theo quy định của pháp luật về công bố thông tin (bao gồm cả nội dung và thiết kế).
+                            </li>
+                            <li class="box_info-text dot">
+                                Hỗ trợ in ấn và dịch thuật Báo cáo thường niên sang tiếng Anh: Báo cáo thường niên được in ấn chuyên nghiệp,
+                                dịch sang tiếng Anh với nội dung và thiết kế được bảo toàn so với bản tiếng Việt.
+                            </li>
+                            @*<li class="box_info-text dot">
+                                    <strong>
+                                        * Cần tư vấn và hỗ trợ, vui lòng liên hệ&nbsp;
+                                        <a rel="noopener" href="http://www.fpts.com.vn/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/lien-he/"
+                                           target="_blank">Phòng Tư vấn Tài chính Doanh nghiệp</a>
+                                    </strong>
+                                </li>*@
+                        </ul>
+                    </div>
+                    <i class="bi bi-x all_partner-close"></i>
+                    <button class="box_info-close uppercase" onclick="closeMore(3, 5)">
+                        <a href="#advise" onclick="closeMore(3, 5)"> Đóng </a>
+                    </button>
+
+                </div>
+                <!--box5-->
+                <div class="advise_box d-none" id="advise_box-more4">
+                    <div class="advise_box-info">
+                        <h3 class="box_info-title">
+                            1. Lợi ích khi sử dụng sản phẩm dịch vụ
+                        </h3>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                Nâng cao hình ảnh doanh nghiệp trong mắt nhìn của cộng đồng: xoay quanh việc khai thác giá trị doanh nghiệp
+                                ở ba khía cạnh (môi trường, xã hội và kinh tế), Báo cáo phát triển bền vững giúp doanh nghiệp minh bạch hóa
+                                thông tin nội bộ, truyển tải hiệu quả mong muốn đóng góp cho sự phát triển chung của cả cộng đồng. Với xu thế
+                                bảo vệ môi trường và quyền con người ngày càng phát triển, Báo cáo phát triển bền vững là phương thức tốt để
+                                doanh nghiệp khẳng định vị thế trong thị trường đầy tính cạnh tranh.
+                            </li>
+                            <li class="box_info-text dot">
+                                Khẳng định tư tưởng quản trị hiện đại theo tiêu chuẩn quốc tế: Bộ tiêu chuẩn quốc tế về lập báo cáo phát
+                                triển bền vững toàn cầu (GRI Standards) của Tổ chức sáng kiến báo cáo toàn cầu (GSSB) được áp dụng trong
+                                hầu hết báo cáo của các doanh nghiệp niêm yết quy mô lớn ở phạm vi toàn thế giới đã cho thấy tính chuẩn mực
+                                của các tiêu chí trong bộ tiêu chuẩn này. Dựa trên những đánh giá khách quan ở từng tiêu chí, doanh nghiệp có
+                                định hướng rõ ràng hơn ở từng mảng quản trị để hoạt động hiệu quả trong dài hạn.
+                            </li>
+                            <li class="box_info-text dot">
+                                Ghi điểm với nhà đầu tư nhờ sự khác biệt: trong khi Báo cáo thường niên là tài liệu bắt buộc phải công bố
+                                với tất cả doanh nghiệp trên thị trường chứng khoán, thì Báo cáo phát triển bền vững lại là tài liệu riêng
+                                biệt được Ban lãnh đạo chủ động xuất bản, với nội dung sáng tạo hơn hẳn và thiết kế mang đậm dấu ấn văn hóa doanh nghiệp.
+                            </li>
+                            <li class="box_info-text dot">
+                                Cơ hội phát triển bền vững và quảng bá thương hiệu: thông tin phát triển bền vững trong báo cáo thể hiện
+                                thiện chí của Ban lãnh đạo doanh nghiệp đối với sự phát triển chung của xã hội và môi trường, từ đó nâng cao
+                                cơ hội được cộng đồng ủng hộ và là nền tảng thúc đẩy các mục tiêu chiến lược.
+                            </li>
+                        </ul>
+                        <h3 class="box_info-title">
+                            2. Dịch vụ cung cấp
+                        </h3>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                Rà soát, tư vấn chọn lựa các chỉ tiêu và xây dựng chiến lược phát triển bền vững phù hợp.
+                            </li>
+                            <li class="box_info-text dot">
+                                Tư vấn lập Báo cáo phát triển bền vững (bao gồm cả nội dung và thiết kế).
+                            </li>
+                            <li class="box_info-text dot">
+                                Hỗ trợ in ấn và dịch thuật Báo cáo phát triển bền vững sang tiếng Anh: Báo cáo phát triển bền vững được in ấn chuyên nghiệp,
+                                dịch sang tiếng Anh với nội dung và thiết kế được bảo toàn so với bản tiếng Việt.
+                            </li>
+                            @*<li class="box_info-text dot">
+                                    <strong>
+                                        * Cần tư vấn và hỗ trợ, vui lòng liên hệ&nbsp;
+                                        <a rel="noopener" href="http://www.fpts.com.vn/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/lien-he/"
+                                           target="_blank">Phòng Tư vấn Tài chính Doanh nghiệp</a>
+                                    </strong>
+                                </li>*@
+                        </ul>
+                    </div>
+                    <i class="bi bi-x all_partner-close"></i>
+                    <button class="box_info-close uppercase" onclick="closeMore(4, 6)">
+                        <a href="#advise" onclick="closeMore(4, 6)"> Đóng </a>
+                    </button>
+
+                </div>
+                <!--box6-->
+                <div class="advise_box d-none" id="advise_box-more5">
+                    <div class="advise_box-info">
+                        <h3 class="box_info-title">
+                            1. Lợi ích khi sử dụng sản phẩm dịch vụ
+                        </h3>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                Điều lệ, Quy chế quản trị Công ty, Quy chế hoạt động của Hội đồng quản trị, Ban kiểm soát là những
+                                văn bản pháp lý quan trọng của mỗi công ty, được xem là luật riêng của công ty. Ngoài quy định của luật,
+                                đây là khung pháp lý quan trọng trong quản trị, điều hành doanh nghiệp.
+                            </li>
+                            <li class="box_info-text dot">
+                                FPTS với đội ngũ chuyên viên nhiều kinh nghiệm, am hiểu pháp luật, chuyên sâu về quản trị công ty luôn
+                                sẵn sàng tư vấn và hỗ trợ các doanh nghiệp trong việc sửa đổi Điều lệ công ty, Quy chế quản trị Công ty,
+                                Quy chế hoạt động của Hội đồng quản trị, Ban kiểm soát:
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>
+                                    Đảm bảo tuân thủ các quy định của pháp luật
+                                </span>
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>
+                                    Tư vấn xây dựng, sửa đổi để phù hợp với hoạt động của bản thân công ty, giúp các doanh nghiệp xây dựng Điều lệ,
+                                    Quy chế quản trị công ty, Quy chế hoạt động của Hội đồng quản trị, Ban kiểm soát có chất lượng, thuận tiện trong quản trị điều hành.
+                                </span>
+                            </li>
+                            <li class="box_info-text dot inline">
+                                <span>
+                                    Lưu ý cho doanh nghiệp trong thực tiễn áp dụng các quy định này vào trong doanh nghiệp.
+                                </span>
+                            </li>
+                        </ul>
+                        <h3 class="box_info-title">
+                            2. Dịch vụ cung cấp
+                        </h3>
+                        <ul class="box_info-list">
+                            <li class="box_info-text dot">
+                                Xây dựng, sửa đổi nội dung Điều lệ Công ty, Quy chế Quản trị Công ty, Quy chế hoạt động của Hội đồng quản trị,
+                                Ban kiểm soát phù hợp với các văn bản pháp luật hiện hành (Luật Doanh nghiệp, các quy định về quản trị công ty
+                                áp dụng cho Công ty đại chúng).
+                            </li>
+                            @*<li class="box_info-text dot">
+                                    <strong>
+                                        * Cần tư vấn và hỗ trợ, vui lòng liên hệ&nbsp;
+                                        <a rel="noopener" href="http://www.fpts.com.vn/san-pham-dich-vu/tu-van-doanh-nghiep/tu-van-quan-tri-doanh-nghiep/lien-he/"
+                                           target="_blank">Phòng Tư vấn Tài chính Doanh nghiệp</a>
+                                    </strong>
+                                </li>*@
+                        </ul>
+                    </div>
+                    <i class="bi bi-x all_partner-close"></i>
+                    <button class="box_info-close uppercase" onclick="closeMore(5, 7)">
+                        <a href="#advise" onclick="closeMore(5, 7)"> Đóng </a>
+                    </button>
+
+                </div>
+                <!--End-->
+                <div class="tuvan-line"></div>
+                <div class="tuvan-fpts">
+
+
+                    <div class="tag-HN">
+                        <ul>
+                            <li class="tag-title">
+                                <p class="fpts-part">Khối Tư Vấn Tài Chính Doanh Nghiệp</p>
+                            </li>
+                            <li class="tag-adress">
+                                <p class="fpts-where">
+                                    <i class="fa-solid fa-location-dot"></i>Trụ sở Hà Nội
+                                </p>
+                            </li>
+                            <li class="tag-tel">
+                                <p class="fpts-tel"><i class="fa-solid fa-phone"></i>19006446<span>(4504/4502)</span></p>
+                            </li>
+                            <li class="tag-link">
+                                <p class="fpts-link">
+                                    <i class="fa-regular fa-envelope"></i>ezir@fpts.com.vn
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tag-HCM">
+                        <ul>
+                            <li class="tag-title">
+                                <p class="fpts-part">Phòng Tư Vấn Tài Chính Doanh Nghiệp</p>
+                            </li>
+                            <li class="tag-adress">
+                                <p class="fpts-where">
+                                    <i class="fa-solid fa-location-dot"></i>Chi nhánh TP.Hồ Chí Minh
+                                </p>
+                            </li>
+                            <li class="tag-tel">
+                                <p class="fpts-tel"><i class="fa-solid fa-phone"></i>19006446<span>(8602/7591)</span></p>
+                            </li>
+                            <li class="tag-link">
+                                <p class="fpts-link">
+                                    <i class="fa-regular fa-envelope"></i>ezir_hcm@fpts.com.vn
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--background sóng-->
+<!--https://lottie.host/df1e8b80-5aa2-4359-8639-3052140abc54/R8XcSQ5EaP.json-->
+<div style="height: 120vh;position: absolute;right: 0;">
+    <lottie-player src="/NewHome/json/Wave-Right.json" background="transparent"
+                   speed="2" loop autoplay></lottie-player>
+
+</div>
+<!--https://lottie.host/2858f10a-eac7-4eb3-a014-4eef38f87c6d/JdC0l0Pp2t.json-->
+<div style="height: 100vh;position: absolute;left:0;">
+    <lottie-player src="/NewHome/json/Wave-Left.json" background="transparent"
+                   speed="2" loop autoplay></lottie-player>
+
+</div>
+<!---->
+<div id="fullview">
+
+    <div id="hero" class="nav-transparent section" data-anchor="trangchu">
+        <!--<div class="main-container" style="height:85%;">-->
+        <div class="main-container display-change">
+            <div class="Thongtin-content">
+                <div class="Thongtin-heading">
+                    <h1>Ez<span>IR</span></h1>
+                    <h4>THÔNG TIN DOANH NGHIỆP <br /><span>CƠ HỘI ĐẦU TƯ</span></h4>
+                </div>
+
+            </div>
+
+            <!--Search-->
+            <div class="datasearchnone" style="display: none;"></div>
+
+            <div class="hero-content">
+                <div class="hero-heading">
+                    @*<h1>FullView.js</h1>*@
+
+                    <div class="html_codetemp" style="display:none;"></div>
+                    <div class="home_search" id="">
+                        <form class="search_form" style="border-bottom: 0px solid rgba(153, 153, 153, 0.6);">
+                            <div class="easy-autocomplete" style="width: 257.531px;">
+                                <input type="text" id="fpts-search-stockcode" class="fptsSearchAuto" placeholder="Mã chứng khoán | Tên Doanh Nghiệp..." onkeypress="enterSearchHome(event)" />
+                                <button id="voiceSearchButton" type="button" class="home_search_button">
+                                    Tìm kiếm
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <div class="tieuchisearch">
+                    <span> EzIR có thể tìm kiếm theo các tiêu chí:</span>
+                </div>
+
+                <div class="hero-buttons">
+
+                    <span>Mã chứng khoán</span>
+                    <span>
+                        Tên doanh nghiệp
+                    </span>
+                    <span>
+                        Trực tiếp chọn doanh nghiệp bên dưới
+                    </span>
+                </div>
+
+            </div>
+
+            <!--Logo company-->
+            <!--Begin-->
+            <div class="Doitac-content" id="jcl-doitac">
+                <div class="Doitac-heading">
+                    <div class="custom-container">
+
+                        <div class="slick-carousel" style="width: 100%">
+                            <!--Logo ở đây-->
+                        </div>
+
+
+                    </div>
+                    <div class="clear"></div>
+                    <div class="xemtatca">
+                        <span id="selectAll">Xem tất cả</span>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <div id="thongtin" class="nav-transparent section" data-anchor="ttcb">
+        <div class="main-container display-change">
+            <div class="section-box">
+                <div class="section-content TTCB-SC">
+                    <h2>Thông tin công bố</h2>
+                </div>
+
+                <div class="row">
+
+                    <div class="MS-DF-WH-100">
+
+                        <div class="MS-PR-P30-JAC active" id="JAC-ttbt">
+
+                            <div class="fpts-contactfpts MS-Banner-Contact">
+
+                                <div class="MS-After-MB">
+                                    <ul class="news_background">
+                                        <li class="nav-item title_1 col-sm-3 col-mb-1 active" id="tintucir" onclick="Open_tab()">
+                                            <span class="nav-link-title ">Tin tức</span>
+                                        </li>
+
+                                        <li class="nav-item title_2 col-sm-2 col-mb-1" id="bantinir" onclick="Close_tab()">
+                                            <span class="nav-link-title ">Bản tin IR</span>
+                                        </li>
+                                    </ul>
+
+                                    <div class="tab-content tab_ttcongbo scrollable-element">
+                                        <div class="active" id="tindoanhnghiepcongbo">
+                                            <div class="table_company_new">
+                                                @*<ul>
+                                                        <li class="custom-border-right">
+                                                            <a href="/ThongTinDoanhNghiep/MSH" target="_blank">
+                                                                MSH: Danh sách Cổ đông nhà nước, cổ đông chiến lược, cổ đông lớn và cổ phiếu quỹ - Kỳ chốt 30/11/2022
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  08/12/2022 <span class="custom-border-span">09:22</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a href="/ThongTinDoanhNghiep/BIG" target="_blank">
+                                                                BIG: Nghị quyết HĐQT Triệu Tập ĐHĐCĐ bất thường lần 1 năm 2023 Chốt ngày 05/1/2023 là ngày chốt dang sách cổ đông có quyền dự họp
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  15/12/2022 <span class="custom-border-span">13:55</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a href="/ThongTinDoanhNghiep/DIG" target="_blank">
+                                                                DIG: Nghị quyết HĐQT về việc thông qua chủ trương thực hiện các hợp đồng, giao dịch với các bên liên quan trong năm 2023
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  04/01/2023 <span class="custom-border-span">16:55</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a href="/ThongTinDoanhNghiep/SKG" target="_blank">
+                                                                SKG: Báo cáo kết quả giao dịch cổ phiếu của người có liên quan đến người nội bộ PUAN KIONG SII
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  28/11/2022 <span class="custom-border-span">15:48</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a href="/ThongTinDoanhNghiep/LSS" target="_blank">
+                                                                LSS: Thông báo thay đổi số lượng cổ phiếu có quyền biểu quyết đang lưu hành và báo cáo kết quả phát hành cổ phiếu để trả cổ tức
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  19/12/2022 <span class="custom-border-span">12:24</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a href="/ThongTinDoanhNghiep/BHK" target="_blank">
+                                                                BHK: Hợp đồng cho vay hạn mức với Ngân hàng Thương mại CP Công Thương Việt Nam - Chi nhánh Hoàng Mai
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  02/08/2022 <span class="custom-border-span">08:52</span></p>
+                                                        </li>
+                                                    </ul>*@
+                                            </div>
+                                        </div>
+                                        <div class="d-none" id="tintuc">
+                                            <div class="table_company_new">
+                                                @*<ul>
+                                                        <li class="custom-border-right">
+                                                            <a target="_blank">
+                                                                MSH: Bản tin nhà đầu tư Quý IV/2022
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  28/12/2022 <span class="custom-border-span">17:08</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a target="_blank">
+                                                                HAD: Bản tin tháng 12
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  25/10/2022 <span class="custom-border-span">11:04</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a target="_blank">
+                                                                THB: Bản tin dành cho nhà đầu tư tháng 12
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  13/10/2022 <span class="custom-border-span">16:42</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a target="_blank">
+                                                                VHE: Bản tin dành cho cổ đông tháng 12
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  03/09/2022 <span class="custom-border-span">17:28</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a target="_blank">
+                                                                THB: Bản tin dành cho nhà đầu tư tháng 11
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  16/08/2022 <span class="custom-border-span">12:09</span></p>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li class="custom-border-right">
+                                                            <a target="_blank">
+                                                                MSH: Bản tin nhà đầu tư Quý III/2022
+                                                            </a>
+                                                            <p class="MS-C-G-FS-S">Cập nhật ngày:  01/08/2022 <span class="custom-border-span">15:33</span></p>
+                                                        </li>
+                                                    </ul>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="advise" class="nav-transparent section advise" data-anchor="tuvan">
+        <div class="main-content display-change">
+            <div class="section-box">
+                <div class="section-content section_content_tvqt">
+                    <h1 class="advise_title advise_title_1 blue w-700">Tư Vấn Quản Trị Doanh Nghiệp</h1>
+                </div>
+
+                <div class="row advise_box" id="advise_box-default">
+                    <div class="advise_box-item before after">
+                        <div class="advise_box_detail">
+                            <h1 class="advise_box-title blue w-600">EZIR</h1>
+                            <ul class="advise_box-list">
+                                <li class="advise_box-subtitle hover">
+                                    Tư vấn Công bố thông tin và giải pháp EzIR
+                                </li>
+                            </ul>
+                            <button class="advise_box-more uppercase" onclick="openMore(0, 2)">xem chi tiết</button>
+                            <div class="hover_color_bubble"></div>
+                        </div>
+                    </div>
+                    <div class="advise_box-item">
+                        <div class="advise_box_detail">
+                            <h1 class="advise_box-title blue w-600">EZGSM</h1>
+                            <ul class="advise_box-list">
+                                <li class="advise_box-subtitle hover">
+                                    Tư vấn tổ chức ĐHĐCĐ và giải pháp EzGSM
+                                </li>
+                            </ul>
+                            <button class="advise_box-more uppercase" onclick="openMore(1, 3)">xem chi tiết</button>
+                            <div class="hover_color_bubble"></div>
+                        </div>
+                    </div>
+                    <div class="advise_box-item">
+                        <div class="advise_box_detail">
+                            <h1 class="advise_box-title blue w-600">Quan hệ nhà đầu tư (IR)</h1>
+                            <ul class="advise_box-list">
+                                <li class="advise_box-subtitle hover">
+                                    Tư vấn Quan hệ Nhà đầu tư
+                                </li>
+                            </ul>
+                            <button class="advise_box-more uppercase" onclick="openMore(2, 4)">xem chi tiết</button>
+                            <div class="hover_color_bubble"></div>
+                        </div>
+                    </div>
+                    <div class="advise_box-item advise_box-item-2">
+                        <div class="advise_box_detail">
+                            <h1 class="advise_box-title blue w-600">Báo cáo Doanh nghiệp</h1>
+
+                            <ul class="advise_box-list1">
+                                <li class="advise_box-subtitle hover dot li_bctn" @*onclick="openMore(3, 5)*@>
+                                    Tư vấn Lập Báo cáo thường niên
+                                    <button class="advise_box-more uppercase" onclick="openMore(4,6)">xem chi tiết</button>
+                                </li>
+
+                                <li class="advise_box-subtitle hover dot" @*onclick="openMore(4, 6)*@>
+                                    Tư vấn Lập Báo cáo phát triển bền vững
+                                    <button class="advise_box-more advise_box-more-bcbv uppercase" onclick="openMore(3,5)">xem chi tiết</button>
+                                </li>
+
+                            </ul>
+
+
+
+                            <div class="hover_color_bubble"></div>
+
+                        </div>
+                    </div>
+                    <div class="advise_box-item">
+                        <div class="advise_box_detail">
+                            <h1 class="advise_box-title blue w-600">Điều lệ - Quy chế</h1>
+                            <ul class="advise_box-list">
+                                <li class="advise_box-subtitle hover">
+                                    Tư vấn xây dựng, sửa đổi Điều lệ và các quy chế quản trị công ty
+                                </li>
+                            </ul>
+                            <button class="advise_box-more uppercase" onclick="openMore(5, 7)">xem chi tiết</button>
+                            <div class="hover_color_bubble"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="lienhe" class="nav-transparent section" data-anchor="contact">
+        <div class="main-container display-change">
+            <div class="section-box">
+                <div class="section-content lh-Title">
+
+                </div>
+
+                <div class="row mientru_trachnhiem">
+                    <div class="border_lienhe">
+                        <div class="title_tn">
+                            <h2>Miễn trừ trách nhiệm</h2>
+                        </div>
+
+                        <div class="lienhe-box">
+                            <ul class="list-style">
+                                <li>
+                                    <p>
+                                        Chào mừng Quý khách hàng đến với Giải pháp EzIR - Quan hệ Nhà đầu tư trực tuyến phát triển bởi Công ty cổ phần chứng khoán FPT (FPTS). Bằng việc truy cập vào trang website này, Quý khách hàng nhận thức đầy đủ và đồng ý tuân thủ các quy định sau đây của
+                                        FPTS. Các quy định này có thể được FPTS thay đổi mà không cần thông báo trước.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        Các thông tin trình bày trên EzIR bao gồm từ ngữ, hình ảnh, số liệu, đường dẫn hoặc các thông tin khác được công bố bởi chính các Doanh nghiệp đối tác và tổng hợp từ các nguồn đáng tin cậy. Tuy nhiên, FPTS không đảm bảo tính chính xác, đầy đủ của các
+                                        thông tin và tài liệu này cho các mục đích khác nhau của Quý khách hàng. FPTS không chịu trách nhiệm đối với các lỗi và thiếu sót về thông tin nếu có. Các ý kiến trình bày trên EzIR chỉ liên quan đến các thông
+                                        tin tại thời điểm hiển thị các thông tin này.
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        FPTS sẽ không chịu trách nhiệm đối với bất kỳ nghĩa vụ nào, bao gồm các thiệt hại, mất mát, hoặc phí tổn trực tiếp hay gián tiếp, ngẫu nhiên hay có hệ thống phát sinh cho Quý khách hàng từ việc sử dụng hoặc không thể sử dụng các thông tin trên EzIR, có
+                                        liên quan đến các sự cố lỗi, thiếu sót, ngừng/trì hoãn hoạt động truyền dữ liệu, virus, lỗi hệ thống (kể cả trong các trường hợp FPTS đã được thông báo về khả năng xảy ra các sự cố đó).
+                                    </p>
+                                </li>
+                                <li>
+                                    <p>
+                                        Mọi thông tin và tài liệu được trình bày trên EzIR không được phép sao chép, phát tán dưới mọi hình thức mà không có sự chấp thuận trước bằng văn bản của FPTS.
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="fpts-feedback">
+                            <ul>
+                                <li class="tag-phone">
+                                    <a href="http://" target="_blank"><i class="fa-solid fa-phone"></i></a>
+                                </li>
+                                <li class="tag-msg">
+                                    <a href="http://" target="_blank">
+                                        <i class="fa-solid fa-messages-question"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="lienhe-fpts1">
+
+                </div>
+                <div class="lienhe-fpts">
+
+
+                    <div class="tag-HN">
+                        <ul>
+                            <li class="tag-title">
+                                <p class="fpts-part">Khối Tư Vấn Tài Chính Doanh Nghiệp</p>
+                            </li>
+                            <li class="tag-adress">
+                                <p class="fpts-where">
+                                    <i class="fa-solid fa-location-dot"></i>Trụ sở Hà Nội
+                                </p>
+                            </li>
+                            <li class="tag-tel">
+                                <p class="fpts-tel"><i class="fa-solid fa-phone"></i>19006446<span>(4504/4502)</span></p>
+                            </li>
+                            <li class="tag-link">
+                                <p class="fpts-link">
+                                    <i class="fa-regular fa-envelope"></i>ezir@fpts.com.vn
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="tag-HCM">
+                        <ul>
+                            <li class="tag-title">
+                                <p class="fpts-part">Phòng Tư Vấn Tài Chính Doanh Nghiệp</p>
+                            </li>
+                            <li class="tag-adress">
+                                <p class="fpts-where">
+                                    <i class="fa-solid fa-location-dot"></i>Chi nhánh TP.Hồ Chí Minh
+                                </p>
+                            </li>
+                            <li class="tag-tel">
+                                <p class="fpts-tel"><i class="fa-solid fa-phone"></i>19006446<span>(8602/7591)</span></p>
+                            </li>
+                            <li class="tag-link">
+                                <p class="fpts-link">
+                                    <i class="fa-regular fa-envelope"></i>ezir_hcm@fpts.com.vn
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!-- JQuery Library -->
+<!--<script src="js/jquery-3.5.1.min.js"></script>-->
+<!-- FullView Plugin -->
+<script type="text/javascript" src="~/js/fullview.min.js"></script>
+<!-- Bootstrap core JS-->
+<script src="~/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function initialization() {
+            $('#fullview').fullpage({
+                anchors: ['trangchu', 'ttcb', 'tuvan', 'contact'], //, 'lastPage'
+                normalScrollElements: '.scrollable-element',
+                resize: false,
+                animateAnchor: false,
+                scrollOverflow: true,
+                autoScrolling: true,
+                loopBottom: false,
+                loopTop: false,
+                responsive: 900,
+                scrollingSpeed: 600,
+                continuousVertical: false,
+                fitSection: false,
+                menu: '#navbar',
+                navigation: true,
+                normalScrollElements: '.easy-autocomplete-container', //'.easy-autocomplete-container, .tab-content'
+                css3: true,
+            });
+        }
+
+        var link;
+
+        if (window.location.href.includes("?culture=en-US"))
+            link = "?culture=en-US";
+        else
+            link = "";
+
+        //load tin tức chung
+        function loadDataTT() {
+            $.ajax({
+                url: '@Url.Action("GetTinTuc", "HomeDemo")' + link,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //console.log(data);
+                    let html = '';
+                    for (const item of data) {
+                        var dateSplit = item.datePub.split(' ');
+                        var date = dateSplit[0];
+                        var time = dateSplit[1];
+                        html += `<ul>
+                                <li class="custom-border-right">
+                                    <a href="/ThongTinDoanhNghiep/${item.stock_code}" target="_blank">
+                                        ${item.stock_code}: ${item.title}
+                                    </a>
+                                    <p class="MS-C-G-FS-S">Cập nhật ngày:  ${date} <span class="custom-border-span">${time}</span></p>
+                                </li>
+                            </ul>`;
+
+                    }
+                    $('#tindoanhnghiepcongbo .table_company_new').append(html);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        };
+
+        //load bản tin IR
+        function loadDataIR() {
+            $.ajax({
+                url: '@Url.Action("GetBanTinIR", "HomeDemo")' + link,
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    //console.log(data);
+                    let html_IR = '';
+                    for (const item of data) {
+                        var dateSplit = item.datePub.split(' ');
+                        var date = dateSplit[0];
+                        var time = dateSplit[1];
+                        html_IR += `<ul>
+                                <li class="custom-border-right">
+                                    <a target="_blank">
+                                        ${item.stock_code}: ${item.title}
+                                    </a>
+                                    <p class="MS-C-G-FS-S">Cập nhật ngày:  ${date} <span class="custom-border-span">${time}</span></p>
+                                </li>
+                            </ul>`;
+
+                    }
+                    $('#tintuc .table_company_new').append(html_IR);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        };
+
+        //load các thông tin trả về easy-autocomplete để tìm kiếm
+        function loadSearch() {
+            $.ajax({
+                url: '@Url.Action("GetStockCode", "HomeDemo")' + link,
+                dataType: 'json',
+                method: 'GET',
+                success: function (res) {
+                    //console.log(res);
+                    var strJSONHome = JSON.stringify(res);
+                    sessionStorage.setItem('dataSearchHome', strJSONHome);
+
+                    //Search StockCode trang Home
+                    var json = JSON.parse(sessionStorage.getItem('dataSearchHome'));
+
+                    var options = {
+                        data: json,
+                        getValue: function (element) {
+                            return element.name;
+                        },
+                        template: {
+                            type: "custom",
+                            method: function (value, item) {
+
+                                var strBold = value.toString().split(" - ");
+                                var code = strBold[0];
+                                var company = strBold[1];
+
+                                return `<div style='display:none;'><p>${value}</p></div>
+                                    <form action="@Url.Action("SelectStockCode")` + link +`" enctype="multipart/form-data" method="post" style="width: 100%">
+                                        <button id="btn_unset" class="button">
+                                                <div class="main_search">
+                                                    <input style="display:none" name="astock_CODE" value="${item.astock_CODE}"/>
+
+                                                    <div class="border_img2">
+                                                        <div class="border_img" style="background-image: url(@imgURL${item.logopath});">
+                                                    </div>
+                                                </div>
+
+                                                <div class="stockCode_floor">
+                                                    <div class="stockCode">
+                                                        <span class="stockcode">${code} <span class="floor">${item.floor}</span></span>
+                                                    </div>
+
+                                                    <div class="fullname">
+                                                        <span class="fullcompany">${company}</span>
+                                                    <div>
+                                                </div>
+                                        </button>
+                                    </form>`;
+                                }
+                        },
+                        list: {
+                            match: {
+                                enabled: true,
+                            },
+                            maxNumberOfElements: 100,
+                        }
+                    };
+
+                    if (document.getElementById('fpts-search-stockcode')) {
+                        $("#fpts-search-stockcode").easyAutocomplete(
+                            options
+                        );
+                    }
+
+
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        };
+
+        //logo company
+        function loadlogo() {
+
+            $.ajax({
+
+            url: '@Url.Action("GetLogoCompany", "HomeDemo")',
+            dataType: 'json',
+            method: 'GET',
+            success: function (res) {
+
+                //Gen html logo
+                var htmlfirst = '';
+                var htmlsecond = '';
+                var htmlallf = '';
+                var htmlalls = '';
+                var htmlall = '';
+                var link = 'https://ezsearch.fpts.com.vn/images/';
+                var res1 = '';
+                var res2 = '';
+                if (res.length % 2 == 0) {
+
+                    res1 = res.slice(0, res.length / 2);
+                    res2 = res.slice(res.length / 2, res.length);
+                }
+                else {
+
+                    res1 = res.slice(0, res.length - 1);
+                    res2 = res.slice(res.length - 1, res.length);
+                }
+
+                for (var i in res1) {
+
+                    for (var y in res2) {
+
+                        if (i == y) {
+
+                        htmlfirst = `<div>
+
+                                        <a href='/ThongTinDoanhNghiep/${res1[i].astock_CODE}' target="_blank"><img src='${link + res1[i].logopath}'/></a><br/>
+
+                                        <a href='/ThongTinDoanhNghiep/${res2[y].astock_CODE}' target="_blank"><img src='${link + res2[y].logopath}' /></a>
+
+                                </div>`;
+
+                            htmlallf += htmlfirst;
+                        }
+                    }
+                }
+
+                htmlall = htmlallf  ;
+
+                $('.slick-carousel').html(htmlallf);
+
+                $('.slick-carousel').slick({
+                    infinite: true,
+                    slidesToShow: 12, // Shows a three slides at a time
+                    slidesToScroll: 12, // When you click an arrow, it scrolls 1 slide at a time
+                    arrows: true, // Adds arrows to sides of slider
+                    dots: true, // Adds the dots on the bottom
+                    responsive: [
+                        {
+                            breakpoint: 481,
+                            settings: {
+                                slidesToShow: 4,
+                                slidesToScroll: 4,
+                                dots: false
+                            }
+                        },
+                        {
+                            breakpoint: 600,
+                            settings: {
+                                slidesToShow: 6,
+                                slidesToScroll: 6,
+                                dots: false
+                            }
+                        },
+                        {
+                            breakpoint: 770,
+                            settings: {
+                                slidesToShow: 8,
+                                slidesToScroll: 8,
+                                dots: false
+                            }
+                        },
+                        // You can unslick at a given breakpoint now by adding:
+                        // settings: "unslick"
+                        // instead of a settings object
+                    ]
+                });
+
+                //Xem tất cả
+                var htmlview_all = '';
+                for (var k in res) {
+                    htmlview_all_detail = `<a href="/ThongTinDoanhNghiep/${res[k].astock_CODE}" target="_blank">
+                                        <div class="icons-item">
+                                            <img class="dtdn-image" src="${link + res[k].logopath}" alt="">
+                                        </div>
+                                    </a>`;
+                    htmlview_all += htmlview_all_detail;
+                }
+
+                $('.viewall').html(htmlview_all);
+
+            },
+            error: function (err) {
+                console.log(err);
+            }
+
+        });
+
+        };
+
+        //fullPage.js initialization
+        //console.log('a');
+        initialization();
+        loadDataTT();
+        loadDataIR();
+        loadSearch();
+        loadlogo();
+    });
+
+</script>
+
+<script>
+    // Sự kiện show tất cả đối tác doanh nghiệp
+    let modalbtn = document.getElementById("selectAll");
+    let displayToggle = document.querySelector(".display-change");
+    let modal = document.querySelector(".show-dtdn");
+    let closebtn = document.querySelector(".close-btn");
+    let hide = document.querySelector(".hide-nav");
+    let header = document.querySelector(".header");
+    let navbar = document.querySelector(".navbar");
+    let hide1 = document.getElementById("fullview");
+
+    let header_color = "#f5f7f8";
+
+    $("body").bind("mousewheel", function () {
+        /*  if (document.getElementById("main-dtdn").style.display = "block")*/
+        //var obj = document.getElementById("#JAC-ttbt");
+
+        if ($('#hero').hasClass('active')) {
+            if ($('#main-dtdn').css('display') == 'none') return true;
+            else return false;
+        }
+
+        if ($("#thongtin").hasClass("active")) {
+            return true;
+        }
+
+        if ($('#advise').hasClass('active')) {
+            if ($('#main-tvdn').css('display') == 'none') return true;
+            else return false;
+        }
+
+        if ($('#advise').hasClass('active')) {
+            return true;
+        }
+
+        //else if ($("#thongtin").hasClass("active")) {
+        //    return true;
+        //} else if ($('#main-vtdn').css('display') == 'none' && $('#advise').hasClass('active')) {
+        //    return true;
+        //} else if ($('#lienhe').hasClass('active')) {
+        //    return true;
+        //}else{
+        //    return false;
+        //}
+
+        //if ($("#thongtin").hasclass("active") && obj.scrolltop === (obj.scrollheight - obj.offsetheight))
+        //    return true;
+        //else
+        //    return false;
+        //if ($('#main-vtdn').css('display') == 'none')
+        //    return true;
+        //else
+        //    return false;
+    });
+
+    // Hiển thị popup khi nhấp chuột vào button
+    modalbtn.onclick = function () {
+        modal.style.display = "block";
+        document.querySelector(".hero-heading").style.zIndex = '-1';
+        document.querySelector(".slick-slide").style.filter = "brightness(0.9)";
+        header.style.background = "transparent";
+        navbar.style.background = "transparent";
+        header.style.transition = "unset";
+        hide1.style.background = "transparent"; @*"#0000004d";*@
+        document.body.style.overflow = "hidden";
+        hide1.style.transition = "unset";
+        topFunction();
+        //$('#fv-dots a').addClass('href-none');
+        $('#fp-nav a').addClass('href-none');
+        $('.display-change').addClass('d-none');
+        $('.nav-bar_child').addClass('href-none');
+    }
+
+    // Đóng popup khi ấn vào nút đóng
+    closebtn.onclick = function () {
+        modal.style.display = "none";
+        document.body.style.overflow = "visible";
+        document.querySelector(".hero-heading").style.zIndex = '0';
+        document.querySelector(".slick-slide").style.filter = 'unset';
+        hide1.style.background = "none";
+        header.style.background = header_color;
+        navbar.style.background = header_color;
+        hide1.style.transition = "unset";
+        //$('#fv-dots a').removeClass('href-none');
+        $('#fp-nav a').removeClass('href-none');
+        $('.display-change').removeClass('d-none');
+        $('.nav-bar_child').removeClass('href-none');
+    }
+
+</script>
+
+<script type="text/javascript">
+    document.getElementsByClassName("advise_box")[0].scrollIntoView();
+    let modalTVDN = document.querySelector(".show-tvdn");
+
+    //Navbar
+    window.addEventListener('DOMContentLoaded', event => {
+
+        // Activate Bootstrap scrollspy on the main nav element
+        const mainNav = document.body.querySelector('#mainNav');
+        if (mainNav) {
+            new bootstrap.ScrollSpy(document.body, {
+                target: '#mainNav',
+                offset: 74,
+            });
+        };
+
+        // Collapse responsive navbar when toggler is visible
+        const navbarToggler = document.body.querySelector('.navbar-toggler');
+        const responsiveNavItems = [].slice.call(
+            document.querySelectorAll('#navbarResponsive .nav-link')
+        );
+        responsiveNavItems.map(function (responsiveNavItem) {
+            responsiveNavItem.addEventListener('click', () => {
+                if (window.getComputedStyle(navbarToggler).display !== 'none') {
+                    navbarToggler.click();
+                }
+            });
+        });
+
+    });
+
+    //Event ấn nút tìm kiếm
+    var clickBtn = document.getElementById("voiceSearchButton");
+
+    clickBtn.addEventListener("click", function (event) {
+        enterSearchHome(event);
+    });
+
+</script>

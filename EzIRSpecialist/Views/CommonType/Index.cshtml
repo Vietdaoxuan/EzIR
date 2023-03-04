@@ -1,0 +1,622 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model EzIRSpecialist.Models.ViewModel.CommonTypeViewModel
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Online/AccountManagement.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/Online/BaoCao_TienIch.css" />
+
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Support</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="@Url.Action("Index","CommonType")"><span>Quản lý Danh mục</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+
+<div class="k-portlet__body">
+    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist">
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link active show " data-toggle="tab" data-target="#k_tabs_1" role="tab"
+               aria-selected="true">
+                <span class="nav-link-title text-uppercase">Quản lý Danh mục</span>
+            </a>
+        </li>
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link" data-toggle="tab" data-target="#updateTab" role="tab" aria-selected="false">
+                <span class="nav-link-title text-uppercase">Tạo danh mục</span>
+            </a>
+        </li>
+    </ul>
+    <div class="line_top col-md-12">
+    </div>
+    <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+        <div class="tab-content">
+
+            <form class="col-12 nopadding" id="formSearch">
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+                    <div class="row padt20">
+                        <div class="col-md-12 nopadding d-inline-block m-auto">
+                            <div class="form-group row nopadding">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row padt20">
+                        <div class="col-md-12 nopadding d-inline-block m-auto">
+                            <div class="form-group row nopadding">
+                                <div class="col-md-2 nopadding">
+                                    <label class="">Mã danh mục</label>
+                                </div>
+                                <div class="col-md-10 nopadding">
+                                    <input type="number" class="form-control" name="TypeCode" id="typeCode">
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+
+                    <div class="row ">
+                        <div class="col-md-12 nopadding d-inline-block m-auto">
+                            <div class="form-group row nopadding">
+                                <div class="col-md-2 nopadding">
+                                    <label class="padt6">Tên danh mục</label>
+                                </div>
+                                <div class="col-md-10 nopadding">
+                                    <input type="text" class="form-control" name="TypeName" id="TypeName">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-12 nopadding d-inline-block m-auto">
+                            <div class="form-group row nopadding">
+                                <div class="col-md-2 nopadding">
+                                    <label class="padt6">Nhóm danh mục</label>
+                                </div>
+                                <div class="col-md-10 nopadding">
+                                    @*<input type="number" class="form-control" name="Category" id="Category">*@
+                                    <select class="form-control" name="Category" id="Category">
+                                        <option selected>Tất cả</option>
+                                        <option value="1">Miền</option>
+                                        <option value="2">Trạng thái</option>
+                                        <option value="3">Loại hình</option>
+                                        <option value="4">Loại tài liệu</option>
+                                        <option value="5">Loại tài khoản</option>
+                                        <option value="6">Tình trạng</option>
+                                        <option value="7">Loại biểu mẫu</option>
+                                        <option value="8">Nhóm</option>
+                                        <option value="9">Trạng thái người dùng</option>
+                                        <option value="10">Hành động</option>
+                                        <option value="11">Loại tin</option>
+                                        <option value="12">Trạng thái doanh nghiệp</option>
+                                        @*<option value="101">Báo cáo tài chính</option>
+                                        <option value="102">Điều lệ và quy chế công ty</option>
+                                        <option value="103">Bản cáo bạch/ Bản công bố thông tin</option>
+                                        <option value="104">Báo cáo thường niên</option>
+                                        <option value="105">Báo cáo tình hình quản trị</option>
+                                        <option value="106">Tài liệu Đại hội đồng cổ đông</option>
+                                        <option value="107">Nghị quyết/ Quyết định ĐHĐCĐ</option>
+                                        <option value="108">Nghị quyết/ Quyết định HĐQT</option>
+                                        <option value="109">Bản tin IR</option>
+                                        <option value="110">Tin khác</option>
+                                        <option value="111">Báo cáo phân tích Doanh nghiệp</option>*@
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row d-flex justify-content-center col-12 btn-search-wrapper">
+                <button id="btnSearch" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                    Tìm kiếm
+                </button>
+            </div>
+
+        </div>
+        <div class="content-tbl">
+            <table id="listCommontypes" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+                   role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th>Mã Id</th>
+                        <th>Mã danh mục</th>
+                        <th>Tên danh mục</th>
+                        <th>Mô tả</th>
+                        <th>Thứ tự</th>
+                        <th>Nhóm danh mục</th>
+                        <th>Parent ID</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="updateTab" class="dataTables_wrapper  tab-pane fade tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper" id="menustaff">
+                <form action="" id="FormUpdate">
+                    <div hidden class="form-group row form-text">
+                        <label for="TypeId" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Mã ID</label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="number" class="form-control" name="typeID" id="Typeid">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="TypeCode" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Mã danh mục <span>(*)</span></label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="number" class="form-control" name="typeCode" id="TypeCode">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="TypeName" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Tên danh mục <span>(*)</span></label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" name="TypeName" id="Typename">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="TypeNameEn" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Tên danh mục tiếng anh<span>(*)</span></label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" name="TypeNameEn" id="Typenameen">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="TypeDescription" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Mô tả</label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" name="TypeDescription" id="Typedescription">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Ord" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Thứ tự</label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="number" class="form-control" name="Ord" id="Ord">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Category" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Nhóm danh mục
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            @*<input type="number" class="form-control" name="Category" id="CaTegory">*@
+                            <select class="form-control" name="Category" id="CaTegory">
+                                <option selected>Tất cả</option>
+                                <option value="1">Miền</option>
+                                <option value="2">Trạng thái</option>
+                                <option value="3">Loại hình</option>
+                                <option value="4">Loại tài liệu</option>
+                                <option value="5">Loại tài khoản</option>
+                                <option value="6">Tình trạng</option>
+                                <option value="7">Loại biểu mẫu</option>
+                                <option value="8">Nhóm</option>
+                                <option value="9">Trạng thái người dùng</option>
+                                <option value="10">Hành động</option>
+                                <option value="11">Loại tin</option>
+                                <option value="12">Trạng thái doanh nghiệp</option>
+                                @*<option value="101">Báo cáo tài chính</option>
+                                <option value="102">Điều lệ và quy chế công ty</option>
+                                <option value="103">Bản cáo bạch/ Bản công bố thông tin</option>
+                                <option value="104">Báo cáo thường niên</option>
+                                <option value="105">Báo cáo tình hình quản trị</option>
+                                <option value="106">Tài liệu Đại hội đồng cổ đông</option>
+                                <option value="107">Nghị quyết/ Quyết định ĐHĐCĐ</option>
+                                <option value="108">Nghị quyết/ Quyết định HĐQT</option>
+                                <option value="109">Bản tin IR</option>
+                                <option value="110">Tin khác</option>
+                                <option value="111">Báo cáo phân tích Doanh nghiệp</option>*@
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="ParentID" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Parent ID</label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="number" class="form-control" name="ParentID" id="ParentID">
+                        </div>
+                    </div>
+                    <div @*class="update-btn-section"*@ class="col-sm-12 col-md-7 col-lg-7 col-xl-7 btn-save-section">
+                        <button class="btn btn-primary update-btn" id="Insert">Thêm mới</button>
+                        <button class="btn btn-primary update-btn" id="Update">Cập nhật</button>
+                        <button class="btn btn-primary update-btn" id="Reset">Làm mới</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading"></div>
+<script>
+        $(document).ready(function () {
+            $(".nav-item.col.gsm-link-tab").first().addClass("active");
+
+            $('#Update').hide();
+
+            $('#menuenterprise').hide();
+            $("#stafftab").click(function () {
+                console.log("click");
+                $('#menustaff').show();
+                $('#menuenterprise').hide();
+            });
+            $("#enterprisetab").click(function () {
+                $('#menustaff').hide();
+                $('#menuenterprise').show();
+            });
+
+            var renderColumns = [
+                {
+                    data: "typeID",
+                },
+                {
+                    data: "typeCode",
+                },
+                {
+                    data: "typeName",
+                }
+                ,
+                {
+                    data: "typeDescription",
+                },
+                {
+                    data: "ord",
+                },
+                {
+                    data: "category",
+                }
+                ,
+                {
+                    data: "parentID",
+                },
+                {
+                    data: "typeID",
+                    render: function (data, type) {
+                        return `<div class="d-inline-flex w-100">
+                                  <a class='EditAccount btn text-primary' data-id='${data}'><i class="far fa-edit"></i></a>
+                                  <a class='DeleteAccount btn text-primary' data-id='${data}'><i class="fas fa-delete"></i></a>
+                                </div >`;
+                    }
+                },
+            ]
+
+            $('#loading').addClass('loading');
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("ListCommonType", "CommonType")',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+
+                    $('#loading').removeClass('loading');
+
+                    let index = 1;
+                    data.forEach(x => {
+                        x.index = index++;
+                    });
+
+                    if ($.isArray(data)) {
+
+                        $('#listCommontypes').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex pagingListUser justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            "bInfo": true,
+                            data: data,
+                            columns: renderColumns
+                        });
+                        return;
+                    }
+
+                    isMessageSuccess(data);
+
+                },
+                error: function (err) {
+                    $('#loading').removeClass('loading');
+                    console.log(err);
+                }
+            });
+            var form = $("#formSearch");
+
+            var CommonType = function () {
+                this.init = function () {
+                    loadData(form.serialize());
+                    registerEvents();
+                }
+
+                var loadData = function (data) {
+                    $('#loading').addClass('loading');
+                     $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("ListCommonType", "CommonType")',
+                        data: $("#formSearch").serialize(),
+                         success: function (data) {
+                            $('#loading').removeClass('loading');
+                            console.log(data);
+                            let commontypeTable = $('#listCommontypes').DataTable({
+                                ordering: false,
+                                dom: "lti<'d-flex pagingList justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                lengthChange: false,
+                                className: 'dt-body-right',
+                                "bInfo": true,
+                                data: data,
+                                columns: renderColumns
+                            });
+
+
+
+                            function editClick() {
+                                $('#FormUpdate').trigger("reset");
+                                $('.EditAccount').off();
+                                $('.EditAccount').click(function () {
+                                    $('#loading').addClass('loading');
+                                    let typeId = $(this).data('id');
+                                    console.log(typeId);
+                                    $.ajax({
+                                        type: "GET",
+                                        url: '@Url.Action("ListCommonType", "CommonType")?typeID=' + typeId,
+                                        success: function (data) {
+                                            $('#loading').removeClass('loading');
+                                            console.log(data);
+                                            console.log(data[0].typeID);
+                                            //chuyển sang tab edit
+                                            $('.nav-pills > li:first-child').removeClass('active');
+                                            $('.nav-pills > li:last-child').addClass('active');
+                                            //$('.nav-pills > li:last-child').tab('show');
+                                            jQuery('#updateTab').css('opacity', '1');
+                                            $('.nav-pills > li:last-child > a').trigger('click');
+                                            $("#Update").show();
+                                            $("#Insert").hide();
+                                            $("#Typeid").val(data[0].typeID);
+                                            $("#TypeCode").val(data[0].typeCode);
+                                            $("#Typename").val(data[0].typeName);
+                                            $("#Typenameen").val(data[0].typeNameEN);
+                                            $("#Typedescription").val(data[0].typeDescription);
+                                            $("#Ord").val(data[0].ord);
+                                            $("#CaTegory").val(data[0].category);
+                                            /*$("#ParentID").val(data[0].parentID);*/
+                                            if (data[0].parentID == 0) {
+                                                $("#ParentID").val = "";
+                                            }
+                                            else {
+                                                $("#ParentID").val(data[0].parentID);
+                                            }
+                                            //$("#TypeID").attr('readonly', 'readonly');
+                                            if (data[0].active == true) {
+                                                $('#Active').prop('checked', true);
+                                            } else {
+                                                $('#Active').prop('checked', false);
+                                            }
+                                        }
+                                    });
+                                })
+                            }
+
+                            //khi click sửa
+                            editClick();
+                            commontypeTable.on('draw', editClick);
+
+
+                            function deleteClick() {
+                                $('.DeleteAccount').off();
+                                $('.DeleteAccount').click(function () {
+                                    let typeId = $(this).data('id');
+                                    console.log(typeId);
+                                    Swal.fire({
+                                        title: 'Thông báo',
+                                        text: 'Bạn có chắc muốn xóa?',
+                                        type: 'warning',
+                                        cancelButtonText: 'Hủy',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'OK'
+                                    }).then(result => {
+                                        if (result.value) {
+                                        $('#loading').addClass('loading');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: '@Url.Action("DeleteCommonType", "CommonType")?typeId=' + typeId,
+                                            success: function (data) {
+                                                $('#loading').removeClass('loading');
+                                                console.log(data);
+                                                if (data.code == 0) {
+                                                    toastr.success(data.message);
+                                                } else {
+                                                    toastr.error(data.message);
+                                                }
+                                                loadData();
+                                            }
+                                        });
+                                    }
+                                    })
+                                })
+                            }
+
+                            //khi click xóa
+                            deleteClick();
+                            commontypeTable.on('draw', deleteClick);
+
+                        },
+                         error: function (err) {
+                            $('#loading').removeClass('loading');
+                            console.log(err);
+                        }
+                    });
+
+                }
+
+                var registerEvents = function () {
+                    // Action search
+                    $('#btnSearch').click(function (e) {
+
+                        e.preventDefault();
+                        console.log(form.serialize());
+                        loadData(form.serialize())
+                        /*$('#formSearch').trigger("reset");*/
+                        $('#typeCode').val("");
+                        $('#TypeName').val("");
+
+                    });
+
+                    $('body').on('click', '#Insert', function (e) {
+
+                        e.preventDefault();
+                        $('#loading').addClass('loading');
+                        var form = $("#FormUpdate");
+                        console.log(form.serialize());
+                        var Check = true;
+                        // validate cho update
+                        Check = Validate('insert');
+                        if (Check) {
+                            $.ajax({
+                                url: '@Url.Action("InsertCommonType", "CommonType")',
+                                type: 'POST',
+                                data: $("#FormUpdate").serialize(),
+                                success: function (data) {
+                                    $('#loading').removeClass('loading');
+                                    console.log(data);
+                                    $('.nav-pills > li:first-child').addClass('active');
+                                    $('.nav-pills > li:last-child').removeClass('active');
+                                    jQuery('#k_tabs_1').css('opacity', '1');
+                                    $('.nav-pills > li:first-child > a').trigger('click');
+                                    if (data.code == 0) {
+                                        toastr.success(data.message);
+                                        $('#FormUpdate').trigger("reset");
+                                        loadData();
+                                    } else {
+                                        toastr.error(data.message);
+                                    }
+
+                                },
+                                error: function (err) {
+                                    $('#loading').removeClass('loading');
+                                    console.log(err);
+                                }
+                            })
+                        } else {
+                            $('#loading').removeClass('loading');
+                        }
+
+                    })
+
+
+
+                    $('body').on('click', '#Reset', function (e) {
+                        e.preventDefault();
+
+                        $('#FormUpdate').trigger("reset");
+                        $("#Update").hide();
+                        $("#Insert").show();
+                    });
+
+
+                    $('body').on('click', '#Update', function (e) {
+                        $('#loading').addClass('loading');
+                        e.preventDefault();
+
+                        var form = $("#FormUpdate");
+                        console.log(form.serialize());
+                        var Check = true;
+                        // validate cho update
+                        Check = Validate('update');
+                        if (Check) {
+                            $.ajax({
+                                url: '@Url.Action("UpdateCommonType", "CommonType")',
+                                type: 'POST',
+                                data: $("#FormUpdate").serialize(),
+                                success: function (data) {
+                                    $('#loading').removeClass('loading');
+                                    console.log(data);
+                                    $('.nav-pills > li:first-child').addClass('active');
+                                    $('.nav-pills > li:last-child').removeClass('active');
+                                    jQuery('#k_tabs_1').css('opacity', '1');
+                                    $('.nav-pills > li:first-child > a').trigger('click');
+                                    if (data.code == 0) {
+                                        toastr.success(data.message);
+                                        $('#FormUpdate').trigger("reset");
+                                        loadData();
+                                    } else {
+                                        toastr.error(data.message);
+                                    }
+
+                                },
+                                error: function (err) {
+                                    $('#loading').removeClass('loading');
+                                    console.log(err);
+                                }
+                            })
+                        } else {
+                            $('#loading').removeClass('loading');
+                        }
+
+                    })
+
+
+                    function Validate(i) {
+                        if (i == 'insert' && $('#TypeCode').val().length <= 0) {
+                        toastr.error('@SharedLocalizer["TYPECODE_EMPTY"]');
+                        return false;
+                        }
+                        if (i == 'insert' && $('#Typename').val().length <= 0) {
+                        toastr.error('@SharedLocalizer["TYPENAME_EMPTY"]');
+                        return false;
+                        }
+                        if (i == 'insert' && $('#Typenameen').val().length <= 0) {
+                        toastr.error('@SharedLocalizer["TYPENAMEEN_EMPTY"]');
+                        return false;
+                        }
+                        if (i == 'update' && $('#TypeCode').val().length <= 0) {
+                        toastr.error('@SharedLocalizer["TYPECODE_EMPTY"]');
+                        return false;
+                        }
+                        if (i == 'update' && $('#Typename').val().length <= 0) {
+                        toastr.error('@SharedLocalizer["TYPENAME_EMPTY"]');
+                        return false;
+                        }
+                        if (i == 'update' && $('#Typenameen').val().length <= 0) {
+                        toastr.error('@SharedLocalizer["TYPENAMEEN_EMPTY"]');
+                        return false;
+                        }
+                        @*if (i == 'insert' && $('#Ord').val().length <= 0) {
+                        toastr.error('@SharedLocalizer["ORD_EMPTY"]');
+                        return false;
+                        }
+                        if (i == 'insert' && $('#CaTegory').val().length <= 0) {
+                        toastr.error('@SharedLocalizer["CATEGORY_EMPTY"]');
+                        return false;
+                        }*@
+                        return true;
+
+                        }
+
+
+                }
+
+            }
+
+            var commontype = new CommonType();
+            commontype.init();
+        })
+
+</script>
+
+
+
+

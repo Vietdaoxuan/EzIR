@@ -1,0 +1,102 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@using Microsoft.AspNetCore.Localization
+@{
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var language = requestCulture.RequestCulture.UICulture.Name;
+    var CkeditorImgUrl = ViewBag.CkeditorImgUrl;
+}
+
+<div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor DaiHoiform"
+     id="k_content">
+
+
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <div class="" id="ThongTinDuAnDauTu">
+
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+
+    <!-- End of Main Content -->
+
+
+</div>
+<div id="loading"></div>
+<script>
+     $(document).ready(function () {
+         var stock_code = window.location.href.split('?')[0].split('/')[4];
+         var stockcode = stock_code.toUpperCase();
+         var ThongTin = function () {
+
+            this.init = function () {
+                loadData();
+            }
+
+             var loadData = function () {
+                 $('#loading').addClass('loading');
+
+                var cpnyId = $("#cpnyid").val();
+                $.ajax({
+                    url: '@Url.Action("GetThongTinDuAnDauTu", "ThongTinDoanhNghiep")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { cpnyID: cpnyId} ,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                         var lang = ReturnLanguage();
+                        let html = '';
+                        for (const item of data) {
+                            if (lang == "vi-VN" || lang == '') {
+                                if (item.alanguage == "VN") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["TTDADT"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                        ${item.acontent.replace('Images/Inforsheet','@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            } else {
+                                if (item.alanguage == "US") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["TTDADT"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                        ${item.acontent.replace('Images/Inforsheet','@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            }
+                        }
+
+                        $('#ThongTinDuAnDauTu').append(html);
+                    },
+                    error: function (err) {
+                        $('#loading').removeClass('loading');
+                       // console.log(err);
+                    }
+                });
+
+            }
+        }
+         var thongTin = new ThongTin();
+         thongTin.init();
+    });
+</script>

@@ -1,0 +1,786 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="ANOTE_EMPTY" xml:space="preserve">
+    <value>Note empty!</value>
+  </data>
+  <data name="AORGMODELDESC_EMPTY" xml:space="preserve">
+    <value>OrgModelDesc empty!</value>
+  </data>
+  <data name="AORGMODELPATH_EMPTY" xml:space="preserve">
+    <value>OrgModelPath empty!</value>
+  </data>
+  <data name="Approving" xml:space="preserve">
+    <value>Your proposals are pending approval. Please kindly contact the consultant in charge for support.</value>
+  </data>
+  <data name="Associated_Company" xml:space="preserve">
+    <value>Associated companies</value>
+  </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>Attachments</value>
+  </data>
+  <data name="Business" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="Business_lisence" xml:space="preserve">
+    <value>Business license</value>
+  </data>
+  <data name="Business_operation" xml:space="preserve">
+    <value>Main Business Operation</value>
+  </data>
+  <data name="Capital" xml:space="preserve">
+    <value>Chartered Capital</value>
+  </data>
+  <data name="CCDT" xml:space="preserve">
+    <value>Revenues structure by Sector/ Product Line</value>
+  </data>
+  <data name="CCPL" xml:space="preserve">
+    <value>Legal basis</value>
+  </data>
+  <data name="Challenge" xml:space="preserve">
+    <value>Challenge</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>CHANGE PASSWORD</value>
+  </data>
+  <data name="changePassWord_DOI_MAT_KHAU_THANH_CONG" xml:space="preserve">
+    <value>Password successful!y!</value>
+  </data>
+  <data name="changePassWord_MAT_KHAU_CU__KHONG_DUOC_TRONG" xml:space="preserve">
+    <value>Old password is required!</value>
+  </data>
+  <data name="changePassWord__MAT_KHAU_MOI_KHONG_DUOC_TRONG" xml:space="preserve">
+    <value>New password is required!</value>
+  </data>
+  <data name="changePassWord__MAT_KHAU_NHAP_LAI_KHONG_KHOP" xml:space="preserve">
+    <value>Password do not match!</value>
+  </data>
+  <data name="Chiu_trach_nhiem" xml:space="preserve">
+    <value>Principal Manager: Mr. Nguyen Diep Tung - General Director</value>
+  </data>
+  <data name="Choose_from_computer" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Choose_img" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="Chucvu" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="Company_Name" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="Company_Position" xml:space="preserve">
+    <value>Business positioning</value>
+  </data>
+  <data name="CONTENT_MAXLENGTH" xml:space="preserve">
+    <value>The length of Description cannot exceed 5000 characters !</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Current Password</value>
+  </data>
+  <data name="Current_exchange" xml:space="preserve">
+    <value>Current Listing Exchange</value>
+  </data>
+  <data name="Current_volume" xml:space="preserve">
+    <value>Current Listing Volume</value>
+  </data>
+  <data name="Danang_City" xml:space="preserve">
+    <value>Danang Branch</value>
+  </data>
+  <data name="DataHasNotBeenChanged" xml:space="preserve">
+    <value>Data has not been changed!</value>
+  </data>
+  <data name="Date_of_Birth" xml:space="preserve">
+    <value>Year of Birth</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Name of form</value>
+  </data>
+  <data name="DiaChi_Danang" xml:space="preserve">
+    <value>No. 100 Quang Trung, Thach Thang Ward, Hai Chau District, Da Nang City</value>
+  </data>
+  <data name="DiaChi_HaNoi" xml:space="preserve">
+    <value>No. 52 Lac Long Quan Road, Buoi Ward, Tay Ho District, Hanoi City</value>
+  </data>
+  <data name="DiaChi_TPHCM" xml:space="preserve">
+    <value>Floor 3 – Ben Thanh Times Square, 136 - 138 Le Thi Hong Gam, Nguyen Thai Binh Ward, District 1, Ho Chi Minh City</value>
+  </data>
+  <data name="Download_file" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="DTCT" xml:space="preserve">
+    <value>Competitors</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="EZIR" xml:space="preserve">
+    <value>Online Investor Relations Gateway</value>
+  </data>
+  <data name="Face_value" xml:space="preserve">
+    <value>Face Value</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>Download File</value>
+  </data>
+  <data name="FileIsNotExist" xml:space="preserve">
+    <value>File Not Exist !</value>
+  </data>
+  <data name="FileIsOver30MB" xml:space="preserve">
+    <value>File size is too large!</value>
+  </data>
+  <data name="FileNameLarge" xml:space="preserve">
+    <value>File name too large!</value>
+  </data>
+  <data name="First_listing" xml:space="preserve">
+    <value>First Listing Date</value>
+  </data>
+  <data name="Forget_Email_KHONG_DUOC_TRONG" xml:space="preserve">
+    <value>Email cannot be empty!</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Forgot password</value>
+  </data>
+  <data name="forgotPassWord_LB_LAY_MAT_KHAU" xml:space="preserve">
+    <value>Get the password</value>
+  </data>
+  <data name="forgotPassWord_LB_QUAY_LAI_DANG_NHAP" xml:space="preserve">
+    <value>Back to login</value>
+  </data>
+  <data name="Formats_supported" xml:space="preserve">
+    <value>Suitable formats: *.doc, *.pdf, *.rar._en</value>
+  </data>
+  <data name="FPTS" xml:space="preserve">
+    <value>FPT Securities Joint Stock Company</value>
+  </data>
+  <data name="FROMDATE_IS_GREATER_THAN_TODATE" xml:space="preserve">
+    <value>Khoảng thời gian tìm kiếm không hợp lệ _EN</value>
+  </data>
+  <data name="From_date" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="General_Information" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="GET_TOKEN_SUCCESSFUL" xml:space="preserve">
+    <value>Get token successful!</value>
+  </data>
+  <data name="Head_Office" xml:space="preserve">
+    <value>Headquarter</value>
+  </data>
+  <data name="Highlighting_events" xml:space="preserve">
+    <value>Events</value>
+  </data>
+  <data name="HoChiMinh_City" xml:space="preserve">
+    <value>Ho Chi Minh City Branch</value>
+  </data>
+  <data name="ImageIsInvalid" xml:space="preserve">
+    <value>Image is invalid!</value>
+  </data>
+  <data name="ImageMaxSize" xml:space="preserve">
+    <value>Images size too large!</value>
+  </data>
+  <data name="Image_size_exceeds_2MB" xml:space="preserve">
+    <value>Image size exceeds 2MB !</value>
+  </data>
+  <data name="IncorrectCaptcha" xml:space="preserve">
+    <value>Incorrect captcha!</value>
+  </data>
+  <data name="IncorrectUsernameOrPassword" xml:space="preserve">
+    <value>Incorrect username or password!</value>
+  </data>
+  <data name="Industry" xml:space="preserve">
+    <value>Industry</value>
+  </data>
+  <data name="Infomation_Gateway" xml:space="preserve">
+    <value>ELECTRONIC INFORMATION PORTAL</value>
+  </data>
+  <data name="Information_Disclosure" xml:space="preserve">
+    <value>Information Disclosure</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>Error! An error occurred. Please try again later!</value>
+  </data>
+  <data name="InvalidInputData" xml:space="preserve">
+    <value>Invalid input data!</value>
+  </data>
+  <data name="Invalid_Date" xml:space="preserve">
+    <value>Invalid_Date !</value>
+  </data>
+  <data name="Invalid_year" xml:space="preserve">
+    <value>invalid year !</value>
+  </data>
+  <data name="Knowledge" xml:space="preserve">
+    <value>Academic background</value>
+  </data>
+  <data name="Law" xml:space="preserve">
+    <value>Using or distributing this information without permission shall be considered a violation and prohibited by law.</value>
+  </data>
+  <data name="Leadership" xml:space="preserve">
+    <value>Leadership</value>
+  </data>
+  <data name="Legal" xml:space="preserve">
+    <value>Legal Representative</value>
+  </data>
+  <data name="Liberty_of_law" xml:space="preserve">
+    <value>Liberty of law</value>
+  </data>
+  <data name="Listing_Information" xml:space="preserve">
+    <value>Listing Information</value>
+  </data>
+  <data name="List_of_forms" xml:space="preserve">
+    <value>List of Legal Forms</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="login_TAI_KHOAN_KHONG_DUOC_TRONG" xml:space="preserve">
+    <value>Username cannot be empty!</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="LOL_Company" xml:space="preserve">
+    <value>Issuer</value>
+  </data>
+  <data name="LOL_DateEff" xml:space="preserve">
+    <value>Effective Date</value>
+  </data>
+  <data name="LOL_DatePub" xml:space="preserve">
+    <value>Public Date</value>
+  </data>
+  <data name="LOL_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="LOL_TextNote" xml:space="preserve">
+    <value>Text Note</value>
+  </data>
+  <data name="LOL_Type" xml:space="preserve">
+    <value>Law Type</value>
+  </data>
+  <data name="LOL_YearEff" xml:space="preserve">
+    <value>Effective Year</value>
+  </data>
+  <data name="LOL_YearPub" xml:space="preserve">
+    <value>Public Year</value>
+  </data>
+  <data name="Look_up_published_news" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Luu_y" xml:space="preserve">
+    <value>See more at.</value>
+  </data>
+  <data name="Major_shareholder" xml:space="preserve">
+    <value>Major Shareholders</value>
+  </data>
+  <data name="Management_Board" xml:space="preserve">
+    <value>Management Board</value>
+  </data>
+  <data name="Management_Competencies" xml:space="preserve">
+    <value>Management Competencies</value>
+  </data>
+  <data name="Management_Structure" xml:space="preserve">
+    <value>Management Structure</value>
+  </data>
+  <data name="Market_Customer_Competitor" xml:space="preserve">
+    <value>Market/ Customers/ Competitors</value>
+  </data>
+  <data name="Milestones" xml:space="preserve">
+    <value>Milestones</value>
+  </data>
+  <data name="Ministry" xml:space="preserve">
+    <value>Industry</value>
+  </data>
+  <data name="MSG_DU_LIEU_SAVE" xml:space="preserve">
+    <value>Data updated succesfully!</value>
+  </data>
+  <data name="MSG_TEZIR_AN_ERROR_OCCURRED" xml:space="preserve">
+    <value>An error has occurred, please contact the administrator for assistance!</value>
+  </data>
+  <data name="MSG_TEZIR_CAN_NOT_LOGIN" xml:space="preserve">
+    <value>An error occurred, can't sign in to website!</value>
+  </data>
+  <data name="MSG_TEZIR_COMPANY_CHECK_SIGNED" xml:space="preserve">
+    <value>Your company not yet to sign contract!</value>
+  </data>
+  <data name="MSG_TEZIR_CPNY_NOT_EXISTS" xml:space="preserve">
+    <value>Company not exists!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_APASSWORD_INCORRECT" xml:space="preserve">
+    <value>Old password is incorrect!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_CHECK_ACTIVE" xml:space="preserve">
+    <value>Your account has locked!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_CHECK_USRPASS_WRONG" xml:space="preserve">
+    <value>Incorrect username or password!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_INFO_INCORRECT" xml:space="preserve">
+    <value>Information is Incorrect!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_LOGIN_SUCCESSFUL" xml:space="preserve">
+    <value>Login successful!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_UPDATE_PASSWORD_SUCCESS" xml:space="preserve">
+    <value>New password have just sent to your email !</value>
+  </data>
+  <data name="MSG_TEZIR_DATA_NOT_EXISTS" xml:space="preserve">
+    <value>Data not exists!</value>
+  </data>
+  <data name="MSG_TEZIR_DATA_NOT_MODIFIED" xml:space="preserve">
+    <value>Data is pending approval!</value>
+  </data>
+  <data name="MSG_TEZIR_DELETE_NEWS_SUCCESS_0" xml:space="preserve">
+    <value>Delete news successfully !</value>
+  </data>
+  <data name="MSG_TEZIR_DEVELOP_PROGRESS_NOT_EXISTS" xml:space="preserve">
+    <value>Develop progress is not exists!</value>
+  </data>
+  <data name="MSG_TEZIR_INSERT_NEWS_SUCCESS_0" xml:space="preserve">
+    <value>Add successful news !</value>
+  </data>
+  <data name="MSG_TEZIR_INSERT_SUCCESSFUL" xml:space="preserve">
+    <value>Save successful!</value>
+  </data>
+  <data name="MSG_TEZIR_MENUS_ANAME_NOT_EXISTS" xml:space="preserve">
+    <value>Menu name is not exists!</value>
+  </data>
+  <data name="MSG_TEZIR_MENU_NOT_EXISTS" xml:space="preserve">
+    <value>Menus not exists!</value>
+  </data>
+  <data name="MSG_TEZIR_PARAM_IS_NULL" xml:space="preserve">
+    <value>Parameter is null!</value>
+  </data>
+  <data name="MSG_TEZIR_UPDATE_COMPANY_SUCCESS" xml:space="preserve">
+    <value>Update company info succesful!</value>
+  </data>
+  <data name="MSG_TEZIR_UPDATE_DEVELOP_PROGRESS_SUCCESS" xml:space="preserve">
+    <value>Update develop progress succesful!</value>
+  </data>
+  <data name="MSG_TEZIR_UPDATE_NEWS_SUCCESS_0" xml:space="preserve">
+    <value>Update successful news !</value>
+  </data>
+  <data name="MSG_TEZIR_UPDATE_SUCCESSFUL" xml:space="preserve">
+    <value>Update successful !</value>
+  </data>
+  <data name="MST" xml:space="preserve">
+    <value>Tax code</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Full Name</value>
+  </data>
+  <data name="Name_Empty" xml:space="preserve">
+    <value>Name cannot be blank !</value>
+  </data>
+  <data name="NAME_MAXLENGTH" xml:space="preserve">
+    <value>The length of Full Name must not exceed 500 characters !</value>
+  </data>
+  <data name="Name_Short" xml:space="preserve">
+    <value>Abbreviation</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
+  <data name="NATIONALITY_MAXLENGTH" xml:space="preserve">
+    <value>The length of Nationality cannot exceed 200 characters !</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>New Password</value>
+  </data>
+  <data name="NewsType" xml:space="preserve">
+    <value>News Type</value>
+  </data>
+  <data name="NLDV" xml:space="preserve">
+    <value>Suppliers and input materials</value>
+  </data>
+  <data name="NLQLCL" xml:space="preserve">
+    <value>Quality Management</value>
+  </data>
+  <data name="NLQLK" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="NLQLNS" xml:space="preserve">
+    <value>Human resource management</value>
+  </data>
+  <data name="NLQLTC" xml:space="preserve">
+    <value>Financial management</value>
+  </data>
+  <data name="Opportunity" xml:space="preserve">
+    <value>Opportunity</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="OrgModelDesc" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="OrgType" xml:space="preserve">
+    <value>Types of Diagram/ Insert Diagram</value>
+  </data>
+  <data name="Owned" xml:space="preserve">
+    <value>% Owned by the Company</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="PasswordIsNotToEmpty" xml:space="preserve">
+    <value>Password is not to empty!</value>
+  </data>
+  <data name="PASSWORD_MAXLENGTH" xml:space="preserve">
+    <value>Password must contain no more than 9 characters!</value>
+  </data>
+  <data name="PASSWORD_MINLENGTH" xml:space="preserve">
+    <value>Password must be at least 6 characters!</value>
+  </data>
+  <data name="Percentage_empty" xml:space="preserve">
+    <value>Holding percentage cannot be empty !</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="Posting_date" xml:space="preserve">
+    <value>Date of upload</value>
+  </data>
+  <data name="Project_Investments" xml:space="preserve">
+    <value>Information on Investment Projects</value>
+  </data>
+  <data name="QUALITICATIONEN_MAXLENGTH" xml:space="preserve">
+    <value>The length of Speciality EN cannot exceed 500 characters !</value>
+  </data>
+  <data name="QUALITICATION_MAXLENGTH" xml:space="preserve">
+    <value>The length of Speciality cannot exceed 500 characters !</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="Reference_price" xml:space="preserve">
+    <value>Reference Price</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Sai_cap_char" xml:space="preserve">
+    <value>Captchar is wrong!</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SaveAndSend" xml:space="preserve">
+    <value>Save and Send</value>
+  </data>
+  <data name="Save_send" xml:space="preserve">
+    <value>Save and send</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>% Owned in the Company</value>
+  </data>
+  <data name="Shareholder" xml:space="preserve">
+    <value>Name of Shareholder</value>
+  </data>
+  <data name="Shareholder_structure" xml:space="preserve">
+    <value>Ownership Structure</value>
+  </data>
+  <data name="Sodobomay" xml:space="preserve">
+    <value>Corporate governance structures chart</value>
+  </data>
+  <data name="Sodotochuc" xml:space="preserve">
+    <value>Organizational structures chart</value>
+  </data>
+  <data name="Sodo_tochuc_bomay" xml:space="preserve">
+    <value>Management Apparatus</value>
+  </data>
+  <data name="SongNgu" xml:space="preserve">
+    <value>Bilingual</value>
+  </data>
+  <data name="Sort" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="So_Giay_Phep" xml:space="preserve">
+    <value>License No. 3438/GP-TTDT dated July 4, 2016</value>
+  </data>
+  <data name="Speciality" xml:space="preserve">
+    <value>Speciality</value>
+  </data>
+  <data name="SpecialityEN" xml:space="preserve">
+    <value>Foreign language proficiency</value>
+  </data>
+  <data name="SPTT" xml:space="preserve">
+    <value>Substitute products</value>
+  </data>
+  <data name="StockCode" xml:space="preserve">
+    <value>Stock Code</value>
+  </data>
+  <data name="Strategy" xml:space="preserve">
+    <value>Strategy</value>
+  </data>
+  <data name="Strength" xml:space="preserve">
+    <value>Strength</value>
+  </data>
+  <data name="STT" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="STTOnlyNumberOrEmpty" xml:space="preserve">
+    <value>STT only enter number or empty!</value>
+  </data>
+  <data name="SubCompany" xml:space="preserve">
+    <value>Subsidiaries</value>
+  </data>
+  <data name="Subcompany_Type" xml:space="preserve">
+    <value>Subsidiary type</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Support_staff" xml:space="preserve">
+    <value>Support staff:</value>
+  </data>
+  <data name="SWOT_Analysis" xml:space="preserve">
+    <value>SWOT Analysis</value>
+  </data>
+  <data name="Technological_Level" xml:space="preserve">
+    <value>Technology</value>
+  </data>
+  <data name="Template" xml:space="preserve">
+    <value>Form No</value>
+  </data>
+  <data name="TemplateType" xml:space="preserve">
+    <value>Form Categories</value>
+  </data>
+  <data name="Ten" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="TITLE_MAXLENGTH" xml:space="preserve">
+    <value>The length Title length cannot exceed 2000 characters !</value>
+  </data>
+  <data name="TITLE_NULL" xml:space="preserve">
+    <value>Title is not to empty !</value>
+  </data>
+  <data name="Tong_Quan" xml:space="preserve">
+    <value>Company Overview</value>
+  </data>
+  <data name="Total_listing" xml:space="preserve">
+    <value>Total Listing Value</value>
+  </data>
+  <data name="To_date" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="TTKH" xml:space="preserve">
+    <value>Market and customers</value>
+  </data>
+  <data name="TTKHDTK" xml:space="preserve">
+    <value>Others</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type of Company</value>
+  </data>
+  <data name="Type_of_document" xml:space="preserve">
+    <value>Document Categories</value>
+  </data>
+  <data name="Type_of_news" xml:space="preserve">
+    <value>Type of News</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Unauthorized!</value>
+  </data>
+  <data name="UnknowError" xml:space="preserve">
+    <value>Unknow error!</value>
+  </data>
+  <data name="Update_Infomation" xml:space="preserve">
+    <value>Company Information</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="Upload_file" xml:space="preserve">
+    <value>Upload file</value>
+  </data>
+  <data name="Upload_Image_is_not_to_blank" xml:space="preserve">
+    <value>Upload image is not to blank !</value>
+  </data>
+  <data name="Up_to" xml:space="preserve">
+    <value>Maximum capacity: 30MB</value>
+  </data>
+  <data name="UserManual" xml:space="preserve">
+    <value>Instructions for Use</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="UsernameIsNotToEmpty" xml:space="preserve">
+    <value>Username is not to empty!</value>
+  </data>
+  <data name="User_posted" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="VerifyPassword" xml:space="preserve">
+    <value>Verify Password</value>
+  </data>
+  <data name="Vietnamese" xml:space="preserve">
+    <value>Vietnamese</value>
+  </data>
+  <data name="Vision" xml:space="preserve">
+    <value>Vision</value>
+  </data>
+  <data name="Vision_Strategy" xml:space="preserve">
+    <value>Visions and Strategies</value>
+  </data>
+  <data name="VTC" xml:space="preserve">
+    <value>General Position</value>
+  </data>
+  <data name="VTTTLVKD" xml:space="preserve">
+    <value>Position in each business area</value>
+  </data>
+  <data name="Weakness" xml:space="preserve">
+    <value>Weakness</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="YEAR_NULL" xml:space="preserve">
+    <value>Year is not to empty !</value>
+  </data>
+</root>

@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Builder;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@using Microsoft.AspNetCore.Localization
+@{ 
+    Layout = null;
+    var language = ViewBag.Language;
+    var stock_code = HttpContextAccessor.HttpContext.Session.GetString("StockCode");
+}
+
+<script src="~/Scripts/Chart3Lib/charting_library/charting_library.min.js"></script>
+<script src="~/Scripts/Chart3Lib/datafeeds/udf/dist/bundle.js"></script>
+<script src="~/Scripts/Chart3Lib/datafeeds/udf/dist/polyfills.js"></script>
+<script src="~/Scripts/Chart3Lib/chart3.js"></script>
+
+<div id="tv_chart_container" style="min-height: 410px; height: 451px;"></div>
+
+<script type="text/javascript">
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var stockcode = window.location.href.split('/')[5];
+        var stock_code = stockcode.toUpperCase();
+       // console.log(stockcode);
+        var lang = "vi";
+        var code = "";
+
+        lang = '@language';
+
+        if (lang == "vi-VN" || lang == '') { lang = "vi"; }
+        if (lang == "en-US") { lang = "en"; }
+        code = stock_code;
+        if (code == '') { code = "VNINDEX"; }
+
+        g_Chart3UI.lang = lang;
+        g_Chart3UI.Create(code, false, null, lang);
+    });
+</script>

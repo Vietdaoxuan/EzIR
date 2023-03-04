@@ -1,0 +1,668 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model EzIRSpecialist.Models.ViewModel.QLTKViewModel.QLTKDoanhNghiepViewModel
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Online/select2_restyle.css" rel="stylesheet" />
+<link href="~/Online/AccountManagement.css" rel="stylesheet" />
+<link href="~/css/siteStyle.css" rel="stylesheet" />
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Quản lý tài khoản</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Quản lý tài khoản</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Doanh nghiệp</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist">
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link active show " data-toggle="tab" data-target="#k_tabs_1" role="tab"
+               aria-selected="true">
+                <span class="nav-link-title text-uppercase">quản lý tài khoản</span>
+            </a>
+        </li>
+        <li class="nav-item col gsm-link-tab">
+
+            <a class="nav-link" data-toggle="tab" data-target="#updateTab" role="tab" aria-selected="false">
+                <span class="nav-link-title text-uppercase">Tạo tài khoản</span>
+            </a>
+        </li>
+    </ul>
+    <div class="line_top col-md-12">
+
+    </div>
+    <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper">
+                <form action="" id="formSearch">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="stockCode">Mã CK</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <select class="form-control select2-single" id="CompanyID" name="CompanyID" asp-items="@(new SelectList(Model.listMCK,"CompanyID","AMack"))">
+                                    <option value="" selected>Tất cả</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="Username">Tài khoản đăng nhập</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <input type="text" class="form-control" name="Username" id="Username" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label for="CompanyType">Loại hình</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                <select class="form-control" name="CompanyType" id="CompanyType" asp-items="@(new SelectList(Model.listCompanyType,"TypeCode","TypeName"))">
+                                    <option value="" selected>Tất cả</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label for="Active">Trạng thái</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                <select id="Active" class="form-control" name="Active" asp-items="@(new SelectList(Model.listStatus,"TypeCode","TypeName"))">
+                                    <option value="" selected>Tất cả</option>
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="row d-flex justify-content-center col-12 btn-search-wrapper">
+                <button id="btnSearch" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                    Tìm kiếm
+                </button>
+            </div>
+
+        </div>
+        <div class="content-tbl">
+            <table id="listAccount" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+                   role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th style="width:5%">Mã CK</th>
+                        <th style="width:8%">Tài khoản</th>
+                        <th style="width:20%">Họ và tên</th>
+                        <th style="width:12%">Loại hình</th>
+                        <th style="width:8%">Email</th>
+                        <th style="width:3%">Trạng thái</th>
+                        <th style="width:6%">Ngày tạo</th>
+                        <th style="width:23%">Ghi chú</th>
+                        <th style="width:15%">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="updateTab" class="tab-pane fade tab-acc">
+        <div class="tab-content">
+            <div class="form-staff-wrapper col-sm-12 col-md-12 col-lg-6 col-xl-6" id="menustaff">
+                <form action="" id="FormUpdate">
+                    <input type="text" class="form-control" name="" id="" hidden>
+                    <div class="form-group row form-text">
+                        <label for="StockCode" class="col-lg-2 col-md-2 col-form-label">Loại hình <span>*</span></label>
+                        <div class="col-lg-10 col-md-10">
+                            <select class="form-control" id="companyType" name="CompanyType" asp-items="@(new SelectList(Model.listCompanyType,"TypeCode","TypeName"))">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="StockCode" class="col-lg-2 col-md-2 col-form-label">Mã CK <span>*</span></label>
+                        <div class="col-lg-10 col-md-10">
+                            <select id="comID" class="form-control select2-single" asp-items="@(new SelectList(Model.listMCKEzSearch,"ACpnyID","aname"))">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Account" class="col-lg-2 col-md-2 col-form-label">Tài khoản <span>*</span></label>
+                        <div class="col-lg-10 col-md-10">
+                            <input type="text" class="form-control" name="Username" id="userName" placeholder="Độ dài Tài khoản không được quá 100 ký tự.">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="FullName" class="col-lg-2 col-md-2 col-form-label">Họ và tên <span>*</span></label>
+                        <div class="col-lg-10 col-md-10">
+                            <input type="text" class="form-control" name="FullName" id="FullName" placeholder="Độ dài Họ và tên không được quá 500 ký tự.">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Email" class="col-lg-2 col-md-2 col-form-label">Email <span>*</span></label>
+                        <div class="col-lg-10 col-md-10">
+                            <input type="text" class="form-control" name="Email" id="Email" placeholder="Độ dài Email không được quá 100 ký tự.">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Phone" class="col-lg-2 col-md-2 col-form-label">Số điện thoại <span>*</span></label>
+                        <div class="col-lg-10 col-md-10">
+                            <input type="text" class="form-control" name="Phone" id="Phone" placeholder="Độ dài Số điện thoại không được quá 50 ký tự.">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Note" class="col-lg-2 col-md-2 col-form-label">Ghi chú</label>
+                        <div class="col-lg-10 col-md-10">
+                            <input type="text" class="form-control" name="Note" id="Note">
+                        </div>
+                    </div>
+                    <div class="form-check form-group row form-text">
+                        <label class="form-check-label col-lg-2 col-md-2 col-sm-12" for="Active">
+                            Kích hoạt
+                        </label>
+                        <div class="col-lg-10 col-md-10 col-sm-12">
+                            <input class="form-check-input" type="checkbox" value="1" name="Active" id="active">
+                        </div>
+                    </div>
+                    <div class="update-btn-section">
+                        <button class="btn btn-primary update-btn" id="Insert" style="width:12rem">Tạo tài khoản</button>
+                        <button class="btn btn-primary update-btn" id="Update">Sửa</button>
+                        <button class="btn btn-primary reset-btn" id="Reset">Làm mới</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading"></div>
+<script>
+    $(document).ready(function () {
+        $(".nav-item.col.gsm-link-tab").first().addClass("active");
+
+        $('#Update').hide();
+
+        var renderColumns = [
+            {
+                data: "stockCode",
+            },
+            {
+                data: "username",
+            },
+            {
+                data: "fullName",
+            }
+            ,
+            {
+                data: "companyTypeName",
+            }
+            ,
+            {
+                data: "email",
+            }
+            ,
+            {
+                data: "activeName",
+            }
+            ,
+            {
+                data: "createOn",
+                render: function (data) {
+                    return formatDateTimeToDate(data);
+                }
+            }
+            ,
+            {
+                data: "note",
+            }
+            ,
+            {
+                data: "username",
+                render: function (data, type, full) {
+                    if (full['active'] == 1) {
+                        return `<div class="d-inline-flex w-100">
+                              <a class='EditAccount btn text-primary' data-username='${data}'  data-id='${full['companyID']}'><i class="far fa-edit"></i></a>
+                              <a class='DeleteAccount btn text-primary' data-username='${data}' data-id='${full['companyID']}'><i class="fas fa-delete"></i></a>
+                              <a class='SendMailBtn btn text-primary' data-username='${data}' data-id='${full['companyID']}'><i class="far fa-envelope"></i></a>
+                            </div >`;
+                    } else {
+                        return `<div class="d-inline-flex w-100">
+                                    <a class='EditAccount btn text-primary' data-username='${data}' data-id='${full['companyID']}'><i class="far fa-edit"></i></a>
+                                    <a class='SendMailBtn btn text-primary' data-username='${data}' data-id='${full['companyID']}'><i class="far fa-envelope"></i></a>
+                                </div>`;
+                    }
+
+                }
+            },
+        ]
+
+        var form = $("#formSearch");
+
+        var DoanhNghiep = function () {
+            this.init = function () {
+                loadMCK();
+                loadData(form.serialize());                
+                registerEvents();
+            }
+
+            var loadMCK = function () {
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListMCKDoanhNghiep", "QLTKDoanhNghiep")',
+                    data: null,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data)
+                        var $select = $("#StockCode");
+                        $select.find('option').remove();
+                        $select.append(`<option value="" selected>Tất cả</option>`);
+                        $.each(data, function (key, value) {
+                            $select.append('<option value=' + value.aCpnyID + '>' + value.AStockCode + ' - ' + value.aname + '</option>'); // return empty
+                            //console.log(value.AStockCode + ' - ' + value.aname);
+                        });
+                    }
+                })
+
+            }
+
+            var loadData = function (data) {
+                $('#loading').addClass('loading');
+                //Load dữ liệu lên lưới
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListDoanhNghiep", "QLTKDoanhNghiep")',
+                    data: data,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //loadMCK();
+                        //console.log(data);
+                        let doanhnghiepTable = $('#listAccount').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: true,
+                            className: 'dt-body-right',
+                            "info": true,
+                            "lengthMenu": [10, 25, 50, 75, 100],
+                            language: {
+                                sLengthMenu: "_MENU_"
+                            },
+                            pageLength: 10,
+                            data: data,
+                            columns: renderColumns
+                        });
+
+                        // Sửa dữ liệu
+                        function editClick() {
+                            $('.EditAccount').off();
+                            $('.EditAccount').click(function () {
+                                $('#loading').addClass('loading');                            
+                                let accName = $(this).data('username');
+                                let id = $(this).data('id');
+
+                                $.ajax({
+                                    type: "GET",
+                                    url: '@Url.Action("ListDoanhNghiepUpdate", "QLTKDoanhNghiep")?CompanyID=' + id,
+                                    success: function (data) {       
+                                        $('#loading').removeClass('loading');
+
+                                        if (!data.code) {                  
+                                            //chuyển sang tab edit
+                                            $('.nav-pills > li:first-child').removeClass('active');
+                                            $('.nav-pills > li:last-child').addClass('active');
+                                            //$('.nav-pills > li:last-child').tab('show');
+                                            jQuery('#updateTab').css('opacity', '1');
+                                            $('.nav-pills > li:last-child > a').trigger('click');
+                                            $("#Update").show();
+                                            $("#Insert").hide();
+                                            $("#companyType").val(data[0].companyType).trigger('change');
+                                            $("#comID").val(data[0].companyID).trigger('change');
+                                            $("#FullName").val(data[0].fullName);
+                                            $("#Email").val(data[0].email);
+                                            $("#Phone").val(data[0].phone);
+                                            $("#Note").val(data[0].note);
+                                            $("#userName").val(data[0].username);
+                                            //$("#comID").val(data[0].companyID);
+                                            $("#userName").attr('readonly', 'readonly');
+                                            $("#comID").attr('disabled', 'disabled');
+                                            if (data[0].active == 1) {
+                                                $('#active').prop('checked', true);
+                                            } else {
+                                                $('#active').prop('checked', false);
+                                            }
+                                        }
+                                        else {
+                                            toastr.error(data.message);
+                                        }
+
+                                    }
+                                });
+                            })
+                        }
+
+                        //khi click sửa
+                        editClick();
+                        doanhnghiepTable.on('draw', editClick);
+
+                        function deleteClick() {
+                            $('.DeleteAccount').off();
+                            $('.DeleteAccount').click(function () {
+
+                                //$('#loading').addClass('loading');
+                                let accName = $(this).data('username');
+                                let id = $(this).data('id');
+                                //console.log(accName);
+                                Swal.fire({
+                                    title: 'Thông báo',
+                                    text: 'Bạn có chắc muốn xóa?',
+                                    type: 'warning',
+                                    cancelButtonText: 'Hủy',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'OK'
+                                }).then(result => {
+                                    if (result.dismiss == "cancel" || result.dismiss == "overlay") {
+                                        return;
+                                    }
+                                    $('#loading').addClass('loading');
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '@Url.Action("DeleteTKDoanhNghiep", "QLTKDoanhNghiep")?Username=' + accName +'&CompanyID='+id,
+                                        success: function (data) {
+                                            $('#loading').removeClass('loading');
+                                            //console.log(data);
+                                            if (data.code == 0) {
+                                                toastr.success(data.message);
+                                            } else {
+                                                toastr.error(data.message);
+                                            }
+                                            loadData();
+                                        }
+                                    });
+                                });
+
+                            })
+                        }
+
+                        //khi click xóa
+                        deleteClick();
+                        doanhnghiepTable.on('draw', deleteClick);
+
+                        function SendMailClick() {
+                            $('.SendMailBtn').off();
+                            $('.SendMailBtn').click(function () {
+
+                                //$('#loading').addClass('loading');
+                                let accName = $(this).data('username');
+                                let id = $(this).data('id');
+                                //console.log(accName);
+                                Swal.fire({
+                                    title: 'Thông báo',
+                                    text: 'Bạn có chắc chắn muốn gửi email cho doanh nghiệp?',
+                                    type: 'warning',
+                                    cancelButtonText: 'Hủy',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'OK'
+                                }).then(result => {
+                                    if (result.dismiss == "cancel" || result.dismiss == "overlay") {
+                                        return;
+                                    }
+                                    $('#loading').addClass('loading');
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '@Url.Action("SendMail", "QLTKDoanhNghiep")?Username=' + accName +'&CompanyID='+id,
+                                        success: function (data) {
+                                            $('#loading').removeClass('loading');
+                                            //console.log(data);
+                                            if (data.code == 0) {
+                                                toastr.success(data.message);
+                                            } else {
+                                                toastr.error(data.message);
+                                            }
+                                            loadData();
+                                        }
+                                    });
+                                });
+
+                            })
+                        }
+
+                        //khi click gửi mail
+                        SendMailClick();
+                        doanhnghiepTable.on('draw', SendMailClick);
+                    }
+                });
+            }
+
+
+            var registerEvents = function () {
+
+                $('.select2-single').select2();
+
+                // Action search
+                $('#btnSearch').click(function (e) {
+                    e.preventDefault();
+                    loadData(form.serialize());
+                });
+
+                //Thêm mới dữ liệu
+                $('body').on('click', '#Insert', function (e) {
+
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+
+                    var form = $("#FormUpdate");
+                    var status = true;
+                    //console.log(form.serialize());
+                    if ($('#active').is(':checked')) {
+                        status = 1;
+                    } else {
+                        status = 0;
+                    }
+                    var Check = true;
+                    // validate cho insert
+                    Check = Validate('insert');
+                    if (Check) {
+                        $.ajax({
+                            url: '@Url.Action("InsertTKDoanhNghiep", "QLTKDoanhNghiep")?CompanyType=' + $('#companyType').val()
+                                + '&CompanyID=' + $('#comID').val()
+                                + '&Username=' + $('#userName').val()
+                                + '&FullName=' + $('#FullName').val()
+                                + '&Email=' + $('#Email').val()
+                                + '&Phone=' + $('#Phone').val()
+                                + '&Note=' + $('#Note').val()
+                                + '&Active=' + status,
+                            type: 'POST',
+                            /*data: form.serialize(),*/
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                //console.log(data);
+                                if (data.code == 0) {
+                                    $('.nav-pills > li:first-child').addClass('active');
+                                    $('.nav-pills > li:last-child').removeClass('active');
+                                    jQuery('#k_tabs_1').css('opacity', '1');
+                                    $('.nav-pills > li:first-child > a').trigger('click');
+                                    toastr.success(data.message);
+                                    $('#FormUpdate').trigger("reset");
+                                    $("#CompanyID").val(929).trigger('change');
+                                    loadData();
+                                } else {
+                                    toastr.error(data.message);
+                                }
+
+                            },
+                            error: function (err) {
+                                $('#loading').removeClass('loading');
+                                console.log(err);
+                            }
+                        });
+                    } else {
+                        $('#loading').removeClass('loading');
+                    }
+
+
+
+
+                })
+                $('body').on('click', '#Reset', function (e) {
+                    e.preventDefault();
+
+                    $('#FormUpdate').trigger("reset");
+                    $("#Update").hide();
+                    $("#Insert").show();
+                    $("#userName").attr('readonly', false);
+                    $("#CompanyID").attr('disabled', false);
+                    $("#comID").attr('disabled', false);
+                });
+
+                $('body').on('click', '#Update', function (e) {
+
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+
+                    //var form = $("#FormUpdate");
+                    var status = true;
+                 
+                    if ($('#active').is(':checked')) {
+                        status = 1;
+                    } else {
+                        status = 0;
+                    }
+                    var Check = true;
+                    // validate cho update
+
+                    Check = Validate('update');
+                    if (Check) {
+                        $.ajax({
+                            url: '@Url.Action("UpdateTKDoanhNghiep", "QLTKDoanhNghiep")?CompanyType=' + $('#companyType').val()
+                                + '&CompanyID=' + $('#comID').val()
+                                + '&Username=' + $('#userName').val()
+                                + '&FullName=' + $('#FullName').val()
+                                + '&Email=' + $('#Email').val()
+                                + '&Phone=' + $('#Phone').val()
+                                + '&Note=' + $('#Note').val()
+                                + '&Active=' + status,
+                            type: 'POST',
+                            //data: $("#FormUpdate").serialize(),
+                            success: function (data) {
+                                $("#Update").hide();
+                                $("#Insert").show();
+                                $('#loading').removeClass('loading');
+                                //console.log(data);
+                                if (data.code == 0) {
+                                    $('.nav-pills > li:first-child').addClass('active');
+                                    $('.nav-pills > li:last-child').removeClass('active');
+                                    jQuery('#k_tabs_1').css('opacity', '1');
+                                    $('.nav-pills > li:first-child > a').trigger('click');
+                                    toastr.success(data.message);
+                                    $('#FormUpdate').trigger("reset");
+                                    $("#userName").attr('readonly', false);
+                                    $("#CompanyID").attr('disabled', false);
+                                    $("#comID").attr('disabled', false);
+                                    $("#CompanyID").val(929).trigger('change');
+                                    loadData();
+                                } else {
+                                    toastr.error(data.message);
+                                }
+
+                            },
+                            error: function (err) {
+                                $('#loading').removeClass('loading');
+                                console.log(err);
+                            }
+                        })
+                    } else {
+                        $('#loading').removeClass('loading');
+                    }
+                })
+
+                function Validate(i) {
+                    if (i == 'insert' && $('#userName').val().length > 100) {
+                        toastr.error('@SharedLocalizer["USERMANE_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#userName').val() == '') {
+                        toastr.error('@SharedLocalizer["AUSERNAME_Empty"]');
+                        return false;
+                    }
+                    if (!validateUsername($('#userName').val())) {
+                        toastr.error('@SharedLocalizer["AUSERNAME_NOT_IN_CORRECT_FORMAT"]');
+                        return false;
+                    }
+                    if ($('#FullName').val() == '') {
+                        toastr.error('@SharedLocalizer["AFULLNAME_Empty"]');
+                        return false;
+                    }
+                    if ($('#FullName').val().length > 500) {
+                        toastr.error('@SharedLocalizer["FULLNAME_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#Email').val() == '') {
+                        toastr.error('@SharedLocalizer["AEMAIL_Empty"]');
+                        return false;
+                    }
+                    if ($('#Email').val().length > 100) {
+                        toastr.error('@SharedLocalizer["EMAIL_MAXLENGTH"]');
+                        return false;
+                    }
+                    if (!validateEmail($('#Email').val())) {
+                        toastr.error('@SharedLocalizer["EMAIL_INCORRECT_FORMAT"]');
+                        return false;
+                    }
+                    if ($('#Phone').val() == '') {
+                        toastr.error('@SharedLocalizer["APHONE_Empty"]');
+                        return false;
+                    }
+                    var regExp = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s\./0-9]*$/g;
+                    if (!regExp.test($('#Phone').val())) {
+                        toastr.error('@SharedLocalizer["PHONE_NOT_IN_CORRECT_FORMAT"]');
+                        return false;
+                    }
+                    if ($('#Phone').val().length > 50) {
+                        toastr.error('@SharedLocalizer["PHONE_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#Note').val().length > 100) {
+                        toastr.error('@SharedLocalizer["NOTE_MAXLENGTH"]');
+                        return false;
+                    }
+                    return true;
+                }
+
+                function validateUsername(username) {
+                    const res = /^[a-zA-Z0-9]+$/.exec(username);
+                    const valid = !!res;
+                    return valid;
+                }
+
+                function validateEmail(email) {
+                    const re = /^(([^<>()[\]\\.,;:\s@('@')\"]+(\.[^<>()[\]\\.,;:\s@('@')\"]+)*)|(\".+\"))@('@')((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return re.test(email);
+                }
+
+            }
+        }
+
+        var doanhNghiep = new DoanhNghiep();
+        doanhNghiep.init();
+    })
+</script>

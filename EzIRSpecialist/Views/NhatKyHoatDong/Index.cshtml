@@ -1,0 +1,237 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model EzIRSpecialist.Models.ViewModel.NhatKyHoatDongViewModel
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = " Nhật ký hoạt động";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Online/BaoCao_TienIch.css" rel="stylesheet" />
+<link href="~/css/siteStyle.css" rel="stylesheet" />
+<style>
+
+
+    .content-tbl {
+        margin-top: 3rem;
+    }
+
+    div#listNhatKy_length {
+        left: 100%;
+        position: absolute;
+        top: -4rem;
+    }
+
+    select.custom-select.custom-select-sm.form-control.form-control-sm {
+        width: 5rem;
+        font-size: 10pt;
+    }
+
+    label[for="Active"] {
+        margin-left: 0px;
+        /*margin-right: 38px;*/
+    }
+
+    table#listNhatKy th {
+        padding: 15px 10px;
+        color: #2999ce;
+        font-weight: 500;
+    }
+</style>
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Báo cáo - tiện ích</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="@Url.Action("Index", "NhatKyHoatDong")"><span>Nhật ký hoạt động</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <div class="tab-content">
+        <div class="form-wrapper">
+            <form>
+                <div class="form-row">
+                    <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 form-section">
+                        <div class="form-group col-md-12 col-sm-12 col-lg-4 col-xl-4">
+                            <label for="stockCode">Mã CK</label>
+                            <select id="stockCode" class="form-control" asp-items="@(new SelectList(Model.ListMaCk, "StockCode","AMack"))">
+
+                                <option value="">Tất cả</option>
+
+                            </select>
+                        </div>
+                        <div class="form-group col-md-12 col-sm-12 col-lg-4 col-xl-4">
+                            <label for="AccountName">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="AccountName">
+                        </div>
+                        <div class="form-group col-md-12 col-sm-12 col-lg-4 col-xl-4">
+                            <label for="Action">Hành động</label>
+                            <select id="Action" class="form-control" asp-items="@(new SelectList(Model.ListAction,"TypeCode","TypeName"))">
+
+                                <option value="-1">Tất cả</option>
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row form-section">
+                    <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 form-section">
+                        <div class="form-group col-md-12 col-sm-12 col-lg-4 col-xl-4">
+                            <label for="FromDate">Từ ngày</label>
+                            <input type="date" class="form-control" id="FromDate">
+                        </div>
+                        <div class="form-group col-md-12 col-sm-12 col-lg-4 col-xl-4">
+                            <label for="ToDate">Đến ngày</label>
+                            <input type="date" class="form-control" id="ToDate">
+                        </div>
+                        <div class="form-group col-md-12 col-sm-12 col-lg-4 col-xl-4 btn-search-section">
+                            <button class=" btn btn-primary search-btn" id="search_nhatky">Tìm kiếm</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="content-tbl">
+        <div id="listAccount_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <table id="listNhatKy" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" style="width: 1317px;">
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="loading"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //search nhat ky hoat dong
+
+        function loadGridData() {
+            var renderColumns = [
+                {
+
+                    title: "STT",
+                    data: "index",
+
+                },
+                {
+
+                    title: "Ngày đăng tải",
+                    data: "acreateon",
+                    render: (data) => (new Date(data)).toLocaleString().replace(",", "").replace("AM", "SA").replace("PM", "CH")
+                },
+                {
+
+                    title: "Mã CK",
+                    data: "astockcode"
+
+                },
+                {
+
+                    title: "Tài khoản",
+                    data: "ausername"
+                },
+                {
+
+                    title: "Loại tài khoản",
+                    data: "aloaitaikhoan"
+                },
+
+                {
+
+                    title: "Hành động",
+                    data: "actionC"
+                }
+
+            ]
+
+            stockcode = $('#stockCode').val();
+            account = $('#AccountName').val();
+            action = $('#Action').val();
+            fromdate = $('#FromDate').val();
+            todate = $('#ToDate').val();
+
+
+
+            $('#loading').addClass('loading');
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetNhatKy", "NhatKyHoatDong")',
+                dataType: 'json',
+                data: { Astockcode: stockcode, Ausername: account, ActionC: action, FormDate: fromdate, ToDate: todate},
+                success: function (data) {
+
+                    $('#loading').removeClass('loading');
+
+                    let index = 1;
+                    data.forEach(x => {
+                        x.index = index++;
+                    });
+                    if ($.isArray(data)) {
+                        $('#listNhatKy').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex pagingList justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            className: 'dt-body-right',
+                            "bInfo": true,  ////thông tin Showing 1 to 6 of 6 entries
+
+                            /* phân trang theo số lượng data */
+                            lengthChange: true, ///thay đổi số lượng dữ liệu hiển thị
+                            "lengthMenu": [10, 25, 50, 75, 100],
+                            language: {
+                                sLengthMenu: "_MENU_"
+                            },
+                            pageLength: 10,
+                            data: data,
+                            bAutoWidth: false,
+                            columns: renderColumns
+                        });
+
+                        return;
+                    }
+
+                    isMessageSuccess(data);
+                    //console.log(data);
+                },
+                error: function (err) {
+                    $('#loading').removeClass('loading');
+                    console.log(err);
+                }
+            });
+
+        }
+
+        //Tìm kiếm nhật ký
+        $('#search_nhatky').click(function (e) {
+            fromdate = $('#FromDate').val();
+            todate = $('#ToDate').val();
+            e.preventDefault();
+            var Fromdate = Date.parse(fromdate);
+            var Todate = Date.parse(todate);
+            if (fromdate.length === 0 && todate.length === 0) {
+                loadGridData();
+            }
+            else if (Fromdate <= Todate) {
+                loadGridData();
+            }
+            else {
+                toastr.error('@SharedLocalizer["DATE_Empty"]');
+                return false;
+            }
+        });
+
+        $('#stockCode').select2();
+
+
+    });
+
+
+</script>
+

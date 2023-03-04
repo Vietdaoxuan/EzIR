@@ -1,0 +1,819 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHttpContextAccessor _httpContextAccessor;
+
+@{
+
+    ViewData["Title"] = "Thông tin chung";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var _Link_Show_Logo = ViewBag._Link_Show_Logo;
+}
+
+<div class="title_line d-flex" style="margin-bottom: 0px;">
+    <div class="container">
+        <span class="title_line_item">
+            <font color="#4187A6"><a href="" style="color:#4187A6;font-weight: 600;">@Localizer["Update_Infomation"].Value</a></font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Tong_Quan"].Value</font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["General_Information"].Value</font>
+        </span>
+    </div>
+</div>
+
+<div class="k-portlet__body">
+    <div class="row col-12 nopadding" style="margin-bottom: 10px;">
+        <div class="col-md-7 div-button-mobiletop" style="padding-bottom: 10px"></div>
+        <div class="col-md-5 div-button" style="padding-bottom: 10px">
+            <div class="set_up-button" style="padding-left: 37%;">
+                <input type="button" class="btn btn-primary form-control  mx-2 my-1" value="@Localizer["Save_send"].Value" id="btnSave">
+                <input type="button" class="btn btn-primary form-control  mx-2 my-1" value="@Localizer["Refresh"].Value" id="btnRefresh">
+            </div>
+        </div>
+        <div class="respon-mobile">
+            <div class="row col-12 nopadding">
+                <!-- Thông tin chung -->
+                <div class="col-md-8" style="padding-right: 0px !important;padding-left: 0px !important;">
+                    <form id="frmTTC" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-9 text-box-label-general" style="padding-left: 0px;">
+                                <p class="text-general-information" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["General_Information"].Value</p>
+                                <table id="text-general-information" cellspacing="0" cellpadding="0" border="0" style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td class="left-text">
+                                                <label class="title-general-information" for="AStockCode">@Localizer["StockCode"].Value</label>
+                                                <span style="color:red">*</span>
+                                            </td>
+                                            <td class="right-textbox">
+                                                <input type="text" class="form-textbox-general" id="txtAStockCode" name="AStockCode" disabled>
+                                                <!-- company id -->
+                                                <input type="text" class="form-textbox-general" id="txtCpnyID" name="ACpnyID" readonly hidden>
+                                                <!-- stock code -->
+                                                <input type="text" class="form-textbox-general" id="txtAStockCode_2" name="AStockCode" readonly hidden>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-text">
+                                                <label class="title-general-information" for="NameVN">@Localizer["Company_Name"].Value</label>
+                                                <span style="color:red">*</span>
+                                            </td>
+                                            <td class="right-textbox">
+                                                <input type="text" class="form-textbox-general" id="txtNameVN" maxlength="100" name="NameVN" disabled>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-text">
+                                                <label class="title-general-information" for="AName_Short">@Localizer["Name_Short"].Value</label>
+                                                <span style="color:red">*</span>
+                                            </td>
+                                            <td class="right-textbox">
+                                                <input type="text" class="form-textbox-general" id="txtAName_Short" maxlength="100" name="AName_Short" disabled>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-3 div-img-insert " style="padding-left: 0px;">
+                                <div class="img_insert-general">
+                                    <div class="avatar-upload">
+                                        <div class="avatar-edit">
+                                            <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg, bmp, gif" ma name="ImageFile" />
+                                            <label for="imageUpload" class="-off-" id="myfind"></label>
+                                        </div>
+                                        <div class="avatar-preview">
+                                            <div id="imagePreview">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-box-label-general " style="padding-left: 0px;">
+                            <table id="table2" cellspacing="0" cellpadding="0" border="0" style="width: 100%">
+                                <tbody>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AHeadOffice">@Localizer["Head_Office"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-table2">
+                                            <input type="text" class="form-textbox-general" id="txtAHeadOffice" maxlength="500" name="AHeadOffice">
+                                            <!-- status modify -->
+                                            <input type="number" class="form-textbox-general" id="txtStatusHeadOffice" value="0" hidden>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="ACapital">@Localizer["Capital"].Value</label>
+                                            <span style="color:red">*</span>
+                                        </td>
+                                        <td class="right-textbox-table2">
+                                            <input type="text" class="form-textbox-general" id="txtACapital" name="ACapital" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="APhone">@Localizer["Phone"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-table2">
+                                            <input type="text" class="form-textbox-general" id="txtAPhone" maxlength="100" name="APhone">
+                                            <!-- status modify -->
+                                            <input type="number" class="form-textbox-general" id="txtStatusPhone" value="0" hidden>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AFax">Fax</label>
+                                        </td>
+                                        <td class="right-textbox-table2">
+                                            <input type="text" class="form-textbox-general" id="txtAFax" maxlength="100" name="AFax">
+                                            <!-- status modify -->
+                                            <input type="number" class="form-textbox-general" id="txtStatusFax" value="0" hidden>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AEmail">Email</label>
+                                        </td>
+                                        <td class="right-textbox-table2">
+                                            <input type="text" class="form-textbox-general" id="txtAEmail" maxlength="100" name="AEmail" />
+                                            <!-- status modify -->
+                                            <input type="number" class="form-textbox-general" id="txtStatusEmail" value="0" hidden>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AWebsite">Website</label>
+                                        <td class="right-textbox-table2">
+                                            <input type="text" class="form-textbox-general" id="txtAWebsite" name="AWebsite" maxlength="100">
+                                            <!-- status modify -->
+                                            <input type="number" class="form-textbox-general" id="txtStatusWebsite" value="0" hidden>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="CompanyTypeDesc">@Localizer["Industry"].Value</label>
+                                            <span style="color:red">*</span>
+                                        </td>
+                                        <td class="right-textbox-table2">
+                                            <input type="text" class="form-textbox-general" id="txtMinisnamevn" name="Minisnamevn" disabled>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="ATaxCode">@Localizer["MST"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex; width: 100%;">
+                                            <input type="text" class="form-textbox-general multiple MST" id="txtATaxCode" name="ATaxCode" style="width: 100%">
+                                            <!-- status modify -->
+                                            <input type="number" class="form-textbox-general" id="txtStatusTaxCode" value="0" hidden>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AReg_Biz_No">@Localizer["Business_lisence"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex;width: 100%;">
+                                            <input type="text" class="form-textbox-general multiple Business" id="txtAReg_Biz_No" name="AReg_Biz_No" style="width: 100%">
+                                            <!-- status modify -->
+                                            <input type="number" class="form-textbox-general" id="txtStatusReg_Biz_No" value="0" hidden>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Thông tin niêm yết -->
+                <div class="col-md-4" style="padding-right: 0px !important;padding-left: 0px !important;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general fix-distance">
+                            <p class="text-information" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["Listing_Information"].Value</p>
+                            <table id="text-general-information" cellspacing="0" cellpadding="0" border="0" style="width:100%">
+                                <tbody>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" for="APost_Date">@Localizer["First_listing"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-table3">
+                                            <span class="LblItemContent" id="txtAPost_Date"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" for="APost_To">@Localizer["Current_exchange"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-table3">
+                                            <span id="txtAPost_To" class="LblItemContent"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" for="AFirst_Price">@Localizer["Face_value"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-table3">
+                                            <span id="txtAOrg_Price" class="LblItemContent"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" for="AOrg_Price">@Localizer["Reference_price"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-table3">
+                                            <span id="txtAFirst_Price" class="LblItemContent"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" for="AQty">@Localizer["Current_volume"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-table3">
+                                            <span class="LblItemContent" id="txtAQty"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" for="ACapital">@Localizer["Total_listing"].Value</label>
+                                        </td>
+                                        <td class="right-textbox-table3">
+                                            <span class="LblItemContent" id="txtACapital2"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Lĩnh Vực SXKD Chính -->
+                        <div class="col-md-12 text-box-label-general fix-distance">
+                            <p class="text-information" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["Business_operation"].Value</p>
+                            <td style="text-align:justify">
+                                <textarea id="txtASummary" class="LblItemContent" style="height: 230%; width: inherit; border: none;" readonly></textarea>
+                            </td>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Các mốc lịch sử -->
+            <div class="row col-12 nopadding" style="margin-top: 10px;">
+                <div class="col-md-8" style="padding-right: 0px !important;padding-left: 0px !important;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general" style="padding-left: 0px;">
+                            <p class="text-general-information" for="" style="width: 100%;padding-bottom: 10px;">@Localizer["Milestones"].Value</p>
+                            <div class="Event timetable">
+                                <table id="List-Historical" cellspacing="0" cellpadding="0" border="0" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="left-text-table4" style="width: 10%">
+                                                <p class="title-Event-time">@Localizer["Order"].Value</p>
+                                            </th>
+                                            <th class="left-text-table4" style="width: 20%">
+                                                <p class="title-Event-time">@Localizer["Time"].Value</p>
+                                            </th>
+                                            <th class="right-textbox-table4" style="width: 70%; padding-left: 2%">
+                                                <p class="title-Event-time">@Localizer["Highlighting_events"].Value</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 div-button location-buttons" style="padding-bottom: 10px;padding-right: 0%;">
+                        <div class="set_up-button" style="padding-left: 79%;">
+                            <input type="button" class="buttons-add btn-primary form-control mx-2 my-1" id="btnAddRecord" value="@Localizer["Add"].Value" style="background-color: #13AB4B; border-radius: 15px; max-width: 85px; background-color: #EE6E24;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+
+<script type="text/javascript" src="~/js/dist/navbar_responsive.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var CommonConst = {
+            MODIFIED: 2,
+            UNMODIFIED: 0,
+            CREATE_NEW: 1,
+            LOGO_PATH_OLD: '',
+        };
+
+        var ThongTinChung = function () {
+            this.init = function () {
+                loadData();
+                registerEvents();
+            }
+
+            var loadData = function () {
+                $('#loading').addClass('loading');
+
+                $.ajax({
+                    url: '@Url.Action("GetTTC", "ThongTinChung")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: {  }
+                })
+                .done((data) => {
+
+                    //console.log(data);
+
+                    $('#loading').removeClass('loading');
+
+                    commons.setDataFormTTC(data);
+
+                })
+                .fail((err) => {
+                    $('#loading').removeClass('loading');
+                    //console.log(err);
+                });
+            }
+
+            var registerEvents = function () {
+
+                $("#imageUpload").change(function () {
+                    readURL(this);
+                });
+
+                $('#btnAddRecord').click(() => {
+                    addAttribute();
+                });
+
+                $('.text-clip-1').click(function () {
+                    $(this).css({ "-webkit-line-clamp": 'initial' });
+                });
+
+                $('body').on('click', '.btn-edit', function (e) {
+                    e.preventDefault();
+
+                    let parent = $(this).parent().parent();
+
+                    if ($(this).val() == 'Sửa') {
+
+                        $(this).val('Hủy');
+
+                        //set trạng đã sửa
+                        parent.find('input.is-status').val(CommonConst.MODIFIED);
+
+                        //Mốc thời gian
+                        let dateHistory = parent.find('input.txt-date-history');
+                        dateHistory.attr('hidden', false);
+                        parent.find('p.txt-date-history-old').attr('hidden', true);
+
+                        // Sự kiện tiêu biểu
+                        //parent.find('p.text-clip-1').attr('hidden', true);
+                        parent.find('p.txt-history-old').attr('hidden', true);
+                        parent.find('textarea.txt-history').attr('hidden', false);
+
+                        // Thứ tự sắp xếp
+                        parent.find('p.txt-order-history-old').attr('hidden', true);
+                        parent.find('input.txt-order-history').attr('hidden', false);
+                        return;
+                    }
+
+                    if ($(this).val() == 'Hủy') {
+                        parent.find('input.is-status').val(0);
+                        parent.find('input.is-status-2').val(0);
+                        parent.find('input.is-status-3').val(0);
+                    }
+
+                    $(this).val('Sửa');
+
+                    // set bỏ trạng đã sửa
+                    parent.find('input.is-status').val(CommonConst.UNMODIFIED);
+
+                    // Mốc thời gian
+                    let dateHistory = parent.find('input.txt-date-history');
+                    dateHistory.attr('hidden', true);
+                    parent.find('p.txt-date-history-old').attr('hidden', false);
+
+                    // Sự kiện tiêu biểu
+                    //parent.find('p.text-clip-1').attr('hidden', false);
+                    parent.find('p.txt-history-old').attr('hidden', false);
+                    parent.find('textarea.txt-history').attr('hidden', true);
+
+                    // Thứ tự sắp xếp
+                    parent.find('p.txt-order-history-old').attr('hidden', false);
+                    parent.find('input.txt-order-history').attr('hidden', true);
+                });
+
+                $('body').on('click', '.btn-delete', function (e) {
+                    e.preventDefault();
+                    let parent = $(this).parent().parent();
+                    parent.remove();
+                });
+
+                $('body').on('click', '#btnRefresh', function (e) {
+                    e.preventDefault();
+                    location.reload();
+                });
+
+                $('body').on('click', '#btnSave', function (e) {
+                    e.preventDefault();
+                    $('#loading').addClass('loading');
+
+                    let data = new FormData();
+
+                    // Thông tin chung
+                    let noteTTC = '';
+                    let fileupload = $("#imageUpload").get(0);
+                    let files = fileupload.files;
+                    if (files.length > 0) {
+                        data.append('ImageFile', files[0]);
+                        noteTTC += 'ALogoPath;';
+                    }
+
+                    if ($('#txtStatusHeadOffice').val() == CommonConst.MODIFIED) noteTTC += $('#txtAHeadOffice').attr('name') + ';';
+                    if ($('#txtStatusPhone').val() == CommonConst.MODIFIED) noteTTC += $('#txtAPhone').attr('name') + ';';
+                    if ($('#txtStatusFax').val() == CommonConst.MODIFIED) noteTTC += $('#txtAFax').attr('name') + ';';
+                    if ($('#txtStatusEmail').val() == CommonConst.MODIFIED) noteTTC += $('#txtAEmail').attr('name') + ';';
+                    if ($('#txtStatusWebsite').val() == CommonConst.MODIFIED) noteTTC += $('#txtAWebsite').attr('name') + ';';
+                    if ($('#txtStatusTaxCode').val() == CommonConst.MODIFIED) noteTTC += $('#txtATaxCode').attr('name') + ';';
+                    if ($('#txtStatusReg_Biz_No').val() == CommonConst.MODIFIED) noteTTC += $('#txtAReg_Biz_No').attr('name') + ';';
+                    console.log(files.length);
+                    // có trường thay đổi giá trị thì mới update
+                    if (noteTTC.length > 0 || files.length > 0) {
+                        data.append('ACpnyID', $('#txtCpnyID').val());
+                        //data.append('AStockCode', $('#txtAStockCode_2').val());
+                        data.append('AHeadOffice', $('#txtAHeadOffice').val());
+                        data.append('APhone', $('#txtAPhone').val());
+                        data.append('AFax', $('#txtAFax').val());
+                        data.append('AEmail', $('#txtAEmail').val());
+                        data.append('AWebsite', $('#txtAWebsite').val());
+                        data.append('ATaxCode', $('#txtATaxCode').val());
+                        data.append('AReg_Biz_No', $('#txtAReg_Biz_No').val());
+                        data.append('ANote', noteTTC);
+                        console.log(CommonConst.LOGO_PATH_OLD);
+                        data.append('ALogoPath', CommonConst.LOGO_PATH_OLD);
+                        data.append('AApprove', CommonConst.MODIFIED);
+                    }
+
+                    // Các mốc lịch sử
+                    let developProgresses = [];
+
+                    let dataTable = $('#List-Historical tbody');
+
+                    dataTable.find('tr').each(function (i, el) {
+                        let noteProgress = '';
+
+                        var statusDateHistory = $(this).find('td input.is-status').val();
+                        var statusTxtHistory = $(this).find('td input.is-status-2').val();
+                        var statusOrderHistory = $(this).find('td input.is-status-3').val();
+
+                        if (statusDateHistory != 0) noteProgress += 'EventDate' + ';';
+                        if (statusTxtHistory != 0) noteProgress += 'EventDesc' + ';';
+                        if (statusOrderHistory != 0) noteProgress += 'EventOrder' + ';';
+
+                        if (noteProgress.length > 0) {
+                            var idHistory = $(this).find('td input.txt-id-history').val();
+                            var dateHistory = $(this).find('td input.txt-date-history').val();
+                            var textHistory = $(this).find('td textarea.txt-history').val();
+                            var orderHistory = $(this).find('td input.txt-order-history').val();
+
+                            if (dateHistory == "" || textHistory == "" || isNaN(orderHistory)) {
+                                $("#loading").removeClass("loading");
+                                if (isNaN(orderHistory)) {
+                                    toastr.error('@Localizer["STTOnlyNumberOrEmpty"]');
+                                    return false;
+                                }
+                                toastr.error('@Localizer["DevelopProgressesIsNotNull"]');
+                                return false;
+                            } else {
+                                if (idHistory != 0) {
+
+                                    let developProgresse = {
+                                        EventID: idHistory,
+                                        EventOrder: orderHistory,
+                                        EventDate: dateHistory,
+                                        EventDesc: textHistory,
+                                        Note: noteProgress,
+                                        CpnyID: $('#txtCpnyID').val(),
+                                        Approve: CommonConst.MODIFIED
+                                    }
+
+                                    developProgresses.push(developProgresse);
+                                }
+
+                                if (idHistory == 0 && dateHistory.trim() && textHistory.trim()) {
+
+                                    let developProgresse = {
+                                        EventID: idHistory,
+                                        EventOrder: orderHistory,
+                                        EventDate: dateHistory,
+                                        EventDesc: textHistory,
+                                        Note: noteProgress,
+                                        CpnyID: $('#txtCpnyID').val(),
+                                        Approve: CommonConst.CREATE_NEW
+                                    }
+
+                                    developProgresses.push(developProgresse);
+                                }
+                            }
+                        }
+                    });
+
+                    if (developProgresses.length > 0) data.append('jsonDevelopProgresses', JSON.stringify(developProgresses));
+
+                    //console.log('noteTTC: ' + noteTTC);
+                    //console.log(developProgresses);
+                    //console.log(data);
+
+                    if (noteTTC.trim() || developProgresses.length > 0) {
+                        $.ajax({
+                            url: '@Url.Action("SaveTTC", "ThongTinChung")',
+                            method: 'POST',
+                            contentType: false,
+                            processData: false,
+                            data: data,
+                            success: (res) => {
+                                //console.log(res);
+
+                                if (res.code == 0) {
+                                    loadData();
+                                    Swal.fire({
+                                        html: "@Localizer["Approving"].Value",
+                                        type: 'success',
+                                        confirmButtonText: 'OK'
+                                    });
+                                    //toastr.success(res.message);
+                                } else {
+                                    toastr.error(res.message);
+                                }
+
+                                $('#loading').removeClass('loading');
+                            },
+                            error: (err) => {
+                                $('#loading').removeClass('loading');
+                               // console.log(err);
+                            }
+                        });
+                    } else {
+                        $('#loading').removeClass('loading');
+                        toastr.error('@Localizer["DataHasNotBeenChanged"].Value');
+                    }
+                });
+
+                setInterval(() => {
+                    commons.eventModified();
+                }, 1500);
+            }
+
+            // object chứa các func dùng chung
+            var commons = {
+
+                // func set data
+                setDataFormTTC: (data) => {
+
+                    if (data == null) return;
+                    let company = data.company;
+                    let developProgresses = data.developProgresses;
+
+                    // nếu thông tin đang ở trạng thái chờ approve thì không cho lưu nữa
+                    if (company.aApprove == 1 || company.aApprove == 2) {
+                        $("#btnSave").prop('disabled', true);
+                        $("#btnAddRecord").prop('hidden', true);
+                    }
+
+                    if (Array.isArray(developProgresses) && developProgresses.length > 0) {
+                        for (var item of developProgresses) {
+                            if (item.approve == 1 || item.approve == 2) {
+                                $("#btnSave").prop('disabled', true);
+                                $("#btnAddRecord").prop('hidden', true);
+                            }
+                        }
+                    }
+                    let link_show_logo = '@_Link_Show_Logo' + company.aLogoPath;
+                    console.log(data);
+                    // Thông tin chung
+                    $('#txtCpnyID').val(company.aCpnyID);
+                    $('#txtAStockCode_2').val(company.aStockCode);
+                    $('#txtAStockCode').val(company.aStockCode);
+                    $('#txtNameVN').val(company.aName_VN);
+                    $('#txtAName_Short').val(company.aName_Short);
+                    $('#txtAHeadOffice').val(company.aHeadOffice);
+                    $('#txtACapital').val(numberWithCommas(company.aCapital));
+
+                    $('#txtAPhone').val(company.aPhone);
+                    $('#txtAFax').val(company.aFax);
+                    $('#txtAEmail').val(company.aEmail);
+                    $('#txtAWebsite').val(company.aWebsite);
+                    $('#txtMinisnamevn').val(company.minisnamevn);
+                    $('#txtATaxCode').val(company.aTaxCode);
+                    $('#txtAReg_Biz_No').val(company.aReg_Biz_No);
+
+                    $('#imagePreview').text = '';
+                  //  $('#imagePreview').css('background-image', `url(${link_show_logo})`);
+                    $('#imagePreview').empty().append("<img src='"+link_show_logo+"'\>");
+                    CommonConst.LOGO_PATH_OLD = company.aLogoPath;
+                    console.log(link_show_logo);
+                    // Thông tin niêm yết
+                    $('#txtAPost_Date').text(formatDateTimeToDate(company.aPost_Date));
+                    $('#txtAPost_To').text(company.aPost_To);
+                    $('#txtAFirst_Price').text(numberWithCommas(company.aFirst_Price));// error values
+                    $('#txtAOrg_Price').text(numberWithCommas(company.aOrg_Price));// error values
+                    $('#txtAQty').text(numberWithCommas(company.aQty));
+                    $('#txtACapital2').text(numberWithCommas(company.aCapital));
+
+                    // Lĩnh vực SXKD chính
+                    $('#txtASummary').val(company.aSummary);
+
+                    // set color cho lable khi trường đó bị sửa đổi
+                    if (company.aNote != null && company.aNote.length > 0) {
+                        let names = company.aNote.split(';');
+                        names.forEach((name) => {
+                            var label = $('label[for="' + name + '"]');
+                            label.css('color', 'red');
+                        });
+                    }
+
+                    // Các mốc lịch sử
+                    if (Array.isArray(developProgresses) && developProgresses.length > 0) {
+                        $("#List-Historical tbody tr").remove();
+                        let html = '';
+                        let hidden = '';
+                        for (let dev of developProgresses) {
+                            let styleEventDate = '';
+                            let stypeEventDesc = '';
+                            let styleEventOrder = '';
+
+                            // set color cho lable khi trường đó bị sửa đổi
+                            if (company.aNote != null && company.aNote.length > 0) hidden = 'hidden';
+
+                            if (dev.note != null && dev.note.length > 0) {
+
+                                hidden = 'hidden';
+
+                                let names = dev.note.split(';');
+                                names.forEach((name) => {
+                                    if (name == 'EventDate') styleEventDate = `style='color:red'`;
+                                    if (name == 'EventDesc') stypeEventDesc = `color:red`;
+                                    if (name == 'EventOrder') styleEventOrder = `style='color:red'`;
+                                });
+                            }
+                            // kiểm tra giá trị null
+                            let evOrd = dev.eventOrder ?? '';
+                            console.log(evOrd);
+
+                            html += `
+                                    <tr>
+                                        <td class="left-text-table4" style="width: 10%; padding-right: 2%;">
+                                            <input type="number" value="0" class="is-status-3" hidden/>
+                                            <input class="txt-input form-textbox-event txt-order-history" type="text" value="${evOrd}" maxlength="50" hidden>
+                                            <p class="txt-order-history-old" ${styleEventOrder}>${evOrd}</p>
+                                        </td>
+                                        <td class="left-text-table4" style="width: 20%">
+                                            <input type="number" value="0" class="is-status" hidden/>
+                                            <input type='number' value='${dev.eventID}' class='txt-id-history' hidden/>
+                                            <input class="txt-input form-textbox-event txt-date-history" type="text" value="${dev.eventDate}" maxlength="50" hidden>
+                                            <p class="txt-date-history-old" ${styleEventDate}>${dev.eventDate}</p>
+                                        </td>
+                                        <td class="right-textbox-table4" style="width: 50%; padding-left: 2%">
+                                            <input type="number" value="0" class="is-status-2" hidden/>
+                                            <p class="form-control-event txt-input content-textbox txt-history-old" tabindex="2" style="border: none;${stypeEventDesc}" >
+                                                ${dev.eventDesc}
+                                            </p>
+
+                                            <textarea class="form-control-event txt-history" maxlength="3200" hidden>${dev.eventDesc}</textarea>
+                                        </td>
+                                        <td class="right-textbox-table4" style="width: 20%">
+                                            <input type="button" class="btn-primary form-control mx-2 my-1 btn-edit" style="background-color: #13AB4B; max-width:85px; border-radius:15px;" value="@Localizer["Edit"].Value" ${hidden}>
+                                        </td>
+                                    </tr>`;
+                        }
+                        //console.log(html);
+                        $("#List-Historical tbody").append(html);
+
+                        if (hidden != '') $('.btn-edit').prop('hidden', true);
+                    }
+                },
+                // set status
+                eventModified: () => {
+                    $('body').on('change', '#txtAHeadOffice', function () {
+                        let parent = $(this).parent().parent();
+                        parent.find('label').css('color', 'red');
+                        parent.find('input#txtStatusHeadOffice').val(CommonConst.MODIFIED);
+                    });
+
+                    $('body').on('change', '#txtAPhone', function () {
+                        let parent = $(this).parent().parent();
+                        parent.find('label').css('color', 'red');
+                        parent.find('input#txtStatusPhone').val(CommonConst.MODIFIED);
+                    });
+
+                    $('body').on('change', '#txtAFax', function () {
+                        let parent = $(this).parent().parent();
+                        parent.find('label').css('color', 'red');
+                        parent.find('input#txtStatusFax').val(CommonConst.MODIFIED);
+                    });
+
+                    $('body').on('change', '#txtAEmail', function () {
+                        let parent = $(this).parent().parent();
+                        parent.find('label').css('color', 'red');
+                        parent.find('input#txtStatusEmail').val(CommonConst.MODIFIED);
+                    });
+
+                    $('body').on('change', '#txtAWebsite', function () {
+                        let parent = $(this).parent().parent();
+                        parent.find('label').css('color', 'red');
+                        parent.find('input#txtStatusWebsite').val(CommonConst.MODIFIED);
+                    });
+
+                    $('body').on('change', '#txtATaxCode', function () {
+                        let parent = $(this).parent().parent();
+                        parent.find('label').css('color', 'red');
+                        parent.find('input#txtStatusTaxCode').val(CommonConst.MODIFIED);
+                    });
+
+                    $('body').on('change', '#txtAReg_Biz_No', function () {
+                        let parent = $(this).parent().parent();
+                        parent.find('label').css('color', 'red');
+                        parent.find('input#txtStatusReg_Biz_No').val(CommonConst.MODIFIED);
+                    });
+
+                    $('body').on('change', '.txt-date-history', function () {
+                        let parent = $(this).parent();
+                        parent.find('input.txt-date-history').css('border-color', 'red');
+                        parent.find('input.is-status').val(CommonConst.MODIFIED);
+                    });
+
+                    $('body').on('change', '.txt-history', function () {
+                        let parent = $(this).parent();
+                        parent.find('textarea.txt-history').css('border-color', 'red');
+                        parent.find('input.is-status-2').val(CommonConst.MODIFIED);
+                    });
+
+                    $('body').on('change', '.txt-order-history', function () {
+                        let parent = $(this).parent();
+                        parent.find('input.txt-order-history').css('border-color', 'red');
+                        parent.find('input.is-status-3').val(CommonConst.MODIFIED);
+                    });
+                }
+            }
+        }
+
+        var thongTinChung = new ThongTinChung();
+        thongTinChung.init();
+
+        // read url image
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+
+                    /// $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+
+                    $('#imagePreview').empty().append("<img src='" + e.target.result + "'\>");
+                    $('#imagePreview').hide();
+                    $('#mydiv').hide();
+                    $('#imageUpload').show();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // add new row Các mốc lịch sử
+        function addAttribute() {
+            var html = `<tr>
+                            <td class="left-text-table4" style="width: 10%; padding-right: 2%;">
+                                <input type="number" value="1" class="is-status-3" hidden/>
+                                <input class="form-textbox-event txt-order-history" type="text" maxlength="50" />
+                            </td>
+                            <td class="left-text-table4" style="width: 20%">
+                                <input type="number" value="1" class="is-status" hidden/>
+                                <input type='number' value='0' class='txt-id-history' hidden/>
+                                <input class="txt-input form-textbox-event txt-date-history" type="text" maxlength="50" />
+                            </td>
+                            <td class="right-textbox-table4" style="width: 50%;padding-left: 2%">
+                                <input type="number" value="1" class="is-status-2" hidden />
+                                <textarea class="form-control-event txt-history" maxlength="3200"></textarea>
+                            </td>
+                            <td class="right-textbox-table4" style="width: 20%">
+                                <input type="button" class="btn-danger form-control mx-2 my-1 btn-delete" style="max-width:85px; border-radius:15px;" value="Xóa">
+                            </td>
+                        </tr>`
+            ;
+            $("#List-Historical").append(html);
+        }
+    });
+
+
+</script>

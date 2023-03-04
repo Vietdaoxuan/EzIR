@@ -1,0 +1,371 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@using Microsoft.AspNetCore.Localization
+@{
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var language = requestCulture.RequestCulture.UICulture.Name;
+    var CkeditorImgUrl = ViewBag.CkeditorImgUrl;
+}
+
+<div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor DaiHoiform"
+     id="k_content">
+
+
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+
+            <div id="nguyenlieu">
+            </div>
+
+            <div id="doanhthu">
+            </div>
+
+            <div id="sanpham">
+            </div>
+
+            <div id="doithu">
+            </div>
+
+            <div id="thitruong">
+            </div>
+
+            <div id="khac">
+            </div>
+        </div>
+
+
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+
+<!-- End of Main Content -->
+
+<div id="loading"></div>
+<script>
+     $(document).ready(function () {
+         var stock_code = window.location.href.split('/')[4];
+         var stockcode = stock_code.toUpperCase();
+            //console.log(stockcode);
+         var ThongTin = function () {
+
+            this.init = function () {
+                loadData();
+                loadNguyenlieu();
+                loadSanpham();
+                loadDoithu();
+                loadThitruong();
+                loadKhac();
+            }
+
+             var loadData = function () {
+                 $('#loading').addClass('loading');
+
+                var cpnyId = $("#cpnyid").val();
+                $.ajax({
+                    url: '@Url.Action("GetThiTruongKHDT", "ThongTinDoanhNghiep")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { cpnyID: cpnyId} ,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                          var lang = ReturnLanguage();
+                        let html = '';
+                        for (const item of data) {
+                            if (lang == "vi-VN" || lang == '') {
+                                if (item.alanguage == "VN") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["CCDT"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet','@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            } else {
+                                if (item.alanguage == "US") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["CCDT"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet','@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            }
+                        }
+
+                        $('#doanhthu').append(html);
+                    },
+                    error: function (err) {
+                        $('#loading').removeClass('loading');
+                       // console.log(err);
+                    }
+                });
+             }
+             var loadNguyenlieu = function () {
+                 $('#loading').addClass('loading');
+
+                        var cpnyId = $("#cpnyid").val();
+                        $.ajax({
+                            url: '@Url.Action("GetNguyenLieuDauVao", "ThongTinDoanhNghiep")',
+                            method: 'GET',
+                            dataType: 'json',
+                            data: { cpnyID: cpnyId} ,
+                            success: function (data) {
+                               // console.log(data);
+                                $('#loading').removeClass('loading');
+                                  var lang = ReturnLanguage();
+                                let html = '';
+                                for (const item of data) {
+                                    if (lang == "vi-VN" || lang == '') {
+                                        if (item.alanguage == "VN") {
+                                            html += `<div class="contentt">
+                                                                <p>@Localizer["NLDV"].Value</p>
+                                                            </div>
+
+                                                            <div class="kinhdoanh">
+                                                        ${item.acontent.replaceAll('Images/Inforsheet', '@CkeditorImgUrl')}
+                                                            </div>
+                                            `;
+                                        }
+                                    } else {
+                                        if (item.alanguage == "US") {
+                                            html += `<div class="contentt">
+                                                                <p>@Localizer["NLDV"].Value</p>
+                                                            </div>
+
+                                                            <div class="kinhdoanh">
+                                                        ${item.acontent.replaceAll('Images/Inforsheet', '@CkeditorImgUrl')}
+                                                            </div>
+                                            `;
+                                        }
+                                    }
+                                }
+
+                                $('#nguyenlieu').append(html);
+                            },
+                            error: function (err) {
+                                $('#loading').removeClass('loading');
+                               // console.log(err);
+                            }
+                        });
+
+             }
+
+             var loadSanpham = function () {
+                 $('#loading').addClass('loading');
+
+                var cpnyId = $("#cpnyid").val();
+                $.ajax({
+                    url: '@Url.Action("GetSanPham", "ThongTinDoanhNghiep")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { cpnyID: cpnyId} ,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                         var lang = ReturnLanguage();
+                        let html = '';
+                        for (const item of data) {
+                            if (lang == "vi-VN" || lang == '') {
+                                if (item.alanguage == "VN") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["SPTT"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet','@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            } else {
+                                if (item.alanguage == "US") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["SPTT"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet','@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            }
+                        }
+
+                        $('#sanpham').append(html);
+                    },
+                    error: function (err) {
+                        $('#loading').removeClass('loading');
+                       // console.log(err);
+                    }
+                });
+
+             }
+
+             var loadThitruong = function () {
+                 $('#loading').addClass('loading');
+
+                        var cpnyId = $("#cpnyid").val();
+                $.ajax({
+                    url: '@Url.Action("GetThiTruong", "ThongTinDoanhNghiep")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { cpnyID: cpnyId} ,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                         var lang = ReturnLanguage();
+                        let html = '';
+                        for (const item of data) {
+                            if (lang == "vi-VN" || lang == '') {
+                                if (item.alanguage == "VN") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["TTKH"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet','@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            } else {
+                                if (item.alanguage == "US") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["TTKH"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet', '@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            }
+                        }
+
+                        $('#thitruong').append(html);
+                    },
+                    error: function (err) {
+                        $('#loading').removeClass('loading');
+                       // console.log(err);
+                    }
+                });
+
+             }
+
+             var loadDoithu = function () {
+                 $('#loading').addClass('loading');
+
+                var cpnyId = $("#cpnyid").val();
+                $.ajax({
+                    url: '@Url.Action("GetDoiThu", "ThongTinDoanhNghiep")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { cpnyID: cpnyId} ,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                         var lang = ReturnLanguage();
+                        let html = '';
+                        for (const item of data) {
+                            if (lang == "vi-VN" || lang == '') {
+                                if (item.alanguage == "VN") {
+                                    html += `<div class="contentt">
+                                                <p>@Localizer["DTCT"].Value</p>
+                                            </div>
+
+                                            <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet', '@CkeditorImgUrl')}
+                                            </div>
+                                    `;
+                                }
+                            } else {
+                                if (item.alanguage == "US") {
+                                    html += `<div class="contentt">
+                                                <p>@Localizer["DTCT"].Value</p>
+                                            </div>
+
+                                            <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet', '@CkeditorImgUrl')}
+                                            </div>
+                                    `;
+                                }
+                            }
+                        }
+
+                        $('#doithu').append(html);
+                    },
+                    error: function (err) {
+                        $('#loading').removeClass('loading');
+                       // console.log(err);
+                    }
+                });
+
+             }
+
+             var loadKhac = function () {
+                 $('#loading').addClass('loading');
+
+                var cpnyId = $("#cpnyid").val();
+                $.ajax({
+                    url: '@Url.Action("GetKhac", "ThongTinDoanhNghiep")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { cpnyID: cpnyId} ,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                          var lang = ReturnLanguage();
+                        let html = '';
+                        for (const item of data) {
+                            if (lang == "vi-VN" || lang == '') {
+                                if (item.alanguage == "VN") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["TTKHDTK"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet','@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            } else {
+                                if (item.alanguage == "US") {
+                                    html += `<div class="contentt">
+                                                        <p>@Localizer["TTKHDTK"].Value</p>
+                                                    </div>
+
+                                                    <div class="kinhdoanh">
+                                                ${item.acontent.replaceAll('Images/Inforsheet','@CkeditorImgUrl')}
+                                                    </div>
+                                    `;
+                                }
+                            }
+                        }
+
+                        $('#khac').append(html);
+                    },
+                    error: function (err) {
+                        $('#loading').removeClass('loading');
+                       // console.log(err);
+                    }
+                });
+
+            }
+         }
+         var thongTin = new ThongTin();
+         thongTin.init();
+    });
+</script>

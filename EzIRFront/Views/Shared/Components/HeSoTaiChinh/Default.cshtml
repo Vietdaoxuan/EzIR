@@ -1,0 +1,443 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@{
+}
+
+<link href="~/css/taichinh.css" rel="stylesheet" />
+<style>
+    
+
+    /*new css*/ 
+    
+    
+    
+    /*End Css Scroll (thanh cuộn ngang) dưới*/
+</style>
+<div class="container-fluid">
+
+    <div class="contentt">
+        <p>@Localizer["FINANCIAL_RATIOS"]</p>
+    </div>
+
+    <div class="form_content">
+        <form id="taichinhform">
+                    <div class="form-groups row" >
+                        <div class="col-md-1">
+                            <label class="" id="lbl_kybc">@Localizer["REPORTING_PERIOD"]</label>
+                        </div>
+
+                        <div class="col-md-1" >
+                            <select class="form-item" id="Period">
+
+                                <option value="12Y">@Localizer["WHOLEYEAR"]</option>
+                                <option value="3">@Localizer["QUARTER1"]</option>
+                                <option value="6">@Localizer["QUARTER2"]</option>
+                                <option value="6Y">@Localizer["6MONTHS"] </option>
+                                <option value="9" selected>@Localizer["QUARTER3"]</option>
+                                <option value="12">@Localizer["QUARTER4"]</option>
+
+                            </select>
+
+                        </div>
+                        <div class="col-md-1 ">
+                            <select class="form-item" id="Year">
+                            </select>
+                        </div>
+
+                        <div class="col-md-1 ">
+                            <label class="">@Localizer["NUM_OF_PERIOD"]</label>
+                        </div>
+                        <div class="col-md-1 ">
+
+                            <select class="form-item" id="NumOfPeriod">
+                                <option value="5" selected>5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1 ">
+                            <label class="">@Localizer["UNIT"]</label>
+                        </div>
+                        <div class="col-md-1 ">
+
+                            <select class="form-item" id="Unit">
+                                <option value="b">@Localizer["BILLION"]</option>
+                                <option value="m">@Localizer["MILLION"]</option>
+                                <option value="t">@Localizer["THOUSANDS"]</option>
+                                <option value="d" selected>@Localizer["DONG"]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 " id="new_year">
+
+                            <select class="form-item" id="DataType">
+                                <option value="1" selected>@Localizer["CALENDER_YEAR"]</option>
+                                <option value="2">@Localizer["FINANCIAL_YEAR"]</option>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-3 btn-view">
+                            <button class="btn btn-success btnSearchHSTC" type="button" id="btnxem" >
+                                @Localizer["View"]
+                            </button>
+
+                        
+                            <button class="btn btn-success btnSearchHSTC" type="button" id="btnExport" >
+                                @Localizer["Export"]
+                            </button>
+
+                        </div>
+                        
+
+                    </div>
+
+     
+          
+        </form>
+    </div>
+
+    <!-- Page Heading -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+    <!--Table tai chinh-->
+    <div class="table-content" style="width:100%;">
+        <div class="wmd-view-topscroll">
+            <div class="scroll-div1">
+            </div>
+        </div>
+        <div class="wmd-view">
+            <div class="scroll-div2" >
+                <table id="table_taichinh" class="table-fixed" cellspacing="0" cellpadding="0" border="0"
+                        @*margin-bottom:15px;*@>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--End Table tai chinh-->
+
+</div>
+
+<div id="loading"></div>
+<script>
+    // set up two scroll bars on content
+    $(function () {
+        $(".wmd-view-topscroll").scroll(function () {
+            $(".wmd-view")
+                .scrollLeft($(".wmd-view-topscroll").scrollLeft());
+        });
+        $(".wmd-view").scroll(function () {
+            $(".wmd-view-topscroll")
+                .scrollLeft($(".wmd-view").scrollLeft());
+        });
+    });
+    $(document).ready(function () {
+        
+        var HSTC = function () {
+            this.init = function () {
+                loadYear();
+                let month = new Date().getMonth() + 1;
+                if (month < 3) {
+                    $('#Period').val(12);
+                    $('#Year').val($('#Year').val() - 1);
+                } else if (month < 6) {
+                    $('#Period').val(3);
+                } else if (month < 9) {
+                    $('#Period').val(6);
+                } else $('#Period').val(9);
+                var width = screen.width;
+                if (width <= 567) {
+                    $('#Unit').val('m');
+                };
+                loadDataHSTC($('#Year').val(), $('#DataType').val(), $('#Period').val(), 'Q');
+                registerEventsHSTC();
+            }
+            var stock_code = window.location.href.split('/')[4];
+            var stockcode = stock_code.toUpperCase().split('?')[0];
+            var langLink = ReturnLinkLanguage();
+            
+            var loadDataHSTC = function (year, dataType, period, dateType) {
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetHSTC", "ThongTinDoanhNghiep")' + langLink,
+                    data: {
+                        stock_code: stockcode,
+                        year: year,
+                        datatype: dataType,
+                        period: period,
+                        dateType: dateType
+                    },
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                        // console.log('Số kỳ ' + $('#NumOfPeriod').val());
+                        var cpnytype = $('#cpnytypeid').val();
+                        var numOfPeriods = $('#NumOfPeriod').val();
+                        var unit = $('#Unit').val();
+                        if (data != null) {
+                            var html = `<tr class="chitieu"><th class="ReportTitleLeft headcol" ><div class="text-title">@Localizer["Items"].Value</div></th>`;
+
+                            for (var i = 0; i < data[0].table.length; i++) {
+                                var k = 0;
+                                var obj = data[0].table[i]
+                                for (var key in obj) {
+                                    //console.log(obj[key]);
+                                    html += `<th class="reportTitle" width="130px">${obj[key]}</th>`
+                                    k++;
+                                    if (k == $('#NumOfPeriod').val()) {
+                                        break;
+                                    }
+                                }
+                            };
+
+                            html += `</tr>`
+                            for (var i = 0; i < data[0].table1.length; i++) {
+                                if (data[0].table1[i].alev == '1') {
+                                    html += `<tr style=" font-weight: bold;" class="data_chitieu hidden_row">
+                                                <td class="ReportTitleLeft heightauto heading data_chitieu headcol trfirst"  id="${data[0].table1[i].arcode}"><div class="text-title"> <i class="fas fa-caret-down"></i> ${data[0].table1[i].adescription}</div></td>`
+                                    for (var j = 0; j < numOfPeriods; j++) {
+                                        html += `<td class="reportTitle heightauto" width="130px"><p></p></td>`
+                                    }
+                                    html += `</tr>`
+                                } else {
+                                    if (data[0].table1[i].aparentcode == "0501000000" || data[0].table1[i].aparentcode == "0502000000" ||
+                                        data[0].table1[i].aparentcode == "1501000000" || data[0].table1[i].aparentcode == "1502000000" ||
+                                        data[0].table1[i].aparentcode == "2501000000" || data[0].table1[i].aparentcode == "2502000000" ||
+                                        data[0].table1[i].aparentcode == "3501000000" || data[0].table1[i].aparentcode == "3502000000"
+                                        ) {
+                                        html += `<tr class="data_chitieu hidden_row ${data[0].table1[i].aparentcode}"><td class="ReportTitleLeft heightauto headcol" ><div class="text-title">${data[0].table1[i].adescription}</div></td>`
+                                    } else {
+                                        var adesc = data[0].table1[i].atipdesc ?? ""; // kiểm tra hiển thị chữ null
+                                        html += `<tr class="data_chitieu hidden_row ${data[0].table1[i].aparentcode}"><td class="ReportTitleLeft heightauto headcol tooltip_taichinh" ><div class="text-title">${data[0].table1[i].adescription}</div>
+                                                    <div class="tooltiptext">
+                                                        <div class="header">
+                                                            <h5 class="title">${data[0].table1[i].adescription}</h5>
+                                                        </div>
+                                                        <div class="body">
+                                                        <p>"${adesc}"</p>
+                                                        <span>Thông tin thuộc về FPTS &copy; 2021</span>
+                                                        </div>
+                                                    </div>
+                                                </td>`
+                                    }
+                                    var k = 0;
+                                    var obj = data[0].table1[i]
+                                    for (var key in obj) {
+
+                                        //// với t.h null thì hiển thị "-"
+
+                                        //// áp dụng cho Chỉ tiêu Báo cáo Lãi/Lỗ với id = 2501000000 và Chỉ tiêu Bảng cân đối kế toán với id = 2502000000
+                                        //if (obj.aparentcode == 2501000000 || obj.aparentcode == 2502000000) {
+                                        //    if (key.includes('coL') && obj[key] != "-") {
+                                        //        switch (unit) {
+                                        //            //Đơn vị hàng tỷ
+                                        //            case 'b':
+                                        //                obj[key] = parseInt(obj[key] / 1e9);
+                                        //                break;
+                                        //            //Đơn vị hàng triệu
+                                        //            case 'm':
+                                        //                obj[key] = parseInt(obj[key] / 1e6);
+                                        //                break;
+                                        //            //Đơn vị hàng nghìn
+                                        //            case 't':
+                                        //                obj[key] = parseInt(obj[key] / 1e3);
+                                        //                break;
+                                        //        }
+                                        //    }
+                                        //}
+
+                                        //// Chỉ tiêu chỉ tính trên một cổ phiếu
+                                        //if (obj.aparentcode == 2504000000 && obj[key] != "-") {
+                                        //        //format số có dấu "," vả bỏ phần thập phân
+                                        //        obj[key] = obj[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                        //        obj[key] = obj[key].split('.')[0];
+                                        //}
+
+                                        //// Chỉ tiêu về định giá cổ phiếu & chỉ tiêu về khả năng thanh khoản & chỉ tiêu về đòn bẩy tài chính
+                                        //if ((obj.aparentcode == 2507000000 || obj.aparentcode == 2508000000 || obj.aparentcode == 2505000000) && obj[key] != "-") {
+                                        //        //Làm tròn sau dấu phẩy 2 chữ số
+                                        //        obj[key] = parseFloat(obj[key]).toFixed(2);
+
+                                        //}
+
+                                        ////Chỉ tiêu về khả năng sinh lời &  Chỉ tiêu về tăng trưởng
+                                        //if ((obj.aparentcode == 2506000000 || obj.aparentcode == 2503000000) && obj[key] != "-") {
+                                        //    //Lấy (giá trị * 100) làm tròn sau dấu phẩy 2 chữ số  + '%'
+                                        //    obj[key] = parseFloat(obj[key] * 100).toFixed(2) + '%';
+                                        //}
+
+                                        //Hàm format giá trị dựa theo chỉ tiêu của từng nhóm ngành
+                                        //Đầu vào là các parent id tương ứng
+                                        var formatValue = function (bcll, bcdkt, ttmcp, dgcp, kntk, dbtc, knsl, tt, hqhd, ccv, hd, kntt, dbatv, clts) {
+                                            // áp dụng cho Chỉ tiêu Báo cáo Lãi/Lỗ & Chỉ tiêu Bảng cân đối kế toán với
+                                            if (obj[key] == null || obj[key] == "0") {
+                                                obj[key] = "-";
+                                            }
+                                            if (obj.aparentcode == bcll || obj.aparentcode == bcdkt) {
+                                                if (key.includes('coL') && obj[key] != "-") {
+                                                    switch (unit) {
+                                                        //Đơn vị hàng tỷ
+                                                        case 'b':
+                                                            obj[key] = parseInt(obj[key] / 1e9);
+                                                            break;
+                                                        //Đơn vị hàng triệu
+                                                        case 'm':
+                                                            obj[key] = parseInt(obj[key] / 1e6);
+                                                            break;
+                                                        //Đơn vị hàng nghìn
+                                                        case 't':
+                                                            obj[key] = parseInt(obj[key] / 1e3);
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                            if (obj[key] != null && key.includes('coL') && !obj[key].toString().includes('.')) {
+                                                obj[key] = obj[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                            }
+                                            // Chỉ tiêu chỉ tính trên một cổ phiếu
+                                            if (obj.aparentcode == ttmcp && obj[key] != "-") {
+                                                //format số có dấu "," vả bỏ phần thập phân
+                                                obj[key] = obj[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                                obj[key] = obj[key].split('.')[0];
+                                            }
+
+                                            // Chỉ tiêu về định giá cổ phiếu & chỉ tiêu về khả năng thanh khoản & chỉ tiêu về đòn bẩy tài chính & hiệu quả hoạt động & cơ cấu vốn & hoạt động & khả năng thanh toán & đảm bảo an toàn vốn & chất lượng tài sản
+                                            if ((obj.aparentcode == dgcp || obj.aparentcode == kntk || obj.aparentcode == dbtc || obj.aparentcode == hqhd || obj.aparentcode == ccv || obj.aparentcode == hd || obj.aparentcode == kntt || obj.aparentcode == dbatv || obj.aparentcode == clts) && obj[key] != "-") {
+                                                //Làm tròn sau dấu phẩy 2 chữ số
+                                                obj[key] = parseFloat(obj[key]).toFixed(2);
+                                            }
+
+                                            //Chỉ tiêu về khả năng sinh lời &  Chỉ tiêu về tăng trưởng
+                                            if ((obj.aparentcode == knsl || obj.aparentcode == tt) && obj[key] != "-") {
+                                                //Lấy (giá trị * 100) làm tròn sau dấu phẩy 2 chữ số  + '%'
+                                                obj[key] = parseFloat(obj[key] * 100).toFixed(2) + '%';
+                                            }
+                                            return obj[key];
+                                        }
+
+                                        switch (cpnytype) {
+                                            case "0":
+                                                formatValue('0501000000', '0502000000', '0503000000', '0504000000', '0508000000', null, '0505000000', '0509000000', '0506000000', '0507000000', null, null, null, null);
+                                                break;
+                                            case "1":
+                                                formatValue('1501000000', '1502000000', '1503000000', '1504000000', null, null, '1508000000', '1509000000', null, null, null, '1507000000', '1505000000', '1506000000');
+                                                break;
+                                            case "2":
+                                                formatValue('2501000000', '2502000000', '2504000000', '2505000000', '2507000000', '2508000000', '2506000000', '2503000000', null, null, null, null, null, null);
+                                                break;
+                                            case "3":
+                                            case "5":
+                                                formatValue('3501000000', '3502000000', '3503000000', '3504000000', null, '3508000000', '3505000000', '350700ValueValuelue0000', null, null, '3509000000', '3506000000', null, null);
+                                                break;
+                                        }
+                                        //// với t.h số âm thì đển trong ngoặc
+                                        if (obj[key].includes('-') && obj[key] != '-' && key.includes('coL')) {
+                                            obj[key] = '(' + obj[key].replace('-', '') + ')';
+                                        }
+
+                                        html += `<td class="reportTitle heightauto" width="130px">${obj[key]}</td>`
+                                        k++;
+                                        if (k == numOfPeriods) {
+                                            break;
+                                        }
+                                    }
+
+                                    html += `</tr>`
+                                }
+
+                            }
+                            $('#table_taichinh tbody').empty();
+                            $('#table_taichinh tbody').append(html);
+                            isScroll();
+                        } else {
+                            $('#table_taichinh tbody').empty();
+                            isScroll();
+                        }
+                    }
+                });
+            }
+
+
+            //load selectlist năm với năm hiện tại -7
+            var loadYear = function () {
+                var htmlYear = ``
+                for (var i = new Date().getFullYear(); i >= new Date().getFullYear() - 7; i--) {
+                    if (i == new Date().getFullYear() - 1) {
+                        htmlYear += `<option value="${i}" selected>${i}</option>`
+                    } else {
+                        htmlYear += `<option value="${i}">${i}</option>`
+                    }
+                    $('#Year').empty();
+                    $('#Year').append(htmlYear);
+                }
+                $('#Year').val(new Date().getFullYear());
+            }
+
+            var registerEventsHSTC = function () {
+                $('#btnxem').click(function () {
+                    if ($('#Period').val().includes('Y')) {
+                        loadDataHSTC($('#Year').val(), $('#DataType').val(), $('#Period').val().substring(0, $('#Period').val().length-1),'Y');
+                    } else {
+                        loadDataHSTC($('#Year').val(), $('#DataType').val(), $('#Period').val(), 'Q');
+                    }
+
+                })
+
+                $('body').unbind().on('click', '.heading', function (e) {
+                    e.stopPropagation();
+                        $('.' + $(this).attr('id')).slideToggle();
+
+                })
+
+                $('#btnExport').click(function () {
+                    let period = 12;
+                    let dateType = "Q";
+                    if ($('#Period').val().includes('Y')) {
+                        period = $('#Period').val().substring(0, $('#Period').val().length - 1);
+                        dateType = "Y"
+                    } else {
+                        period = $('#Period').val();
+                        dateType = "Q"
+                    }
+                    var lang = langLink.replace('?', '&');
+                    var a = document.createElement("a");
+                    var urlDownload = '@Url.Action("ExcelHSTC", "ThongTinDoanhNghiep")' + "?stock_code=" + stockcode + "&year=" + $('#Year').val() + "&datatype=" + $('#DataType').val() + "&period=" + period + "&unit=" + $('#Unit').val() + "&dateType=" + dateType + "&numofPeriod=" + $('#NumOfPeriod').val() + lang ;
+                    a.href = urlDownload;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    
+                })
+            }
+
+
+            var isScroll = function () {
+                // Get on screen image
+                var tableWidth = $("#table_taichinh").width() + 2;
+                var screenWidth1 = screen.width;
+                var widthpx = tableWidth + "px"
+                console.log(tableWidth);
+                $(".scroll-div1").css("width", widthpx);
+                if (screenWidth1 > 1024) {
+                    $(".wmd-view-topscroll").css("height", "5px");
+                } else {
+                    $(".wmd-view-topscroll").css("height", "0px");
+                }
+            }
+
+        }
+        var hstc = new HSTC();
+        hstc.init();
+    })
+</script>
+
+

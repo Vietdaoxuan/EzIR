@@ -1,0 +1,72 @@
+﻿2022-08-24 17:43:11.052 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:BCO;P_PASSWORD:b4d786db37ab6aada77cab41d158573a;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2022-08-24 17:43:11.741 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_SEARCH
+-----paramArr ---
+P_USERNAME:BCO;P_FULLNAME:;P_EMAIL:;P_ACTIVE:;REFCURSOR:;
+
+2022-08-24 17:43:14.268 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:2330;P_APPROVE:;Refcursor:;
+
+2022-08-24 17:43:14.291 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:2330;RefCursor:;
+
+2022-08-24 17:49:04.840 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:2330;P_APPROVE:;Refcursor:;
+
+2022-08-24 17:49:05.532 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:2330;RefCursor:;
+
+2022-08-24 17:55:31.352 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:2330;P_APPROVE:;Refcursor:;
+
+2022-08-24 17:55:32.182 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:2330;RefCursor:;
+
+2022-08-24 17:55:39.847 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:2330;P_APPROVE:;Refcursor:;
+
+2022-08-24 17:55:39.861 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:2330;RefCursor:;
+
+2022-08-24 18:00:26.356 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:2330;P_APPROVE:;Refcursor:;
+
+2022-08-24 18:00:27.143 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:2330;RefCursor:;
+

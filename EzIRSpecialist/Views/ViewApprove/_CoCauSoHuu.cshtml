@@ -1,0 +1,197 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+@using CoreLib.Entities;
+@using System.Globalization;
+@model List<IEnumerable<SubCompany>>;
+
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHttpContextAccessor _httpContextAccessor;
+
+@{
+    ViewData["Title"] = "GetCoCauSoHuu";
+    var data = Model.ToList();
+}
+
+<link href="~/css/cocausohuu.css" type="text/css" rel="stylesheet" />
+<style>
+    table.dataTable {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+</style>
+<div class="k-portlet__body">
+    <div class="row col-12 nopadding" style="margin-top: -14px">
+        <div class="respon-mobile" style="width:100%">
+            <div class="text-box-label-general" style="padding-left: 0px;">
+                <div id="ctycon" class="col-md-12" style="padding-right: 0px;padding-left: 0px">
+                    <div class="row" style=" margin-bottom: 21px">
+                        <div class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px;">
+                            <div class="content-leadership-composition">
+                                <p class="text-leadership" for="" style="width: 100%;padding: 5px;color: #2D6696">Công ty con</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-box-label-general" style="padding-bottom: 15px;padding-left: 0px;padding-right: 0px;">
+                            <div class="forms-leadership-composition">
+                                <table id="list_SUBSIDIARIES" class="khung table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" aria-describedby="listAccount_info" style="width: 100%;border-bottom: 1px solid #cec5c5;">
+                                    <thead>
+                                        <tr role="row">
+                                            <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 8%;">Sắp xếp</th>
+                                            <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 20%;">Tên</th>
+                                            <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 25%;">Địa chỉ</th>
+                                            <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 15%;">Thuộc ngành</th>
+                                            <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 25%;">Loại hình công ty con</th>
+                                            <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 15%;">Nắm giữ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @{
+                                            int dem = Model[0].Count();
+                                            if (dem > 0)
+                                            {
+                                                foreach (var item in Model[0])
+                                                {
+                                                    <tr>
+                                                        <td>@Html.Raw(item.aorder)</td>
+                                                        <td>@Html.Raw(item.asubcompanyname)</td>
+                                                        <td>@Html.Raw(item.aaddress)</td>
+                                                        <td>@Html.Raw(item.anamevn)</td>
+                                                        <td>@Html.Raw(item.asubcompanytypedesc) </td>
+                                                        <td>@Html.Raw(item.asharerate)%</td>
+                                                    </tr>
+                                                }
+                                            }
+                                            <!--else
+                                            {
+                                                <script>
+                                                    $('#ctycon').hide();
+                                                </script>-->
+                                                @*<tr class="odd">
+                                                    <td valign="top" colspan="6" class="dataTables_empty">No data available in table</td>
+                                                </tr>*@
+                                            <!--}-->
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ctylk" class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px;">
+                    <div class="col-md-12" style="padding-right: 0px;padding-left: 0px;">
+                        <div class="row" style=" margin-bottom: 21px">
+                            <div class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px">
+                                <div class="content-leadership-composition">
+                                    <p class="text-leadership" for="" style="width: 100%;padding: 5px;color: #2D6696;">Công ty liên kết</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-box-label-general " style="padding-bottom: 15px;padding-left: 0px;padding-right: 0px;">
+                                <div class="forms-leadership-composition">
+                                    <table id="listAssociated_Company" class="khung table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" aria-describedby="listAccount_info" style="width: 100%;border-bottom: 1px solid #cec5c5;">
+                                        <thead>
+                                            <tr role="row">
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 8%;">Sắp xếp</th>
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 25%;">Tên</th>
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 30%;">Địa chỉ</th>
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 25%;">Thuộc ngành</th>
+                                                <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 20%;">Nắm giữ</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{
+                                                int dem1 = Model[1].Count();
+                                                if (dem1 > 0)
+                                                {
+                                                    foreach (var item in Model[1])
+                                                    {
+                                                        <tr>
+                                                            <td>@Html.Raw(item.aorder)</td>
+                                                            <td>@Html.Raw(item.asubcompanyname)</td>
+                                                            <td>@Html.Raw(item.aaddress)</td>
+                                                            <td>@Html.Raw(item.anamevn)</td>
+                                                            <td>@Html.Raw(item.asharerate)%</td>
+                                                        </tr>
+
+                                                    }
+                                                }
+                                                <!--else
+                                                {
+                                                    <script>
+                                                        $('#ctylk').hide();
+                                                    </script>-->
+                                                    @*<tr class="odd">
+                                                        <td valign="top" colspan="6" class="dataTables_empty">No data available in table</td>
+                                                    </tr>*@
+                                                <!--}-->
+
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="codonglon" class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px;">
+                        <div class="col-md-12" style="padding-right: 0px;padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px">
+                                    <div class="content-leadership-composition">
+                                        <p class="text-leadership" for="" style="width: 100%;padding: 5px;color: #2D6696;">Cổ đông lớn</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-box-label-general" style="padding-left: 0px;padding-right: 0px;">
+                                    <div class="forms-leadership-composition">
+                                        <table id="listMajor_shareholder" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" aria-describedby="listAccount_info" style="width: 100%; border-bottom: 1px solid rgb(206, 197, 197);">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 8%;">Sắp xếp</th>
+                                                    <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 35%;">Cổ đông</th>
+                                                    <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 35%;">Cổ phần</th>
+                                                    <th class="sorting_disabled" rowspan="1" colspan="1" style="width: 30%;">Tỷ lệ</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    var dem2 = Model[2].Count();
+                                                    if (dem2 > 0)
+                                                    {
+                                                        foreach (var item in Model[2])
+                                                        {
+                                                            <tr>
+                                                                <td>@Html.Raw(item.aorder)</td>
+                                                                <td>@Html.Raw(item.ashname)</td>
+                                                                <td>@String.Format(CultureInfo.InvariantCulture, "{0:n0}", item.acurshareno)</td>
+                                                                <td>@Html.Raw(item.acursharerate)%</td>
+
+                                                            </tr>
+                                                        }
+                                                    }
+
+                                                    <!--else
+                                                    {
+                                                        <script>
+                                                            $('#codonglon').hide();
+                                                        </script>-->
+                                                        @*<tr class="odd">
+                                                            <td valign="top" colspan="6" class="dataTables_empty">No data available in table</td>
+                                                        </tr>*@
+                                                    <!--}-->
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>

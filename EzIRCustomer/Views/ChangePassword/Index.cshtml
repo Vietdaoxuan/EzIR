@@ -1,0 +1,182 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHtmlLocalizer<SharedResource> Localizer
+@model EzIRCustomer.Models.ChangePasswordViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="title_line d-flex" style="margin-bottom: 0px;">
+    <div class="container">
+        <span class="title_line_item">
+            <font color="#4187A6"><a href="" style="color:#4187A6;font-weight: 600;">@Localizer["ChangePassword"].Value</a></font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["ChangePassword"].Value</font>
+        </span>
+    </div>
+</div>
+<div class="k-portlet__body">
+    <div class="container">
+        <form enctype="multipart/form-data" name="changePasswordform" class="col-12 padt20 form-change-password" style="padding-top: 0px;
+                        padding-left: 300px;padding-bottom: 50px;" autocomplete="off">
+            <div>
+                @*<input class="form-control " type="text" value="@HttpContextAccessor.HttpContext.Request.Cookies["USERNAME"]" autofocus="true" hidden>*@
+            </div>
+            <div class="form-group row justify-ipad-password">
+                <div class="col-md-2 text-box-label ">
+                    <label class="text-box-left" for="">@Localizer["CurrentPassword"].Value</label>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control " type="password" autofocus="true" id="OldPassword" name="OldPassword">
+                    <span class="field-validation-valid" data-valmsg-for="OldPassword" data-valmsg-replace="true"></span>
+                    <span onclick="Function_OldPassword()" id="ChangeIcon" class="fa fa-eye toggle-password"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-ipad-password">
+                <div class="col-md-2 text-box-label ">
+                    <label class="text-box-left" for="">@Localizer["NewPassword"].Value</label>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control " type="password" autofocus="true" id="NewPassword" name="NewPassword">
+                    <span class="field-validation-valid" data-valmsg-for="NewPassword" data-valmsg-replace="true"></span>
+                    <span onclick="Function_NewPassword()" id="ChangeIconNew" class="fa fa-eye toggle-password"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-ipad-password">
+                <div class="col-md-2 text-box-label ">
+                    <label class="text-box-left" for="">@Localizer["VerifyPassword"].Value</label>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control " type="password" autofocus="true" id="ReEnterPassword" name="ReEnterPassword">
+                    <span class="field-validation-valid" data-valmsg-for="ReEnterPassword" data-valmsg-replace="true"></span>
+                    <span onclick="Function_ReEnterPassword()" id="ChangeIconReEnter" class="fa fa-eye toggle-password"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-ipad-password">
+                <div class="input-group-prepend col-md-2">
+                    <img id="img-captcha" src="@Url.Action("GetCaptchaImage","Login")" />
+                </div>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" placeholder="Captcha Code" asp-for="GCaptcha" id="GCaptcha" minlength="4" maxlength="4" required />
+                    <span asp-validation-for="GCaptcha"></span>
+                </div>
+            </div>
+            <div class="form-group row justify-ipad-password">
+                <div class="col-md-2"></div>
+                <div class="col-md-4">
+                    <button type="button" class=" btn-primary form-control " id="btnChangePassWord" style="border-radius: 5px;width: 100% !important">@Localizer["ChangePassword"].Value</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="loading"></div>
+<script type="text/javascript">
+    function Validate(i) {
+        var OldPassword = $('#OldPassword').val();
+        var NewPassword = $('#NewPassword').val();
+        var ReEnterPassword = $('#ReEnterPassword').val();
+
+             if (!OldPassword.trim()) {
+                      toastr.error('@Localizer["changePassWord_MAT_KHAU_CU__KHONG_DUOC_TRONG"]');
+                        return false;
+                                       }
+
+            if (!NewPassword.trim()) {
+                      toastr.error('@Localizer["changePassWord__MAT_KHAU_MOI_KHONG_DUOC_TRONG"]');
+                        return false;
+                                  }
+
+           if (NewPassword.length < 6) {
+                        toastr.error('@Localizer["PASSWORD_MINLENGTH"]');
+                        return false;
+                    }
+           if (NewPassword.length > 9) {
+                        toastr.error('@Localizer["PASSWORD_MAXLENGTH"]');
+                        return false;
+                    }
+           if (ReEnterPassword.trim() != NewPassword.trim()) {
+                       toastr.error('@Localizer["changePassWord__MAT_KHAU_NHAP_LAI_KHONG_KHOP"]');
+                        return false;
+                 }
+                    return true;
+    }
+     var Forgot = function () {
+
+                    this.init = function () {
+                        loadData();
+                        registerEvents();
+                    }
+
+                    var loadData = function () {
+
+                    }
+
+                    var registerEvents = function () {
+
+                        $("#img-captcha").click(function () {
+                            resetCaptchaImage();
+                        });
+
+                    }
+
+                    function resetCaptchaImage() {
+                        d = new Date();
+                        $("#img-captcha").attr("src", "@Url.Action("GetCaptchaImage","Login")?" + d.getTime());
+                    }
+     }
+
+     var forgot = new Forgot();
+     forgot.init();
+
+
+     $(document).ready(function () {
+        $("#btnChangePassWord").click(function () {
+
+            var Check = true;
+            const formData = new FormData(document.forms['changePasswordform']);
+            Check = Validate('btnChangePassWord');
+            if (Check) {
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ChangePassword","ChangePassword")',
+                    dataType: 'json',
+                    data: {
+                        OldPassword: formData.get('OldPassword'),
+                        NewPassword: formData.get('NewPassword'),
+                        ReEnterPassword: formData.get('ReEnterPassword'),
+                        GCaptcha: formData.get('GCaptcha')
+                    },
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        if (data.code == 0) {
+
+                            toastr.success(data.message);
+                        } else {
+                            toastr.error(data.message);
+                        }
+                        document.forms['changePasswordform'].reset();
+                    },
+                    error: function (err) {
+                        $('#loading').removeClass('loading');
+                        toastr.error('@Localizer["Sai_cap_char"]');
+                        d = new Date();
+                        $("#img-captcha").attr("src", "@Url.Action("GetCaptchaImage","Login")?" + d.getTime());
+                        document.forms['changePasswordform'].reset();
+                    }
+                });
+            }
+
+        });
+
+    });
+</script>
+<script type="text/javascript" src="js/dist/navbar_responsive.js"></script>
+<script type="text/javascript" src="js/dist/toogle-password.js"></script>

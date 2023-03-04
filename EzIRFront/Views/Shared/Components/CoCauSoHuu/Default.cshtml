@@ -1,0 +1,307 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Localization;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+
+
+@{
+    ViewData["Title"] = "Cơ cấu sở hữu";
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+
+
+}
+<link href="~/css/cocausohuu.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="~/assets/vendors/custom/datatables/datatables.bundle.css">
+<link /><div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor DaiHoiform" id="k_content">
+
+
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <div class="contentt">
+                <div id="ctycon">
+
+                </div>
+                <div id="ctylk">
+
+                </div>
+                <div id="codong">
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+
+    <!-- End of Main Content -->
+
+
+</div>
+<div id="loading"></div>
+<style>
+    .thuocnganh {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .diachi {
+        padding-left: 10px !important;
+    }
+</style>
+
+@*<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>*@
+<script src="~/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/vendors/custom/datatables/datatables.bundle.js"></script>
+<script>
+    $(document).ready(function () {
+        
+
+        var CoCauSoHuu = function () {
+
+            this.init = function () {
+                loaddata();
+
+            };
+            var rendercolumssubcompany = [
+                {
+                    title: "@Localizer["TenCongTyConLienKet"]",
+                    width:"30%",
+                    data: "asubcompanyname"
+
+                },
+                {
+                    title: "@Localizer["DiaChiCongTyConLienKet"]",
+                    width: "40%",
+                    data: "aaddress",
+                    class: "diachi"
+                },
+                {
+                    title: "@Localizer["ThuocNganhCongTyConLienKet"]",
+                    width: "20%",
+                    data: "anamevn",
+                    render: (data) => data.replace("---->", "").replace("-->", ""),
+                    class: "thuocnganh"
+                },
+                {
+                    title: "@Localizer["NamGiuCongTyConLienKet"]",
+                    width: "10%",
+                    data: "asharerate",
+                    render: (data) => alignRightText(data) + "%",
+                    class: "floatt-right"
+                }
+
+            ];
+
+             var rendercolumssubcompanyEN = [
+                {
+                    title: "@Localizer["TenCongTyConLienKet"]",
+                    width:"30%",
+                    data: "asubcompanynameen"
+
+                },
+
+                {
+                    title: "@Localizer["DiaChiCongTyConLienKet"]",
+                    width: "40%",
+                    data: "aaddressen",
+                    class: "diachi"
+                },
+                {
+                    title: "@Localizer["ThuocNganhCongTyConLienKet"]",
+                    width: "20%",
+                    data: "anameen",
+                    render: (data) => data.replace("---->", "").replace("-->", ""),
+                    class: "thuocnganh"
+                },
+                {
+                    title: "@Localizer["NamGiuCongTyConLienKet"]",
+                    width: "10%",
+                    data: "asharerate",
+                    render: (data) => alignRightText(data) + "%",
+                    class: "floatt-right"
+                }
+
+            ];
+
+            var renderholder = [
+                 {
+                    title: "@Localizer["TenCoDongLon"]",
+                    width: "30%",
+                    data: "ashname"
+
+                },
+
+                {
+                    title: "@Localizer["CoPhanCoDongLon"]",
+                    width: "40%",
+                    data: "acurshareno",
+                    render: (data) => formatNumber(data)
+                },
+                {
+                    title: "@Localizer["TileCoDongLon"]",
+                    width: "30%",
+                    data: "acursharerate",
+                    render: (data) => alignRightText(data) + "%",
+                    class: "floatt-right"
+                }
+
+            ];
+
+            var stock_code = window.location.href.split('?')[0].split('/')[4];
+            var stockcode = stock_code.toUpperCase();
+
+            function loaddata() {
+                $('#loading').addClass('loading');
+                $.ajax({
+
+                    url: '@Url.Action("ThongTin", "ThongTinDoanhNghiep")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { stock_Code: stockcode },
+                    success: function (data) {
+
+                        var cpnyid = data[0].acpnyid;
+
+                        $.ajax({
+                            url: '@Url.Action("GetDataCoCauSoHuu", "ThongTinDoanhNghiep")',
+                            type: 'GET',
+                            dataType: 'json',
+                            data: { cpnyID: cpnyid },
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                if (data[0].table.length != 0) {
+                                   let html = ` <p id="ctycon">@Localizer["Subsidiaries"]</p>
+                                                <div style="padding: 10px 0px;">
+                                                    <table id="table_congtycon" cellspacing="0" cellpadding="0" border="0" style="width: 100%; height: auto; ">
+                                                    </table>
+                                                </div>`;
+                                    $('#ctycon').append(html);
+                                }
+                                if (data[0].table1.length != 0) {
+                                    let html = `<p id="ctylk">@Localizer["Associatedcompanies"]</p>
+                                        <div style="padding: 10px 0px;">
+                                            <table id="table_congtylienket" cellspacing="0" cellpadding="0" border="0" style="width: 100%; height: auto; ">
+                                            </table>
+
+                                        </div>`;
+                                    $('#ctylk').append(html);
+                                }
+                                if (data[0].table2.length != 0) {
+                                    let html = ` <p id="codonglon">@Localizer["MAJORSHAREHOLDERS"]</p>
+                                    <div style="padding: 10px 0px;">
+                                        <table id="table_codong" cellspacing="0" cellpadding="0" border="0" style="width: 100%; height: auto; ">
+                                        </table>
+
+                                    </div>`;
+                                    $('#codong').append(html);
+                                }
+                                var lang = ReturnLanguage();
+                                //console.log(lang);
+                                if (lang == "vi-VN" || lang == '' || lang == "VN") {
+                                    $('#table_congtycon').DataTable({
+                                        ordering: false,
+                                        dom: "lti<'justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        data: data[0].table,
+                                        columns: rendercolumssubcompany
+                                    });
+
+                                    $('#table_congtylienket').DataTable({
+
+                                        ordering: false,
+                                        dom: "lti<'justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        data: data[0].table1,
+                                        columns: rendercolumssubcompany
+                                    });
+
+                                    $('#table_codong').DataTable({
+                                        ordering: false,
+                                        dom: "lti<'pagingList justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        data: data[0].table2,
+                                        columns: renderholder
+                                    });
+                                } else {
+                                    $('#table_congtycon').DataTable({
+                                        ordering: false,
+                                        dom: "lti<'justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        data: data[0].table,
+                                        columns: rendercolumssubcompanyEN
+                                    });
+
+                                    $('#table_congtylienket').DataTable({
+
+                                        ordering: false,
+                                        dom: "lti<'justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        data: data[0].table1,
+                                        columns: rendercolumssubcompanyEN
+                                    });
+
+                                    $('#table_codong').DataTable({
+                                        ordering: false,
+                                        dom: "lti<'pagingList justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        data: data[0].table2,
+                                        columns: renderholder
+                                    });
+                                }
+                            },
+                            error: function (err) {
+                                $('#loading').removeClass('loading');
+                               // console.log(err);
+                            }
+                        });
+                    },
+                    error: function (err) {
+                        //console.log(err);
+                    }
+                });
+            }
+        }
+        var cocausohuu = new CoCauSoHuu();
+        cocausohuu.init();
+    });
+
+
+</script>

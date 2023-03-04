@@ -1,0 +1,120 @@
+﻿2022-03-11 13:27:12.773 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:TungTT;P_PASSWORD:87a07d0a58973f428f7c7b7a9dc2d462;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2022-03-11 13:27:13.680 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_SEARCH
+-----paramArr ---
+P_USERNAME:TungTT;P_FULLNAME:;P_EMAIL:;P_ACTIVE:;REFCURSOR:;
+
+2022-03-11 13:27:19.486 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-11 13:27:19.534 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-11 14:31:29.837 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:TungTT;P_PASSWORD:87a07d0a58973f428f7c7b7a9dc2d462;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2022-03-11 14:31:30.215 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_SEARCH
+-----paramArr ---
+P_USERNAME:TungTT;P_FULLNAME:;P_EMAIL:;P_ACTIVE:;REFCURSOR:;
+
+2022-03-11 14:31:51.274 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-11 14:31:51.294 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-11 14:36:14.385 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-11 14:36:14.859 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-11 14:37:08.788 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-11 14:37:08.801 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-11 14:54:26.766 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_INFOSHEET_SEARCH
+-----paramArr ---
+P_ID:;P_CPNYID:1295;P_HASCONTENT:;P_MENUID:;P_POSTDATE:;P_LANGUAGE:VN;REFCURSOR:;
+
+2022-03-11 14:54:27.233 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_INFOSHEET_SEARCH
+-----paramArr ---
+P_ID:;P_CPNYID:1295;P_HASCONTENT:;P_MENUID:;P_POSTDATE:;P_LANGUAGE:VN;REFCURSOR:;
+
+2022-03-11 14:54:30.761 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-11 14:54:30.777 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-11 15:21:50.952 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-11 15:21:51.460 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+
+2022-03-11 15:23:16.447 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_ORGMODEL_SEARCH
+-----paramArr ---
+P_ORGMODELID:;P_CPNYID:1295;P_APPROVE:;Refcursor:;
+
+2022-03-11 15:23:16.943 +07:00 [ERR] 
+-----SPname-----
+SPEZS_IR_ORGMODEL_SEARCH
+-----paramArr ---
+Porgmodelid:;Pcpnyid:1295;RefCursor:;
+

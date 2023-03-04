@@ -1,0 +1,626 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+<style>
+    .tab-pane {
+        height: auto !important;
+    }
+
+    .nav-pills {
+        background-color: #ffff;
+    }
+
+    #thongkedatlenh {
+        font-size: 15px;
+    }
+
+    .nav-pills.nav-tabs-btn.nav-pills-btn-success a.nav-link.active .nav-link-title {
+        color: #4CAF50 !important;
+    }
+
+    .nav-pills.nav-tabs-btn.nav-pills-btn-success a.nav-link.active {
+        background-color: #fff !important;
+    }
+
+    .hidden-tab{
+        display: none !important;
+    }
+
+    .active-tab {
+        display: flex !important;
+    }
+</style>
+<div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor DaiHoiform"
+     id="k_content">
+    <div id="content">
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <!-- Page Heading -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <div class="form_content" style="padding: 5px 0px 5px 0px;">
+                <div class="form-inline row" style="width:100%" id="cophieuform">
+                    <div class="col-sm-10 col-md-10 nopadding">
+                        @*Form Tìm kiếm thống kê đặt lệnh*@
+                        <div class="form-group row active-tab" id="thong_ke_dat_lenh">
+                            <div class="">
+                                <label class="col-form-label" id="lbl_kybc">@Localizer["FromDate"].Value</label>
+                            </div>
+                            <div class=" col-sm-2 col-mb-2 ">
+                                <input class="form-control" id="datefromTKDL" type="date" />
+                            </div>
+                            <div class="">
+                                <label class="col-form-label _margin-left">@Localizer["ToDate"].Value</label>
+                            </div>
+                            <div class=" col-sm-2 col-mb-2 ">
+                                <input class="form-control" id="datetoTKDL" type="date" />
+
+                            </div>
+                            <div class="col-sm-2  col-mb-2 _margin-top">
+
+                                <button type="submit" class="btn btn-success"
+                                        id="btnxemtkdl">
+                                    @Localizer["Xem"].Value
+                                </button>
+
+                            </div>
+                        </div>
+
+                        @*Form Tìm kiếm thống kê giá*@
+                    @*<div class="form-group row mb-2 hidden-tab" id="thong_ke_gia">
+                        <div class="">
+                            <label class="col-form-label" id="lbl_kybc">@Localizer["FromDate"].Value</label>
+                        </div>
+                        <div class=" col-sm-1 col-mb-1 " style="margin-right: 100px; ">
+                            <input class="form-control" id="datefromTKG" type="date" />
+                        </div>
+                        <div class="">
+                            <label class="col-form-label">@Localizer["ToDate"].Value</label>
+                        </div>
+                        <div class=" col-sm-1 col-mb-1 " style="margin-right: 100px; ">
+                            <input class="form-control" id="datetoTKG" type="date" />
+
+                        </div>
+                        <div class="col-sm-1  col-mb-1">
+
+                            <button type="submit" class="btn btn-success"
+                                    id="btnxemtkg">
+                                @Localizer["Xem"].Value
+                            </button>
+
+                        </div>
+                    </div>*@
+
+                        @*Form Tìm kiếm giao dịch nước ngoài*@
+                    <div class="form-group row hidden-tab" id="giao_dich_nuoc_ngoai">
+                        <div class="">
+                            <label class="col-form-label" id="lbl_kybc">@Localizer["FromDate"].Value</label>
+                        </div>
+                        <div class=" col-sm-2 col-mb-2 ">
+                            <input class="form-control" id="datefromGDNN" type="date" />
+                        </div>
+                        <div class="">
+                            <label class="col-form-label _margin-left">@Localizer["ToDate"].Value</label>
+                        </div>
+                        <div class=" col-sm-2 col-mb-2 ">
+                            <input class="form-control" id="datetoGDNN" type="date" />
+
+                        </div>
+                        <div class="col-sm-2  col-mb-2 _margin-top">
+
+                            <button type="submit" class="btn btn-success"
+                                    id="btnxemgdnn">
+                                @Localizer["Xem"].Value
+                            </button>
+
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="k-portlet__body">
+                <div class="form_content" style="text-align: center;">
+                    <form action="method" class="form-inline">
+                        <div class="row" style="width:100%;">
+                            <div class="col-sm-12 col-md-12 nopadding">
+                                <div class="form-group row _flex" style="text-align: center;justify-content: center;">
+                                    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row"
+                                        role="tablist">
+                                        <li class="nav-item  gsm-link-tab col-sm-3 col-mb-1"
+                                            id="tab_tkdl" style="display: contents;">
+
+                                            <a id="thongkedatlenh" data-toggle="tab"
+                                               class=" nav-link active show"
+                                               href="#tab_thongkedatlenh"
+                                               role="tab"
+                                               onclick="thong_ke_dat_lenh('thong_ke_dat_lenh')"
+                                               disabled="disabled" aria-selected="true">
+                                                <span class="nav-link-title "
+                                                      style="color:#838383;">
+                                                    @Localizer["Thongkedatlenh"].Value
+                                                </span>
+                                            </a>
+                                        </li>
+                                        @*<li class="nav-item  gsm-link-tab col-sm-2 col-mb-1"
+                                            id="tab_tkg" style="display: contents;">
+
+                                            <a id="thongkedatlenh" data-toggle="tab"
+                                               class=" nav-link" href="#tab_thongkegia"
+                                               role="tab" disabled="disabled"
+                                               onclick="thong_ke_gia('thong_ke_gia')"
+                                               aria-selected="false">
+                                                <span class="nav-link-title "
+                                                      style="color:#838383;">@Localizer["Thongkegia"].Value</span>
+                                                </a>
+                                            </li>*@
+                                            <li class="nav-item  gsm-link-tab col-sm-4 col-mb-1"
+                                                id="tab_tknn" style="display: contents;">
+                                                <a id="thongkedatlenh" data-toggle="tab"
+                                                   class=" nav-link" href="#tab_thongkegdnuocngoai"
+                                                   role="tab" disabled="disabled"
+                                                   onclick="giao_dich_nuoc_ngoai('giao_dich_nuoc_ngoai')"
+                                                   aria-selected="false">
+                                                    <span class="nav-link-title "
+                                                          style="color:#838383;">
+                                                        @Localizer["Thonggd"].Value
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-content" style="overflow: auto;">
+                        <div class="tab-pane fade active show" id="tab_thongkedatlenh"
+                             role="tabpanel">
+                            <table id="table_thongkedatlenh" cellspacing="0" cellpadding="0"
+                                   border="1"
+                                   style="width: 100%; height: auto; border: 1px solid #dadada;">
+                                <thead>
+                                    <tr style="border:1px solid #dadada;">
+                                        <th rowspan="2">@Localizer["Date"]</th>
+                                        <th rowspan="2">@Localizer["TC"]</th>
+                                        <th rowspan="2">@Localizer["OpenPrice"]</th>
+                                        <th rowspan="2">@Localizer["Highest"]</th>
+                                        <th rowspan="2">@Localizer["Lowest"]</th>
+                                        <th rowspan="2">@Localizer["Close"]</th>
+                                        <th colspan="2">@Localizer["Change"]</th>
+                                        <th rowspan="2">@Localizer["Adjusted_Closing_Price"]</th>
+                                        <th colspan="3">@Localizer["Trading_Volume"]</th>
+                                        <th colspan="3">@Localizer["Trading_Value"]</th>
+                                    </tr>
+                                    <tr style="border:1px solid #dadada;">
+                                        <th>+/-</th>
+                                        <th>%</th>
+                                        <th>@Localizer["Khop_lenh"]</th>
+                                        <th>@Localizer["Thoa_thuan"]</th>
+                                        <th>@Localizer["Total"]</th>
+                                        <th>@Localizer["Khop_lenh"]</th>
+                                        <th>@Localizer["Thoa_thuan"]</th>
+                                        <th>@Localizer["Total"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+
+                            </table>
+                        </div>
+
+                        @*<div class="tab-pane fade  " id="tab_thongkegia" role="tabpanel">
+                            <table id="table_thongkegia" cellspacing="0" cellpadding="0" border="1"
+                                   style="width: 100%; height: auto; border: 1px solid #dadada;">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2" style="width: 5%;">@Localizer["Date"]</th>
+                                        <th colspan="2">@Localizer["Buy"]</th>
+                                        <th colspan="2">@Localizer["Sell"]</th>
+                                        <th rowspan="2">@Localizer["Buy_Sell"]</th>
+                                        <th rowspan="2">@Localizer["TC"]</th>
+                                        <th colspan="2">@Localizer["BEST_Buy"]</th>
+                                        <th colspan="2">@Localizer["BEST_Sell"]</th>
+                                    </tr>
+                                    <tr>
+                                        <th>@Localizer["Lenh_mua"]</th>
+                                        <th>@Localizer["KL_mua"]</th>
+                                        <th>@Localizer["Lenh_ban"]</th>
+                                        <th>@Localizer["KL_ban"]</th>
+                                        <th>@Localizer["Gia"]</th>
+                                        <th>@Localizer["Mass"]</th>
+                                        <th>@Localizer["Gia"]</th>
+                                        <th>@Localizer["Mass"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>*@
+
+                        <div class="tab-pane fade  " id="tab_thongkegdnuocngoai" role="tabpanel">
+                            <table id="table_thongkegiaodichnuocngoai" cellspacing="0"
+                                   cellpadding="0" border="1"
+                                   style="width: 100%; height: auto; border: 1px solid #dadada;">
+                                <thead>
+                                    <tr style="color: #4A82BD; border:1px solid #dadada;">
+                                        <th rowspan="2">@Localizer["Date"]</th>
+                                        <th rowspan="2">@Localizer["kl_duocphep"]</th>
+                                        <th rowspan="2">@Localizer["sohuunuocngoai"]</th>
+                                        <th rowspan="2">@Localizer["Remaining_Room"]</th>
+                                        <th colspan="4">@Localizer["Trading_Volume"]</th>
+                                        <th colspan="4">@Localizer["Trading_Value"]</th>
+                                    </tr>
+                                    <tr>
+                                        <th>@Localizer["Buy"]</th>
+                                        <th>@Localizer["Whole_Market"]</th>
+                                        <th>@Localizer["Sell"]</th>
+                                        <th>@Localizer["Whole_Market"]</th>
+                                        <th>@Localizer["Buy"]</th>
+                                        <th>@Localizer["Whole_Market"]</th>
+                                        <th>@Localizer["Sell"]</th>
+                                        <th>@Localizer["Whole_Market"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+
+        <!-- End of Main Content -->
+
+
+    </div>
+    <div id="loading"></div>
+    <script>
+        // chuyển form search
+        function thong_ke_dat_lenh(data) {
+            var active = document.getElementById(data);
+           // var thongkegia = document.getElementById("thong_ke_gia");
+            var giaodichnuocngoai = document.getElementById("giao_dich_nuoc_ngoai");
+            if (active.classList.contains('active-tab') == false @*&& thongkegia.classList.contains('active-tab') == true *@&& giaodichnuocngoai.classList.contains('active-tab') == false) {
+                active.classList.add('active-tab');
+               // thongkegia.classList.remove('active-tab');
+                giaodichnuocngoai.classList.remove('active-tab');
+            }
+            if (active.classList.contains('active-tab') == false @*&& thongkegia.classList.contains('active-tab') == false *@&& giaodichnuocngoai.classList.contains('active-tab') == true) {
+                active.classList.add('active-tab');
+                //thongkegia.classList.remove('active-tab');
+                giaodichnuocngoai.classList.remove('active-tab');
+            }
+        }
+
+        //function thong_ke_gia(data) {
+        //    var active = document.getElementById(data);
+        //    var thongkedatlenh = document.getElementById("thong_ke_dat_lenh");
+        //    var giaodichnuocngoai = document.getElementById("giao_dich_nuoc_ngoai");
+        //    if (active.classList.contains('active-tab') == false && thongkedatlenh.classList.contains('active-tab') == true && giaodichnuocngoai.classList.contains('active-tab') == false) {
+        //        active.classList.add('active-tab');
+        //        thongkedatlenh.classList.remove('active-tab');
+        //        thongkedatlenh.classList.add('hidden-tab');
+        //        giaodichnuocngoai.classList.remove('active-tab');
+        //    }
+        //    if (active.classList.contains('active-tab') == false && thongkedatlenh.classList.contains('active-tab') == false && giaodichnuocngoai.classList.contains('active-tab') == true) {
+        //        active.classList.add('active-tab');
+        //        thongkedatlenh.classList.remove('active-tab');
+        //        thongkedatlenh.classList.add('hidden-tab');
+        //        giaodichnuocngoai.classList.remove('active-tab');
+        //    }
+        //}
+
+        function giao_dich_nuoc_ngoai(data) {
+            var active = document.getElementById(data);
+            //var thongkegia = document.getElementById("thong_ke_gia");
+            var thongkedatlenh = document.getElementById("thong_ke_dat_lenh");
+            if (active.classList.contains('active-tab') == false @*&& thongkegia.classList.contains('active-tab') == true*@ && thongkedatlenh.classList.contains('active-tab') == false) {
+                active.classList.add('active-tab');
+                //thongkegia.classList.remove('active-tab');
+                thongkedatlenh.classList.remove('active-tab');
+            }
+            if (active.classList.contains('active-tab') == false @*&& thongkegia.classList.contains('active-tab') == false*@ && thongkedatlenh.classList.contains('active-tab') == true) {
+                active.classList.add('active-tab');
+                //thongkegia.classList.remove('active-tab');
+                thongkedatlenh.classList.add('hidden-tab');
+                thongkedatlenh.classList.remove('active-tab');
+            }
+        }
+
+     $(document).ready(function () {
+         var stock_code = window.location.href.split('?')[0].split('/')[4];
+         var stockcode = stock_code.toUpperCase();
+         var ThongTin = function () {
+
+            this.init = function () {
+                loadData();
+               // loadThongkeGia();
+                loadThongkeNuocNgoai();
+             }
+             //format date
+             function formatDate(date) {
+                 var datePart = date.match(/\d+/g),
+                     year = datePart[0], // get only two digits
+                     month = datePart[1], day = datePart[2];
+                 return day + '/' + month + '/' + year;
+             }
+             //format chia hàng nghìn
+             const formatcomNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+             var loadData = function () {
+                     $('#table_thongkedatlenh tbody').empty();
+                     $('#loading').addClass('loading');
+                 var date1 = $('#datefromTKDL').val();
+                     if (date1 == "") {
+                         var d = new Date();
+                         var day = ("0" + (d.getDate() + 1)).slice(-2);
+                         var month = ("0" + d.getMonth()).slice(-2);
+                         date1 = d.getFullYear() + "-" + month + "-" + day;
+                         $("#datefromTKDL").val(date1);
+                     };
+                 var date2 = $('#datetoTKDL').val();
+                     if (date2 == "") {
+                         var d = new Date();
+                         var day = ("0" + d.getDate()).slice(-2);
+                         var month = ("0" + (d.getMonth() + 1)).slice(-2);
+                         date2 = d.getFullYear() + "-" + month + "-" + day;
+                         $("#datetoTKDL").val(date2);
+                     };
+                        $.ajax({
+                            url: '@Url.Action("SearchLichSuGiaoDich", "ThongTinDoanhNghiep")',
+                            method: 'POST',
+                            dataType: 'json',
+                            data: {
+                                stock_Code: stockcode,
+                                fromDate: date1,
+                                toDate: date2
+                            },
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                console.log(data);
+                                let html = '';
+                                for (const item of data) {
+                                    var PER = Math.round(item.changE_PERCENT * 100) / 100;
+                                    var date = item.tradinG_DATE.split('T')[0];
+                                    var da = formatDate(date);
+                                    var kl = parseInt(item.nM_TOTAL_TRADED_VALUE / 1e6);
+                                    var tt = parseInt(item.pT_TOTAL_TRADED_VALUE / 1e6);
+                                    var tc = parseInt(item.totaL_TRADING_VALUE / 1e6);
+                                    if (item.changE_VALUE > 0) {
+                                        html += `<tr>
+                                    <td>${da}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.basiC_PRICE)}</td>
+                                    <td style="color: #10af05;">${formatcomNumber(item.opeN_PRICE)}</td>
+                                    <td style="color: #10af05;">${formatcomNumber(item.highesT_PRICE)}</td>
+                                    <td style="color: #10af05;">${formatcomNumber(item.lowesT_PRICE)}</td>
+                                    <td style="color: #10af05;">${formatcomNumber(item.closE_PRICE)}</td>
+                                    <td style="color: #10af05;">${formatcomNumber(item.changE_VALUE)}</td>
+                                    <td style="color: #10af05;">${PER}</td>
+                                    <td style="color: #10af05;">${formatcomNumber(item.adjusteD_CLOSING_PRICE)}</td>
+                                    <td>${formatcomNumber(item.nM_TOTAL_TRADED_QTTY)}</td>
+                                    <td>${formatcomNumber(item.pT_TOTAL_TRADED_QTTY)}</td>
+                                    <td>${formatcomNumber(item.totaL_TRADING_QTTY)}</td>
+                                    <td>${kl.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                    <td>${tt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                    <td>${tc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                </tr>`;
+                                    }else if(item.changE_VALUE == 0){
+                                        html += `<tr>
+                                    <td>${da}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.basiC_PRICE)}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.opeN_PRICE)}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.highesT_PRICE)}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.lowesT_PRICE)}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.closE_PRICE)}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.changE_VALUE)}</td>
+                                    <td style="color: #f55207;">${PER}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.adjusteD_CLOSING_PRICE)}</td>
+                                    <td>${formatcomNumber(item.nM_TOTAL_TRADED_QTTY)}</td>
+                                    <td>${formatcomNumber(item.pT_TOTAL_TRADED_QTTY)}</td>
+                                    <td>${formatcomNumber(item.totaL_TRADING_QTTY)}</td>
+                                    <td>${kl.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                    <td>${tt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                    <td>${tc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                </tr>`;
+                                    }else{
+                                        html += `<tr>
+                                    <td>${da}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.basiC_PRICE)}</td>
+                                    <td style="color: #ff000f;">${formatcomNumber(item.opeN_PRICE)}</td>
+                                    <td style="color: #ff000f;">${formatcomNumber(item.highesT_PRICE)}</td>
+                                    <td style="color: #ff000f;">${formatcomNumber(item.lowesT_PRICE)}</td>
+                                    <td style="color: #ff000f;">${formatcomNumber(item.closE_PRICE)}</td>
+                                    <td style="color: #ff000f;">${formatcomNumber(item.changE_VALUE)}</td>
+                                    <td style="color: #ff000f;">${PER}</td>
+                                    <td style="color: #ff000f;">${formatcomNumber(item.adjusteD_CLOSING_PRICE)}</td>
+                                    <td>${formatcomNumber(item.nM_TOTAL_TRADED_QTTY)}</td>
+                                    <td>${formatcomNumber(item.pT_TOTAL_TRADED_QTTY)}</td>
+                                    <td>${formatcomNumber(item.totaL_TRADING_QTTY)}</td>
+                                    <td>${kl.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                    <td>${tt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                    <td>${tc.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                </tr>`;
+                                    }
+
+                                }
+                                $('#table_thongkedatlenh tbody').empty();
+                                $('#table_thongkedatlenh tbody').append(html);
+                            },
+                            error: function (err) {
+                                $('#loading').removeClass('loading');
+                               // console.log(err);
+                            }
+                        });
+             }
+
+            @*var loadThongkeGia = function () {
+                 $('#loading').addClass('loading');
+                     $('#tab_thongkegia tbody').empty();
+                var date1 = $('#datefromTKG').val();
+                    if (date1 == "") {
+                        var d = new Date();
+                        var day = ("0" + d.getDate()).slice(-2);
+                        var month = ("0" + d.getMonth()).slice(-2);
+                        date1 = d.getFullYear() + "-" + month + "-" + day;
+                        $("#datefromTKG").val(date1);
+                    };
+                var date2 = $('#datetoTKG').val();
+                    if (date2 == "") {
+                        var d = new Date();
+                        var day = ("0" + d.getDate()).slice(-2);
+                        var month = ("0" + (d.getMonth() + 1)).slice(-2);
+                        date2 = d.getFullYear() + "-" + month + "-" + day;
+                        $("#datetoTKG").val(date2);
+                    };
+                        $.ajax({
+                            url: '@Url.Action("SearchLichSuGiaoDich", "ThongTinDoanhNghiep")',
+                            method: 'POST',
+                            dataType: 'json',
+                            data: {
+                                stock_Code: stockcode,
+                                fromDate: date1,
+                                toDate: date2
+                            },
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                               // console.log(data);
+                                let html = '';
+                                for (const item of data) {
+                                    var date = item.tradinG_DATE.split('T')[0];
+                                    var da = formatDate(date);
+                                    html += `<tr>
+                                    <td>${da}</td>
+                                    <td>${formatcomNumber(item.biD_COUNT)}</td>
+                                    <td>${formatcomNumber(item.totaL_BID_QTTY)}</td>
+                                    <td>${formatcomNumber(item.offeR_COUNT)}</td>
+                                    <td>${formatcomNumber(item.totaL_OFFER_QTTY)}</td>
+                                    <td>${formatcomNumber(item.subtractioN_BID_OFFER_QTTY)}</td>
+                                    <td style="color: #f55207;">${formatcomNumber(item.basiC_PRICE)}</td>
+                                    <td>${formatcomNumber(item.besT_BID_PRICE)}</td>
+                                    <td>${formatcomNumber(item.besT_BID_QTTY)}</td>
+                                    <td>${formatcomNumber(item.besT_OFFER_PRICE)}</td>
+                                    <td>${formatcomNumber(item.besT_OFFER_QTTY)}</td>
+                                </tr>`;
+                                }
+                                $('#tab_thongkegia tbody').empty();
+                                $('#tab_thongkegia tbody').append(html);
+                            },
+                            error: function (err) {
+                                $('#loading').removeClass('loading');
+                               // console.log(err);
+                            }
+                        });
+
+             }*@
+
+            var loadThongkeNuocNgoai = function () {
+                          $('#loading').addClass('loading');
+                          $('#table_thongkegiaodichnuocngoai tbody').empty();
+                var date1 = $('#datefromGDNN').val();
+                if (date1 == "") {
+                            var d = new Date();
+                            var day = ("0" + (d.getDate() + 1)).slice(-2);
+                            var month = ("0" + d.getMonth()).slice(-2);
+                            date1 = d.getFullYear() + "-" + month + "-" + day;
+                            $("#datefromGDNN").val(date1);
+                        };
+                var date2 = $('#datetoGDNN').val();
+                        if (date2 == "") {
+                            var d = new Date();
+                            var day = ("0" + d.getDate()).slice(-2);
+                            var month = ("0" + (d.getMonth() + 1)).slice(-2);
+                            date2 = d.getFullYear() + "-" + month + "-" + day;
+                            $("#datetoGDNN").val(date2);
+                };
+                
+                        $.ajax({
+                            url: '@Url.Action("SearchLichSuGiaoDich", "ThongTinDoanhNghiep")',
+                            method: 'POST',
+                            dataType: 'json',
+                            data: {
+                                stock_Code: stockcode,
+                                fromDate: date1,
+                                toDate: date2
+                            },
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                console.log(data);
+                                let html = '';
+                                for (const item of data) {
+                                    var RooM_RATIO = Math.round(item.rooM_RATIO * 100) / 100;
+                                    var foreigN_BUY_NM_RATIO = Math.round(item.foreigN_BUY_NM_RATIO * 100) / 100;
+                                    var foreigN_SELL_NM_RATIO = Math.round(item.foreigN_SELL_NM_RATIO * 100) / 100;
+                                    var date = item.tradinG_DATE.split('T')[0];
+                                    var da = formatDate(date);
+                                    var mua = parseInt(item.foreigN_BUY_NM_VALUE / 1e6);
+                                    var ban = parseInt(item.foreigN_SELL_NM_VALUE / 1e6);
+                                    html += `<tr>
+                                    <td>${da}</td>
+                                    <td>${formatcomNumber(item.rooM_CURRENT)}</td>
+                                    <td>${RooM_RATIO}</td>
+                                    <td>${formatcomNumber(item.rooM_REMAIN)}</td>
+                                    <td>${formatcomNumber(item.foreigN_BUY_NM_QTTY)}</td>
+                                    <td>${foreigN_BUY_NM_RATIO}</td>
+                                    <td>${formatcomNumber(item.foreigN_SELL_NM_QTTY)}</td>
+                                    <td>${foreigN_SELL_NM_RATIO}</td>
+                                    <td>${mua.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                    <td>${foreigN_BUY_NM_RATIO}</td>
+                                    <td>${ban.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                                    <td>${foreigN_SELL_NM_RATIO}</td>
+                                </tr>`;
+                                }
+                                $('#table_thongkegiaodichnuocngoai tbody').empty();
+                                $('#table_thongkegiaodichnuocngoai tbody').append(html);
+                            },
+                            error: function (err) {
+                                $('#loading').removeClass('loading');
+                               // console.log(err);
+                            }
+                        });
+
+             }
+
+             //tìm kiếm thống kê đặt lệnh
+             $('body').on('click', '#btnxemtkdl', function () {
+                 if (new Date($('#datefromTKDL').val()) > new Date($('#datetoTKDL').val())) {
+                        toastr.error('@Localizer["FROMDATE_IS_GREATER_THAN_TODATE"]');
+                        return false;
+                 } else {
+                     loadData();
+                    }
+             })
+
+             @*//search thống kê giá
+             $('body').on('click', '#btnxemtkg', function () {
+                 if (new Date($('#datefromTKG').val()) > new Date($('#datetoTKG').val())) {
+                        toastr.error('@Localizer["FROMDATE_IS_GREATER_THAN_TODATE"]');
+                        return false;
+                 } else {
+                     loadThongkeGia();
+                    }
+             })*@
+
+             //search nn
+             $('body').on('click', '#btnxemgdnn', function () {
+                 if (new Date($('#datefromGDNN').val()) > new Date($('#datetoGDNN').val())) {
+                        toastr.error('@Localizer["FROMDATE_IS_GREATER_THAN_TODATE"]');
+                        return false;
+                 } else {
+                     loadThongkeNuocNgoai();
+                    }
+                 
+             })
+        }
+         var thongTin = new ThongTin();
+         thongTin.init();
+
+    });
+    </script>

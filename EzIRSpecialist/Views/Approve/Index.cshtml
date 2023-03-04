@@ -1,0 +1,287 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using CoreLib.Entities;
+@inject IConfiguration configuration;
+@model List<CompanyApprove>;
+
+@{
+    ViewData["Title"] = "Phê duyệt thông tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Báo cáo tiện ích</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Phê duyệt thông tin</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="tab-content" style="margin-top:50px; text-align:center">
+    <div class="form-group-wrapper col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <!-- begin:: Content -->
+        <div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor" id="k_content">
+            <div class="container">
+                <div class="row mb-3">
+                    <h3 class="col-12 text-center">Phê duyệt</h3>
+                </div>
+                <div class="row">
+                    <form enctype="multipart/form-data" method="post" class="col-12" id="submitForm">
+                        <div class="row">
+                            <div id="accordion" class="col-12">
+                                <div class="card ">
+                                    <div class="card-header" style="text-align: left;" id="headingOne">
+                                        <h5 class="mb-0">
+                                            Thông tin chung
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+                                        <div style="height: 130px;" class="card-body">
+                                            <div class="row">
+                                                <input type="hidden" />
+                                                <div class="col-md-9 d-inline-block m-auto">
+                                                    <div class="form-group row">
+                                                        <div style="text-align: left;" class="col-md-3">
+                                                            <label class="k-font-bold">Công ty</label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <select class="form-control" id="company" asp-items="@(new SelectList(Model,"CpnyID","NameVN"))">
+                                                                <option value="0"></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div style="text-align: left;" class="col-md-3">
+                                                            <label class="k-font-bold">Danh mục</label>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <select class="form-control" id="category">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="category-wrapper" style="text-align: center">
+                                            <p id="p_link" hidden>Link xem chi tiết thông tin thay đổi: <a id="a_link" href="#" target="_blank" rel="noopener noreferrer">Bấm vào đây</a>.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-flex justify-content-center">
+                            <input type="button" class="btn btn-primary mt-3 col-2" id="save" value="Phê duyệt" disabled />
+                            <input type="button" class="btn btn-primary mt-3 col-2 ml-3" id="cancel" value="Hủy" disabled />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading">
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var Approve = function () {
+
+            this.init = function () {
+                loadData();
+                registerEvents();
+            }
+
+            var loadData = function () {
+                $('#company').select2();
+                $('#select2-company-container').css('text-align', 'left');
+                $('#select2-company-container').css("padding-left", "12px");
+                $(".select2-container .select2-selection--single").css('height', '32px');
+                $(".select2-container--default .select2-selection--single").css('border-color', '#ccc');
+            }
+
+            var registerEvents = function () {
+            
+                // event chọn công ty
+                $('body').on('change', '#company', function () {
+                    let cpnyID = $(this).val();
+                    fillData(cpnyID);
+                });
+
+                // event chọn site muốn phê duyệt
+                $('body').on('change', '#category', function (e) {
+                    e.preventDefault();
+                    let cpnyID = $(this).val();
+
+                    if (cpnyID == 0) {
+                        $('#p_link').attr('hidden', true);
+                        $('#save').prop('disabled', true);
+                        $('#cancel').prop('disabled', true);
+                        return;
+                    };
+
+                    let levelID = $(this).find(':selected').data("levelid");
+                    let detailLevelID = $(this).find(':selected').data("detaillevelid");
+                    let urlApprove = `@configuration["URL_EZIR_APPROVE"].ToString()`;
+                    urlApprove += `CpnyID=${cpnyID}&TT=${levelID}&TTCT=${detailLevelID}`;
+
+                    $('#p_link').attr('hidden', false);
+                    $('#a_link').attr('href', urlApprove);
+                    $('#save').attr('disabled', false);
+                    $('#cancel').attr('disabled', false);
+                });
+
+                // event bấm nút lưu
+                $('body').on('click', '#save', function (e) {
+                    
+                    e.preventDefault();
+                    let cpnyID = $('#company').val();
+                    let detaiLevelID = $('#category').find(':selected').data("detaillevelid");
+                    let approve = 0;
+
+                    if (cpnyID == 0) {
+                        toastr.error('Bạn chưa chọn công ty!');
+
+                        //$('#loading').removeClass('loading');
+                        return;
+                    };
+
+                    if (detaiLevelID == null || detaiLevelID == '') {
+                        toastr.error('Bạn chưa chọn danh mục!');
+
+                        //$('#loading').removeClass('loading');
+                        return;
+                    };
+                    
+                    Swal.fire({
+
+                        title: 'Thông báo',
+                        text: 'Bạn có chắc muốn phê duyệt?',
+                        type: 'warning',
+                        cancelButtonText: 'Hủy',
+                        showCancelButton: true,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        $('#loading').addClass('loading');
+                        if (result.value) {
+                            console.log(result);
+                            $.ajax({
+                                url: '@Url.Action("ApproveInfo", "Approve")',
+                                method: 'POST',
+                                dataType: 'json',
+                                data: { cpnyID: cpnyID, detaiLevelID: detaiLevelID, approve: approve },
+                                success: function (res) {
+                                    $('#loading').removeClass('loading');
+                                    console.log(res);
+                                    if (res.code != 0) return toastr.error(res.message);
+                                    toastr.success(res.message);
+                                    let cpnyID = $('#company').val();
+                                    fillData(cpnyID);
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                    $('#loading').removeClass('loading');
+                                }
+                            });
+                        } else $('#loading').removeClass('loading');    
+                        
+                    });
+                    
+                });
+
+                // event bấm nút hủy
+                $('body').on('click', '#cancel', function (e) {
+
+                    //$('#loading').addClass('loading');
+                    e.preventDefault();
+                    let cpnyID = $('#company').val();
+                    let detaiLevelID = $('#category').find(':selected').data("detaillevelid");
+                    let approve = 3;
+
+                    if (cpnyID == 0) {
+                        toastr.error('Bạn chưa chọn công ty!');
+
+                        //$('#loading').removeClass('loading');
+                        return;
+                    };
+
+                    if (detaiLevelID == null || detaiLevelID == '') {
+                        toastr.error('Bạn chưa chọn danh mục!');
+
+                        //$('#loading').removeClass('loading');
+                        return;
+                    };
+
+                    Swal.fire({
+
+                        title: 'Thông báo',
+                        text: 'Bạn có chắc muốn hủy?',
+                        type: 'warning',
+                        cancelButtonText: 'Hủy',
+                        showCancelButton: true,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        $('#loading').addClass('loading');
+                        if (result.value) {
+
+                            $.ajax({
+                                url: '@Url.Action("ApproveInfo", "Approve")',
+                                method: 'POST',
+                                dataType: 'json',
+                                data: { cpnyID: cpnyID, detaiLevelID: detaiLevelID, approve: approve },
+                                success: function (res) {
+                                    $('#loading').removeClass('loading');
+                                    console.log(res);
+                                    if (res.code != 0) return toastr.error(res.message);
+                                    toastr.success(res.message);
+                                    let cpnyID = $('#company').val();
+                                    fillData(cpnyID);
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                    $('#loading').removeClass('loading');
+                                }
+                            });
+                        } else $('#loading').removeClass('loading');
+                    });
+                    
+                });
+            }
+
+            function fillData(cpnyID) {
+                $.ajax({
+                    url: '@Url.Action("GetApproveInfo", "Approve")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { cpnyID },
+                    success: function (res) {
+                        if (Array.isArray(res)) {
+                            $('#category option').remove();
+                            let html = '<option value="0"></option>';
+                            for (const item of res) {
+                                html += `<option value='${item.cpnyID}' data-levelid='${item.levelID}' data-detaillevelid='${item.detailLevelID}'>
+                                            ${item.function}
+                                         </option>`;
+                            }
+                            $('#category').append(html);
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        }
+
+        var approve = new Approve();
+        approve.init();
+
+    });
+</script>

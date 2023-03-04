@@ -1,0 +1,412 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.AspNetCore.Mvc;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{
+
+
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var urllink = ViewBag.LinkURL;
+    var CompanyTypeName = "";
+    var date = DateTime.Now.Year;
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+        CompanyTypeName = @HttpContextAccessor.HttpContext.Session.GetString("CompanyTypeName");
+    }
+    else
+    {
+        CompanyTypeName = @HttpContextAccessor.HttpContext.Session.GetString("CompanyTypeNameEN");
+    }
+}
+
+<style>
+    .d-inline-flex {
+        display: block !important;
+    }
+
+    #select2-txtLOL_YearPub-results > li:first-child,
+    #select2-txtLOL_YearEff-results > li:first-child {
+        height: 32px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 32px !important;
+    }
+</style>
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <div class="title_line d-flex" style="margin-bottom: 0px;">
+            <div class="container">
+                <span class="title_line_item">
+                    <font color="#4187A6"><a href="" style="color:#4187A6;font-weight: 600;">@Localizer["Liberty_of_law"].Value</a></font>
+                </span>
+                <span class="title_line_item">
+                    <i class="fa  fa-caret-right"></i>
+                </span>
+                <span class="title_line_item">
+                    <font color="#4187A6" style="font-weight: 600;">@Localizer["Liberty_of_law"].Value</font>
+                </span>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <div class="tab-content">
+        <div class="form-wrapper">
+            <form action="" id="FormSearch">
+                <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                            <label>@Localizer["LOL_Type"].Value</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                            <select class="form-control" name="Type" id="lstLOL_Type" asp-items="@(new SelectList(Model.listTemplateType,"TypeCode","TypeName"))">
+                                <option>
+                                    @Localizer["All"].Value
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                            <label for="Title">@Localizer["LOL_Company"].Value</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                            <input type="text" class="form-control" id="txtLOL_Company" name="LOL_Company">
+                        </div>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                            <label for="CCPL">@Localizer["LOL_No"].Value</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                            <input type="text" class="form-control" id="txtLOL_No" name="LOL_No">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding" style="padding-left: 15px !important;">
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                            <label for="TemplateType">@Localizer["LOL_YearPub"].Value</label>
+                        </div>
+                        <select class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding form-control select2-single" id="txtLOL_YearPub" name="LOL_YearPub">
+                            <option selected></option>
+                            @for (int i = date; i >= 1945; i--)
+                            {
+                                <option value="@i">@i.ToString()</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                            <label for="TemplateType">@Localizer["LOL_YearEff"].Value</label>
+                        </div>
+                        <select class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding form-control select2-single" id="txtLOL_YearEff" name="LOL_YearEff">
+                            <option selected></option>
+                            @for (int i = date; i >= 1945; i--)
+                            {
+                                <option value="@i">@i.ToString()</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                            <label for="Detail">@Localizer["LOL_TextNote"].Value</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                            <input type="text" class="form-control" id="txtLOL_TextNote" name="LOL_TextNote">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row d-flex justify-content-center col-12 btn-search-wrapper" style="justify-content: center !important;padding-bottom: 1.5rem;">
+            <button id="btnSearch" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                @Localizer["Search"].Value
+            </button>
+        </div>
+    </div>
+    <div class="dataTables_wrapper dt-bootstrap4 has-footer" style=" box-shadow: 0px 4px 10px darkgrey; margin-bottom: 25px; padding-left: 0px;padding-right: 0px;"> 
+        <table id="listdata" class="table table-striped dt-responsive dataTable has-footer dtr-inline" role="grid" style="width: 1138px;padding-left: 0px; padding-right: 0px;">            
+                    <thead>
+                        <tr>
+                            <!--<th style="width:5%">STT</th>
+                            <th style="width:15%">@Localizer["LOL_Type"].Value</th>
+                            <th style="width:20%">@Localizer["LOL_Company"].Value</th>
+                            <th style="width:10%">@Localizer["LOL_No"].Value</th>
+                            <th style="width:15%">@Localizer["LOL_DatePub"].Value</th>
+                            <th style="width:20%">@Localizer["LOL_TextNote"].Value</th>
+                            <th style="width:15%">@Localizer["LOL_DateEff"].Value</th>-->
+                            @*<th>@Localizer["File"].Value</th>*@
+                            <!--<th style="width:5%">File</thstyle="width:10%">-->
+
+                            <th>STT</th>
+                            <th>@Localizer["LOL_Type"].Value</th>
+                            <th>@Localizer["LOL_Company"].Value</th>
+                            <th>@Localizer["LOL_No"].Value</th>
+                            <th>@Localizer["LOL_TextNote"].Value</th>
+                            <th>@Localizer["LOL_DatePub"].Value</th>                 
+                            <th>@Localizer["LOL_DateEff"].Value</th>
+                            @*<th>@Localizer["File"].Value</th>*@
+                            <th>File</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+</div>
+<div id="loading"></div>
+<style>
+    .dataTables_wrapper .dataTable thead tr {
+        border-left: 0px !important;
+    }
+
+    .dataTables_wrapper .dataTable tbody tr, .dataTables_wrapper .dataTable thead tr {
+        border-left: 0px !important;
+    }
+
+    table.dataTable.no-footer {
+        border-bottom: 0px !important;
+    }
+
+    table.dataTable thead th, table.dataTable thead td {
+        border-bottom: 0px solid !important;
+    }
+
+    table.dataTable thead th, table.dataTable tfoot th {
+        font-weight: 500;
+        color: rgb(41, 153, 206);
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 8px 10px !important;
+    }
+
+    .table-striped tbody tr:hover {
+        background-color: #ececec;
+        border-left: 5px solid #f3872b !important;
+    }
+
+    .dataTables_wrapper .dataTable {
+        border-collapse: unset !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('.select2-single').select2();
+
+        var renderColumns = [
+            {
+                "width": "5%",
+                data: "stt",
+                render: function (data) {
+                    return `<div class="d-inline-flex w-100" style="text-align:center">
+                           <p>${data}</p>
+                        </div >`;
+                }
+            },
+            {
+                "width": "15%", //20
+                data: "typeName",
+            },
+            {
+                "width": "20%", // 40
+                data: "company",
+            }
+            ,
+            {
+                "width": "10%", //50
+                data: "no",
+            }
+            ,
+            {
+                "width": "20%",
+                data: "textNote",
+            }
+            ,
+            {
+                "width": "15%", //65
+                data: "datePub",
+                render: function (data) {
+                    let year = data.substring(0, 4);
+                    let month = data.substring(5, 7);
+                    let day = data.substring(8, 10);
+                    return day + "/" + month + "/" + year;
+                },
+            }
+            ,
+            {
+                "width": "10%",
+                data: "dateEff",
+                render: function (data) {
+                    let year = data.substring(0, 4);
+                    let month = data.substring(5, 7);
+                    let day = data.substring(8, 10);
+                    return day + "/" + month + "/" + year;
+                },
+            }
+            ,
+            {
+                "width": "5%",
+                data: "id",
+                render: function (data, type, full) {
+                    return `<div class="d-inline-flex w-100" style="text-align:center">
+                            <a class="DownloadTemplate btn text-primary" data-id='${data}' data-filename='${full['fileName']}' data-path='${full['path']}' href="@urllink/${full['path']}" target="_blank" rel="noopener noreferrer" download><i class="fas fa-download"></i></a>
+                        </div >`;
+                }
+            },
+        ];
+
+        var form = $("#FormSearch");
+
+        var ThuVienPhapLuatload = function () {
+            this.init = function () {
+                loadData(null);
+                registerEvents();
+            }
+
+            var loadData = function (data) {
+                $("#loading").addClass("loading");
+                let type = $("#lstLOL_Type").find(":selected").val();
+                let company = $("#txtLOL_Company").val();
+                let no = $("#txtLOL_No").val();
+                let yeareff = $("#txtLOL_YearEff").val();
+                let yearpub = $("#txtLOL_YearPub").val();
+                let textnote = $("#txtLOL_TextNote").val();
+
+                //console.debug('company', company);
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetListThuVienPhapLuat", "ThuVienPhapLuat")',
+                    data: {
+                        TypeDoc: type,
+                        Company: company,
+                        No: no,
+                        YearDateEff: yeareff,
+                        YearDatePub: yearpub,
+                        TextNote: textnote,
+                    },
+                    success: function (data) {
+                        $("#loading").removeClass("loading");
+
+                        //console.log(data);
+                        let indexTemp = 1;
+                        for (var index = 0; index < data.length; index++) {
+
+                            Object.assign(data[index], { stt: indexTemp });
+                            indexTemp++;
+                        }
+
+                        var GetDataTable = $('#listdata').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-space-around'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            data: data,
+                            columns: renderColumns,
+                            "info": false,
+                            pageLength: 10,
+                            "lengthChange": true,
+                            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                        });
+
+                        DownLoadLink();
+                        GetDataTable.on('draw', DownLoadLink);
+                    }
+                })
+            }
+
+            $('#btnSearch').click(function (e) {
+                e.preventDefault();
+                loadData(form.serialize());
+            });
+
+            function DownLoadLink() {
+                $('.DownloadTemplate').off();
+                $('.DownloadTemplate').click(function () {
+                    $('#loading').addClass('loading');
+
+                    @*let Filename = $(this).data('filename');
+                    let Path = $(this).data('path');
+                    var file_extension = '';
+                    file_extension = Path.split('.').pop();
+                    file_extension = file_extension.replace(/\s+/g, '');
+
+                    var filedown = '';
+                    if (file_extension == 'doc') {
+                        filedown = `TVPL_${Filename}`;
+                    }
+                    else if (file_extension == 'docx') {
+                        filedown = `TVPL_${Filename}`;
+                    }
+                    else if (file_extension == 'pdf') {
+                        filedown = `TVPL_${Filename}`;
+                    }
+                    else if (file_extension == 'rar') {
+                        filedown = `TVPL_${Filename}`;
+                    }
+                    else {
+                        filedown = '';
+                    }*@
+
+                    @*return Promise.resolve(
+                        $.postNative('@Url.Action("DownloadFile", "ThuVienPhapLuat")',
+                            {
+                                FileName: Filename,
+                                Path: Path,
+                            }).done((response, statusCode, xhr) => {
+                                    $('#loading').removeClass('loading');
+
+                                    if (response.code) {return isMessageSuccess(response);}
+
+                                    const type = xhr.getResponseHeader('Content-Type');
+                                    const blob = new Blob([response], { type: type });
+
+                                    //check nếu là response message , không phải file thì hiển thị lỗi
+                                    if (type.includes("application/json")) {
+                                        //phải đọc file vì respone ở dạng arraybuffer
+                                        const fileReader = new FileReader();
+                                        fileReader.onload = function () {
+                                            $('#loading').removeClass('loading');
+                                            isMessageSuccess(JSON.parse(this.result));
+                                        };
+                                        fileReader.readAsText(blob);
+                                        return;
+                                    }
+
+                                    saveAs(blob, filedown);
+                                    $('#loading').removeClass('loading');
+                                    swal.close();
+                                }).fail((response) => {
+                                    //console.log(response);
+                                })
+                        );*@
+                    $('#loading').removeClass('loading');
+                })
+            }
+
+            var registerEvents = function () {
+                $('#btnSearch').click(function (e) {
+                    $("#loading").addClass("loading");
+                    e.preventDefault();
+                });
+            }
+        }
+
+        var thuvienPL = new ThuVienPhapLuatload();
+        thuvienPL.init();
+    })
+</script>

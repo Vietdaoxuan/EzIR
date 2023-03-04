@@ -1,0 +1,83 @@
+﻿/*#listMajor_shareholder_paginate {
+    display: none !important;
+}*/
+/*#listAssociated_Company_paginate {
+    display: none !important;
+}
+#list_SUBSIDIARIES_paginate {
+    display: none !important;
+}*/
+
+.form-control-general
+{
+    height:30px;
+}
+
+.dataTables_wrapper .dataTable tbody tr, .dataTables_wrapper .dataTable thead tr {
+    border-left: none !important;
+}
+
+#listAssociated_Company tr th {
+    width: 316px;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    padding: 5px;
+    font-weight: bold !important;
+    color: #4187A6 !important;
+}
+
+#list_SUBSIDIARIES tr th {
+    width: 316px;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    padding: 5px;
+    font-weight: bold !important;
+    color: #4187A6 !important;
+}
+
+#listMajor_shareholder tr th {
+    width: 316px;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    padding: 5px;
+    font-weight: bold !important;
+    color: #4187A6 !important;
+}
+
+ .EditShareholder {
+    background-color: #13AB4B;
+    font-size: 11px;
+    text-transform: none;
+    border-radius: 15px;
+    height: 30px;
+    float:right;
+    width:70%;
+}
+
+.EditCongTy {
+    background-color: #13AB4B;
+    font-size: 11px;
+    text-transform: none;
+    border-radius: 15px;
+    height: 30px;
+    float: right;
+    width: 100%;
+}
+
+.selectNganh {
+    padding: 6px 0px;
+    border: none;
+}
+.company_asubcompanyid
+{
+    display:none;
+}
+.shareholder_asherid
+{
+    display:none;
+}
+ .paging_simple_numbers{
+   float: right;
+}
+
+.dataTables_wrapper .dataTable tbody tr:hover {
+    background-color: none;
+    border-left: none!important;
+}

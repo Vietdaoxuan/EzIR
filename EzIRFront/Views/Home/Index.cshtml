@@ -1,0 +1,861 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.Extensions.Configuration;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHtmlLocalizer<SharedResource> Localizer
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject IConfiguration _configuration
+
+@{
+    ViewData["Title"] = "Cổng thông tin EzIR";
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+        .ToList();
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}{Context.Request.QueryString.Value}";
+
+
+    var requestValue = "";
+    var image = "";
+    var StockName = "";
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+        image = "icon-EN.png";
+        requestValue = "en-US";
+
+    }
+    else
+    {
+        image = "iconVietnam.svg.png";
+        requestValue = "vi-VN";
+
+    }
+
+}
+<style>
+    .easy-autocomplete .easy-autocomplete-container {
+        max-height: 500px;
+        overflow-y: scroll;
+        width: 99%;
+    }
+
+    .easy-autocomplete-container::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        background-color: #d9d9d9;
+    }
+
+    .easy-autocomplete-container::-webkit-scrollbar-thumb {
+        background: #bfbfbf;
+    }
+
+    .easy-autocomplete input {
+        padding-left: 15px !important;
+    }
+
+    .tag-lienhe {
+        padding-bottom: 20px !important;
+        padding-top: 17px !important;
+        @*padding-bottom: 10px !important;
+        padding-top: 10px !important;
+        font-family: Arial !important;
+        font-size: 15px !important;*@
+    }
+    .fpts-contactnumber {
+        padding-bottom: 0px !important;
+    }
+    .tag-lienhe {
+        padding-bottom: 42px !important;
+    }
+</style>
+<div class="fpts-main-header" id="">
+    <!-- BEGIN -->
+    <!--set laguage-->
+    <div class="fpts-header">
+        <div class="fpts-phone-en">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9 fpts-mobile-hotline">
+                        <p class="fpts-numberheader">
+                            <span class="fpts-titlePhoneHeader">HOTLINE :</span>
+                            <span class="fpts-numberPhoneHeader">
+                                <a href="tel:1900 6446">
+                                    1900 6446
+                                </a>
+                            </span>
+                        </p>
+
+                    </div>
+                    <div class="col-md-3 fpts-mobile-lang img-language">
+                        @*<a class="icon-laguage EN" id="icon-language-en">
+                                <img src="images/icon-EN.png">
+                            </a>*@
+
+                        <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal mb-0" role="form">
+                            <input type="hidden" name="culture" asp-for="@requestValue" asp-items="cultureItems" />
+                            <button type="submit" style="border-style: hidden; background-color: inherit;float: right;">
+                                <a class="culture-image">
+                                    <img src="images/@image" style="padding-top: 2px" />
+                                </a>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="MmenuResponsiv" id="MobileShow">
+
+            </div>
+            <div class="fptsMobileIconSearch" id="searchmobile">
+
+                <span class="fa fa-search iconsearch"></span>
+            </div>
+
+
+        </div>
+        <div class="fpts-menuHome fptsMenuHome" id="fptsMenuHome">
+            <div class="container">
+                <div class="fpts-logo">
+                    <div class="row">
+                        <div class="col-md-3 fpts-logoimg">
+                            <div class="fpts-logoimg_">
+                                <a href="http://fpts.com.vn/">
+                                    <img src="images/logo_ngang.png" alt="" class="img-resposive img-desktop">
+                                    <img src="images/logo_doc.png" alt="" class="img-resposive img-mobile">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-5 fpt-logoslogan ">
+                            <div class="fpts-ez" id="fpts_EzIR">
+                                <div class="Ez">
+                                    <span class="fpts-titleEz_">
+                                        <p class="logoEzIR"><b class="E-title_">E</b><b class="Z-title_">z</b><span class="IR">IR</span><span class="slogan_EzIR">@Localizer["Cong_quan_he_dau_tu_truc_tuyen"].Value</span></p>
+                                    </span>
+                                    @*<div class="ez-content Goldenrod">
+                                            <p><span><b>IR</b></span></p>
+                                        </div>*@
+                                </div>
+                            </div>
+                            @*<div class="fpts-slogan-EzIR">
+                                    <p>@Localizer["Cong_quan_he_dau_tu_truc_tuyen"].Value</p>
+                                </div>*@
+                            <!-- <div class="fpts-slogan">
+                                <p>Cổng quan hệ nhà đầu tư trực tuyến</p>
+                            </div> -->
+                        </div>
+                        <div class="" id="bordermobile"></div>
+                        <div class="col-md-4 fpts-logosearch" id="SearchMobile">
+
+                            <div class="easy-autocomplete" style="width: 257.531px;">
+                                <input onkeypress="enterSearch(event)" type="text" placeholder="@Localizer["Tim_kiem_theo_ma"].Value"
+                                       id="fpts-search-stockcode" class="fptsSearchAuto">
+                                <div class="easy-autocomplete-container" id="eac-container-fpts-search-stockcode">
+                                    <ul></ul>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="fix-content">
+        <!-- END HEADER -->
+
+        <div class="fpts-content">
+            <div class="fpts-home-slider">
+
+                @Html.Partial("_Banner")
+
+            </div>
+            <!-- END SLIDER -->
+            <div class="fpts-home-maincontent">
+                <div class="container fix-container--home">
+                    <div class="row fix-content-padding">
+                        <div class="col-md-4 fpts-contactfpts">
+
+                            <ul>
+                                <li>
+                                    <p class="fpts-contactfpts-title">@Localizer["Lien_he"].Value</p>
+
+                                </li>
+
+                                <li class="tag-lienhe">
+                                    <p class="fpts-part">@Localizer["BPTVQT"].Value</p>
+                                    <p class="fpts-where">@Localizer["HN"].Value</p>
+                                    <p class="fpts-contactnumber">
+                                        <a href="tel:19006446">Hotline: 19006446 - </a><span class="SpanPhone">Số máy lẻ CN Hà Nội: 4504/4502 </span>
+                                    </p>
+                                    <p class="fpts-link"><a href="ezir@fpts.com.vn">ezir@fpts.com.vn</a></p>
+                                </li>
+                                <li class="tag-lienhe">
+                                    <p class="fpts-part">@Localizer["BPTC"].Value</p>
+                                    <p class="fpts-where">@Localizer["HCM"].Value</p>
+                                    <p class="fpts-contactnumber">
+                                        <a href="tel:19006446">Hotline: 19006446 - </a><span class="SpanPhone">Số máy lẻ CN Hồ Chí Minh: 8602/7591 </span>
+                                    </p>
+                                    <p class="fpts-link"><a href="ezir_hcm@fpts.com.vn">ezir_hcm@fpts.com.vn</a></p>
+                                </li>
+
+                            </ul>
+
+                        </div>
+                        <div class="col-md-8 fpts-breakingnew-fpts">
+
+                            @*<div>
+            <div class="contentt">
+                <p class="title-product" style=" ">EzIR - Cổng quan hệ nhà đầu tư trực tuyến</p>
+
+            </div>
+
+            <p class="fpts-des-text">
+                Với mục đích đi tiên phong trong Dịch vụ hỗ trợ hoạt động Quan hệ nhà đầu tư (IR) cho các Doanh nghiệp đại chúng và trở thành trang website có uy tín hàng đầu về thông tin tài chính tại Việt Nam, Cổng thông tin Quan hệ Nhà đầu tư EzIR của FPTS được
+                thiết kế như một sản phẩm chuyên biệt, lưu trữ toàn diện các thông tin tài chính và phi tài chính do chính các Doanh nghiệp cung cấp nhằm truyền tải đến Nhà đầu tư. Cùng với các công cụ hỗ trợ phân tích tài chính chuyên nghiệp, hiệu quả và được đầu
+                tư bài bản, EzIR không chỉ là phương tiện công bố thông tin hữu hiệu nhất cho các Doanh nghiệp, mà còn là trang thông tin toàn diện, chuyên sâu nhất để nhà đầu tư tiến hành phân tích, xem xét lựa chọn các cổ phiếu đầu tư.
+            </p>
+        </div>
+        <div class="fpts-HeaderContent" id="HeaderContent">
+            <a class="fpts-HeaderContent_" href="http://www.fpts.com.vn/san-pham-dich-vu/tu-van-doanh-nghiep/#fptstv2">
+                <div class="img-headercontent">
+                    <div class="wrapperA" style="background-image:url('./img/sanphamdichvunhe.jpg');"></div>
+                </div>
+                <span class="text-header-content">Sản phẩm dịch vụ</span>
+            </a>*@
+
+                            <div class="title_news">
+                                <p class="fpts-breakingnew-fpts-title" style="text-transform: uppercase;">@Localizer["Tin_tuc"].Value</p>
+                            </div>
+
+                            <div class="content_news">
+                                @Html.Partial("_TinTuc")
+                            </div>
+                        </div>
+                            @*<ul class="news_background nav nav-pills nav-tabs-btn nav-pills-btn-success" role="tablist">
+                                <li class="nav-item  gsm-link-tab col-sm-3 col-mb-1 active" id="" style="display: contents;">
+                                    <a id="tindoanhnghiepcongbo" data-toggle="tab" class="nav-link" href="#tab_tindoanhnghiepcongbo" role="tab" disabled="disabled" aria-selected="true">
+                                        <span class="nav-link-title ">
+                                            @Localizer["Tin_tuc"].Value
+                                        </span>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item  gsm-link-tab col-sm-2 col-mb-1" id="" style="display: contents;">
+
+                                    <a id="tintuc" data-toggle="tab" class="nav-link" href="#tab_tintuc" role="tab" disabled="disabled" aria-selected="false">
+                                        <span class="nav-link-title ">
+                                            @Localizer["ban_tin_ir"].Value
+                                        </span>
+                                    </a>
+
+                                </li>
+                            </ul>*@
+
+                            @*<div class="tab-content">
+                                <div class="tab-pane fade active in" id="tab_tindoanhnghiepcongbo" role="tabpanel">
+                                    @Html.Partial("_TinTuc")
+                                </div>
+
+                                <div class="tab-pane fade active" id="tab_tintuc" role="tabpanel">
+                                    @Html.Partial("_BanTinIR")
+                                </div>
+                            </div>*@
+                            <!--End table tin tức-->
+
+                        </div>
+                        <!--End table tin tức-->
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .fpts-indext {
+        width: 100%;
+        height: 86px;
+        background-color: red;
+    }
+</style>
+
+
+<section class="fpts-ezLink" style="margin-bottom:15px">
+    <div class="container fix-container">
+        <div class="fpts-eztext">
+            <div id="EzLogoSlider" class="owl-carousel owl-theme owl-loaded owl-drag">
+
+                <div class="owl-stage-outer">
+                    <div class="owl-stage"
+                         style="transform: translate3d(-3450px, 0px, 0px); transition: all 0.25s ease 0s; width: 8050px;">
+
+                        <div class="owl-item cloned" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="thongtindoanhnghiep.html" target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content EzIR">IR</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["IR"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="owl-item cloned" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="https://accounts.fpts.com.vn/Login?href=eztrade&amp;s=11"
+                                   target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content LimeGreen">Hrm</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["HRM"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="owl-item cloned" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="https://accounts.fpts.com.vn/Login?href=eztrade&amp;s=11"
+                                   target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content DodgerBlue">Link</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["Link"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="owl-item cloned" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="http://m.fpts.com.vn/" target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content LimeGreen">Trade</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["Trade"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="owl-item cloned" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="http://ezlink.fpts.com.vn/" target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content DodgerBlue">Link</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["Link"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+
+                        <div class="owl-item cloned" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="https://accounts.fpts.com.vn/Login?href=eztrade&amp;s=11"
+                                   target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content LimeGreen">Trade</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["Trade"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="owl-item" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="thongtindoanhnghiep.html" target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content EzIR">IR</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["IR"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="owl-item" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="https://ezgsm.fpts.com.vn/Login"
+                                   target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content LimeGreen">GSM</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["GSM"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="owl-item" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="http://www.fpts.com.vn/media/2195/11-link-xem-tai-day-final.pdf"
+                                   target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content LimeGreen">Hrm</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["HRM"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="owl-item" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="https://accounts.fpts.com.vn/Login?href=eztrade&amp;s=11"
+                                   target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content DodgerBlue">Link</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["Link"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="owl-item" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="https://accounts.fpts.com.vn/Login?href=eztrade&amp;s=11"
+                                   target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content LimeGreen">Trade</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["Trade"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="owl-item active" style="width: 220px; margin-right: 70px;">
+                            <div class="item">
+                                <a href="thongtindoanhnghiep.html" target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content EzIR">IR</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["IR"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="owl-item active" style="width: 220px; margin-right: 70px;">
+                            <div class="item">
+                                <a href="https://ezgsm.fpts.com.vn/" target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content DodgerBlue">GSM</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["GSM"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="owl-item active" style="width: 220px; margin-right: 70px;">
+                            <div class="item">
+                                <a href="https://accounts.fpts.com.vn/Login?href=eztrade&amp;s=11"
+                                   target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content LimeGreen">HRM</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["HRM"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="owl-item" style="width: 220px; margin-right: 70px;">
+                            <div class="item">
+                                <a href="http://ezlink.fpts.com.vn/" target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content DodgerBlue">Link</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["Link"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="owl-item active" style="width: 220px; margin-right: 10px;">
+                            <div class="item">
+                                <a href="http://m.fpts.com.vn/" target="_blank">
+                                    <div class="fpts-ez">
+                                        <div class="Ez">
+                                            <p class="fpts-titleEz_ ">
+                                                <span class="ez-text">Ez</span><span class="ez-content LimeGreen">Trade</span>
+                                            </p>
+                                        </div>
+                                        <p class="fpts-contentEz">@Localizer["Trade"].Value</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <!-- <div class="owl-nav disabled"><button type="button" role="presentation" class="owl-prev"><span
+                            aria-label="Previous">‹</span></button><button type="button" role="presentation"
+                        class="owl-next"><span aria-label="Next">›</span></button></div> -->
+                <div class="owl-dots disabled"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="partner">
+    <div class="container fix-container--home">
+        <div class="enterprises">
+            <p class="nametitle">@Localizer["Doi_tac_DN"].Value</p>
+            @Html.Partial("_DoiTacDoanhNghiep")
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<div class="fpts-footer" id="footter">
+
+    <div class="fpts-securities">
+        <div class="container fix-container">
+            <p class="p_footer">
+
+                @Localizer["Luu_y"].Value<a onclick="newwin = window.open('../assets/html/LuuYDacBiet.html', 'Disclaimer', 'toolbar=no,scrollbars=yes,menubar=no,status=no,location=no,width=600,height=500');newwin.focus();"> @Localizer["Link_luu_y"].Value</a>
+
+            </p>
+        </div>
+    </div>
+
+</div>
+<div class="fpts-main-header" id="">
+    <div class="ScrollTop" id="ScrollTop"></div>
+</div>
+
+
+<div class="clearfix"></div>
+
+
+<!-- END CONTENT -->
+
+<div class="clearfix"></div>
+
+<script>
+    $(document).ready(function () {
+
+        var owl = $('#EzLogoSlider');
+
+        owl.owlCarousel({
+            items: 5,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            nav: false,
+            dots: false,
+            autoplayTimeout: 2000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 2,
+                },
+                480: {
+                    items: 2,
+                },
+                667: {
+                    items: 4,
+                },
+                768: {
+                    items: 5,
+                }
+            }
+        });
+    });
+    //touchSwipe https://codepen.io/andrearufo/pen/rVWpyE
+</script>
+
+<script>
+    // $(".carousel").swipe({
+    //     swipe: function(event, direction, distance, duration, fingerCount, fingerData) {
+
+    //         if (direction == 'left') $(this).carousel('next');
+    //         if (direction == 'right') $(this).carousel('prev');
+    //     },
+    //     allowPageScroll: "vertical"
+    // });
+    //icon - language - en
+    // set gia tri reload trang khi chuyen language
+    //$('#icon-language-en').click(function () {
+
+    //    var URL = '/editor/Surface/WebsiteBase/setLanguage?id=EN';
+
+    //    $.ajax({
+    //        url: URL,
+    //        async: false,
+    //    }).done(function (jsonData) {
+
+    //        window.location = jsonData;
+    //    });
+
+
+    //});
+
+
+    //$('#icon-language-vn').click(function () {
+
+    //    var URL = '/editor/Surface/WebsiteBase/setLanguage?id=VN';
+
+    //    $.ajax({
+    //        url: URL,
+    //        async: false,
+    //    }).done(function (jsonData) {
+
+    //        window.location = jsonData;
+    //    });
+
+
+    //});
+
+    $(document).ready(function () {
+        var owlSMobile = $('#SliderMobilerCustom');
+        owlSMobile.owlCarousel({
+            items: 1,
+            loop: true,
+            margin: 5,
+            autoplay: true,
+            nav: false,
+            dots: false,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+
+
+        });
+
+        $('.play').on('click', function () {
+            owlSMobile.trigger('play.owl.autoplay', [1000])
+        })
+        $('.stop').on('click', function () {
+            owlSMobile.trigger('stop.owl.autoplay')
+        })
+    })
+    $(document).ready(function () {
+        var owl = $('#media');
+        owl.owlCarousel({
+            items: 1,
+            onInitialize: function (event) {
+                if ($('.owl-carousel .item').length <= 1) {
+                    this.settings.loop = false;
+                }
+            },
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            nav: false,
+            dots: false,
+            autoplayTimeout: 10000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                480: {
+                    items: 1,
+                },
+                667: {
+                    items: 1,
+                },
+                768: {
+                    items: 1,
+                }
+            }
+
+        });
+
+        var owll = $('#enterprise');
+        owll.owlCarousel({
+            items: 6,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            nav: false,
+            dots: false,
+            autoplayTimeout: 10000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 1,
+                },
+                480: {
+                    items: 2,
+                },
+                667: {
+                    items: 2,
+                },
+                768: {
+                    items: 5,
+                }
+            }
+        });
+        var owlls = $('#enterprises');
+        owlls.owlCarousel({
+            items: 7,
+            loop: true,
+            margin: 10,
+            autoplay: true,
+            nav: false,
+            dots: false,
+            autoplayTimeout: 4000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 2,
+                },
+                480: {
+                    items: 2,
+                },
+                667: {
+                    items: 3,
+                },
+                768: {
+                    items: 5,
+                },
+                1024: {
+                    items: 6,
+                }
+            }
+        });
+    });
+
+
+
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        /*ChienND 30/08/2022 Lấy ngôn ngữ qua link website*/
+        var link;
+        if (window.location.href.includes("?culture=en-US"))
+            link = "?culture=en-US";
+        else
+            link = "";
+        console.log('a');
+            $.ajax({
+                url: '@Url.Action("GetStockCode", "Home")' + link,
+                dataType: 'json',
+                method: 'GET',
+                success: function(res){
+                    //console.log(res);
+                    var strJSON = JSON.stringify(res);
+                    sessionStorage.setItem('dataSearch', strJSON);
+
+                    //Search StockCode trang Home
+                    var json = JSON.parse(sessionStorage.getItem('dataSearch'));
+
+                    var options = {
+                        data: json,
+                        getValue: function (e) {
+                            return e.nameSearch;
+                        },
+
+                        template: {
+                            type: "custom",
+                            method: function (value, item) {
+                                return `<form action="@Url.Action("SelectStockCode")` + link +`" enctype="multipart/form-data" method="post" class="col-12">
+                                                <button id="btn_stck" class="button">
+                                                     <p>${value}</p>
+                                                     <input style="display:none" name="astock_CODE" value="${item.astock_CODE}"/>
+                                                </button>
+
+                                        </form>`;
+                            }
+                        },
+                        list: {
+                            maxNumberOfElements: 30000,
+                            match: {
+                                enabled: true
+                            }
+                        },
+                        requestDelay: 500
+                    };
+
+                    if (document.getElementById('fpts-search-stockcode')) {
+                        $("#fpts-search-stockcode").easyAutocomplete(
+                            options
+                        );
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        });
+</script>
+
+
+
+
+
+
+

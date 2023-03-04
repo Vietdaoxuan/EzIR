@@ -1,0 +1,254 @@
+﻿//HieuND 27/12/2019
+html{
+    height:100%;
+}
+
+body {
+    font-family: "Helvetica Neue Light", "Helvetica Neue", "Helvetica", "Arial", "Lucida Grande", "sans-serif";
+   
+    min-height:100%;
+    position:relative;
+}
+.logoFPTS{
+    img{
+        width:246px;
+    }
+}
+
+
+
+
+.content-title {
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    color: #007db7;
+}
+
+.header-title {
+    display: none;
+}
+
+.fpts-btn-signout {
+   
+}
+
+.breadcrumb-contain {
+    display: none;
+}
+
+.culture-image {
+    display: block;
+    float: right;
+    cursor: pointer;
+
+    img {
+        height: 18px;
+    }
+}
+
+.fpts-gsmonline-checkbox {
+    border-color: #3498db;
+}
+@media only screen and (max-width: 899px){
+    .fpts-btn-signout {
+        float: right;
+        color: white;
+        margin-left: 10px;
+        font-size: 18px;
+       
+    }
+    .cd-info{
+        display:none;
+    }
+    .flag-btn{
+        margin-top:5px;
+    }
+}
+
+
+@media only screen and (min-width: 900px) {
+    #page-sidebar {
+        float: unset;
+    }
+    //Loading
+    .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+    }
+    /* Safari */
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    //Header
+    #page-header {
+        background: unset;
+        background: #007db8 !important;
+        height: unset;
+        padding: 9px 0px;
+
+        .header-title {
+            display: block;
+            text-transform: uppercase;
+            color: white;
+            padding: 0px 20px;
+        }
+
+        .fpts-btn-signout, .header-username {
+            display: block;
+            float: right;
+            color: white;
+        }
+    }
+
+    .breadcrumb-contain {
+        background-color: #eee;
+        display: block;
+
+        ul.breadcrumb {
+            padding: 10px 30px;
+            list-style: none;
+            background-color: #eee;
+            margin-bottom: unset;
+
+            li {
+                display: inline;
+                font-size: 15px;
+
+                a {
+                    color: #4c4c4c;
+                    text-decoration: none;
+                }
+
+                a:hover {
+                    color: #de6f20;
+                    text-decoration: none;
+                }
+
+                &.active {
+                    color: #de6f20;
+                }
+            }
+
+            li + li:before {
+                padding: 8px;
+                color: black;
+                font-family: FontAwesome;
+                content: "\f0da";
+            }
+        }
+    }
+    /*.breadcrumb-contain * {
+            position: relative;
+        }*/
+    //Thanh menu
+    #page-sidebar {
+        width: 100%;
+        height: unset !important;
+
+        .scroll-sidebar {
+            height: unset !important;
+            padding-left:10px;
+        }
+    }
+
+    .sidebar-hidden {
+        display: none;
+    }
+
+    #sidebar-menu {
+        display: table;
+        /*width: 100%;*/
+        li {
+            display: inline-block;
+
+
+            a {
+                border: unset;
+                padding-right: 0px;
+                color: #000;
+              
+                text-align: center;
+                text-transform: uppercase;
+                font-size: 15px;
+                text-decoration: none;
+
+                span {
+                    padding-bottom: 5px;
+                }
+            }
+
+            a:hover, a.sfActive {
+                border: unset;
+                color: #de6f20;
+                text-decoration: none;
+                border-radius: unset;
+                border-color: unset;
+
+                > span {
+                    border-bottom: 2px solid #de6f20;
+                }
+            }
+        }
+
+        li:not(.divider) {
+            padding: 5px 25px;
+
+            &:not(:last-child):before { // Không bao gồm class .divider và last-child
+                content: "";
+                width: 1px;
+                display: block;
+                background: #ddd;
+                position: absolute;
+                height: 70%;
+                right: 0px;
+                top: 15%;
+            }
+        }
+    }
+    //Phần nội dung
+    #page-content {
+        margin-left: unset;
+        min-height: unset !important;
+        padding: unset;
+        /*.panel-body {
+            padding-left: unset;
+            padding-right: unset;
+        }*/
+    }
+}
+
+/*@media only screen and (max-width: 899px) {
+        .clearfix {
+            display: none;
+        }
+    }*/
+
+@media only screen and (min-width: 1200px){
+    .login-container{
+        padding-bottom:240px;
+    }
+}
+

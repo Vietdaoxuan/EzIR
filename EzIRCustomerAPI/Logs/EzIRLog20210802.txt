@@ -1,0 +1,91 @@
+﻿2021-08-02 10:44:45.498 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:Admin;P_PASSWORD:74be03f997d320345db30af4edf99978;p_MESSAGE:;p_ERRORCODE:;
+
+2021-08-02 10:44:46.860 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_SEARCH
+-----paramArr ---
+P_USERNAME:Admin;P_FULLNAME:;P_EMAIL:;P_ACTIVE:;REFCURSOR:;
+
+2021-08-02 13:18:39.317 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:Admin;P_PASSWORD:74be03f997d320345db30af4edf99978;p_MESSAGE:;p_ERRORCODE:;
+
+2021-08-02 13:18:40.127 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_SEARCH
+-----paramArr ---
+P_USERNAME:Admin;P_FULLNAME:;P_EMAIL:;P_ACTIVE:;REFCURSOR:;
+
+2021-08-02 13:18:45.106 +07:00 [ERR] 
+-----SPname-----
+SPEZSTEMP_KNOWLEDGELEVEL_SEARCH
+-----paramArr ---
+Refcursor:;
+
+2021-08-02 13:18:45.736 +07:00 [ERR] 
+-----SPname-----
+SPEZSTEMP_MANAGERORG_SEARCH
+-----paramArr ---
+P_AMORGID:;P_AMORGGROUPID:;Refcursor:;
+
+2021-08-02 13:18:46.030 +07:00 [ERR] 
+-----SPname-----
+SPEZSTEMP_MANAGER_SEARCH
+-----paramArr ---
+P_AMNGID:;P_CPNYID:341;P_APPROVE:;Refcursor:;
+
+2021-08-02 13:18:57.081 +07:00 [ERR] 
+-----SPname-----
+SPEZSTEMP_MANAGER_INSERT
+-----paramArr ---
+P_CPNYID:341;P_ACORGID:;P_AMNGERNAME:test_2;P_ANATIONALITY:;P_AKNOWLEDGELEVELID:1;P_AISLEGALREP:0;P_ADATEOFBIRTHVN:;P_AKNOWLEDGESPECIALLEVEL:;P_AKNOWLEDGESPECIALLEVELEN:;P_ACVPATH:;P_AORD:;P_ANOTE:;P_MORGID:3;p_MESSAGE:;p_ERRORCODE:;p_USERNAME:Admin;p_RoleCode:TPLD;
+
+2021-08-02 13:18:57.184 +07:00 [ERR] 
+-----SPname-----
+SPEZSTEMP_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:341;P_KEY:MNGERNAME;P_VALUE:test_2;P_STATUS:1;P_KEYFUNCTION:Thành phần lãnh đạo - MNGERNAME;P_MENUID:581;P_FUNCTION:Thành phần lãnh đạo;P_LEVELID:TQ;P_DETAILLEVELID:TPLD;p_MESSAGE:;p_ERRORCODE:;
+
+2021-08-02 13:18:57.228 +07:00 [ERR] 
+-----SPname-----
+SPEZSTEMP_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:341;P_KEY:KNOWLEDGELEVELID;P_VALUE:Trên ĐH;P_STATUS:1;P_KEYFUNCTION:Thành phần lãnh đạo - KNOWLEDGELEVELID;P_MENUID:581;P_FUNCTION:Thành phần lãnh đạo;P_LEVELID:TQ;P_DETAILLEVELID:TPLD;p_MESSAGE:;p_ERRORCODE:;
+
+2021-08-02 13:18:57.259 +07:00 [ERR] 
+-----SPname-----
+SPEZSTEMP_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:341;P_KEY:ISLEGALREP;P_VALUE:False;P_STATUS:1;P_KEYFUNCTION:Thành phần lãnh đạo - ISLEGALREP;P_MENUID:581;P_FUNCTION:Thành phần lãnh đạo;P_LEVELID:TQ;P_DETAILLEVELID:TPLD;p_MESSAGE:;p_ERRORCODE:;
+
+2021-08-02 13:18:57.270 +07:00 [ERR] 
+-----SPname-----
+SPEZSTEMP_CHANGEINFO_INSERT
+-----paramArr ---
+P_CPNYID:341;P_KEY:MORGID;P_VALUE:["Thành viên HĐQT"];P_STATUS:1;P_KEYFUNCTION:Thành phần lãnh đạo - MORGID;P_MENUID:581;P_FUNCTION:Thành phần lãnh đạo;P_LEVELID:TQ;P_DETAILLEVELID:TPLD;p_MESSAGE:;p_ERRORCODE:;
+
+2021-08-02 13:18:57.723 +07:00 [ERR] 
+-----Message-----
+Service not available, closing transmission channel. The server response was: 4.4.2 Message submission rate for this client has exceeded the configured limit
+-----Source ---
+System.Net.Mail
+-----StackTrace ---
+   at System.Net.Mail.MailCommand.CheckResponse(SmtpStatusCode statusCode, String response)
+   at System.Net.Mail.MailCommand.Send(SmtpConnection conn, Byte[] command, MailAddress from, Boolean allowUnicode)
+   at System.Net.Mail.SmtpTransport.SendMail(MailAddress sender, MailAddressCollection recipients, String deliveryNotify, Boolean allowUnicode, SmtpFailedRecipientException& exception)
+   at System.Net.Mail.SmtpClient.Send(MailMessage message)
+   at EzIRCustomerAPI.Services.EmailSender.<>c__DisplayClass4_0.<SendEmailAsync>b__0() in D:\Devops\EzIR\Code\EzIR\EzIRCustomerAPI\Services\IEmailSender.cs:line 83
+-----TargetSite ---
+Void CheckResponse(System.Net.Mail.SmtpStatusCode, System.String)
+2021-08-02 13:18:57.749 +07:00 [ERR] 
+-----SPname-----
+SPEZSTEMP_MANAGER_SEARCH
+-----paramArr ---
+P_AMNGID:;P_CPNYID:341;P_APPROVE:;Refcursor:;
+

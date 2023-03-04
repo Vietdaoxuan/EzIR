@@ -1,0 +1,242 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@using Microsoft.AspNetCore.Localization
+@{
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+}
+<link href="~/css/cophieu.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/assets/vendors/custom/datatables/datatables.bundle.css">
+<script src="~/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/vendors/custom/datatables/datatables.bundle.js"></script>
+
+<div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor DaiHoiform" id="k_content">
+
+    <div id="content">
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <div class="row">
+                <div class="col-md-6 lstangvon" style="padding-left: 0;"></div>
+                <div class="col-md-6 lstracotuc" style="padding-right:0px;"></div>
+               
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+
+    <!-- End of Main Content -->
+
+
+</div>
+<style>
+    .floatt_rightt{
+        text-align: right;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+
+        var LichSuTangVonTraCoTuc = function () {
+
+            this.init = function () {
+                loaddatalstracotuc();
+                loaddatalstangvon();
+            };
+
+
+            var rendercolumslstangvon = [
+                {
+                    title: "@Localizer["Time"]",
+                    width:"12%",
+                    data: "exRightDate",
+                    render: (data) => getFormattedDate(data)
+
+                },
+
+                {
+                    title: "@Localizer["ContentofChanges"]",
+                    width: "68%",
+                    data: "announcements",
+                    render: function (data, type, full) {
+                        return `<div class="d-inline-flex w-100">
+                              <a href="${full.link}" target="_blank">${data}</a>
+                            </div >`;
+                    }
+                },
+                {
+                    title: "@Localizer["Numberofsharesissued"]",
+                    width: "20%",
+                    className: "floatt_right",
+                    data: "qPlus"
+                },
+
+
+            ];
+
+            var rendercolumnlstracotuc = [
+                 {
+                    title: "@Localizer["MACK"]",
+                    width:"10%",
+                    data: "code"
+
+                },
+
+                {
+                    title: "@Localizer["NgayGD"]",
+                    width: "20%",
+                    data: "date2"
+
+                },
+                {
+                    title: "@Localizer["Content"]",
+                    width: "55%",
+                    data: "content",
+                    render: function (data, type, full) {
+                        return `<div class="d-inline-flex w-100">
+                              <a href="${full.url}" target="_blank">${data}</a>
+                            </div >`;
+                    }
+                },
+                {
+                    title: "@Localizer["Ti_le_traCT"]",
+                    width: "15%",
+                    data: "ctmg",
+                    className: "floatt_rightt"
+                },
+            ];
+            var stock_code = window.location.href.split('/')[4];
+
+            var stockcode = stock_code.toUpperCase();
+            var language = "";
+            var lang = ReturnLanguage();
+            if (lang == "vi-VN") {
+                language = "VN" ;
+            } else {
+                language = "EN";
+            }
+            function loaddatalstangvon() {
+
+                $.ajax({
+
+                    url: '@Url.Action("ThongTin", "ThongTinDoanhNghiep")',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { stock_code: stockcode },
+
+                    success: function (data) {
+
+                        var cpnyid = data[0].acpnyid
+
+                        $.ajax({
+                        url: '@Url.Action("GetLichSuTangVon", "ThongTinDoanhNghiep")',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: { CpnyID: cpnyid, Language: language},
+                            success: function (data) {
+                                
+                                data.forEach(function (item, index) {
+                                    item.qPlus = item.qPlus.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+;
+                                })
+                                
+                                if (data.length > 0) {
+                                    var html = `<div class="contentt">
+                                            <p id="lstv">@Localizer["CapitalRaisingHistory"]</p>
+                                            </div>`
+                                    html += `<table id="table_lichsutangvon" cellspacing="0" cellpadding="0"></table>`
+                                    $('.lstangvon').append(html);
+
+                                    $('#table_lichsutangvon').DataTable({
+
+                                        ordering: false,
+                                        dom: "lti<'pagingList justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        "pageLength": 7,
+                                        data: data,
+                                        columns: rendercolumslstangvon
+                                    });
+                                }
+                                // Không có dữ liệu thì thực thi
+                                else {
+                                    $('.lstangvon').empty();
+                                }
+
+                        },
+                        error: function (err) {
+                           // console.log(err);
+                        }
+                        });
+
+                    },
+                    error: function (err) {
+                        //console.log(err);
+                    }
+
+
+                });
+
+            }
+
+             function loaddatalstracotuc() {
+                 var cpnyId = $("#cpnyid").val();
+                        $.ajax({
+                            url: '@Url.Action("GetLichSuTraCoTuc", "ThongTinDoanhNghiep")',
+                            type: 'GET',
+                            dataType: 'json',
+                            data: { CpnyID: cpnyId, Language: language},
+
+                            success: function (data) {
+                                if (data.length > 0) {
+
+                                    var html = `<div class="contentt" style=" width:100%;">
+                                                <p id="lstvtct">@Localizer["RightExercises"]</p>
+                                                </div>`
+                                    html += `<table id="table_tracotuc" cellspacing="0" cellpadding="0"></table>`
+                                    $('.lstracotuc').append(html);
+
+                                    $('#table_tracotuc').DataTable({
+                                        ordering: false,
+                                        dom: "lti<'pagingList justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        "pageLength": 7,
+                                        data: data,
+                                        columns: rendercolumnlstracotuc
+                                    });
+                                }
+                                // Không có dữ liệu thì thực thi
+                                else {
+                                    $('.lstracotuc').empty();
+                                }
+                            },
+                            error: function (err) {
+                               // console.log(err);
+                            }
+                        });
+
+            }
+        }
+
+
+        var lstangvontracotuc = new LichSuTangVonTraCoTuc();
+        lstangvontracotuc.init();
+
+    });
+
+</script>

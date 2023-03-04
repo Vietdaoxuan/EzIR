@@ -1,0 +1,74 @@
+﻿
+@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+@using CoreLib.Entities;
+@model List<InfoSheet>;
+
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration;
+
+
+@{
+    ViewData["Title"] = "_Trình độ công nghệ";
+    var img = _configuration.GetSection("CkeditorImgUrl").Value;
+
+    //var cResponseMessage = ViewBag.Data as CoreLib.Entities.CResponseMessage;
+
+    var data = Model.ToList();
+}
+
+<style>
+    img {
+        max-height: 100%;
+        max-width: 100%;
+    }
+</style>
+
+<div class="k-portlet__body">
+    <div class=" nopadding" style="margin-bottom: 10px;">
+        <div class="respon-mobile">
+
+            <!-- trình độ công nghệ -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 187 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Trình độ công nghệ</p>
+                                    <!-- trình độ công nghệ -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 187 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Trình độ công nghệ EN</p>
+                                    <!-- trình độ công nghệ US -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <div id="loading"></div>
+        </div>
+    </div>
+</div>

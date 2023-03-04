@@ -1,0 +1,199 @@
+﻿@model EzIRSpecialist.Models.ModelView.QLTKModelView.DoanhNghiepModelView
+
+@{
+    Layout = null;
+    List<string> listRoleName = Model.ListRoleName.Split(',').ToList();
+    List<string> listRoleCode = Model.ListRoleCode.Split(',').ToList();
+    List<string> roleTQ = new List<string>();
+    List<string> roleLT = new List<string>();
+    List<string> roleKD = new List<string>();
+    List<string> roleTC = new List<string>();
+    List<string> roleCP = new List<string>();
+    List<string> rolePT = new List<string>();
+    string rolestring = null;
+}
+
+<style>
+    .nopadding {
+        word-break: break-word;
+    }
+</style>
+<body>
+    <div class="form-group row nopadding">
+        <div class="col-md-12 nopadding">
+
+            <input type="hidden" id="MaCD" />
+            <label class="col-form-label k-font-bold " style="font-weight: bold !important">Công ty:</label>
+            <label class="col-form-label k-font-bold " style="font-weight: bold !important">@Model.StockName</label>
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Email:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="Email">@Model.Email</label>
+        </div>
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Điện thoại:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="Phone">@Model.Phone</label>
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Ngày tạo:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="CreateOn">@Model.CreateOn</label>
+        </div>
+        @*<div class="col-md-2 nopadding">
+            <label class="col-form-label">Trạng thái:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="Status">@Model.CompanyStatusString</label>
+        </div>*@
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Loại hình:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="Expert">@Model.TypeName</label>
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Cán bộ phụ trách:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="Expert">@Model.Expert</label>
+        </div>
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Đơn vị kế toán trực thuộc/ Công ty con:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            @if (Model.Level == 1)
+            {
+            <label class="col-form-label k-font-bold gsm-data-value" id="Level">Có</label>
+            }
+            else
+            {
+            <label class="col-form-label k-font-bold gsm-data-value" id="Level">Không</label>
+            }
+
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label"> Niên độ BCTC:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="FiscYear">@Model.NiendoBCTCstring</label>
+        </div>
+       
+    </div>
+    <div class="form-group row nopadding nomargin">
+
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Ghi chú:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="Note">@Model.Note</label>
+        </div>
+
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Dịch vụ sử dụng:</label>
+        </div>
+        @*<div class="col-md-10 nopadding">
+            <label class="col-form-label k-font-bold " id="Note">@Model.ListRoleName</label>
+        </div>*@
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-12 nopadding">
+            <ul style="list-style-type: disc">
+                @for (int i = 0; i < listRoleCode.Count; i++)
+                {
+                    string val = listRoleCode[i];
+                    string valname = listRoleName[i];
+                    if (val.Contains("TQ_"))
+                    {
+                        if (val == "TQ_TQ")
+                        {
+                            roleTQ.Insert(0, valname);
+                        }
+                        else
+                        {
+                            roleTQ.Add(valname);
+                        }
+                    }
+                    if (val.Contains("LT_"))
+                    {
+                        if (val == "LT_LT")
+                        {
+                            roleLT.Insert(0, valname);
+                        }
+                        else
+                        {
+                            roleLT.Add(valname);
+                        }
+                    }
+                    if (val.Contains("KD_"))
+                    {
+                        if (val == "KD_KD")
+                        {
+                            roleKD.Insert(0, valname);
+                        }
+                        else
+                        {
+                            roleKD.Add(valname);
+                        }
+                    }
+                    if (val.Contains("TC_"))
+                    {
+                        if (val == "TC_TC")
+                        {
+                            roleTC.Insert(0, valname);
+                        }
+                        else
+                        {
+                            roleTC.Add(valname);
+                        }
+                    }
+                    if (val.Contains("CP_"))
+                    {
+                        if (val == "CP_CP")
+                        {
+                            roleCP.Insert(0, valname);
+                        }
+                        else
+                        {
+                            roleCP.Add(valname);
+                        }
+                    }
+                    if (val.Contains("PT_"))
+                    {
+                        if (val == "PT_PT")
+                        {
+                            rolePT.Insert(0, valname);
+                        }
+                        else
+                        {
+                            rolePT.Add(valname);
+                        }
+                    }
+                }
+                <li><label class="col-form-label k-font-bold gsm-data-value" id="Level">@string.Join(" - ", roleTQ.ToArray())</label></li>
+                <li><label class="col-form-label k-font-bold gsm-data-value" id="Level">@string.Join(" - ", roleLT.ToArray())</label></li>
+                <li><label class="col-form-label k-font-bold gsm-data-value" id="Level">@string.Join(" - ", roleKD.ToArray())</label></li>
+                <li><label class="col-form-label k-font-bold gsm-data-value" id="Level">@string.Join(" - ", roleTC.ToArray())</label></li>
+                <li><label class="col-form-label k-font-bold gsm-data-value" id="Level">@string.Join(" - ", roleCP.ToArray())</label></li>
+                <li><label class="col-form-label k-font-bold gsm-data-value" id="Level">@string.Join(" - ", rolePT.ToArray())</label></li>
+            </ul>
+            
+            
+        </div>
+    </div>
+
+</body>

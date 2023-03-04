@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "bản tin ir";
+}
+
+<div class="table_company_new" id="tab-bantin">
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        
+        var lang;
+        if (ReturnLinkLanguage())
+            lang = "?culture=en-US";
+        else
+            lang = "";
+        var BanTin = function () {
+            this.init = function () {
+                loadData();
+            }
+            var loadData = function () {
+                $.ajax({
+                    url: '@Url.Action("GetBanTinIR", "Home")' + lang,
+                    method: 'GET',
+                    dataType: 'json',
+                    data: {} ,
+                    success: function (data) {
+                        console.log(data);
+                        let html = '';
+                        for (const item of data) {
+                                html += `
+                                    <ul>
+                                        <li class="custom-border">
+                                            <span class="custom-border-span">${item.datePub}</span>
+                                        </li>
+                                        <li class="custom-border-right">
+                                            <a href="${item.url}" target="_BanTinIR">${item.title}</a>
+                                        </li>
+                                        <li class="middle_img">
+                                            <div class="w-100" style="width:100%;">
+                                                ${item.newimg}
+                                            </div>
+                                        </li>
+                                    </ul>`;
+
+                        }
+                        $('#tab-bantin').append(html);
+                    },
+                    error: function (err) {
+                        //console.log(err);
+                    }
+                });
+            }
+        }
+
+            var banTin = new BanTin();
+            banTin.init();
+
+
+    });
+</script>

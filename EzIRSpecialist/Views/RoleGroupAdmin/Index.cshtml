@@ -1,0 +1,332 @@
+﻿
+@{
+    ViewData["Title"] = "Phân quyền cho nhóm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#">
+                    <span>Báo cáo - tiên ích</span>
+                </a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#">
+                    <span>Phân quyền</span>
+                </a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="@Url.Action("Index","RoleGroupAdmin")">
+                    <span>Phân quyền cho nhóm</span>
+                </a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <div class="row">
+        <form class="col-12 nopadding">
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+                <div class="row padt20">
+                    <div class="col-md-12 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-2 nopadding">
+                                <label class="padt6">Nhóm</label>
+                            </div>
+                            <div class="col-md-10 nopadding">
+                                <select class="form-control" id="slGroup">
+                                </select>
+                            </div>
+                        </div>
+                        @*<div class="form-group row nopadding">
+                            <div class="col-md-2 nopadding">
+                                <label class="padt6">Loại quyền</label>
+                            </div>
+                            <div class="col-md-10 nopadding">
+                                <select class="form-control" id="slRoleType">
+                                    <option value="0">Chuyên viên</option>
+                                    <option value="1">Khách hàng</option>
+                                </select>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row col-12 d-flex justify-content-center nopadding">
+        <button type="button" id="btnSave" class="btn btn-primary mt-3 col-md-2 col-sm-12 mt-2">
+            Lưu
+        </button>
+    </div>
+    <div class="row mt-3">
+        <table id="listRoleGroup" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" style="width: 1138px;">
+            <thead>
+                <tr>
+                    <th>Chức năng</th>
+                    <th>Xem</th>
+                    <th>Sửa</th>
+                    <th>Xóa</th>
+                    <th>Special</th>
+                </tr>
+            </thead>
+            <tbody>                                             
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="loading"></div>
+
+<script>
+	$(document).ready( function() {
+
+        var renderColumns = [
+            {
+                data: "roleName",
+                render: function (roleName, type, roleGroupModelView) {
+                    return `<div class="tdRoleName" data-rolecode="${roleGroupModelView.roleCode}">${roleName}</div>`;
+                }
+            },
+            {
+                data: "view",
+                render: function (data) {
+                    if (data) {
+                        return `<label class="k-checkbox k-checkbox--bold k-checkbox--brand" style="margin-bottom: 9% !important;">
+                                    <input class="redit cbView" type="checkbox" checked>
+                                    <span></span>
+                                </label>`;
+                    } else {
+                        return `<label class="k-checkbox k-checkbox--bold k-checkbox--brand" style="margin-bottom: 9% !important;">
+                                    <input class="redit cbView" type="checkbox">
+                                    <span></span>
+                                </label>`;
+                    }
+                }
+            },
+            {
+                data: "edit",
+                render: function (data) {
+                    if (data) {
+                        return `<label class="k-checkbox k-checkbox--bold k-checkbox--brand" style="margin-bottom: 9% !important;">
+                                    <input class="redit cbEdit" type="checkbox" checked>
+                                    <span></span>
+                                </label>`;
+                    } else {
+                        return `<label class="k-checkbox k-checkbox--bold k-checkbox--brand" style="margin-bottom: 9% !important;">
+                                    <input class="redit cbEdit" type="checkbox">
+                                    <span></span>
+                                </label>`;
+                    }
+                }
+            },
+            {
+                data: "delete",
+                render: function (data) {
+                    if (data) {
+                        return `<label class="k-checkbox k-checkbox--bold k-checkbox--brand" style="margin-bottom: 9% !important;">
+                                    <input class="redit cbDelete" type="checkbox" checked>
+                                    <span></span>
+                                </label>`;
+                    } else {
+                        return `<label class="k-checkbox k-checkbox--bold k-checkbox--brand" style="margin-bottom: 9% !important;">
+                                    <input class="redit cbDelete" type="checkbox">
+                                    <span></span>
+                                </label>`;
+                    }
+                }
+            },
+            {
+                data: "special",
+                render: function (data) {
+                    if (data) {
+                        return `<label class="k-checkbox k-checkbox--bold k-checkbox--brand" style="margin-bottom: 5.5% !important;">
+                                    <input class="redit cbSpecial" type="checkbox" checked>
+                                    <span></span>
+                                </label>`;
+                    } else {
+                        return `<label class="k-checkbox k-checkbox--bold k-checkbox--brand" style="margin-bottom: 5.5% !important;">
+                                    <input class="redit cbSpecial" type="checkbox">
+                                    <span></span>
+                                </label>`;
+                    }
+                }
+            },
+        ]
+        
+        var RoleGroupAdmin = function() {
+
+            this.init = function() {
+                loadData();
+                registerEvents();
+            }
+
+            var loadData = function () {
+                reloadData();
+            }
+
+            var registerEvents = function () {
+
+                // Action select Group
+                $("#slGroup").change(function () {
+                    let groupCode = $(this).children("option:selected").val();
+                    let roleType = $('#slRoleType').val();
+                    loadRoleGroup(groupCode, 0);
+                });
+
+                // Action select RoleType
+                //$("#slRoleType").change(function () {
+                //    let roleType = $(this).children("option:selected").val();
+                //    let groupCode = $('#slGroup').val();
+                //    loadRoleGroup(groupCode, roleType);
+                //});
+
+                // Action click add record
+                $('body').on('click', '#btnSave', function (e) {
+                    e.preventDefault();
+
+                    let groupCode = $('#slGroup').val();
+                    let roleType = $('#slRoleType').val();
+                    let roleGroups = $('#listRoleGroup tbody tr');
+                    let listRoleGroup = [];
+
+                    //lấy dữ liệu từng dòng cho vào một array                    
+                    for (let row of roleGroups) {
+
+                        let rolefunc = $(row);
+                        
+                        let roleCode = $(row).find('.tdRoleName').data('rolecode');
+                        let rview = rolefunc.find("input.cbView").is(':checked');
+                        let redit = rolefunc.find("input.cbEdit").is(':checked');
+                        let rdelete = rolefunc.find("input.cbDelete").is(':checked');
+                        let rspecial = rolefunc.find("input.cbSpecial").is(':checked');
+
+                        listRoleGroup.push({
+                            groupCode,
+                            aRoleCode: roleCode,
+                            view: rview ,//== true ? '1' : '0',
+                            edit: redit,//== true ? '1' : '0',
+                            delete: rdelete,//== true ? '1' : '0',
+                            special: rspecial,//== true ? '1' : '0'
+                        });
+                    }
+
+                    if (listRoleGroup.length < 1) return;
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("InsertRoleGroup", "RoleGroupAdmin")',
+                        dataType: 'json',
+                        data: { listRoleGroup } ,
+                        success: function (data) {
+                            console.log(data);
+                            isMessageSuccess(data);
+                            loadRoleGroup(groupCode, 0);                            
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+
+                });
+                
+            }
+
+            function reloadData() {
+
+                $('#loading').addClass('loading');
+
+                // Get list group
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetGroup", "GroupAdmin")',
+                    dataType: 'json',
+                    data: {} ,
+                    success: function (data) {
+
+                        if ($.isArray(data)) {
+                            $('#slGroup').empty();
+
+                            let html = '';
+
+                            //$.each(data, function (key, value) {
+
+                            //    html += "<option value=" + value.groupCode + " >" + value.groupName + "</option>";
+
+                            //});
+                            for (const item of data) {
+                                html += `<option value="${item.groupCode}">${item.groupName}</option>`;
+                            };
+
+                            $('#slGroup').append(html);
+                        } else {
+                            isMessageSuccess(data);
+                        }
+
+                        $('#loading').removeClass('loading');
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+
+                setTimeout(function () {
+                    let groupCode = $('#slGroup').val();
+                    let roleType = $('#slRoleType').val();
+                    loadRoleGroup(groupCode, 0);
+                }, 1000);
+
+            }
+
+            var loadRoleGroup = function (groupCode, roleType) {
+
+                $('#loading').addClass('loading');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetRoleGroup", "RoleGroupAdmin")',
+                    dataType: 'json',
+                    data: { GroupCode: groupCode, RoleType: roleType },
+                    success: function (data) {
+
+                        if ($.isArray(data)) {
+                            //console.log(data);
+                            $('#listRoleGroup').DataTable({
+                                ordering: false,
+                                dom: "lti<'d-flex justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                lengthChange: false,
+                                className: 'dt-body-right',
+                                "bInfo": false,
+                                "pageLength": 1000,
+                                data: data,
+                                columns: renderColumns
+                            });
+
+                        } else {
+                            isMessageSuccess(data);
+                        }
+
+                        $('#loading').removeClass('loading');
+
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+
+        }
+
+        var roleGroupAdmin = new RoleGroupAdmin();
+        roleGroupAdmin.init();
+
+    });
+</script>

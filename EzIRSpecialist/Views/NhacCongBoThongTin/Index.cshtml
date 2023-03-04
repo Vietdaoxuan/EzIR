@@ -1,0 +1,986 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model EzIRSpecialist.Models.ViewModel.NhacCongBoThongTinViewModel
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "Nhắc công bố thông tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var TempUrl = ViewBag.TemplateUrl;
+}
+
+
+
+<link href="~/Online/QuanLyDoanhNghiepCongBo.css" rel="stylesheet" />
+<link href="~/css/siteStyle.css" rel="stylesheet" />
+@*<link href="~/css/select2.min.css" rel="stylesheet" />
+<link href="~/Online/select2_restyle.css" rel="stylesheet" />*@
+<style>
+    #listInfoCBTT .k-checkbox > span {
+        position: absolute;
+        top: -15px;
+        left: 15px;
+    }
+
+    #sendmail {
+        width: 500px !important;
+        max-width: 300px !important;
+    }
+
+    #senmail_all {
+        margin-left: 15px;
+    }
+</style>
+<style>
+    .content-tbl {
+        margin-top: 3rem;
+    }
+
+    div#listInfoCBTT_length {
+        left: 100%;
+        position: absolute;
+        top: -4rem;
+    }
+
+    select.custom-select.custom-select-sm.form-control.form-control-sm {
+        width: 5rem;
+        font-size: 10pt;
+    }
+
+    label[for="Active"] {
+        margin-left: 0px;
+        /*margin-right: 38px;*/
+    }
+
+    table#listInfoCBTT th {
+        padding: 15px 10px;
+        color: #2999ce;
+        font-weight: 500;
+    }
+    .btn-group{
+        width: 100%;
+    }
+</style>
+
+<input style="display:none" type="text" id="email" />
+<input style="display:none" type="text" id="emailcc" />
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Báo cáo tiện ích</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Nhắc công bố thông tin</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <div class="row">
+        <form class="col-12 nopadding" name="emailform">
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+
+                <div class="row padt20">
+                    <div class="col-md-12 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-3 nopadding">
+                                <label class="padt6">Loại hình</label>
+                            </div>
+                            <div class="col-md-9 nopadding">
+                                <select class="form-control" id="loaidn" name="ACompanyType" asp-items="@(new SelectList(Model.ListLoaiDN,"TypeCode","TypeName"))">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row padt20">
+                    <div class="col-md-12 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-3 nopadding">
+                                <label class="padt6">Niên độ BCTC</label>
+                            </div>
+                            <div class="col-md-9 nopadding">
+                                <select class="form-control" id="slNienDoBCTC" name="niendoBCTC" asp-items="@(new SelectList(Model.ListNienDoBCTC,"TypeCode","TypeName"))">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row padt20">
+                    <div class="col-md-12 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-3 nopadding">
+                                <label class="padt6">Đơn vị kế toán trực thuộc/ Công ty con</label>
+                            </div>
+                            <div class="col-md-9 nopadding">
+                                <select id="Level" name="Level" class="form-control">
+                                    <option value="" selected> Tất cả</option>
+                                    <option value="0">Không</option>
+                                    <option value="1">Có</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row padt20">
+                    <div class="col-md-12 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-3 nopadding">
+                                <label class="padt6">Chuyên viên phụ trách</label>
+                            </div>
+                            <div class="col-md-9 nopadding">
+                                <select class="form-control select2-single" name="maChuyenVien" id="machuyenvien" asp-items="@(new SelectList(Model.ListChuyenVien, "Username","Username"))">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row padt20">
+                    <div class="col-md-12 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-3 nopadding">
+                                <label class="padt6">Mã CK</label>
+                            </div>
+                            <div class="col-md-9 nopadding">
+                                <select class="form-control" name="AStockCode" id="mack">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row padt20">
+                    <div class="col-md-6 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-6 nopadding">
+                                <label class="padt6">Từ ngày</label>
+                            </div>
+                            <div class="col-md-6 nopadding">
+                                @*<input type="date" class="form-control" id="FromDate">*@
+                                <div>
+                                    <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-left: 0 !important;">
+                                        <select id="Month1" class="form-control">
+                                            <option selected>Chọn tháng</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-right: 0 !important;">
+                                        <select id="Day1" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-6" style="text-align:center; padding-left:30%">
+                                <label class="padt6">Đến ngày</label>
+                            </div>
+                            <div class="col-md-6 nopadding">
+                                @*<input type="date" class="form-control" id="ToDate">*@
+                                <div>
+                                    <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-left: 0 !important;">
+                                        <select id="Month2" class="form-control">
+                                            <option selected>Chọn tháng</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-right: 0 !important;">
+                                        <select id="Day2" class="form-control">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row padt20">
+                    <div class="col-md-12 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-3 nopadding">
+                                <label class="padt6">Rules áp dụng cho</label>
+                            </div>
+                            <div class="col-md-9 nopadding">
+                                @*<select class="form-control" id="DoiTuongAD" name="AObject" asp-items="@(new SelectList(Model.ListDoiTuongAD, "TypeCode","TypeName"))">
+                                    <option value="0" selected>
+                                        Tất cả
+                                    </option>
+                                </select>*@
+                                <select class="form-control" name="multiselect[]" id="example-getting-started" multiple="multiple">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row padt20">
+                    <div class="col-md-12 nopadding d-inline-block m-auto">
+                        <div class="form-group row nopadding">
+                            <div class="col-md-3 nopadding">
+                                <label class="padt6">Email Template</label>
+                            </div>
+                            <div class="col-md-9 nopadding custom-file">
+                                @*<input type="file" class="custom-file-input" id="customFileLang">*@
+                                @*<input type="file" accept=".html,.doc,.docx" class="custom-file-input" id="emailFile" name="emailFile">
+                        <label class="custom-file-label" for="customFileLang">Chọn file</label>*@
+
+                                <input type="file" accept=".html,.doc,.docx" class="custom-file-input" id="emailFile" name="emailFile">
+                                <label class="custom-file-label" for="emailFile">Chọn File</label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row col-12 justify-content-center nopadding search-section">
+        <button type="button" id="search_cbtt" class="btn btn-primary col-md-2 col-sm-12">
+            Tìm kiếm
+        </button>
+        <button class="btn btn-primary btn-sendmail col-md-4 col-sm-12" id="sendmail">gửi mail nhắc công bố thông tin</button>
+        <button type="button" id="senmail_all" class="btn btn-primary col-md-2 col-sm-12">
+            Gửi mail all
+        </button>
+        <button type="button" id="view_mail_cbtt" class="btn btn-primary col-md-2 col-sm-12">
+            Xem trước mẫu
+        </button>
+        <button type="button" id="dowloadtemplate" class="btn btn-primary col-md-2 col-sm-12">
+            Tải mẫu
+        </button>
+
+
+    </div>
+    <div class="content-tbl">
+        <div id="listInfo_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+            <table id="listInfoCBTT" class="table table-striped dt-responsive dataTable no-footer dtr-inline dt-checkboxes-select" role="grid" style="width: 1323px;" aria-describedby="listInfo_info">
+            </table>
+        </div>
+    </div>
+
+
+</div>
+<div id="loading"></div>
+
+<script src="~/assets/demo/demo3/base/scripts.bundle.min.js" type="text/javascript"></script>
+<script src="~/js/dist/select2.min.js"></script>
+<script>
+    $('#machuyenvien').select2();
+
+    var KAppOptions = {
+        "colors": {
+            "state": {
+                "brand": "#4d5cf2",
+                "metal": "#c4c5d6",
+                "light": "#ffffff",
+                "accent": "#00c5dc",
+                "primary": "#5867dd",
+                "success": "#34bfa3",
+                "info": "#36a3f7",
+                "warning": "#ffb822",
+                "danger": "#fd3995",
+                "focus": "#9816f4"
+            },
+            "base": {
+                "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
+                "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
+            }
+        }
+    };
+</script>
+
+<script>
+
+
+    $(document).ready(function () {
+
+        function handleFileResponse(response, statusCode, xhr) {
+            if (response.code) {
+                //console.log(response);
+                return isMessageSuccess(response);
+            }
+
+
+
+            const type = xhr.getResponseHeader('Content-Type');
+            const blob = new Blob([response], {
+                type: type
+            });
+
+
+            //check nếu là response message , không phải file thì hiển thị lỗi
+            if (type.includes("application/json")) {
+                //phải đọc file vì respone ở dạng arraybuffer
+                const fileReader = new FileReader();
+                fileReader.onload = function () {
+
+                    $('#loading').removeClass('loading');
+                    isMessageSuccess(JSON.parse(this.result));
+                };
+                return fileReader.readAsText(blob);
+
+            }
+
+            const currentTime = new Date();
+            const filename = `NhacCongBoThongTin_${currentTime.getHours()}${currentTime.getMinutes()}${currentTime.getSeconds()}.pdf`;
+            saveAs(blob, filename);
+            $('#loading').removeClass('loading');
+        }
+
+        function loaddata() {
+
+            var rendercolumns = [
+
+                {
+                    orderable: false,
+                    data: "aruleid",
+                    title: `<label class="k-checkbox k-checkbox--bold k-checkbox--brand">
+                                <input name="check-box" class="checkinput " type="checkbox"><span></span>
+                            </label>`,
+                    render: function (data, type, row) {
+
+                        return `<label class="k-checkbox k-checkbox--bold k-checkbox--brand">
+                                    <input name="check-box" class="checkinput " type="checkbox" data-cbttid=${row.aruleid} class="RuleID"><span></span>
+                                </label>`;
+                    }
+                },
+
+                {
+                    orderable: true,
+
+                    title: "STT",
+                    data: "index"
+                },
+
+                {
+                    orderable: true,
+
+                    title: "Loại tin",
+                    data: "loaiTin"
+                },
+                {
+                    orderable: true,
+
+                    title: "Thời điểm CBTT",
+                    data: "aqdcbtt"
+                },
+                {
+                    orderable: true,
+
+                    //title: "Thời hạn cuối cùng",
+                    title: "Thời hạn CBTT",
+                    render: function (data, type, cbtt) {
+                        return formatDateTimeToDate(cbtt.aEndTime);
+
+                    }
+                },
+                {
+                    orderable: true,
+
+                    title: "Thời hạn CBTT gia hạn ",
+                    render: function (data, type, cbtt) {
+                        return formatDateTimeToDate(cbtt.adateExtend);
+
+                    }
+
+                },
+                {
+                    orderable: true,
+
+                    title: "Biểu mẫu",
+                    data: "aTitle"
+                },
+                {
+                    orderable: true,
+
+                    title: "Căn cứ pháp lý",
+                    data: "accplcbtt"
+                }
+
+            ]
+
+            let maCK = $('#mack').find(":selected").val();
+
+            let fromDate = formatDate(getDateFrom().date1);
+            let toDate = formatDate(getDateFrom().date2);
+            let loaiDN = $("#loaidn").find(":selected").val();
+            let expert = $("#machuyenvien").find(":selected").val();
+            let level = $("#Level").find(":selected").val();
+            let nienDo = $("#slNienDoBCTC").find(":selected").val();
+            let doiTuong = getArrayDoiTuong();
+
+
+            //console.log("companytype:" + fromDate);
+            //console.log("chuyenvien:"+expert);
+            //console.log("kees toan:"+level);
+            //console.log("niendo:" + nienDo);
+
+
+            $('#loading').addClass('loading');
+
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("RemindCBTTSearch", "NhacCongBoThongTin")',
+                dataType: 'json',
+                data: {
+                        AStockCode: maCK,
+                        ALoaiDoanhNghiep: loaiDN,
+                        FormDate: fromDate,
+                        Todate: toDate,
+                        AExpert: expert,
+                        Alevel: level,
+                        AniendoBCTC: nienDo,
+                        AObject: doiTuong},
+                success: function (data) {
+
+                    //console.log(data);
+
+                    $('#loading').removeClass('loading');
+
+                    let index = 1;
+                    data.forEach(x => {
+                        x.index = index++;
+                    });
+
+                    if ($.isArray(data)) {
+
+                        $('#listInfoCBTT').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex pagingList justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            className: 'dt-body-right',
+                            "bInfo": true,  ////thông tin Showing 1 to 6 of 6 entries
+
+                            /* phân trang theo số lượng data */
+                            lengthChange: true, ///thay đổi số lượng dữ liệu hiển thị
+                            "lengthMenu": [10, 25, 50, 75, 100],
+                            language: {
+                                sLengthMenu: "_MENU_"
+                            },
+                            pageLength: 10,
+                            data: data,
+                            bAutoWidth: false,
+                            columns: rendercolumns
+                        });
+                        return;
+                    }
+
+                    isMessageSuccess(data);
+
+
+
+                },
+                error: function (err) {
+                    $('#loading').removeClass('loading');
+                    console.log(err);
+                }
+            });
+        }
+
+        //Search
+        $('#search_cbtt').click((e) => {
+            fromdate = $('#Month1').val() + $('#Day1').val();
+            todate = $('#Month2').val() + $('#Day2').val();
+            e.preventDefault();
+            var Fromdate = getDateFrom().date1;
+            var Todate = getDateFrom().date2;
+            if (fromdate.length === 0 && todate.length === 0) {
+                    loaddata();
+            }
+            else if (Fromdate <= Todate) {
+                loaddata();
+            }
+            else {
+                toastr.error('@SharedLocalizer["DATE_Empty"]');
+                return false;
+            }
+
+        });
+
+        //gán event nút chọn tất cả
+        $('body').on('click', '#listInfoCBTT thead input.checkinput', function (e) {
+
+                if ($(this).is(':checked')) {
+
+                    $('#listInfoCBTT tbody input').prop("checked", true);
+                }
+                else
+                    $('#listInfoCBTT tbody input').prop("checked", false);
+
+        });
+
+        $('body').on('click','#sendmail',function (e) {
+
+            e.preventDefault();
+
+            $('#loading').addClass('loading');
+
+            const formData = new FormData(document.forms["emailform"]);
+
+            var listcbtt = new Array();
+
+            $('#listInfoCBTT tbody tr').each(function () {
+                var isTrue = $(this).find('td input').eq(0).is(':checked');
+
+                if (isTrue === true) {
+
+                    var cbtt_id = $(this).find("input").eq(0).data('cbttid');
+
+                    listcbtt.push(cbtt_id);
+
+                    if (cbtt_id == 'undefined') {
+                        listcbtt.shift();
+                    }
+
+                    formData.append("listcbtt", cbtt_id);
+
+                    //console.log(listcbtt);
+
+                }
+
+            });
+
+            var slectedcpnytype = $('#loaidn option:selected').text();
+            var slectedcpnyID= $('#loaidn option:selected').val();
+            var slectedcpny = $('#mack option:selected').val();
+            formData.append("loaidn", slectedcpnytype);
+            formData.append("stockcode", slectedcpny);
+            formData.append("loaidnID", slectedcpnyID);
+
+            if (listcbtt == '') {
+                toastr.error('Chưa chọn dữ liệu');
+                $('#loading').removeClass('loading');
+            }
+            else {
+                 postFormData('@Url.Action("SendEmail", "NhacCongBoThongTin")', formData, { listcbtt })
+                .done(handleFileResponse)
+                .done(() => {
+                    $('#listInfoCBTT tbody input').prop("checked", false)
+                    $('#loading').removeClass('loading');
+                    })
+                  .fail(() => {
+                      $('#loading').removeClass('loading');
+                  });
+            }
+
+
+
+
+        });
+
+        $('body').on('click', '#senmail_all', function (e) {
+
+            $('#loading').addClass('loading');
+            e.preventDefault();
+
+            const formData = new FormData(document.forms["emailform"]);
+
+            var listcbtt = new Array();
+
+            $('#listInfoCBTT tbody tr').each(function () {
+                var isTrue = $(this).find('td input').eq(0).is(':checked');
+
+                if (isTrue === true) {
+
+                    var cbtt_id = $(this).find("input").eq(0).data('cbttid');
+
+                    listcbtt.push(cbtt_id);
+
+                    if (cbtt_id == 'undefined') {
+                        listcbtt.shift();
+                    }
+
+                    formData.append("listcbtt", cbtt_id);
+
+                    //console.log(listcbtt);
+
+                }
+
+            });
+            if (listcbtt == '') {
+                toastr.error('Chưa chọn dữ liệu');
+                $('#loading').removeClass('loading');
+            } else {
+
+                var slectedcpnytype = $('#loaidn option:selected').text();
+                var slectedcpnyID = $('#loaidn option:selected').val();
+                var slectedcpny = $('#mack option:selected').val();
+                let nienDo = $("#slNienDoBCTC").find(":selected").val();
+
+                var liststockcode = [];
+                $("#mack option").each(function () {
+                    liststockcode.push($(this).val());
+                    formData.append("liststockcode", $(this).val());
+                });
+                //console.log(liststockcode);
+                formData.append("loaidn", slectedcpnytype);
+                formData.append("stockcode", slectedcpny);
+                formData.append("loaidnID", slectedcpnyID);
+                formData.append("nienDO", nienDo);
+
+                postFormData('@Url.Action("SendEmailAll", "NhacCongBoThongTin")', formData, { liststockcode }, { listcbtt })
+                    .done(handleFileResponse)
+                    .done(() => {
+                        $('#listInfoCBTT tbody input').prop("checked", false)
+                        $('#loading').removeClass('loading');
+                    })
+                    .fail(() => {
+                        $('#loading').removeClass('loading');
+                    });
+            }
+        });
+
+
+
+        (function ($) {
+            if (!$)
+                throw new Error("JQuery is not imported");
+            window.postFormData = function (url, formData) {
+                return $.ajax(url,
+                    {
+                        method: "post",
+                        processData: false,
+                        contentType: false,
+                        data: formData
+                    }).done(function (res) {
+                        return isMessageSuccess(res);
+                    }).promise();
+            }
+
+        })(window.jQuery);
+
+        $('#view_mail_cbtt').click(function () {
+
+            $('#loading').addClass('loading');
+
+            const formData = new FormData(document.forms["emailform"]);
+
+            var listcbtt = new Array();
+
+            $('#listInfoCBTT tbody tr').each(function () {
+                var isTrue = $(this).find('td input').eq(0).is(':checked');
+
+                if (isTrue === true) {
+
+                    var cbtt_id = $(this).find("input").eq(0).data('cbttid');
+
+                    listcbtt.push(cbtt_id);
+
+                    if (cbtt_id == 'undefined') {
+                        listcbtt.shift();
+                    }
+
+                    formData.append("listcbtt", cbtt_id);
+
+                    //console.log(listcbtt);
+
+
+                }
+
+            });
+
+            var slectedcpnytype = $('#loaidn option:selected').text();
+            var slectedcpny = $('#mack option:selected').val();
+            formData.append("loaidn", slectedcpnytype);
+            formData.append("stockcode", slectedcpny);
+
+            $.postNativeFormData('@Url.Action("Print", "NhacCongBoThongTin")', formData, { listcbtt})
+                .done((response, statusCode, xhr) => {
+                    //console.log(response);
+
+                    if (response.code) {
+                        //console.log(response);
+                        return isMessageSuccess(response);
+                    }
+
+                    const type = xhr.getResponseHeader('Content-Type');
+                    const blob = new Blob([response], { type: type });
+
+
+                    //check nếu là response message , không phải file thì hiển thị lỗi
+                    if (type.includes("application/json")) {
+                        //phải đọc file vì respone ở dạng arraybuffer
+                        const fileReader = new FileReader();
+                        fileReader.onload = function () {
+                            $('#loading').removeClass('loading');
+                            isMessageSuccess(JSON.parse(this.result));
+                        };
+                        fileReader.readAsText(blob);
+                        return;
+                    }
+
+                    const currentTime = new Date();
+                    const filename = `NhacCongBoThongTin_${currentTime.getHours()}${currentTime.getMinutes()}${currentTime.getSeconds()}.pdf`;
+                    saveAs(blob, filename);
+                    $('#loading').removeClass('loading');
+                })
+
+                .fail(function(err) {
+                    console.log(err);
+                      $('#loading').removeClass('loading');
+                  });
+        });
+
+
+        //Download File
+        $('body').on('click', '#dowloadtemplate', function () {
+
+            const link = document.createElement('a');
+            link.href = '@TempUrl';
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.download = 'Template_Remid_CBTT.rar';
+            link.click();
+
+        });
+
+        function changeMCK() {
+
+            let companyType = $("#loaidn").find(":selected").val();
+            let expert = $("#machuyenvien").find(":selected").val();
+            let level = $("#Level").find(":selected").val();
+            let nienDoBCTC = $("#slNienDoBCTC").find(":selected").val();
+            $.ajax({
+                url: '@Url.Action("GetMCK", "NhacCongBoThongTin")',
+                method: 'GET',
+                dataType: 'json',
+                data: { ACompanyType: companyType, AExpert: expert, Alevel: level, AniendoBCTC: nienDoBCTC },
+                success: function (res) {
+                    if (res == null) return;
+
+                    //console.log("companytype:" +companyType);
+                    //console.log("chuyenvien:"+expert);
+                    //console.log("kees toan:"+level);
+                    //console.log("niendo:"+nienDoBCTC);
+                    //console.log(res);
+
+                    var html = '';
+                    for ( const item of res)
+                    {
+                        html +=`<option value = '${item.aStockCode}' >${item.aname}</option>`;
+
+                    }
+
+                    //console.log(html);
+                    $('#mack option').remove();
+                    $('#mack').append(html);
+                    $('#mack').select2();
+                },
+                error: function (err) {
+                    console.log(err);s
+                }
+            });
+
+        }
+
+        changeMCK();
+
+        // Lấy mã chứng khoán với điều kiện ( loai doanh nghiệp + mã chuyên viên + niên độ báo cáo tài chính)
+
+        $("#loaidn").on("change", changeMCK);
+        $("#machuyenvien").on("change", changeMCK);
+        $("#Level").on("change", changeMCK);
+        $("#slNienDoBCTC").on("change", changeMCK);
+
+
+        selectdate("#Month1", "#Day1");
+        selectdate("#Month2", "#Day2");
+        function selectdate(month, day) {
+            let selectMonth = $(month);
+            let selectDay = $(day);
+            var d = new Date();
+            var month = d.getMonth();
+            var day = d.getDate();
+
+            selectMonth.on("change", AdjustDays);
+
+            AdjustDays();
+            function AdjustDays() {
+                var d = new Date();
+                var year = d.getFullYear();
+                var month = parseInt(selectMonth.val());
+                selectDay.empty();
+                selectDay.append('<option selected>Chọn ngày</option>');
+                var days = new Date(year, month, 0).getDate();
+
+                for (var d = 1; d <= days; d++) {
+                    var dayElem = document.createElement("option");
+                    dayElem.value = d;
+                    dayElem.textContent = d;
+                    selectDay.append(dayElem);
+                }
+            }
+
+            selectMonth.on("change", AdjustDays);
+        }
+
+
+        function formatDate(date) {
+            if (date == null) return null;
+            let day = date.getDate();
+            let month = date.getMonth();
+            let year = date.getFullYear();
+
+            return `${year}-${month + 1}-${day} 00:00:00`;
+        }
+
+        // check ngày của tháng có đúng hay không
+        function validDateForm(day1, month1, day2, month2) {
+            let today = new Date();
+            //console.log(`${day1} ${day2} ${month1} ${month2}`);
+            if (day1 != 0) {
+                if (month1 == 0) {
+                    toastr.error(`Bạn chưa chọn tháng`);
+                    return false;
+                }
+            }
+
+            if (day2 != 0) {
+                if (month2 == 0) {
+                    toastr.error(`Bạn chưa chọn tháng`);
+                    return false;
+                }
+            }
+
+            if (month1 != 0) {
+                let lastDayOfMonth = new Date(today.getFullYear(), month1, 0).getDate();
+
+                if (day1 == 0) {
+                    toastr.error(`Bạn chưa chọn ngày`);
+                    return false;
+                }
+
+                if (day1 > lastDayOfMonth) {
+                    toastr.error(`Ngày của tháng ${month1} không được lớn hơn ${lastDayOfMonth}`);
+                    return false;
+                }
+            }
+
+            if (month2 != 0) {
+                let lastDayOfMonth = new Date(today.getFullYear(), month2, 0).getDate();
+
+                if (day2 == 0) {
+                    toastr.error(`Bạn chưa chọn ngày`);
+                    return false;
+                }
+
+                if (day2 > lastDayOfMonth) {
+                    toastr.error(`Ngày của tháng ${month2} không được lớn hơn ${lastDayOfMonth}`);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        function getDateFrom() {
+            let day1 = $('#Day1').val();
+            let month1 = $('#Month1').val();
+            let day2 = $('#Day2').val();
+            let month2 = $('#Month2').val();
+            let year = new Date().getFullYear();
+            let dates = { date1: null, date2: null };
+
+            if (validDateForm(day1, month1, day2, month2) == false) return dates;
+
+            if (month1 > 0) {
+                let date = new Date(year, month1 - 1, day1);
+                dates.date1 = date
+            }
+
+            if (month2 > 0) {
+                let date = new Date(year, month2 - 1, day2);
+                dates.date2 = date
+            }
+
+            return dates;
+        }
+
+        $('#mack').select2();
+
+        function bindDataDoiTuongAD() {
+            $.ajax({
+                url: '@Url.Action("GetCommonType", "NhacCongBoThongTin")',
+                method: 'GET',
+                dataType: 'json',
+                success: function (res) {
+                    if (res == null) return;
+                    var html = '';
+
+                    $('#example-getting-started option').remove();
+
+                    res.listDoiTuongAD.forEach((item) => {
+                        html += `<option value='${item.typeCode}'>${item.typeName}</option>`;
+                    });
+
+                    $('#example-getting-started').append(html);
+
+                    // cấu hình multi select
+                    $('#example-getting-started').multiselect({
+                        templates: {
+                            button: '<button type="button" style="width:100%; height:100%" class="multiselect dropdown-toggle form-control" data-toggle="dropdown" title="Chọn đối tượng"><span class="multiselect-selected-text">Chọn loại đối tượng</span></button>',
+                            popupContainer: '<div style="width:100%;" class="multiselect-container dropdown-menu"></div>',
+                            buttonGroup: '<div class="multiselect-buttons btn-group" style="display:flex; width:100%"></div>',
+                            option: '<button style="width:100%;"  type="button" class="multiselect-option dropdown-item"></button>',
+                            //filter: '<div class="multiselect-filter d-flex align-items-center"><i class="fas fa-sm fa-search text-muted"></i><input type="search" class="multiselect-search form-control" /></div>',
+                            //buttonGroupReset: '<button type="button" class="multiselect-reset btn btn-secondary btn-block"></button>',
+                            //divider: '<div class="dropdown-divider"></div>',
+                            //optionGroup: '<button type="button" class="multiselect-group dropdown-item"></button>',
+                            //resetButton: '<div class="multiselect-reset text-center p-2"><button type="button" class="btn btn-sm btn-block btn-outline-secondary"></button></div>'
+                        },
+                        includeSelectAllOption: true,
+                        enableClickableOptGroups: true,
+                    });
+
+                    // style css
+                    $('.form-check-label').css('margin-left', '20px');
+                    $('.multiselect').css('border', '1px solid #CCC');
+                    $('.multiselect').css('border-radius', '4px');
+                    $('.multiselect-all span label').text('Chọn tất cả');
+                    $('.multiselect-selected-text').text('Chọn đối tượng');
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        bindDataDoiTuongAD();
+
+        function getArrayDoiTuong() {
+            let strTypesID = '';
+            $('#example-getting-started option:selected').map(function (a, item) {
+                strTypesID += item.value + ',';
+            });
+            return strTypesID;
+        }
+    });
+
+
+</script>

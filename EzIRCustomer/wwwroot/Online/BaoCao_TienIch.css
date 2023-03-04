@@ -1,0 +1,411 @@
+.bar-menu {
+    background: #ffffff;
+    padding-left: 0;
+}
+
+#k_tabs_1 {
+    padding: 0;
+}
+
+#updateTab {
+    padding: 0;
+}
+
+.form-wrapper {
+    padding: 0 5px;
+    margin-bottom: 2rem
+}
+
+
+.tab-content {
+    margin-left: 0px;
+}
+
+.btn-section > button {
+    margin-left: 36px;
+    border-radius: 2rem;
+    background: #96CD55;
+}
+
+.form-row > .col, .form-row > [class*="col-"]{
+    padding-left: 0px;  
+}
+
+
+li.breadcrumb-item.font-weight-bold:before {
+	content:none;
+}
+
+.txtfromdate{
+    margin-top: 2.6rem;
+    width: auto;
+    padding: 0 10px !important;
+}
+
+.Deadline_wrapper{
+	padding-right: 0px !important;
+}
+
+.FromDate_wrapper{
+    padding-right: 27px !important;
+    margin-top: 9px;
+}
+
+.frdateLabel {
+    margin-top: 2.6rem;
+    text-align: center;
+}
+
+.btn-save-section {
+    margin-top: 1.9rem;
+    text-align: center;
+}
+
+.btn-expert > button{
+    margin-left: 0px;
+}
+.btn-section > button:not(:first-child) {
+    margin-left: 4px;
+}
+
+.save-btn {
+    max-width: 10rem !important;
+    padding: 0 3rem !important;
+    border-radius: 2rem;
+}
+
+.export-btn {
+    border-radius: 2rem;
+    background: #12AA4C;
+}
+
+table#listAccount td, table#listBanners td{
+    padding: 1rem 0px;
+    /*text-align: center;*/
+}
+
+table#listAccount th, table#listBanners th {
+    /*text-align: center;*/
+    color: #347E9F;
+}
+
+.d-flex.justify-content-center {
+    margin-top: 0rem;
+}
+
+.custom-file-input{
+/*    display: inline-block;
+	overflow: hidden;
+    position: relative;*/
+    opacity: 1;
+    display: flex;
+}
+.custom-file-input input[type="file"]{
+    width: 70%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+input#filetxt {
+    width: 50%;
+}
+
+/*.custom-file-input input[type="text"]{
+    width: 50%;
+    position: absolute;
+    top: 0;
+    left: 12rem;
+}
+*/
+.upload {
+    background: #12AA4C;
+    border-radius: 2rem;
+}
+
+.form-group.row.form-text {
+    margin-bottom: 0;
+}
+
+
+.save-btn {
+    background: #034E8D !important;
+}
+
+.btn-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+
+}
+
+.save-banners-btn, .reset-btn, .update-btn {
+    max-width: 9rem !important;
+    padding: 0 2rem !important;
+    background: #034E8D !important;
+}
+
+#addlink, #BannerTitle {
+    width: 50%;
+}
+
+table.dataTable tbody td {
+    padding: 8px 22px;
+}
+
+label.k-checkbox.k-checkbox--bold.k-checkbox--brand {
+    top: -13px;
+}
+
+.btn-search-section {
+    margin-top: 2rem;
+}
+
+.search-btn {
+    border-radius: 2rem;
+    padding: 0 2rem !important;
+}
+
+label[for="filetxt"] {
+    /*margin-bottom: 7px !important;*/
+    margin-right: 1rem;
+}
+
+.form-section-bns {
+    margin-bottom: 12px;
+}
+
+label[for="addlink"], label[for="BannerTitle"] {
+    margin-left: 8px;
+    font-weight: 100;
+}
+
+label[for="addlink"]{
+    margin-right: 2.82rem; 
+}
+
+label[for="BannerTitle"] {
+    margin-right: 3.63rem;
+}
+
+.custom-file-input > img {
+    width: 5rem;
+    position: absolute;
+    left: 65%
+}
+
+.k-portlet__body {
+    margin-top: 1rem;
+    /*padding: 0 4rem;*/
+}
+
+#change-pwd-btn{
+    max-width: 100%;
+    width: 100%;
+}
+
+#k_footer{
+    top : 7%;
+}
+
+#listUser tbody td, #listGroup tbody td, #listUserNotInGroup tbody td, #listUserInGroup tbody td {
+    padding: 8px 10px;
+}
+
+table#listUser {
+    margin-top: 3rem !important;
+}
+
+.pagingListUser {
+    margin-top: 3rem !important;
+}
+
+#updateTab .text-box-label {
+    padding: 0;
+}
+
+.form-group-wrapper {
+    padding: 0;
+}
+
+.form-group-wrapper .form-group {
+    padding: 0 !important;
+}
+
+.form-group.required .control-label:after {
+    content: " (*)";
+    color: red;
+}
+
+.save-rules-btn {
+    max-width: 10rem !important;
+    padding: 0 3rem !important;
+    border-radius: 2rem;
+    background: #034E8D !important;
+}
+
+@media screen and (max-width:767px) {
+    .custom-file-input input[type="text"] {
+        left: 20rem;
+    }
+    .form-group{
+        max-width: 100%;
+        padding-right: 0 !important;
+    }
+
+    .save-btn {
+        padding: 0 2rem !important;
+    }
+
+    .btn-section > button {
+        margin-left: 0;
+        width: 7rem;
+    }
+
+    .btn-search-section{
+        text-align: center;
+    }
+
+    label[for="addlink"]{
+        margin-right: 3.52rem;
+    }
+
+   .save-banners-btn, .reset-btn{
+        padding: 0 0rem !important;
+   }
+
+    .custom-file-input > img{
+        left: 77%;
+    }
+
+    .txtfromdate{
+        padding: 0 0px !important;
+    }
+
+    .FromDate_wrapper {
+        margin-top: 0;
+    }
+
+    .frdateLabel{
+        padding: 0;
+    }
+}
+
+@media screen and (max-width:1024px) {
+    label[for="addlink"] {
+        margin-right: 3.52rem;
+    }
+
+    label[for="BannerTitle"] {
+        margin-right: 4.33rem;
+    }
+}
+
+@media screen and (min-width:768px) and (max-width:1023px) {
+   .btn-section > button {
+        margin-left: 15px;
+    }
+    .btn-expert > button {
+        margin-left: 0px;
+    }
+    .Deadline_wrapper {
+        margin: auto 0px;
+        padding: 0px 5px !important;
+    }
+
+    .txtfromdate{
+        margin-top: 8px;
+        padding: 0 0px !important;
+    }
+
+    label[for="addlink"]{
+        margin-right: 3.52rem;
+    }
+
+    .custom-file-input > img{
+        left: 73%;
+    }
+
+    .FromDate_wrapper {
+        margin-top: -7px;
+    }
+}
+
+@media screen and (max-width:1023px){
+    .btn-save-section {
+        margin: 7px 0em;
+        text-align: center; 
+        padding: 0 0 !important;
+    }
+
+
+    .btn-search-section{
+        text-align: center;
+    }
+    .form-section .form-group {
+        padding: 0 !important;
+    }
+}
+
+/*@media screen and (max-width:575px){
+    .txtfromdate {
+        padding: 0 12px !important;
+    }
+}
+*/
+@media screen and (max-width:768px){
+    .FromDate_wrapper{
+        padding-right: 0px !important;
+    }
+    /*.form-group{
+        padding-right: 0px !important;
+    }*/
+    .form-section {
+        margin-bottom: 0;
+    } 
+}
+
+
+
+@media screen and (min-width: 768px) and (max-width:991px){
+    .save-btn {
+        position: relative;
+        right: 10rem;
+    }
+    .save-rules-btn {
+        position: relative;
+        right: 0rem;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width:1023px){
+    .Fromdate_update{
+        margin-top: 10px;
+    }
+
+    .btn-expert {
+        padding: 0 6rem !important;
+    }
+}
+
+@media screen and (min-width: 1025px){
+    .custom-file-input > img{
+        left: 70%;
+    }
+}
+
+@media screen and (min-width: 576px) and (max-width:767px){
+    label.col-sm-3.col-md-3.col-lg-2.col-form-label {
+        padding: 0;
+    }
+}
+
+
+@media screen and (max-width: 529px){
+    .custom-file-input > img{
+        position: initial;
+    }
+}

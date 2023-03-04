@@ -1,0 +1,392 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.AspNetCore.Builder;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IOptions<RequestLocalizationOptions> LocOptions;
+@inject IConfiguration Configuration;
+@{
+    Layout = null;
+    var data = ViewBag.Data as CoreLib.Entities.CResponseMessage;
+    string message = TempData["Message"]?.ToString() ?? "";
+
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures.Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName }).ToList();
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+
+    var requestValue = "";
+    var image = "";
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+        image = "icon-EN.png";
+        requestValue = "en-US";
+    }
+    else
+    {
+        image = "icon-VI.svg.png";
+        requestValue = "vi-VN";
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - EzIR Customer</title>
+    <!-- Favicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="~/assets/images/icons/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="~/assets/images/icons/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/assets/images/icons/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="~/assets/images/icons/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="~/assets/images/icons/faviconFPTS.png">
+    <link rel="stylesheet" type="text/css" href="~/assets/bootstrap/css/bootstrap.css">
+
+    <!-- HELPERS -->
+
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/backgrounds.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/grid.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/utils.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/colors.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/boilerplate.css">
+
+
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/admin/layout.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/admin/color-schemes/default.css">
+
+    <!-- Components theme -->
+
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/components/default.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/components/border-radius.css">
+
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/responsive-elements.css">
+    <link rel="stylesheet" type="text/css" href="~/css/admin-responsive.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/mobile-navigation.css">
+    <!-- CSS vendor   -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="~/assets/vendors/custom/datatables/datatables.bundle.css">
+    <link href="~/assets/vendors/general/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" type="text/css">
+
+    <link href="~/assets/vendors/custom/vendors/line-awesome/css/line-awesome.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/general/animate.css/animate.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/custom/vendors/fontawesome5/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/general/sweetalert2/dist/sweetalert2.css" rel="stylesheet" type="text/css">
+
+    <link href="~/assets/vendors/general/toastr/build/toastr.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="~/Online/style.bundle.css">
+    <link rel="stylesheet" href="~/css/siteStyle.css">
+    <link rel="stylesheet" href="~/css/layout.css">
+    <link rel="stylesheet" href="~/Online/navbar_responsive.css">
+
+    <!-- JS Core -->
+    <script type="text/javascript" src="~/assets/js-core/jquery-core.js"></script>
+    <script type="text/javascript" src="~/assets/bootstrap/js/bootstrap.js"></script>
+    <!-- For Chat Bot -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.0.4/popper.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="~/assets/vendors/general/toastr/build/toastr.min.js"></script>
+
+    <script src="~/assets/vendors/general/sweetalert2/dist/sweetalert2.js"></script>
+    <script src="~/assets/vendors/general/sweetalert2/dist/sweetalert2.all.min.js"></script>
+</head>
+<body class="k-page--loading-enabled k-page--loading k-page--fixed k-header--fixed k-header--minimize-menu k-header-mobile--fixed" style="background-color: white">
+    <!-- begin::Page loader -->
+    <!-- end::Page Loader -->
+    <!-- begin:: Page -->
+    <!-- begin:: Header Mobile -->
+    <input type="hidden" id="LanThu" />
+    <div id="k_header_mobile" class="k-header-mobile">
+        <div class="fpts-header">
+            <div class="container d-flex ">
+                <div class="fpts-left d-flex justify-content-center">
+                    <span>
+                        <span style="text-transform:none">
+                            CÔNG TY CỔ PHẦN FPT (HOSE: FPT)
+                        </span>
+                    </span>
+                </div>
+                <div class="fpts-right d-flex justify-content-end align-items-center">
+                    <div class="col-md-12 col-ipad">
+                        <div class="fpts-top-mobile">
+                            <span class="text-light">FPT01</span>
+                            <a class="text-light" href="/internal/Dang-Xuat"><i class="fas fa-sign-out-alt"></i></a>
+                            <a class="fpts-language" href=""><img src="images/icon/icon-EN.png"></a>
+                        </div>
+
+                        <div class="fpts-bottom-mobile">
+                            <a class="text-light fpts-Support" href="">Hướng dẫn sử dụng</a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="k-header-mobile-bottom">
+            <div class="k-header-mobile__toolbar">
+                <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar" aria-expanded="false"><span></span></button>
+                </button>
+            </div>
+            <div class="k-header-mobile__logo">
+                <a href="">
+                    <img alt="Logo" src="assets/images/icons/logo.jpg" />
+                </a>
+            </div>
+            <div class="header-info d-flex align-items-center p-2">
+                <a class="mx-2" href="https://accounts.fpts.com.vn/Contact"><img src="images/icon/icon-message.png" /></a>
+                <a><img src="images/icon/icon-user.png" alt="User" /></a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- end:: Header Mobile -->
+    <div class="k-grid k-grid--hor k-grid--root">
+        <div class="k-grid__item k-grid__item--fluid k-grid k-grid--ver k-page">
+            <div class="k-grid__item k-grid__item--fluid k-grid k-grid--hor k-wrapper " id="k_wrapper">
+
+                <!-- begin:: Header -->
+                <div id="k_header" class="k-header k-grid__item  k-header--fixed " data-kheader-minimize="on">
+                    <div class="fpts-header-desktop">
+                        <div class=" container d-flex ">
+                            <div class="fpts-left d-flex justify-content-center align-items-center">
+                                <span>
+                                    <span style="text-transform:none">
+
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="fpts-right d-flex justify-content-end align-items-center">
+                                <div class="col-md-3">
+                                    <form id="selectLanguage" asp-controller="Login" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal" role="form">
+                                        <input type="hidden" name="culture" asp-for="@requestValue" asp-items="cultureItems" />
+                                        <button type="submit" style="border-style: hidden; background-color: inherit;">
+                                            <a class="culture-image">
+                                                <img src="~/assets/images/icons/@image" />
+                                            </a>
+                                        </button>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="logo-header">
+                        <div class="container">
+                            <div class="logo-wrapper">
+                                <div class="logo-section">
+                                    <img src="assets/images/icons/logo.jpg" alt="" width="112" height="81">
+                                </div>
+                                <div class="text-section">
+                                    <h1>@Localizer["EZIR"].Value</h1>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- begin:: Content -->
+                    <div class="container" style="height: 481px">
+                        <div class="row d-flex justify-content-center" style="margin-left: 40%">
+                            <div class="center table-bordered nav-login text-center fpts-login_design">
+                                <div style="margin-bottom: 2.5%">
+                                    <img src="~/assets/images/icons/avata.png" class="img-circle" />
+                                </div>
+                                <div>
+                                    <form asp-action="Login" method="post" asp-controller="Login" id="formLogin" enctype="multipart/form-data" class="col-12 padt20 form-change-password">
+                                        <div class="form-group row justify-ipad-password">
+                                            <div class="col-md-5 text-box-label ">
+                                                <label class="text-box-left" for="Username">@Localizer["Username"].Value</label>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input class="form-control " type="text" id="txtUsername" name="Username" autofocus minlength="3" maxlength="50" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row justify-ipad-password">
+                                            <div class="col-md-5 text-box-label ">
+                                                <label class="text-box-left" for="Password">@Localizer["Password"].Value</label>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input class="form-control " type="password" id="txtPassword" name="Password" autofocus minlength="4" maxlength="100" required />
+                                                <span class="field-validation-valid" data-valmsg-for="txtPassword" data-valmsg-replace="true"></span>
+                                                <span onclick="displayPassword()" class="fa fa-eye toggle-password"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row justify-ipad-password">
+                                            <div class="col-md-5 input-group-prepend">
+                                                <img id="img-captcha" src="@Url.Action("GetCaptchaImage","Login")" />
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input type="text" class="form-control" placeholder="Captcha Code" for="CaptchaCode" name="captchaCode" minlength="4" maxlength="4" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-group row justify-ipad-password">
+                                            <div class="col-md-12">
+                                                <button type="submit" class=" btn-primary form-control " id="btnLogin" data-callback='onSubmit' style="border-radius: 5px; width: 100% !important">@Localizer["Login"].Value</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="fpts-support mb-5"><a href="@Url.Action("Index","ForgotPassword")" style="color: black">@Localizer["ForgotPassword"].Value</a>&nbsp;|&nbsp;<span id="helpLogin">@Localizer["Support"].Value</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- begin::Scrolltop -->
+        <div class="ScrollTop" onclick="topFunction()" id="k_scrolltop"></div>
+        <!-- end::Scrolltop -->
+        <!-- begin:: Footer -->
+        <div class="k-footer k-grid__item" id="k_footer">
+            <div class="fpts-supporting-information">
+                <div class="k-container">
+                    <p style="color: #494949;padding: 5px 0 5px !important; font-size: 16px !important;">@Localizer["Law"].Value <a style="cursor: pointer; color: #379937" onclick="newwin = window.open('../assets/html/LuuYDacBiet.html', 'Disclaimer', 'toolbar=no,scrollbars=yes,menubar=no,status=no,location=no,width=600,height=500');newwin.focus();">@Localizer["Luu_y"].Value</a></p>
+                </div>
+            </div>
+            <div class="k-footer__content">
+                <div class="k-container">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <p class="fpts-title" style="text-transform: uppercase;">@Localizer["Infomation_Gateway"].Value</p>
+                            <div>
+                                <p>@Localizer["So_Giay_Phep"].Value</p>
+                                <p>@Localizer["Chiu_trach_nhiem"].Value</p>
+                                <p class="location">@Localizer["DiaChi_HaNoi"].Value</p>
+                                <p class="phone">Hotline: 19006446 | Số máy lẻ CN Hà Nội: 4504/4502 | Fax : 024 3773 9058</p>
+                                <p class="mail">fptsecurities@fpts.com.vn</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="fpts-title">@Localizer["HoChiMinh_City"].Value</p>
+                            <div>
+                                <p class="location">@Localizer["DiaChi_TPHCM"].Value</p>
+                                <p class="phone">Hotline: 19006446 | Số máy lẻ CN Hồ Chí Minh: 8602/4591 | Fax : 028 6291 0607</p>
+                                <p class="mail">fptsecurities@fpts.com.vn</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <p class="fpts-title">@Localizer["Danang_City"].Value</p>
+                            <div>
+                                <p class="location">@Localizer["DiaChi_Danang"].Value</p>
+                                <p class="phone">19006446 | Fax : 0236 3553 888</p>
+                                <p class="mail">fptsecurities@fpts.com.vn</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="fpts-securities">
+                <div class="k-container">
+                    <p>© 2021 @Localizer["FPTS"].Value</p>
+                </div>
+            </div>
+        </div>
+        <!-- end:: Footer -->
+        <script type="text/javascript" src="~/js/dist/navbar_responsive.js"></script>
+        <script type="text/javascript" src="~/js/scrolltop.js"></script>
+        <script type="text/javascript" src="~/assets/vendors/custom/datatables/datatables.bundle.js"></script>
+        <script type="text/javascript">
+
+            // Toggle Password Visibility
+            function displayPassword() {
+                var x = document.getElementById("txtPassword");
+                if (x.type === "password") {
+                    x.type = "text";
+                } else {
+                    x.type = "password";
+                }
+            }
+
+            var Login = function () {
+
+                this.init = function () {
+                    loadData();
+                    registerEvents();
+                }
+
+                var loadData = function () {
+
+                }
+
+                var registerEvents = function () {
+
+                    $("#img-captcha").click(function () {
+                        resetCaptchaImage();
+                    });
+
+                }
+
+                function resetCaptchaImage() {
+                    d = new Date();
+                    $("#img-captcha").attr("src", "@Url.Action("GetCaptchaImage","Login")?" + d.getTime());
+                }
+            }
+
+            var login = new Login();
+            login.init();
+
+        </script>
+
+        @*config toastr*@
+        <script type="text/javascript">
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "20000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+        </script>
+
+        @if (TempData["Message"] != null)
+        {
+            var msg = Localizer[TempData["Message"].ToString()];
+            <script>
+                @*toastr.error('@Localizer[message].Value');*@
+                    Swal.fire({
+                        html: '@msg',
+                        type: 'error',
+                        confirmButtonText: 'OK'
+                    });
+
+            @*<script>
+                toastr.error('@Localizer[message].Value');
+                if ('@Localizer[message].Name' == 'MSG_TEZIR_COMPANY_CHECK_SIGNED') {
+
+                    Swal.fire({
+                        title: 'Thông báo',
+                        text: 'Tài khoản chưa được kích hoạt!',
+                        type: 'warning',
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                        CloseButtonColor:"black",
+                    });
+                } else {
+                    toastr.error('@Localizer[message].Value');
+                }*@
+
+
+            </script>
+        }
+</body>
+</html>

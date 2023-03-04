@@ -1,0 +1,96 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@{
+    var urlimg = ViewBag.Imgbm;
+
+}
+<div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor DaiHoiform"
+     id="k_content">
+
+
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <div class="contentt" id="bmql">
+
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+
+    <!-- End of Main Content -->
+
+
+</div>
+<div id="loading"></div>
+<script>
+     $(document).ready(function () {
+         var type = function () {
+             this.init = function () {
+                 loadData();
+             }
+             var loadData = function () {
+                 $('#loading').addClass('loading');
+                 var cpnyId = $("#cpnyid").val();
+                 $.ajax({
+                     url: '@Url.Action("GetTCBMQL", "ThongTinDoanhNghiep")',
+                     method: 'GET',
+                     dataType: 'json',
+                     data: { cpnyID: cpnyId },
+                     success: function (data) {
+                         $('#loading').removeClass('loading');
+                       
+                         let html = '';
+                         for (const item of data) {
+                             item.aorgmodelpath.replace("Images/", "");
+                             if (item.aorgtype == 1) {
+                                 html += `
+                                        <p>@Localizer["To_chuc_bo_may_quan_ly"].Value</p>
+                                        <div  style="padding-top: 10px;padding-bottom: 10px">
+                                            <div style="text-align: center;">
+                                                <img class="tochucbomay" src="@urlimg${item.aorgmodelpath}">
+                                                `;
+                                 if (item.aorgmodeldesc == null) {
+                                     html += `</div>
+                                        </div>`;
+                                 } else html += `<div style="text-align: center;font-style:italic;font-size:13px;margin-top:3px" >${item.aorgmodeldesc}</div>
+                                            </div>
+                                        </div>`;
+                             } else if (item.aorgtype == 2) {
+                                 
+                                 html += `
+                                        <p>@Localizer["So_do_bo_may"].Value</p>
+                                        <div  style="padding-top: 10px;padding-bottom: 10px">
+                                            <div style="text-align: center;">
+                                                <img class="tochucbomay" src="@urlimg${item.aorgmodelpath}">
+                                                `;
+                                 if (item.aorgmodeldesc == null) {
+                                     html += `</div>
+                                        </div>`;
+                                 } else html += `<div style="text-align: center;font-style:italic;font-size:13px;margin-top:3px" >${item.aorgmodeldesc}</div>
+                                            </div>
+                                        </div>`;
+                             }
+                         }
+                         $('#bmql').append(html);
+                     },
+                     error: function (err) {
+                         $('#loading').removeClass('loading');
+                         // console.log(err);
+                     }
+                 });
+
+             };
+         };
+         var Type = new type();
+         Type.init();
+    });
+</script>

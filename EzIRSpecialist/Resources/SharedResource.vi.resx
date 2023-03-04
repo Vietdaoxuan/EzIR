@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ACC_Empty" xml:space="preserve">
+    <value>CC Email không được để trống</value>
+  </data>
+  <data name="AEMAIL_Empty" xml:space="preserve">
+    <value>Email không được để trống</value>
+  </data>
+  <data name="AFULLNAME_Empty" xml:space="preserve">
+    <value>Họ và tên không được để trống</value>
+  </data>
+  <data name="APHONE_Empty" xml:space="preserve">
+    <value>Số điện thoại không được để trống!</value>
+  </data>
+  <data name="AUSERNAME_Empty" xml:space="preserve">
+    <value>Tài khoản không được để trống!</value>
+  </data>
+  <data name="EMAILCC_MAXLENGTH" xml:space="preserve">
+    <value>EmailCC vượt quá số ký tự cho phép!</value>
+  </data>
+  <data name="EMAIL_MAXLENGTH" xml:space="preserve">
+    <value>Email vượt quá số ký tự cho phép!</value>
+  </data>
+  <data name="FULLNAME_MAXLENGTH" xml:space="preserve">
+    <value>Họ và tên vượt quá số ký tự cho phép!</value>
+  </data>
+  <data name="MSG_TEZIR_BANNERS_DELETE_BANNER_SUCCESS" xml:space="preserve">
+    <value>Xóa Banner thành công</value>
+  </data>
+  <data name="MSG_TEZIR_BANNERS_INSERT_BANNER_SUCCESS" xml:space="preserve">
+    <value>Thêm mới Banner thành công </value>
+  </data>
+  <data name="MSG_TEZIR_BANNERS_UPDATE_BANNER_SUCCESS" xml:space="preserve">
+    <value>Sửa Banner thành công</value>
+  </data>
+  <data name="MSG_TEZIR_CHUYENVIEN_DELETE_CHUYENVIEN_SUCCESS_0" xml:space="preserve">
+    <value>Xóa chuyên viên thành công</value>
+  </data>
+  <data name="MSG_TEZIR_CHUYENVIEN_INSERT_CHUYENVIEN_SUCCESS_0" xml:space="preserve">
+    <value>Thêm mới chuyên viên thành công</value>
+  </data>
+  <data name="MSG_TEZIR_CHUYENVIEN_UPDATE_CHUYENVIEN_SUCCESS" xml:space="preserve">
+    <value>Update chuyên viên thành công</value>
+  </data>
+  <data name="MSG_TEZIR_DOANHNGHIEP_DELETE_DOANHNGHIEP_SUCCESS_0" xml:space="preserve">
+    <value>Xóa tài khoản doanh nghiệp thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_GROUP_DELETE_GROUP_NOT_EXIST" xml:space="preserve">
+    <value>Nhóm không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_GROUP_DELETE_GROUP_SUCCESSFUL" xml:space="preserve">
+    <value>Xóa nhóm thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_GROUP_DELETE_GROUP_USED" xml:space="preserve">
+    <value>Nhóm đã được sử dụng không thể xóa!</value>
+  </data>
+  <data name="MSG_TEZIR_GROUP_INSERT_GROUP_EXISTED" xml:space="preserve">
+    <value>Nhóm đã tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_GROUP_INSERT_PARAM_IS_NULL" xml:space="preserve">
+    <value>Tham số truyền vào không được để trống!</value>
+  </data>
+  <data name="MSG_TEZIR_GROUP_INSERT_SUCCESSFUL" xml:space="preserve">
+    <value>Thêm nhóm thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_GROUP_NOT_EXIST" xml:space="preserve">
+    <value>Nhóm không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_GROUP_UPDATE_GROUP_NAME_EXISTED" xml:space="preserve">
+    <value>Tên nhóm đã tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_GROUP_UPDATE_SUCCESSFUL" xml:space="preserve">
+    <value>Cập nhật nhóm thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_ROLE_ACCOUNT_EXISTED" xml:space="preserve">
+    <value>Tài khoản tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_ROLE_ACCOUNT_LOCKED" xml:space="preserve">
+    <value>Tài khoản của bạn bị khóa!</value>
+  </data>
+  <data name="MSG_TEZIR_ROLE_ACCOUNT_NOT_EXIST" xml:space="preserve">
+    <value>Tài khoản không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_ROLE_NOT_EXIST" xml:space="preserve">
+    <value>Role không tồm tại!</value>
+  </data>
+  <data name="MSG_TEZIR_ROLE_UPDATE_SUCCESS" xml:space="preserve">
+    <value>Cập nhật quyền cho nhóm thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_RULES_ACCPLCBTT_EMPTY" xml:space="preserve">
+    <value>Căn cứ pháp lý CBTT không được để trống</value>
+  </data>
+  <data name="MSG_TEZIR_RULES_ADATELINEEXTEND_EMPTY" xml:space="preserve">
+    <value>DeadlineCBTT (gia hạn) không được để trống</value>
+  </data>
+  <data name="MSG_TEZIR_RULES_ADEADLINE_EMPTY" xml:space="preserve">
+    <value>DeadlineCBTT không được để trống</value>
+  </data>
+  <data name="MSG_TEZIR_RULES_AQDCBTT_EMPTY" xml:space="preserve">
+    <value>Quy định CBTT  không được để trống</value>
+  </data>
+  <data name="MSG_TEZIR_RULES_DELETE_RULES_SUCCESS" xml:space="preserve">
+    <value>Xóa Rules thành công</value>
+  </data>
+  <data name="MSG_TEZIR_RULES_UPDATE_RULES_SUCCESS" xml:space="preserve">
+    <value>Sửa Rules thành công</value>
+  </data>
+  <data name="MSG_TEZIR_RULES_INSERT_RULES_SUCCESS" xml:space="preserve">
+    <value>Thêm mới Rules thành công</value>
+  </data>
+  <data name="MSG_TEZIR_TKDOANHNGHIEP_INSERT_TKDOANHNGHIEP_SUCCESS" xml:space="preserve">
+    <value>Thêm mới tài khoản doanh nghiệp thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_TKDOANHNGHIEP_UPDATE_TKDOANHNGHIEP_SUCCESS_0" xml:space="preserve">
+    <value>Update tài khoản doanh nghiệp thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_USERGROUP_ALLREADY_IN_GROUP" xml:space="preserve">
+    <value>Người dùng đã ở trong nhóm!</value>
+  </data>
+  <data name="MSG_TEZIR_USERGROUP_DELETE_SUCCESS" xml:space="preserve">
+    <value>Xóa người dùng khỏi nhóm thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_USERGROUP_INSERT_SUCCESS" xml:space="preserve">
+    <value>Thêm người dùng vào nhóm thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_USER_NOT_EXIST" xml:space="preserve">
+    <value>Người dùng không tồn tại!</value>
+  </data>
+  <data name="NOTE_MAXLENGTH" xml:space="preserve">
+    <value>Ghi chú vượt quá số ký tự cho phép!</value>
+  </data>
+  <data name="PHONE_MAXLENGTH" xml:space="preserve">
+    <value>Số điện thoại vượt quá ký tự cho phép!</value>
+  </data>
+  <data name="P_AACTIVE" xml:space="preserve">
+    <value>Trạng thái không được để trống!</value>
+  </data>
+  <data name="P_ACOMPANYTYPE" xml:space="preserve">
+    <value>Loại hình không được để trống!</value>
+  </data>
+  <data name="P_ACPNYID" xml:space="preserve">
+    <value>Mã công ty không được để trống!</value>
+  </data>
+  <data name="P_ASTOCKCODE" xml:space="preserve">
+    <value>Mã chứng khoán không được để trống!</value>
+  </data>
+  <data name="TKDOANHNGHIEP_EXISTS" xml:space="preserve">
+    <value>Doanh nghiệp đã tồn tại tài khoản!</value>
+  </data>
+  <data name="USERMANE_MAXLENGTH" xml:space="preserve">
+    <value>Tên tài khoản vượt quá số ký tự cho phép!</value>
+  </data>
+  <data name="USERNAME_EXISTS" xml:space="preserve">
+    <value>Tài khoản đã tồn tại!</value>
+  </data>
+  <data name="USERNAME_NOT_EXISTS" xml:space="preserve">
+    <value>Tài khoản không tồn tại!</value>
+  </data>
+  <data name="YouNotHavePermission" xml:space="preserve">
+    <value>Bạn không có quyền!</value>
+  </data>
+  <data name="EMAIL_INCORRECT_FORMAT" xml:space="preserve">
+    <value>Email không đúng định dạng</value>
+  </data>
+  <data name="SEND_EMAIL_FAIL" xml:space="preserve">
+    <value>Gửi mail thất bại!</value>
+  </data>
+  <data name="SEND_EMAIL_SUCCESS" xml:space="preserve">
+    <value>Gửi mail thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_COMPANY_DELETE_COMPANY_SUCCESS" xml:space="preserve">
+    <value>Xóa doanh nghiệp thành công!</value>
+  </data>
+  <data name="AFISCALYEAR_EMPTY" xml:space="preserve">
+    <value>Niên độ không được để trống!</value>
+  </data>
+  <data name="FISCYEARDAY_EMPTY" xml:space="preserve">
+    <value>Ngày niên độ không được để trống!</value>
+  </data>
+  <data name="FISCYEARMONTH_EMPTY" xml:space="preserve">
+    <value>Tháng niên độ không được để trống!</value>
+  </data>
+  <data name="MSG_TEZIR_COMPANYROLE_UPDATE_COMPANYROLE_SUCCESS" xml:space="preserve">
+    <value>Update Roles doanh nghiệp thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_COMPANY_UPDATE_COMPANY_SUCCESS" xml:space="preserve">
+    <value>Update doanh nghiệp thành công!</value>
+  </data>
+  <data name="COMPANY_EMPTY" xml:space="preserve">
+    <value>Doanh nghiệp không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_COMPANYCLIENT_UPDATE_COMPANYCLIENT_SUCCESS" xml:space="preserve">
+    <value>Update link doanh nghiệp thành công!</value>
+  </data>
+  <data name="FileIsNotAccepted" xml:space="preserve">
+    <value>File không đúng định dạng!</value>
+  </data>
+  <data name="MSG_TEZIR_INSERT_NEWS_SUCCESS_0" xml:space="preserve">
+    <value>Đăng tin mới thành công!</value>
+  </data>
+  <data name="TITLE_MAXLENGTH" xml:space="preserve">
+    <value>Độ dài Tiêu đề không được quá 2000 ký tự !</value>
+  </data>
+  <data name="MSG_TEZIR_COMMONTYPE_INSERT_PARAM_IS_NULL" xml:space="preserve">
+    <value>Tham số truyền vào không được để trống!</value>
+  </data>
+  <data name="MSG_TEZIR_COMMONTYPE_DELETE_COMMONTYPE_SUCCESS" xml:space="preserve">
+    <value>Xóa danh mục thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_COMMONTYPE_INSERT_SUCCESSFUL" xml:space="preserve">
+    <value>Thêm danh mục thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_COMMONTYPE_UPDATE_SUCCESSFUL" xml:space="preserve">
+    <value>Cập nhật danh mục thành công!</value>
+  </data>
+  <data name="TYPECODE_EMPTY" xml:space="preserve">
+    <value>Mã danh mục không được để trống!</value>
+  </data>
+  <data name="TYPENAMEEN_EMPTY" xml:space="preserve">
+    <value>Tên danh mục tiếng anh không được để trống!</value>
+  </data>
+  <data name="TYPENAME_EMPTY" xml:space="preserve">
+    <value>Tên danh mục không được để trống!</value>
+  </data>
+  <data name="MSG_TEZIR_COMMONTYPE_INSERT_COMMONTYPE_EXISTED" xml:space="preserve">
+    <value>Danh mục đã tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_UPDATE_NEWS_SUCCESS_0" xml:space="preserve">
+    <value>Sửa tin thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_DELETE_NEWS_SUCCESS_0" xml:space="preserve">
+    <value>Xóa tin thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_TKDOANHNGHIEP_DELETE_TKDOANHNGHIEP_SUCCESS" xml:space="preserve">
+    <value>Xóa tài khoản doanh nghiệp thành công!</value>
+  </data>
+  <data name="FileIsOver30MB" xml:space="preserve">
+    <value>Kích thước file không được lớn hơn 30MB!</value>
+  </data>
+  <data name="MSG_IN_MAU_NHAC_CBTT_ERROR" xml:space="preserve">
+    <value>Không thể in mẫu nhắc công bố thông tin</value>
+  </data>
+  <data name="SendMail_MSG_FILE_KHONG_DUNG_DINH_DANG" xml:space="preserve">
+    <value>File không đúng định dạng</value>
+  </data>
+  <data name="SendMail_MSG_KHONG_THE_DOC_FILE" xml:space="preserve">
+    <value>Không thể đọc file</value>
+  </data>
+  <data name="SENDMAIL_MSG_NO_FILE_CHOSEN" xml:space="preserve">
+    <value>Chưa chọn file template</value>
+  </data>
+  <data name="SendMail_MSG_SUCCESS" xml:space="preserve">
+    <value>Gửi mail thành công</value>
+  </data>
+  <data name="ACCPL_Empty" xml:space="preserve">
+    <value>Căn cứ pháp lý không được để trống!</value>
+  </data>
+  <data name="CCPL_MAXLENGTH" xml:space="preserve">
+    <value>Độ dài Căn cứ pháp lý không được quá 2000 ký tự !</value>
+  </data>
+  <data name="MSG_TEZIR_TEMPLATE_DELETE_TEMPLATE_SUCCESS" xml:space="preserve">
+    <value>Xóa biểu mẫu thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_TEMPLATE_DELETE_TEMPLATE_SUCCESS_0" xml:space="preserve">
+    <value>Xóa tài liệu thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_TEMPLATE_INSERT_TEMPLATE_SUCCESS" xml:space="preserve">
+    <value>Thêm mới biểu mẫu thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_TEMPLATE_INSERT_TEMPLATE_SUCCESS_0" xml:space="preserve">
+    <value>Thêm mới thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_TEMPLATE_UPDATE_TEMPLATE_SUCCESS" xml:space="preserve">
+    <value>Update biểu mẫu thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_TEMPLATE_UPDATE_TEMPLATE_SUCCESS_0" xml:space="preserve">
+    <value>Update tài liệu thành công!</value>
+  </data>
+  <data name="DLCBTTGH_EMPTY" xml:space="preserve">
+    <value>DeadLine CBTT (gia hạn) không được để trống</value>
+  </data>
+  <data name="DLCBTT_EMPTY" xml:space="preserve">
+    <value>DeadLine CBTT không được để trống</value>
+  </data>
+  <data name="PHAPLYCBTT_MAXLENGTH" xml:space="preserve">
+    <value>Không nhập quá 1000 ký tự</value>
+  </data>
+  <data name="QUYDINHCBTT_MAXLENGTH" xml:space="preserve">
+    <value>Không nhập quá 1000 ký tự</value>
+  </data>
+  <data name="Check_min_1" xml:space="preserve">
+    <value>Bạn chưa chọn ô nào để đồng bộ!</value>
+  </data>
+  <data name="Dong_Bo_BoMayQL_Khong_Thanh_Cong" xml:space="preserve">
+    <value>Đồng bộ dữ liệu bộ máy quản lý không thành công!</value>
+  </data>
+  <data name="Dong_Bo_ChucVu_Khong_Thanh_Cong" xml:space="preserve">
+    <value>Đồng bộ dữ liệu chức vụ không thành công!</value>
+  </data>
+  <data name="Dong_Bo_CoDongLon_Khong_Thanh_Cong" xml:space="preserve">
+    <value>Đồng bộ dữ liệu cổ đông lớn không thành công!</value>
+  </data>
+  <data name="Dong_Bo_CongTyCon_LK_Khong_Thanh_Cong" xml:space="preserve">
+    <value>Đồng bộ dữ liệu công ty con - công ty liên kết không thành công!</value>
+  </data>
+  <data name="Dong_Bo_Doanh_Nghiep_Khong_Thanh_Cong" xml:space="preserve">
+    <value>Đồng bộ dữ liệu doanh nghiệp không thành công!</value>
+  </data>
+  <data name="Dong_Bo_Free_Text_Khong_Thanh_ConDong_Bo_Free_Text_Khong_Thanh_Con" xml:space="preserve">
+    <value>Đồng bộ dữ liệu Free-text không thành công!</value>
+  </data>
+  <data name="Dong_Bo_LoaiCongTy_Khong_Thanh_Cong" xml:space="preserve">
+    <value>Đồng bộ dữ liệu loại công ty không thành công!</value>
+  </data>
+  <data name="Dong_Bo_Menu_Khong_Thanh_Cong" xml:space="preserve">
+    <value>Đồng bộ dữ liệu menu không thành công!</value>
+  </data>
+  <data name="Dong_Bo_TTBanLD_Khong_Thanh_Cong" xml:space="preserve">
+    <value>Đồng bộ dữ liệu thông tin ban lãnh đạo không thành công!</value>
+  </data>
+  <data name="Dong_Bo_Du_Lieu_Thanh_Cong" xml:space="preserve">
+    <value>Đồng bộ dữ liệu thành công!</value>
+  </data>
+  <data name="TITLE_EMPTY" xml:space="preserve">
+    <value>Tiêu đề không được để trống!</value>
+  </data>
+  <data name="YEAR_EMPTY" xml:space="preserve">
+    <value>Năm không được để trống!</value>
+  </data>
+  <data name="ACPNYID_EMPTY" xml:space="preserve">
+    <value>Mã chứng khoán không được để trống!</value>
+  </data>
+  <data name="FileIsNotExist" xml:space="preserve">
+    <value>File không tồn tại!</value>
+  </data>
+  <data name="Project_Investments" xml:space="preserve">
+    <value>Thông tin đầu tư dự án</value>
+  </data>
+  <data name="VTC" xml:space="preserve">
+    <value>Vị thế chung</value>
+  </data>
+  <data name="VTTTLVKD" xml:space="preserve">
+    <value>Vị thế trong từng lĩnh vực kinh doanh</value>
+  </data>
+  <data name="Strategy" xml:space="preserve">
+    <value>Chiến lược</value>
+  </data>
+  <data name="Vision" xml:space="preserve">
+    <value>Tầm nhìn</value>
+  </data>
+  <data name="NLDV" xml:space="preserve">
+    <value>Nguyên liệu đầu vào, nhà cung cấp</value>
+  </data>
+  <data name="NLQLCL" xml:space="preserve">
+    <value>Năng lực quản lý chất lượng</value>
+  </data>
+  <data name="NLQLK" xml:space="preserve">
+    <value>Năng lực quản lý khác</value>
+  </data>
+  <data name="NLQLNS" xml:space="preserve">
+    <value>Năng lực quản lý nhân sự</value>
+  </data>
+  <data name="NLQLTC" xml:space="preserve">
+    <value>Năng lực quản lý tài chính</value>
+  </data>
+  <data name="CCDT" xml:space="preserve">
+    <value>Cơ cấu doanh thu theo sản phẩm/ lĩnh vực</value>
+  </data>
+  <data name="DTCT" xml:space="preserve">
+    <value>Đối thủ cạnh tranh</value>
+  </data>
+  <data name="SPTT" xml:space="preserve">
+    <value>Sản phẩm thay thế</value>
+  </data>
+  <data name="TTKH" xml:space="preserve">
+    <value>Thị trường/ Khách hàng</value>
+  </data>
+  <data name="TTKHDTK" xml:space="preserve">
+    <value>Thị trường/ Khách hàng/ Đối thủ khác</value>
+  </data>
+  <data name="MSG_TEZIR_TKDOANHNGHIEP_DELETE_TKDOANHNGHIEP_SUCCESS_0" xml:space="preserve">
+    <value>Xóa tài khoản doanh nghiệp thành công!</value>
+  </data>
+  <data name="COMPANY_ACTIVE" xml:space="preserve">
+    <value>Không thể xóa tài khoản vì doanh nghiệp đang ở trạng thái Đã ký!</value>
+  </data>
+  <data name="Chua_chon_cong_ty" xml:space="preserve">
+    <value>Chưa chọn công ty!</value>
+  </data>
+  <data name="FROMDATE_IS_GREATER_THAN_TODATE" xml:space="preserve">
+    <value>Khoảng thời gian tìm kiếm không hợp lệ.</value>
+  </data>
+  <data name="Chua_chon_thong_tin" xml:space="preserve">
+    <value>Chưa chọn thông tin!</value>
+  </data>
+  <data name="COMPANY_EXISTS" xml:space="preserve">
+    <value>Doanh nghiệp đã tồn tại, chỉ có thể update lại tài khoản cũ!</value>
+  </data>
+  <data name="ATITLE_Empty" xml:space="preserve">
+    <value>Tên biểu mẫu không được để trống!</value>
+  </data>
+  <data name="FROMADATEEXTEND_EMPTY" xml:space="preserve">
+    <value>Ngày tính từ thời điểm deadlinecbtt (gia hạn) trống</value>
+  </data>
+  <data name="FROMADATE_EMPTY" xml:space="preserve">
+    <value>Ngày tính từ thời điểm deadlinecbtt trống</value>
+  </data>
+  <data name="URL_ERROR" xml:space="preserve">
+    <value>Đường dẫn không chính xác</value>
+  </data>
+  <data name="DATEPUB_EMPTY" xml:space="preserve">
+    <value>Ngày đăng tin không được để trống!</value>
+  </data>
+  <data name="PHONE_NOT_IN_CORRECT_FORMAT" xml:space="preserve">
+    <value>Số điện thoại không đúng định dạng!</value>
+  </data>
+  <data name="AORD_Empty" xml:space="preserve">
+    <value>Số thứ tự không được để trống</value>
+  </data>
+  <data name="DATEPUB_GREATER_THAN_CURDATE" xml:space="preserve">
+    <value>Ngày đăng không được lớn hơn ngày hiện tại!</value>
+  </data>
+  <data name="AUSERNAME_NOT_IN_CORRECT_FORMAT" xml:space="preserve">
+    <value>Tên đăng nhập không đúng định dạng</value>
+  </data>
+  <data name="MSG_TEZIR_DOANHNGHIEP_UPDATE_DOANHNGHIEP_SUCCESS_0" xml:space="preserve">
+    <value>Cập nhật doanh nghiệp thành công!</value>
+  </data>
+  <data name="AEXPERT_Empty" xml:space="preserve">
+    <value>Chuyên viên phụ trách không được để trống!</value>
+  </data>
+  <data name="DISALLOW_UPDATE" xml:space="preserve">
+    <value>Bạn không có quyền update!</value>
+  </data>
+  <data name="DATE_Empty" xml:space="preserve">
+    <value>Khoảng thời gian tìm kiếm không hợp lệ!</value>
+  </data>
+  <data name="FROMDATEDLCBTT_EMPTY" xml:space="preserve">
+    <value>Ngày tính từ thời điểm (áp dụng với DeadlineCBTT) không được để trống!</value>
+  </data>
+  <data name="MSG_TEZIR_RULES_ADATE_EMPTY" xml:space="preserve">
+    <value>Tính từ ngày (áp dụng với trường hợp CBTT thường) không được để trống!</value>
+  </data>
+  <data name="YouNotHavePermissionInsertTemplate" xml:space="preserve">
+    <value>Tài khoản đang dùng không có quyền tạo biểu mẫu !</value>
+  </data>
+  <data name="Cancel_Approve_Successfully" xml:space="preserve">
+    <value>Hủy phê duyệt thành công!</value>
+  </data>
+  <data name="Menus_Not_Exists" xml:space="preserve">
+    <value>Menus không tồn tại!</value>
+  </data>
+  <data name="Not_Data_Available_For_Approval" xml:space="preserve">
+    <value>Không tồn tại dữ liệu để phê duyệt!</value>
+  </data>
+  <data name="Successfully_Approved" xml:space="preserve">
+    <value>Phê duyệt thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_RULES_ACPNYTYPE_EMPTY" xml:space="preserve">
+    <value>Loại hình không được để trống!</value>
+  </data>
+  <data name="ANIENDOBCTC _Empty" xml:space="preserve">
+    <value>Niên độ báo cáo tài chính không được để trống!</value>
+  </data>
+  <data name="MSG_TEZIR_CHUYENVIEN_ACC_EXISTS" xml:space="preserve">
+    <value>Tài khoản chuyên viên đã tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_COMMONTYPE_INSERT_COMMONTYPE_NOT_EXISTED" xml:space="preserve">
+    <value>Danh mục không tồn tại</value>
+  </data>
+  <data name="Chua_chon_DN" xml:space="preserve">
+    <value>Chưa chọn doanh nghiệp!</value>
+  </data>
+  <data name="Company_Not_Exists" xml:space="preserve">
+    <value>Doanh nghiệp không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_COMPANYROLE_NOT_EXISTS" xml:space="preserve">
+    <value>Không tồn tại quyền Doanh nghiệp!</value>
+  </data>
+  <data name="MSG_DU_LIEU_SAVE" xml:space="preserve">
+    <value>Dữ liệu đã được lưu thành công.</value>
+  </data>
+  <data name="MSG_TEZS_MANAGER_CHECK" xml:space="preserve">
+    <value>Chỉ được lưu duy nhất Chủ tịch HÐQT, Tổng giám đốc, Kế toán trưởng, Trưởng ban kiểm soát.</value>
+  </data>
+  <data name="ERROR_INSERT_BANNER" xml:space="preserve">
+    <value>Xảy ra lỗi trong quá trình thêm banner. Thao tác lại</value>
+  </data>
+</root>

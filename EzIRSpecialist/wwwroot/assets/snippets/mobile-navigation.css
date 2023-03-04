@@ -1,0 +1,47 @@
+/* Mobile navigation */
+
+#nav-toggle {
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 10px 35px 16px 10px;
+}
+#nav-toggle span,
+#nav-toggle span:before,
+#nav-toggle span:after {
+    cursor: pointer;
+    border-radius: 2px;
+    height: 2px;
+    width: 21px;
+    position: absolute;
+    display: block;
+    content: '';
+    transition: all 500ms ease-in-out;
+}
+
+#nav-toggle span {
+    background: transparent;
+}
+#nav-toggle span:before {
+    transform: rotate(45deg);
+    color: #555 !important;
+    background: white !important;
+}
+#nav-toggle span:after {
+    transform: rotate(-45deg);
+    color: #555 !important;
+    background: white !important;
+}
+
+#nav-toggle.collapsed span:before {
+    top: -6px;
+    transform: rotate(0deg);
+    color: #555;
+    background: white;
+}
+#nav-toggle.collapsed span:after {
+    bottom: -6px;
+    transform: rotate(0deg);
+    color: #555;
+    background: white;
+}

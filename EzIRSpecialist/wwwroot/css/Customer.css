@@ -1,0 +1,93 @@
+/*Chiennd create 24/04/2019*/
+
+.k-footer .k-footer__content .fpts-title {
+    color: #e56f21;
+    font-size: 16px;
+    margin-bottom: 18px;
+}
+
+.k-footer .k-footer__content .location {
+    background-image: url(../images/icon/icon-local.png);
+    padding-left: 21px;
+    background-size: 11px;
+}
+
+.k-footer .k-footer__content .phone {
+    background-image: url(../images/icon/icon-phonef_03.png);
+    padding-left: 21px;
+}
+
+.k-footer .k-footer__content p {
+    background-repeat: no-repeat;
+    background-size: 13px;
+    background-position: 0 6px;
+    text-align: left;
+    padding: 0;
+    margin: 0;
+    height: auto;
+    line-height: 25px;
+}
+
+.k-footer .k-footer__content .mail {
+    background-image: url(../images/icon/icon-mail.png);
+    padding-left: 21px;
+}
+
+.k-footer .k-footer__content {
+    background-color: #4d4d4d;
+    color: #fff;
+    padding: 25px 0 30px;
+}
+
+.k-footer .fpts-securities {
+    background-color: #034e95;
+}
+
+    .k-footer .fpts-securities p {
+        width: 100%;
+        font-size: 15px;
+        text-align: center;
+        color: #fff;
+        padding: 10px 0 10px;
+        margin: 0;
+    }
+
+.k-footer .fpts-caption {
+    text-align: center;
+    padding: 8px 0;
+    background-color: #ccc;
+}
+
+    .k-footer .fpts-caption ul {
+        display: inline;
+    }
+
+        .k-footer .fpts-caption ul li {
+            display: inline-block;
+            position: relative;
+            color: #000;
+            min-width: 228px;
+        }
+
+            .k-footer .fpts-caption ul li a {
+                text-decoration: none;
+                display: block;
+                cursor: pointer;
+                text-transform: uppercase;
+                display: block;
+                padding: 0 40px !important;
+                color: #000;
+            }
+
+            .k-footer .fpts-caption ul li::after {
+                content: '';
+                position: absolute;
+                top: 3px;
+                right: 0;
+                width: 1px;
+                height: 65%;
+                background-color: #6b6b6b;
+            }
+div.dataTables_paginate {
+    text-align: center
+}

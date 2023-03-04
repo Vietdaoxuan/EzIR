@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "tin tức";
+}
+
+@*<div class="table_company_new" id="tab-tintuc">
+</div>*@
+<table id="table_news" cellspacing="0" cellpadding="0" border="0">
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+
+    $(document).ready(function () {
+        //tin tức
+        /*ChienND 30/08/2022 Lấy ngôn ngữ qua link website*/
+        var lang;
+        if (ReturnLinkLanguage())
+            lang = "?culture=en-US";
+        else
+            lang = "";
+        var TinTuc = function () {
+            this.init = function () {
+                loadData();
+            }
+            var loadData = function () {
+                $.ajax({
+                    url: '@Url.Action("GetTinTuc", "Home")' + lang,
+                    method: 'GET',
+                    dataType: 'json',
+                    data: {} ,
+                    success: function (data) {
+                        //console.log(data);
+                        let html = '';
+                        for (const item of data) {
+                            var date = item.datePub.split(' ')[0];
+                            html += `
+                                <tr>
+                                    <td class="first_td_left">
+                                        <a href="${item.url}" style="color: #333;" target="_TinTuc"><b style="font-weight: bold;">${item.stock_code}:</b> ${item.title} </a>
+                                    </td>
+
+                                    <td  class="td_right" style=" text-align: right;"> ${date}</td>
+                                    <td class="middle_img">
+                                        <div class="w-100" style="width:100%;">
+                                            ${item.newimg}
+                                        </div>
+                                    </td>
+                                </tr>`;
+
+                        }
+                        $('#table_news tbody').append(html);
+                    },
+                    error: function (err) {
+                        //console.log(err);
+                    }
+                });
+            }
+        }
+
+            var tinTuc = new TinTuc();
+            tinTuc.init();
+
+
+    });
+</script>

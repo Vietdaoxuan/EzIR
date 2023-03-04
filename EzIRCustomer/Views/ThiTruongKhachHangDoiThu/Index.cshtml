@@ -1,0 +1,1018 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHttpContextAccessor _httpContextAccessor;
+
+@{
+    ViewData["Title"] = "Thị trường khách hàng đối thủ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    //var cResponseMessage = ViewBag.Data as CoreLib.Entities.CResponseMessage;
+
+    var cpnyID = _httpContextAccessor.HttpContext.Session.GetInt32(SessionTypes.CPNY_ID) ?? null;
+}
+
+<link type="text/css" href="~/lib/ckeditor/contents.css" rel="stylesheet" />
+
+<div class="title_line d-flex" style="margin-bottom: 0px;">
+    <div class="container">
+        <span class="title_line_item">
+            <font color="#4187A6"><a href="/internal" style="color:#4187A6;font-weight: 600;">@Localizer["Update_Infomation"].Value</a></font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Business"].Value</font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Market_Customer_Competitor"].Value</font>
+        </span>
+    </div>
+</div>
+<div class="k-portlet__body">
+    <div class="row col-12 nopadding" style="margin-bottom: 10px;">
+        <div class="col-md-7 div-button-mobiletop" style="padding-bottom: 10px"></div>
+        <div class="col-md-5 div-button" style="padding-bottom: 10px;padding-right: 0%;">
+            <div class="set_up-button" style="padding-left: 70%;">
+                <input type="button" class="btn btn-primary form-control  mx-2 my-1" id="btnSave" value="@Localizer["Save_send"].Value">
+            </div>
+        </div>
+        <div class="respon-mobile">
+            <div class="col-md-12 text-box-label-general" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["NLDV"].Value</p>
+                            <!-- Nguyên liệu đầu vào, nhà cung cấp -->
+                            <div class="row d-flex justify-content-center">
+                                <input type="number" id="txtMenuID_NLDV" value="635" readonly hidden />
+                                <input type="number" id="txtID_NLDV" readonly hidden />
+                                <input type="number" id="txtApprove_NLDV" readonly hidden />
+                                <input type="number" id="keyPress_NLDV" readonly hidden />
+                                <textarea class="d-none" cols="100" id="editorNLDV" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["CCDT"].Value</p>
+                            <!-- Cơ cấu doanh thu -->
+                            <div class="row d-flex justify-content-center">
+                                <input type="number" id="txtMenuID_CCDT" value="636" readonly hidden />
+                                <input type="number" id="txtID_CCDT" readonly hidden />
+                                <input type="number" id="txtApprove_CCDT" readonly hidden />
+                                <input type="number" id="keyPress_CCDT" readonly hidden />
+                                <textarea class="d-none" cols="100" id="editorCCDT" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["SPTT"].Value</p>
+                            <!-- Sản phẩm thay thế-->
+                            <div class="row d-flex justify-content-center">
+                                <input type="number" id="txtMenuID_SPTT" value="637" readonly hidden />
+                                <input type="number" id="txtID_SPTT" readonly hidden />
+                                <input type="number" id="txtApprove_SPTT" readonly hidden />
+                                <input type="number" id="keyPress_SPTT" readonly hidden />
+                                <textarea class="d-none" cols="100" id="editorSPTT" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["DTCT"].Value</p>
+                            <!-- Đối thủ cạnh tranh -->
+                            <div class="row d-flex justify-content-center">
+                                <input type="number" id="txtMenuID_DTCT" value="638" readonly hidden />
+                                <input type="number" id="txtID_DTCT" readonly hidden />
+                                <input type="number" id="txtApprove_DTCT" readonly hidden />
+                                <input type="number" id="keyPress_DTCT" readonly hidden />
+                                <textarea class="d-none" cols="100" id="editorDTCT" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["TTKH"].Value</p>
+                            <!-- Thị trường/ Khác hàng -->
+                            <div class="row d-flex justify-content-center">
+                                <input type="number" id="txtMenuID_TTKH" value="639" readonly hidden />
+                                <input type="number" id="txtID_TTKH" readonly hidden />
+                                <input type="number" id="txtApprove_TTKH" readonly hidden />
+                                <input type="number" id="keyPress_TTKH" readonly hidden />
+                                <textarea class="d-none" cols="100" id="editorTTKH" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["TTKHDTK"].Value</p>
+                            <!-- Khác -->
+                            <div class="row d-flex justify-content-center">
+                                <input type="number" id="txtMenuID_TTKHDTK" value="651" readonly hidden />
+                                <input type="number" id="txtID_TTKHDTK" readonly hidden />
+                                <input type="number" id="txtApprove_TTKHDTK" readonly hidden />
+                                <input type="number" id="keyPress_TTKHDTK" readonly hidden />
+                                <textarea class="d-none" cols="100" id="editorTTKHDTK" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+<style>
+    body {
+        margin: 0px;
+    }
+</style>
+@section Scripts
+{
+    @*@await Html.PartialAsync(@"_FormMessage", cResponseMessage)*@
+
+    <script type="text/javascript" src="~/lib/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="~/lib/ckeditor/config.js"></script>
+    <script type="text/javascript" src="~/lib/ckeditor/build-config.js"></script>
+    <script type="text/javascript" src="~/lib/ckeditor/styles.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            // Configs constant
+            const TTKHDT_CONFIGS = {
+                MENUID_NLDV: 635,
+                MENUID_CCDT: 636,
+                MENUID_SPTT: 637,
+                MENUID_DTCT: 638,
+                MENUID_TTKH: 639,
+                MENUID_TTKHDTK: 651,
+                IS_KEY_PRESS: 1,
+            }
+
+            // Cấu hình CKEditor
+            function CreateEditor() {
+
+                 // Nguyên liệu đầu vào
+                 CKEDITOR.replace('editorNLDV',
+                    {
+                        extraPlugins: 'image2 , uploadimage',
+
+                        toolbar: toolbar = [
+                            {
+                                name: 'document',
+                                items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates']
+                            },
+                            {
+                                name: 'clipboard',
+                                items: [
+                                    'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+                                ]
+                            },
+                            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                            {
+                                name: 'forms',
+                                items: [
+                                    'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button',
+                                    'HiddenField'
+                                ]
+                            },
+                            '/',
+                            {
+                                name: 'basicstyles',
+                                items: [
+                                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-',
+                                    'CopyFormatting', 'RemoveFormat'
+                                ]
+                            },
+                            {
+                                name: 'paragraph',
+                                items: [
+                                    'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
+                                    'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                                    'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
+                                ]
+                            },
+                            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                            {
+                                name: 'insert',
+                                items: [
+                                    'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak',
+                                    'Iframe', 'texzilla'
+                                ]
+                            },
+                            '/',
+                            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                            { name: 'colors', items: ['TextColor', 'BGColor'] },
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                            { name: 'about', items: ['About'] }
+                        ],
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserBrowseUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageBrowseUrl: '@Url.Action("UploadImage")',
+
+
+                        // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '@Url.Action("UploadImage")',
+
+                        // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+                        format_tags: 'p;h1;h2;h3;pre',
+                        // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+                        removeDialogTabs: 'image:advanced;link:advanced',
+
+                        height: 200,
+                        width: '100%'
+                    }
+                );
+
+                 // Cơ cấu doanh thu
+                 CKEDITOR.replace('editorCCDT',
+                    {
+                        extraPlugins: 'image2 , uploadimage',
+
+                        toolbar: toolbar = [
+                            {
+                                name: 'document',
+                                items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates']
+                            },
+                            {
+                                name: 'clipboard',
+                                items: [
+                                    'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+                                ]
+                            },
+                            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                            {
+                                name: 'forms',
+                                items: [
+                                    'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button',
+                                    'HiddenField'
+                                ]
+                            },
+                            '/',
+                            {
+                                name: 'basicstyles',
+                                items: [
+                                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-',
+                                    'CopyFormatting', 'RemoveFormat'
+                                ]
+                            },
+                            {
+                                name: 'paragraph',
+                                items: [
+                                    'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
+                                    'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                                    'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
+                                ]
+                            },
+                            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                            {
+                                name: 'insert',
+                                items: [
+                                    'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak',
+                                    'Iframe', 'texzilla'
+                                ]
+                            },
+                            '/',
+                            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                            { name: 'colors', items: ['TextColor', 'BGColor'] },
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                            { name: 'about', items: ['About'] }
+                        ],
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserBrowseUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageBrowseUrl: '@Url.Action("UploadImage")',
+
+
+                        // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '@Url.Action("UploadImage")',
+
+                        // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+                        format_tags: 'p;h1;h2;h3;pre',
+                        // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+                        removeDialogTabs: 'image:advanced;link:advanced',
+
+                        height: 200,
+                        width: '100%'
+                    }
+                );
+
+                 // Sản phẩm thay thế
+                 CKEDITOR.replace('editorSPTT',
+                    {
+                        extraPlugins: 'image2 , uploadimage',
+
+                        toolbar: toolbar = [
+                            {
+                                name: 'document',
+                                items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates']
+                            },
+                            {
+                                name: 'clipboard',
+                                items: [
+                                    'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+                                ]
+                            },
+                            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                            {
+                                name: 'forms',
+                                items: [
+                                    'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button',
+                                    'HiddenField'
+                                ]
+                            },
+                            '/',
+                            {
+                                name: 'basicstyles',
+                                items: [
+                                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-',
+                                    'CopyFormatting', 'RemoveFormat'
+                                ]
+                            },
+                            {
+                                name: 'paragraph',
+                                items: [
+                                    'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
+                                    'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                                    'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
+                                ]
+                            },
+                            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                            {
+                                name: 'insert',
+                                items: [
+                                    'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak',
+                                    'Iframe', 'texzilla'
+                                ]
+                            },
+                            '/',
+                            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                            { name: 'colors', items: ['TextColor', 'BGColor'] },
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                            { name: 'about', items: ['About'] }
+                        ],
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserBrowseUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageBrowseUrl: '@Url.Action("UploadImage")',
+
+
+                        // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '@Url.Action("UploadImage")',
+
+                        // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+                        format_tags: 'p;h1;h2;h3;pre',
+                        // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+                        removeDialogTabs: 'image:advanced;link:advanced',
+
+                        height: 200,
+                        width: '100%'
+                    }
+                );
+
+                 // Đối thủ cạnh tranh
+                 CKEDITOR.replace('editorDTCT',
+                    {
+                        extraPlugins: 'image2 , uploadimage',
+
+                        toolbar: toolbar = [
+                            {
+                                name: 'document',
+                                items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates']
+                            },
+                            {
+                                name: 'clipboard',
+                                items: [
+                                    'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+                                ]
+                            },
+                            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                            {
+                                name: 'forms',
+                                items: [
+                                    'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button',
+                                    'HiddenField'
+                                ]
+                            },
+                            '/',
+                            {
+                                name: 'basicstyles',
+                                items: [
+                                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-',
+                                    'CopyFormatting', 'RemoveFormat'
+                                ]
+                            },
+                            {
+                                name: 'paragraph',
+                                items: [
+                                    'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
+                                    'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                                    'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
+                                ]
+                            },
+                            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                            {
+                                name: 'insert',
+                                items: [
+                                    'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak',
+                                    'Iframe', 'texzilla'
+                                ]
+                            },
+                            '/',
+                            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                            { name: 'colors', items: ['TextColor', 'BGColor'] },
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                            { name: 'about', items: ['About'] }
+                        ],
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserBrowseUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageBrowseUrl: '@Url.Action("UploadImage")',
+
+
+                        // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '@Url.Action("UploadImage")',
+
+                        // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+                        format_tags: 'p;h1;h2;h3;pre',
+                        // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+                        removeDialogTabs: 'image:advanced;link:advanced',
+
+                        height: 200,
+                        width: '100%'
+                    }
+                );
+
+                // Thị trường/ khách hàng
+                 CKEDITOR.replace('editorTTKH',
+                    {
+                        extraPlugins: 'image2 , uploadimage',
+
+                        toolbar: toolbar = [
+                            {
+                                name: 'document',
+                                items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates']
+                            },
+                            {
+                                name: 'clipboard',
+                                items: [
+                                    'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+                                ]
+                            },
+                            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                            {
+                                name: 'forms',
+                                items: [
+                                    'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button',
+                                    'HiddenField'
+                                ]
+                            },
+                            '/',
+                            {
+                                name: 'basicstyles',
+                                items: [
+                                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-',
+                                    'CopyFormatting', 'RemoveFormat'
+                                ]
+                            },
+                            {
+                                name: 'paragraph',
+                                items: [
+                                    'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
+                                    'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                                    'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
+                                ]
+                            },
+                            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                            {
+                                name: 'insert',
+                                items: [
+                                    'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak',
+                                    'Iframe', 'texzilla'
+                                ]
+                            },
+                            '/',
+                            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                            { name: 'colors', items: ['TextColor', 'BGColor'] },
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                            { name: 'about', items: ['About'] }
+                        ],
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserBrowseUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageBrowseUrl: '@Url.Action("UploadImage")',
+
+
+                        // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '@Url.Action("UploadImage")',
+
+                        // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+                        format_tags: 'p;h1;h2;h3;pre',
+                        // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+                        removeDialogTabs: 'image:advanced;link:advanced',
+
+                        height: 200,
+                        width: '100%'
+                    }
+                );
+
+                // Thị trường khách hàng đối thủ khác
+                 CKEDITOR.replace('editorTTKHDTK',
+                    {
+                        extraPlugins: 'image2 , uploadimage',
+
+                        toolbar: toolbar = [
+                            {
+                                name: 'document',
+                                items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates']
+                            },
+                            {
+                                name: 'clipboard',
+                                items: [
+                                    'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+                                ]
+                            },
+                            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                            {
+                                name: 'forms',
+                                items: [
+                                    'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button',
+                                    'HiddenField'
+                                ]
+                            },
+                            '/',
+                            {
+                                name: 'basicstyles',
+                                items: [
+                                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-',
+                                    'CopyFormatting', 'RemoveFormat'
+                                ]
+                            },
+                            {
+                                name: 'paragraph',
+                                items: [
+                                    'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
+                                    'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                                    'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
+                                ]
+                            },
+                            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                            {
+                                name: 'insert',
+                                items: [
+                                    'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak',
+                                    'Iframe', 'texzilla'
+                                ]
+                            },
+                            '/',
+                            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                            { name: 'colors', items: ['TextColor', 'BGColor'] },
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                            { name: 'about', items: ['About'] }
+                        ],
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserBrowseUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageBrowseUrl: '@Url.Action("UploadImage")',
+
+
+                        // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '@Url.Action("UploadImage")',
+
+                        // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+                        format_tags: 'p;h1;h2;h3;pre',
+                        // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+                        removeDialogTabs: 'image:advanced;link:advanced',
+
+                        height: 200,
+                        width: '100%'
+                    }
+                );
+            }
+
+            // Object TTKHDT
+            var TTKHDT = function () {
+
+                this.init = function () {
+                    CreateEditor();
+                    setTimeout(function () {
+                        registerEvents();
+                        loadData();
+                    }, 500);
+                }
+
+                var loadData = async function () {
+
+                    $('#loading').addClass('loading');
+
+                    destroyCKEDITOR();
+
+                    setTimeout(function () {
+                        $.ajax({
+                        url: '@Url.Action("GetTtkhdt", "ThiTruongKhachHangDoiThu")',
+                        method: 'GET',
+                        dataType: 'json',
+                        data: {  }
+                        })
+                        .done((data) => {
+
+                            ////console.log(data);
+
+                            $('#loading').removeClass('loading');
+
+                            if (data.code == 0) {
+
+                                if (Array.isArray(data.data) && data.data.length > 0) {
+                                    let arrObj = data.data;
+
+                                    for (const value of arrObj) {
+
+                                        if (value.menuID == TTKHDT_CONFIGS.MENUID_NLDV) {
+                                            $('#txtMenuID_NLDV').val(value.menuID);
+                                            $('#txtID_NLDV').val(value.id);
+                                            $('#txtApprove_NLDV').val(value.approve);
+
+                                            if (!CKEDITOR.instances.editorNLDV) CreateEditor();
+
+                                            CKEDITOR.instances.editorNLDV.setData(value.content);
+
+                                            if (value.approve == 1 || value.approve == 2) CKEDITOR.instances.editorNLDV.setReadOnly(true);
+                                        }
+
+                                        if (value.menuID == TTKHDT_CONFIGS.MENUID_CCDT) {
+                                            $('#txtMenuID_CCDT').val(value.menuID);
+                                            $('#txtID_CCDT').val(value.id);
+                                            $('#txtApprove_CCDT').val(value.approve);
+
+                                            if (!CKEDITOR.instances.editorCCDT) CreateEditor();
+
+                                            CKEDITOR.instances.editorCCDT.setData(value.content);
+                                            
+
+                                            if (value.approve == 1 || value.approve == 2) CKEDITOR.instances.editorCCDT.setReadOnly(true);
+                                        }
+
+                                        if (value.menuID == TTKHDT_CONFIGS.MENUID_SPTT) {
+                                            $('#txtMenuID_SPTT').val(value.menuID);
+                                            $('#txtID_SPTT').val(value.id);
+                                            $('#txtApprove_SPTT').val(value.approve);
+
+                                            if (!CKEDITOR.instances.editorSPTT) CreateEditor();
+
+                                            CKEDITOR.instances.editorSPTT.setData(value.content);
+                                            
+
+                                            if (value.approve == 1 || value.approve == 2) CKEDITOR.instances.editorSPTT.setReadOnly(true);
+                                        }
+
+                                        if (value.menuID == TTKHDT_CONFIGS.MENUID_DTCT) {
+                                            $('#txtMenuID_DTCT').val(value.menuID);
+                                            $('#txtID_DTCT').val(value.id);
+                                            $('#txtApprove_DTCT').val(value.approve);
+
+                                            if (!CKEDITOR.instances.editorDTCT) CreateEditor();
+
+                                            CKEDITOR.instances.editorDTCT.setData(value.content);
+                                            
+
+                                            if (value.approve == 1 || value.approve == 2) CKEDITOR.instances.editorDTCT.setReadOnly(true);
+                                        }
+
+                                        if (value.menuID == TTKHDT_CONFIGS.MENUID_TTKH) {
+                                            $('#txtMenuID_TTKH').val(value.menuID);
+                                            $('#txtID_TTKH').val(value.id);
+                                            $('#txtApprove_TTKH').val(value.approve);
+
+                                            if (!CKEDITOR.instances.editorTTKH) CreateEditor();
+
+                                            CKEDITOR.instances.editorTTKH.setData(value.content);
+                                            
+
+                                            if (value.approve == 1 || value.approve == 2) CKEDITOR.instances.editorTTKH.setReadOnly(true);
+                                        }
+
+                                        if (value.menuID == TTKHDT_CONFIGS.MENUID_TTKHDTK) {
+                                            $('#txtMenuID_TTKHDTK').val(value.menuID);
+                                            $('#txtID_TTKHDTK').val(value.id);
+                                            $('#txtApprove_TTKHDTK').val(value.approve);
+
+                                            if (!CKEDITOR.instances.editorTTKHDTK) CreateEditor();
+
+                                            CKEDITOR.instances.editorTTKHDTK.setData(value.content);
+                                            
+
+                                            if (value.approve == 1 || value.approve == 2) CKEDITOR.instances.editorTTKHDTK.setReadOnly(true);
+                                        }
+                                    }
+                                }
+                            }
+
+                        })
+                        .fail((err) => {
+                            $('#loading').removeClass('loading');
+                            ////console.log(err);
+                        });
+                    }, 500);
+
+
+                }
+
+                var registerEvents = function () {
+
+                    // Save TTKHDT
+                    $('body').on('click', '#btnSave', function () {
+
+                        $('#loading').addClass('loading');
+
+                        // status key press
+                        let keyPress_NLDV = $('#keyPress_NLDV').val();
+                        let keyPress_CCDT = $('#keyPress_CCDT').val();
+                        let keyPress_SPTT = $('#keyPress_SPTT').val();
+                        let keyPress_DTCT = $('#keyPress_DTCT').val();
+                        let keyPress_TTKH = $('#keyPress_TTKH').val();
+                        let keyPress_TTKHDTK = $('#keyPress_TTKHDTK').val();
+
+                        let infoSheetViewModels = [];
+
+                        if (keyPress_NLDV == TTKHDT_CONFIGS.IS_KEY_PRESS) {
+                            let dataEditorNLDV = CKEDITOR.instances.editorNLDV.getData();
+                            let idNLDV = $('#txtID_NLDV').val();
+                            let menuIdNLDV = $('#txtMenuID_NLDV').val();
+                            //let approveNLDV = $('#txtApprove_NLDV').val();
+                            infoSheetViewModels.push({ /*Approve: approveNLDV,*/ ID: idNLDV, MenuID: menuIdNLDV, Content: dataEditorNLDV, CpnyID: @cpnyID });
+                            CKEDITOR.instances.editorNLDV.setReadOnly(true);
+                            $('#keyPress_NLDV').val(0);
+                        }
+
+                        if (keyPress_CCDT == TTKHDT_CONFIGS.IS_KEY_PRESS) {
+                            let dataEditorCCDT = CKEDITOR.instances.editorCCDT.getData();
+                            let idCCDT = $('#txtID_CCDT').val();
+                            let menuIdCCDT = $('#txtMenuID_CCDT').val();
+                            //let approveCCDT = $('#txtApprove_CCDT').val();
+                            infoSheetViewModels.push({ /*Approve: approveCCDT,*/ ID: idCCDT, MenuID: menuIdCCDT, Content: dataEditorCCDT, CpnyID: @cpnyID });
+                            CKEDITOR.instances.editorCCDT.setReadOnly(true);
+                            $('#keyPress_CCDT').val(0);
+                        }
+
+                        if (keyPress_SPTT == TTKHDT_CONFIGS.IS_KEY_PRESS) {
+                            let dataEditorSPTT = CKEDITOR.instances.editorSPTT.getData();
+                            let idSPTT = $('#txtID_SPTT').val();
+                            let menuIdSPTT = $('#txtMenuID_SPTT').val();
+                            //let approveSPTT = $('#txtApprove_SPTT').val();
+                            infoSheetViewModels.push({ /*Approve: approveSPTT,*/ ID: idSPTT, MenuID: menuIdSPTT, Content: dataEditorSPTT, CpnyID: @cpnyID });
+                            CKEDITOR.instances.editorSPTT.setReadOnly(true);
+                            $('#keyPress_SPTT').val(0);
+                        }
+
+                        if (keyPress_DTCT == TTKHDT_CONFIGS.IS_KEY_PRESS) {
+                            let dataEditorDTCT = CKEDITOR.instances.editorDTCT.getData();
+                            let idDTCT = $('#txtID_DTCT').val();
+                            let menuIdDTCT = $('#txtMenuID_DTCT').val();
+                            //let approveDTCT = $('#txtApprove_DTCT').val();
+                            infoSheetViewModels.push({ /*Approve: approveDTCT,*/ ID: idDTCT, MenuID: menuIdDTCT, Content: dataEditorDTCT, CpnyID: @cpnyID });
+                            CKEDITOR.instances.editorDTCT.setReadOnly(true);
+                            $('#keyPress_DTCT').val(0);
+                        }
+
+                        if (keyPress_TTKH == TTKHDT_CONFIGS.IS_KEY_PRESS) {
+                            let dataEditorTTKH = CKEDITOR.instances.editorTTKH.getData();
+                            let idTTKH = $('#txtID_TTKH').val();
+                            let menuIdTTKH = $('#txtMenuID_TTKH').val();
+                            //let approveTTKH = $('#txtApprove_TTKH').val();
+                            infoSheetViewModels.push({ /*Approve: approveTTKH,*/ ID: idTTKH, MenuID: menuIdTTKH, Content: dataEditorTTKH, CpnyID: @cpnyID });
+                            CKEDITOR.instances.editorTTKH.setReadOnly(true);
+                            $('#keyPress_TTKH').val(0);
+                        }
+
+                        if (keyPress_TTKHDTK == TTKHDT_CONFIGS.IS_KEY_PRESS) {
+                            let dataEditorTTKHDTK = CKEDITOR.instances.editorTTKHDTK.getData();
+                            let idTTKHDTK = $('#txtID_TTKHDTK').val();
+                            let menuIdTTKHDTK = $('#txtMenuID_TTKHDTK').val();
+                            //let approveTTKHDTK = $('#txtApprove_TTKHDTK').val();
+                            infoSheetViewModels.push({ /*Approve: approveTTKHDTK,*/ ID: idTTKHDTK, MenuID: menuIdTTKHDTK, Content: dataEditorTTKHDTK, CpnyID: @cpnyID });
+                            CKEDITOR.instances.editorTTKHDTK.setReadOnly(true);
+                            $('#keyPress_TTKHDTK').val(0);
+                        }
+                        //console.log(infoSheetViewModels);
+
+                        if (infoSheetViewModels.length == 0) {
+                            $('#loading').removeClass('loading');
+                            toastr.error('@Localizer["DataHasNotBeenChanged"].Value');
+                            return;
+                        };
+
+                        $.ajax({
+                            url: '@Url.Action("SaveTtkhdt", "ThiTruongKhachHangDoiThu")',
+                            method: 'POST',
+                            dataType: 'json',
+                            data: { infoSheetViewModels }
+                        })
+                        .done((data) => {
+                            ////console.log(data);
+
+                            $('#loading').removeClass('loading');
+
+                            if (data.code == 0) {
+                                loadData();
+                                Swal.fire({
+                                    html: "@Localizer["Approving"].Value",
+                                    type: 'success',
+                                    confirmButtonText: 'OK'
+                                });
+                               //toastr.success(data.message);
+                                return;
+                            } else {
+                                return toastr.error(data.message);
+                            }
+
+                        })
+                        .fail((err) => {
+                            ////console.log(err);
+                            $('#loading').removeClass('loading');
+                        });
+
+                    });
+
+                    CKEDITOR.instances.editorNLDV.on('key', function () {
+                        let isApprove = $('#txtApprove_NLDV').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        //console.log(isApprove);
+
+                        $('#keyPress_NLDV').val(1);
+                    });
+
+                    CKEDITOR.instances.editorCCDT.on('key', function () {
+                        let isApprove = $('#txtApprove_CCDT').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        //console.log(isApprove);
+
+                        $('#keyPress_CCDT').val(1);
+                    });
+
+                    CKEDITOR.instances.editorSPTT.on('key', function () {
+                        let isApprove = $('#txtApprove_SPTT').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        //console.log(isApprove);
+
+                        $('#keyPress_SPTT').val(1);
+                    });
+
+                    CKEDITOR.instances.editorDTCT.on('key', function () {
+                        let isApprove = $('#txtApprove_DTCT').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        //console.log(isApprove);
+
+                        $('#keyPress_DTCT').val(1);
+                    });
+                    CKEDITOR.instances.editorTTKH.on('key', function () {
+                        let isApprove = $('#txtApprove_TTKH').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        //console.log(isApprove);
+
+                        $('#keyPress_TTKH').val(1);
+                    });
+                    CKEDITOR.instances.editorTTKHDTK.on('key', function () {
+                        let isApprove = $('#txtApprove_TTKHDTK').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        //console.log(isApprove);
+
+                        $('#keyPress_TTKHDTK').val(1);
+                    });
+
+                    fileUploadResponse();
+                }
+
+                function destroyCKEDITOR() {
+                    CKEDITOR.instances.editorNLDV.setData('');
+                    CKEDITOR.instances.editorCCDT.setData('');
+                    CKEDITOR.instances.editorSPTT.setData('');
+                    CKEDITOR.instances.editorDTCT.setData('');
+                    CKEDITOR.instances.editorTTKH.setData('');
+                    CKEDITOR.instances.editorTTKHDTK.setData('');
+
+                    //CKEDITOR.instances.editorNLDV.destroy();
+                    //CKEDITOR.instances.editorCCDT.destroy();
+                    //CKEDITOR.instances.editorSPTT.destroy();
+                    //CKEDITOR.instances.editorDTCT.destroy();
+                }
+
+                function fileUploadResponse() {
+                    CKEDITOR.instances.editorNLDV.on('fileUploadResponse', function () {
+                        let isApprove = $('#txtApprove_NLDV').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        $('#keyPress_NLDV').val(1);
+                    });
+
+                    CKEDITOR.instances.editorCCDT.on('fileUploadResponse', function () {
+                        let isApprove = $('#txtApprove_CCDT').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        $('#keyPress_CCDT').val(1);
+                    });
+
+                    CKEDITOR.instances.editorSPTT.on('fileUploadResponse', function () {
+                        let isApprove = $('#txtApprove_SPTT').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        $('#keyPress_SPTT').val(1);
+                    });
+
+                    CKEDITOR.instances.editorDTCT.on('fileUploadResponse', function () {
+                        let isApprove = $('#txtApprove_DTCT').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        $('#keyPress_DTCT').val(1);
+                    });
+                    CKEDITOR.instances.editorTTKH.on('fileUploadResponse', function () {
+                        let isApprove = $('#txtApprove_TTKH').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        $('#keyPress_TTKH').val(1);
+                    });
+                    CKEDITOR.instances.editorTTKHDTK.on('fileUploadResponse', function () {
+                        let isApprove = $('#txtApprove_TTKHDTK').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        $('#keyPress_TTKHDTK').val(1);
+                    });
+                }
+            }
+
+            // Instance of TTKHDT
+            var ttkhdt = new TTKHDT();
+            ttkhdt.init();
+        });
+
+        // Get giá trị cho CKEDITOR
+        // CKEDITOR.instances.editorNLDV.getData();
+
+        // Set giá trị cho CKEDITOR
+        // CKEDITOR.instances.editorNLDV.setData("object");
+
+        // Hủy bỏ instance của CKEDITOR hiện tại
+        // CKEDITOR.instances.editorNLDV.destroy();
+    </script>
+}

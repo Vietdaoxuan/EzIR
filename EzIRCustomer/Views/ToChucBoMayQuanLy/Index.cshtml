@@ -1,0 +1,668 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Http
+@using Microsoft.Extensions.Configuration;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@inject IConfiguration configuration;
+@{
+
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+
+    var StockName = "";
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+
+        StockName = @HttpContextAccessor.HttpContext.Session.GetString("StockName");
+    }
+    else
+    {
+
+        StockName = @HttpContextAccessor.HttpContext.Session.GetString("StockNameEn");
+    }
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- begin:: Content -->
+<div class="title_line d-flex" style="margin-bottom: 0px;" id="note" hidden>
+    <div class="container">
+        <span class="title_line_item">
+            <font color="#4187A6"><a href="/internal" style="color:#4187A6;font-weight: 600;">@Localizer["Update_Infomation"].Value</a></font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Tong_Quan"].Value</font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Management_Structure"].Value</font>
+        </span>
+    </div>
+</div>
+
+
+    <div class="k-portlet__body">
+        <div class="row col-12 nopadding" style="margin-bottom: 10px;">
+            <div class="col-md-7 div-button-mobiletop" style="padding-bottom: 20px"></div>
+            <div class="col-md-5 div-button" style="padding-bottom: 10px;padding-right: 0%;">
+
+            </div>
+            <div class="respon-mobile">
+                <div class="col-md-12 text-box-label-general" style="padding-right: 0px !important;padding-left: 0px !important;">
+                    <p class="text-vision" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["Sodo_tochuc_bomay"].Value</p>
+                    <div class="col-md-12" style="padding-left: 0px;">
+                        <div class="row" style="justify-content: center;">
+                            <div class="title_line d-flex">
+                                <div class="container">
+                                </div>
+                            </div>
+                            <div class="form-wrapper" style="width: 95%;">
+                                <div id="form-data" enctype="multipart/form-data" class="col-md-12 padt20">
+
+                                    <form>
+                                    </form>
+                                    <input type="text" class="form-control" id="oldPath" hidden>
+                                    <input type="text" class="form-control" id="OrgModelID" hidden>
+                                    <div class="form-group row ">
+                                        <div class="col-md-3 text-box-label" style="padding-left: 0px;">
+                                            <label class="text-box-left" for="">@Localizer["StockCode"].Value</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" value="@StockName" disabled style="color: #929292;">
+                                        </div>
+                                    </div>
+                                    <form>
+                                        <input type="text" class="form-control" id="oldPath" hidden>
+                                        <input type="text" class="form-control" id="OrgModelID" hidden>
+                                        <div class="form-group row ">
+                                            <div class="col-md-3 text-box-label" style="padding-left: 0px;">
+                                                <label class="text-box-left" for="">@Localizer["OrgModelDesc"].Value @Localizer["Sodotochuc"].Value</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <textarea class="form-control" id="OrgModelDescToChuc" placeholder="@Localizer["CONTENT_MAXLENGTH"]"></textarea>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group row ">
+                                            <div class="col-md-3 text-box-label" style="padding-left: 0px;">
+                                                <label class="text-box-left note" for="">@Localizer["Choose_img"].Value @Localizer["Sodotochuc"].Value</label>
+                                            </div>
+                                            <div class="col-md-5 text-box-label">
+                                                <div class="form-section-bns custom-file-input file-upload-wrapper">
+                                                    <input type="file" onchange="validateSize(this)" style="position:relative" id="select-file" accept=".png, .jpg, .jpeg">
+                                                    <input type="text" style="position:absolute;opacity:1;padding-left: 10px;text-overflow: ellipsis;width: 83%;" class="form-controls" id="filetxt" name="path">
+                                                </div>
+                                            </div>
+
+                                            <div id="imgElem" class="col-md-4">
+
+                                            </div>
+                                        </div>
+                                    </form>
+
+
+                                    <form>
+                                        <input type="text" class="form-control" id="oldPath2" hidden>
+                                        <input type="text" class="form-control" id="OrgModelID2" hidden>
+                                        <div class="form-group row " style="margin-top: 80px;">
+                                            <div class="col-md-3 text-box-label" style="padding-left: 0px;">
+                                                <label class="text-box-left" for="">@Localizer["OrgModelDesc"].Value @Localizer["Sodobomay"].Value</label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <textarea class="form-control" id="OrgModelDescBMQL" placeholder="@Localizer["CONTENT_MAXLENGTH"]"></textarea>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group row ">
+                                            <div class="col-md-3 text-box-label" style="padding-left: 0px;">
+                                                <label class="text-box-left note" for="">@Localizer["Choose_img"].Value @Localizer["Sodobomay"].Value</label>
+                                            </div>
+                                            <div class="col-md-5 text-box-label">
+                                                <div class="form-section-bns custom-file-input file-upload-wrapper">
+                                                    <input type="file" onchange="validateSize2(this)" style="position:relative" id="select-file2" accept=".png, .jpg, .jpeg">
+                                                    <input type="text" style="position:absolute;opacity:1;padding-left: 10px;text-overflow: ellipsis;width: 83%;" class="form-controls" id="filetxt2" name="path">
+                                                </div>
+                                            </div>
+
+                                            <div id="imgElem2" class="col-md-4">
+
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                    <div class="form-group row">
+                                        <div class=" col-md-12 form-upfile responsive-mobile" style="justify-content: center;">
+                                            <div class="upfile-button" style="display: contents;">
+                                                <input type="button" class="buttons btn-upload mt-3 ml-3" style="background-color:#007db7;" id="save" value="@Localizer["Save_send"].Value">
+                                                <input type="button" class="buttons btn-upload mt-3 ml-3" style="background-color:#007db7;" id="update" value="@Localizer["Edit"].Value">
+                                                <input type="button" class="buttons btn-upload mt-3 ml-3" style="background-color:#007db7;" id="reset" value="@Localizer["Refresh"].Value">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div id="loading"></div>
+<style>
+    .custom-file-input {
+        opacity: 1;
+    }
+
+    input[type="file"] {
+        top: 0px;
+        left: 0;
+        z-index: 999;
+    }
+
+    .file-upload-wrapper {
+        width: 100%;
+        height: auto;
+    }
+
+    .file-upload-wrapper:before {
+        right: 0px;
+    }
+
+    #imgElem img {
+        width: 100%;
+        height: 100%;
+        margin-top: 15px;
+    }
+
+    .file-upload-wrapper:before {
+        z-index: 999;
+    }
+
+    .form-controls {
+        border-radius: 4px 0px 0px 4px;
+        border-right: 0px !important;
+        height: 32px;
+        padding: 6px 12px;
+        font-size: 14px;
+        line-height: 1.42857143;
+        border: 1px solid #ccc;
+    }
+
+    .file-upload-wrapper:before {
+        border: 1px solid #ccc;
+        border-left: 0px !important;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.custom-file-input input[type="file"]').change(function (e) {
+            $(this).siblings('input[type="text"]').val(e.target.files[0].name);
+        });
+    });
+
+    // Check size img up to 2MB.
+    // Check file ảnh sơ đồ tổ chức
+    function validateSize(input) {
+        const fileSize = input.files[0].size / 1024 / 1024; // in MiB
+        if (fileSize > 2) {
+            toastr.error('@Localizer["Image_size_exceeds_2MB"]');
+            $("#select-file").val(''); //for clearing with Jquery
+            return false;
+        } else {
+            // Proceed further
+            $("#select-file").change(function (e) {
+
+                for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+                    if ($('.custom-file-input > img').length) {
+                        $('.custom-file-input > img').remove();
+                    }
+                    var file = e.originalEvent.srcElement.files[i];
+
+                    var img = document.createElement("img");
+                    var reader = new FileReader();
+                    reader.onloadend = function () {
+                        img.src = reader.result;
+                    }
+                    reader.readAsDataURL(file);
+                    $("#imgElem").html(img);
+                }
+            });
+        }
+    }
+
+    //Check file ảnh sơ đồ bộ máy quản lý
+    function validateSize2(input) {
+        const fileSize = input.files[0].size / 1024 / 1024; // in MiB
+        if (fileSize > 2) {
+            toastr.error('@Localizer["Image_size_exceeds_2MB"]');
+            $("#select-file2").val(''); //for clearing with Jquery
+            return false;
+        } else {
+            // Proceed further
+            $("#select-file2").change(function (e) {
+
+                for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+                    if ($('.custom-file-input > img').length) {
+                        $('.custom-file-input > img').remove();
+                    }
+                    var file = e.originalEvent.srcElement.files[i];
+
+                    var img = document.createElement("img");
+                    var reader = new FileReader();
+                    reader.onloadend = function () {
+                        img.src = reader.result;
+                    }
+                    reader.readAsDataURL(file);
+                    $("#imgElem2").html(img);
+
+                }
+            });
+        }
+    }
+
+
+    (function ($) {
+        if (!$)
+            throw new Error("JQuery is not imported");
+        window.postFormData = function (url, formData) {
+            return $.ajax(url,
+                {
+                    method: "post",
+                    processData: false,
+                    contentType: false,
+                    data: formData
+                }).done(function (res) {
+                    return isMessageSuccess(res);
+                }).promise();
+        }
+
+    })(window.jQuery);
+
+    $(document).ready(function () {
+
+        var ToChucBoMay = function () {
+            this.init = function () {
+                loadData(null);
+            }
+            var loadData = function () {
+                enable = true;
+                $("#loading").addClass("loading");
+                var orgType = $("#OrgType").val();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetToChucBoMayQuanLy", "ToChucBoMayQuanLy")',
+                    data: null,
+                    success: function (data) {
+
+                        $("#loading").removeClass("loading");
+                        if (data.length == 0) {
+                            enable = true;
+                            $('#save').show();
+                            $('#update').hide();
+                            document.getElementById('OrgModelDescToChuc').removeAttribute('readonly');
+                            document.getElementById('select-file').removeAttribute('disabled');
+                            document.getElementById('filetxt').removeAttribute('disabled');
+                            $('#reset').click(function () {
+                                if (enable == true) {
+                                    $("#imgElem>img").remove(); // Reset khung ảnh
+                                    $('#OrgModelDesc').val('');
+                                    $('#filetxt').val('');
+                                    return enable = null;
+                                }
+
+                            });
+                         }
+                        else {
+                            $('#save').hide();
+                            $('#update').show();
+                            var distochuc = 0;
+                            var disBMQL = 0;
+                            for (var item in data) {
+                                data[item].orgModelPath = data[item].orgModelPath.replace("Images/", "");
+                                if (data[item].orgType == 1) {
+
+                                    if (data[item].approve == 0 || data[item].approve == null) {
+                                        $("#OrgModelDescToChuc").val(data[item].orgModelDesc);
+                                        enable = true;
+                                        $("#OrgType").val(data[item].orgType);
+                                        $("#select-file");
+                                        $("#oldPath").val(data[item].orgModelPath);
+                                        $("#filetxt").val(data[item].orgModelPath);
+                                        $('#OrgModelID').val(data[item].orgModelID);
+                                        document.getElementById('update').removeAttribute('disabled');
+                                        document.getElementById('OrgModelDescToChuc').removeAttribute('readonly');
+                                        document.getElementById('select-file').removeAttribute('disabled');
+                                        document.getElementById('filetxt').removeAttribute('disabled');
+                                        $('#reset').click(function () {
+                                            if (enable == true) {
+                                                $("#imgElem>img").remove(); // Reset khung ảnh
+                                                $('#OrgModelDesc').val('');
+                                                $('#filetxt').val('');
+                                                return enable = null;
+                                            }
+
+                                        });
+                                        distochuc = 0;
+                                    }
+                                    if (data[item].approve == 1 || data[item].approve == 2) {
+                                        enable = false;
+                                        $("#OrgModelDescToChuc").val(data[item].orgModelDesc).attr('readonly', 'true');
+
+                                        $('#reset').click(function () {
+                                            if (enable == false) {
+                                                toastr.error('Thông tin chưa được phê duyệt, không thể làm mới dữ liệu !');
+                                                return enable = null;
+                                            }
+
+                                        });
+
+                                        $("#select-file").attr("disabled", "disabled");
+                                        $("#filetxt").val(data[item].orgModelPath).attr("disabled", "disabled");
+                                        distochuc = 1;
+                                    }
+                                    $("#imgElem>img").remove(); // Reset khung ảnh
+                                    $('#imgElem').append('<img src="' + `@configuration["ImgCustomer"].ToString()` + replacePath(data[item].orgModelPath) + '" />');
+
+                                }
+                                else if (data[item].orgType == 2) {
+
+                                    if (data[item].approve == 0 || data[item].approve == null) {
+                                        $("#OrgModelDescBMQL").val(data[item].orgModelDesc);
+                                        enable = true;
+                                        $("#OrgType").val(data[item].orgType);
+                                        $("#select-file");
+                                        $("#oldPath2").val(data[item].orgModelPath);
+                                        $("#filetxt2").val(data[item].orgModelPath);
+                                        $('#OrgModelID2').val(data[item].orgModelID);
+                                        document.getElementById('update').removeAttribute('disabled');
+                                        document.getElementById('OrgModelDescBMQL').removeAttribute('readonly');
+                                        document.getElementById('select-file2').removeAttribute('disabled');
+                                        document.getElementById('filetxt2').removeAttribute('disabled');
+                                        $('#reset').click(function () {
+                                            if (enable == true) {
+                                                $("#imgElem2>img").remove(); // Reset khung ảnh
+                                                $('#OrgModelDesc2').val('');
+                                                $('#filetxt2').val('');
+                                                return enable = null;
+                                            }
+
+                                        });
+                                        disBMQL = 0;
+                                    }
+                                    if (data[item].approve == 1 || data[item].approve == 2) {
+                                        enable = false;
+                                        $("#OrgModelDescBMQL").val(data[item].orgModelDesc).attr('readonly', 'true');
+                                        //$("#update").attr("disabled", true);
+                                        $('#reset').click(function () {
+                                            if (enable == false) {
+                                                toastr.error('Thông tin chưa được phê duyệt, không thể làm mới dữ liệu !');
+                                                return enable = null;
+                                            }
+
+                                        });
+                                        @* $("#OrgType").val(data[0].orgType).attr("disabled", true);*@
+                                        $("#select-file2").attr("disabled", "disabled");
+                                        $("#filetxt2").val(data[item].orgModelPath).attr("disabled", "disabled");
+                                        disBMQL = 1;
+                                    }
+                                    $("#imgElem2>img").remove(); // Reset khung ảnh
+                                    $('#imgElem2').append('<img src="' + `@configuration["ImgCustomer"].ToString()` + replacePath(data[item].orgModelPath) + '" />');
+                                    //$('#imgElem').append('<img src="'+ url + data[0].orgModelPath + '"/>');
+                                }
+                            }
+
+                            if (disBMQL == 1 && distochuc == 1) {
+                                $("#update").attr("disabled", true);
+                            }
+                        }
+
+                    }
+                });
+            }
+
+            function resetFrom() {
+                $("#imgElem>img").remove(); // Reset khung ảnh
+                $('#OrgModelDesc').val('');
+                $('#filetxt').val('');
+            }
+            $('body').on('change', '#OrgType', function () {
+                resetFrom();
+                loadData();
+            })
+
+             //Thêm dữ liệu khi ấn nút thêm mới
+            $('#save').click((e) => {
+                $("#loading").addClass("loading");
+                        e.preventDefault();
+
+                //data sơ đồ tổ chức
+                let formData = new FormData($('form')[0]);
+                var file_data = $('#select-file').prop("files")[0];
+                var Describe = $('#OrgModelDescToChuc').val();
+                var Path = $('#select-file').val();
+
+                //data sơ đồ bộ máy quản lý
+                let formData2 = new FormData($('form')[0]);
+                var file_data2 = $('#select-file2').prop("files")[0];
+                var Describe2 = $('#OrgModelDescBMQL').val();
+                var Path2 = $('#select-file2').val();
+
+
+                //Edit cho phép insert sơ đồ tổ chức hoặc sơ đồ bộ máy quản lý
+
+                if (!Path.trim() && !Path2.trim() ) {
+                    $("#loading").removeClass("loading");
+                    toastr.error('@Localizer["Upload_Image_is_not_to_blank"]');
+                    return;
+                }
+
+                if (Describe.length > 50 || Describe2.length > 50) {
+                    $("#loading").removeClass("loading");
+                    toastr.error('@Localizer["CONTENT_MAXLENGTH"]');
+                    return;
+                }
+
+                //Edit bỏ bắt null Describe2, Describe thì mới insert
+                //TungTT -- 16/3/2022
+                //insert sơ đồ tổ chức
+                if (Path != "") {
+                    formData.append("file", file_data);
+                    formData.append("OrgModelDesc", Describe);
+                    formData.append("OrgType", 1);
+                    formData.append("OrgModelPath", Path);
+
+
+                    postFormData('@Url.Action("InsertToChucBoMayQuanLy")', formData).then(function(res) {
+
+                        if (res.code == "0") {
+                            $("#loading").removeClass("loading");
+                            loadData();
+                            Swal.fire({
+                                html: '@Localizer["Approving"].Value @Localizer["Sodo_tochuc_bomay"].Value', //So_tohuc_dobomay
+                                type: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+
+                }
+
+
+
+
+                //insert sơ đồ tổ chức bộ máy quản lý
+                if (Path2 != "") {
+                    formData2.append("file", file_data2);
+                    formData2.append("OrgModelDesc", Describe2);
+                    formData2.append("OrgType", 2);
+                    formData2.append("OrgModelPath", Path2);
+
+
+                    postFormData('@Url.Action("InsertToChucBoMayQuanLy")', formData2).then(function(res) {
+
+                        if (res.code == "0") {
+                            $("#loading").removeClass("loading");
+                            loadData();
+                            Swal.fire({
+                                html: '@Localizer["Approving"].Value @Localizer["Sodobomay"].Value',
+                                type: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                }
+
+
+            });
+
+             //edit dữ liệu
+            $('#update').click((e) => {
+                $("#loading").addClass("loading");
+                e.preventDefault();
+
+                //Edit
+                //cho phép sửa nếu 1 trong 2 input file image null
+
+                var Path2 = $('#select-file2').val();
+                var Path = $('#select-file').val();
+
+                if (!Path.trim() && !Path2.trim()) {
+                    $("#loading").removeClass("loading");
+                    toastr.error('@Localizer["Upload_Image_is_not_to_blank"]');
+                    return;
+                }
+
+                ///check sơ đồ tổ chức
+                let formData = new FormData($('form')[0]);
+                var file_data = $('#select-file').prop("files")[0];
+                var OrgModelID = $('#OrgModelID').val();
+                var Describe = $('#OrgModelDescToChuc').val();
+
+
+                if (!Path.trim()) {
+                    Path = $('#oldPath').val();
+                }
+
+                if (Describe.length > 50) {
+                    $("#loading").removeClass("loading");
+                    toastr.error('@Localizer["CONTENT_MAXLENGTH"]');
+                    return;
+                }
+
+                ////check sơ đồ tổ chức bộ máy quản lý
+                let formData2 = new FormData($('form')[0]);
+                var file_data2 = $('#select-file2').prop("files")[0];
+                var OrgModelID2 = $('#OrgModelID2').val();
+                var Describe2 = $('#OrgModelDescBMQL').val();
+
+
+                if (!Path2.trim()) {
+                    Path2 = $('#oldPath2').val();
+                }
+
+                if (Describe2.length > 50) {
+                    $("#loading").removeClass("loading");
+                    toastr.error('@Localizer["CONTENT_MAXLENGTH"]');
+                    return;
+                }
+
+
+
+                ///update sơ đồ tổ chức
+                formData.append("file", file_data);
+                formData.append("OrgModelID", OrgModelID)
+                formData.append("OrgModelDesc", Describe);
+                formData.append("OrgType", 1);
+                formData.append("OrgModelPath", Path);
+
+                if (OrgModelID == '' || OrgModelID == 0) {
+                    postFormData('@Url.Action("InsertToChucBoMayQuanLy")', formData).then(function (res) {
+                        if (res.code == "0") {
+                            $("#loading").removeClass("loading");
+                            loadData();
+                            Swal.fire({
+                                html: '@Localizer["Approving"].Value @Localizer["Sodo_tochuc_bomay"].Value', //So_tohuc_dobomay
+                                type: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            return;
+                        }
+                    });
+                } else {
+                    postFormData('@Url.Action("UpdateToChucBoMayQuanLy")', formData).then(function(res) {
+                        if (res.code == "0") {
+                            $("#loading").removeClass("loading");
+                            loadData();
+
+                            Swal.fire({
+                                html: "@Localizer["Approving"].Value @Localizer["Sodo_tochuc_bomay"].Value",
+                                type: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            return;
+                        }
+                    });
+                }
+
+                ////update sơ đồ tổ chức bộ máy quản lý
+                formData2.append("file", file_data2);
+                formData2.append("OrgModelID", OrgModelID2)
+                formData2.append("OrgModelDesc", Describe2);
+                formData2.append("OrgType", 2);
+                formData2.append("OrgModelPath", Path2);
+
+                if (OrgModelID2 == '' || OrgModelID2 == 0) {
+                    postFormData('@Url.Action("InsertToChucBoMayQuanLy")', formData2).then(function (res) {
+                        if (res.code == "0") {
+                            $("#loading").removeClass("loading");
+                            loadData();
+                            Swal.fire({
+                                html: '@Localizer["Approving"].Value @Localizer["Sodobomay"].Value',
+                                type: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            return;
+                        }
+                    });
+
+                } else {
+                    postFormData('@Url.Action("UpdateToChucBoMayQuanLy")', formData2).then(function(res) {
+                        if (res.code == "0") {
+                            $("#loading").removeClass("loading");
+                            loadData();
+                            Swal.fire({
+                                html: "@Localizer["Approving"].Value @Localizer["Sodobomay"].Value",
+                                type: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            return;
+                        }
+                    });
+                }
+            });
+
+            //cắt chuỗi từ ảnh
+            function replacePath(url) {
+                var path = url.replace('Images', '');
+                //console.log(path);
+                return path;
+            }
+        }
+        var tochucbomays = new ToChucBoMay();
+        tochucbomays.init();
+    });
+</script>

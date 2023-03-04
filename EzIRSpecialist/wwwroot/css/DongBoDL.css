@@ -1,0 +1,24 @@
+﻿
+.khung {
+    box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+    border-color: #f8f9fa !important;
+    border: 0px solid #dee2e6 !important;
+    background-color: #fff !important;
+}
+
+#mid {
+    padding-top: 18px;
+    padding-left: 30px;
+}
+
+.btn-luu {
+    margin-top:10px;
+    text-align: center;
+}
+
+#btn-save {
+    width: 250px;
+    background-color: #007DB7;
+    color: white;
+    margin: 20px 0 20px 0;
+}

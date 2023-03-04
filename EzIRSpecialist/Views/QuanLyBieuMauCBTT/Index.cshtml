@@ -1,0 +1,1154 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model EzIRSpecialist.Models.ViewModel.TemplateViewModel
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var _UrlLink = ViewBag._UrlFileCommon;
+}
+<link href="~/Online/QuanLyBieuMauCBTT.css" rel="stylesheet" />
+<style>
+    .d-inline-flex {
+        display: block !important;
+    }
+
+    .dataTables_wrapper .dataTable th, .dataTables_wrapper .dataTable td {
+        text-align: left !important;
+    }
+</style>
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Quản lý biểu mẫu CBTT</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Quản lý biểu mẫu CBTT</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist">
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link active show " data-toggle="tab" data-target="#k_tabs_1" role="tab"
+               aria-selected="true">
+                <span class="nav-link-title text-uppercase">Thông tin biểu mẫu CBTT</span>
+            </a>
+        </li>
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link" data-toggle="tab" data-target="#updateTab" role="tab" aria-selected="false">
+                <span class="nav-link-title text-uppercase">Tạo mới</span>
+            </a>
+        </li>
+    </ul>
+    <div class="line_top col-md-12">
+
+    </div>
+    <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper">
+                <form action="" id="FormSearch">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="EnterpriseType" class="note">Loại hình</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <select class="form-control" name="Companytype" id="CompanyType" asp-items="@(new SelectList(Model.listCompanyType, "TypeCode", "TypeName"))">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="Title">Biểu mẫu số</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <input type="text" class="form-control" id="Title" name="Title">
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="CCPL">Căn cứ pháp lý</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <input type="text" class="form-control" id="CCPL" name="CCPL">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label for="TemplateType">Loại biểu mẫu</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                <select class="form-control" name="TemplateType" id="TemplateType" asp-items="@(new SelectList(Model.listTemplateType, "TypeCode", "TypeName"))">
+                                    <option selected>Tất cả</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label for="Detail">Tên biểu mẫu</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                <input type="text" class="form-control" id="Detail" name="Detail">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row d-flex justify-content-center col-12 btn-search-wrapper">
+                <button id="btnSearch" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                    Tìm kiếm
+                </button>
+
+            </div>
+        </div>
+        <div class="content-tbl-VN">
+            <table id="listBieuMauVN" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+                   role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th rowspan="1" colspan="6" style="text-align:center!important">Tiếng Việt</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center">STT</th>
+                        <th>Loại hình</th>
+                        <th>Căn cứ pháp lý</th>
+                        <th>Biểu mẫu số</th>
+                        <th>Tên biểu mẫu</th>
+                        <th style="text-align: center;padding: 15px 30px !important">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="content-tbl-EN">
+            <table id="listBieuMauEN" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+                   role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th rowspan="1" colspan="6" style="text-align:center!important">Tiếng Anh</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center">STT</th>
+                        <th>Loại hình</th>
+                        <th>Căn cứ pháp lý</th>
+                        <th>Biểu mẫu số</th>
+                        <th>Tên biểu mẫu</th>
+                        <th style="text-align: center;padding: 15px 30px !important">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="content-tbl-EV">
+            <table id="listBieuMauEV" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+                   role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th rowspan="1" colspan="6" style="text-align:center!important">Song ngữ Anh - Việt</th>
+                    </tr>
+                    <tr>
+                        <th style="text-align: center">STT</th>
+                        <th>Loại hình</th>
+                        <th>Căn cứ pháp lý</th>
+                        <th>Biểu mẫu số</th>
+                        <th>Tên biểu mẫu</th>
+                        <th style="text-align: center;padding: 15px 30px !important">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="updateTab" class="tab-pane fade tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper">
+                <form action="" id="FormUpdate">
+                    <input type="text" class="form-control" name="TemplateID" id="templateID" hidden>
+                    <input type="text" class="form-control" name="OldFileName" id="OldFileName" hidden>
+                    <input type="text" class="form-control" name="OldPath" id="OldPath" hidden>
+                    <input type="text" class="form-control" name="OldUrl" id="OldUrl" hidden>
+                    <div class="form-group row form-text" style="display:none;">
+                        <label for="Index" class="col-sm-3 col-md-3 col-lg-2 col-form-label">STT <span>*</span></label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" id="Index" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="FormType" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Loại biểu
+                            mẫu
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <select class="form-control" name="TemplateType" id="templateType" asp-items="@(new SelectList(Model.listTemplateType, "TypeCode", "TypeName"))">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="EnterpriseType" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Loại hình <span>*</span></label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <select class="form-control" name="multiselect[]" id="multiple-select2" multiple="multiple">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="title" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Biểu mẫu số <span>*</span>
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" id="title" placeholder="@SharedLocalizer["TITLE_MAXLENGTH"].Value">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="cCPL" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Căn cứ pháp
+                            lý <span>*</span>
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" id="cCPL" placeholder="@SharedLocalizer["CCPL_MAXLENGTH"].Value">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="detail" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Tên biểu mẫu<span></span></label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" id="detail">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="FileName" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Tệp biểu
+                            mẫu
+                        </label>
+                        <div class="input-file-container col-sm-5">
+                            <input class="input-file" id="my-file" type="file">
+                            <label tabindex="0" for="my-file" class="input-file-trigger">
+                                Chọn từ máy
+                                tính
+                            </label>
+                        </div>
+                        <p class="file-return">
+                            Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB
+                        </p>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="" class="col-sm-3 col-md-3 col-lg-2 col-form-label"></label>
+                        <div class="update-btn-section col-sm-12 col-md-5 col-lg-5">
+                            <input type="button" class="btn btn-primary update-btn" id="btnUpload"
+                                   value="Tải lên">
+                            <input type="button" class="btn btn-primary update-btn" id="btnUpdate"
+                                   value="Sửa">
+                            <button class="btn btn-primary reset-btn" id="btnReset">Làm mới</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading"></div>
+<script>
+    $(document).ready(function () {
+
+        $(".nav-item.col.gsm-link-tab").first().addClass("active");
+        $("#btnUpdate").hide();
+
+        var renderColumns = [
+            {
+                "width": "5%",
+                data: "sttnew",
+                render: function (data) {
+                    return `<div class="d-inline-flex w-100" style="text-align:center">
+                           <p>${data}</p>
+                        </div >`;
+                }
+                //orderable: true,
+                //width: "5%",
+                //title: "STT"
+            },
+            {
+                "width": "15%",
+                data: "typeName",
+            },
+            {
+                "width": "24%",
+                data: "ccpl",
+            }
+            ,
+            {
+                "width": "20%",
+                data: "title",
+            }
+            ,
+            {
+                "width": "20%",
+                data: "detail",
+            }
+            ,
+            {
+                "width": "15%",
+                data: "templateID",
+                render: function (data, type, full) {
+
+                    return `<div class="d-inline-flex w-100 style="text-align:center;padding: 15px 30px !important">
+                            <a class='EditAccount btn text-primary' data-id='${data}'><i class="far fa-edit"></i></a>
+                            <a class='DeleteAccount btn text-primary' data-id='${data}'><i class="fas fa-delete"></i></a>
+                            <a class="DownloadTemplate btn text-primary" data-id='${data}' data-path='${full['path']}' data-filename='${full['fileName']}'
+                                        data-comtype='${full['typeName']}' data-templatetype='${full['templateType']}' data-url='${full['url']}'
+                                href="@_UrlLink/${full['path']}" target="_blank" rel="noopener noreferrer"><i class="fas fa-download"></i></a>
+                        </div >`;
+                }
+            },
+        ];
+
+        var form = $("#FormSearch");
+
+        var listTypeName;
+        var BieuMauCBTT = function () {
+            this.init = function () {
+                //loadDataVN('TemplateType=1');
+                //loadDataEN('TemplateType=2');
+                //loadDataEV('TemplateType=3');
+                var selected = [];
+                var Companytype = $('#CompanyType').val();
+                selected.push(Companytype);
+
+                //console.log(Companytype);
+                var data = form.serialize();
+                data += "&CompanyTypelist=" + selected;
+
+                loadData(data);
+                registerEvents();
+                $("#templateType").val(1).trigger('change');
+            }
+
+            var loadData = function (data) {
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListBieuMau", "QuanLyBieuMauCBTT")',
+                    data: data,
+                    success: function (data) {
+
+                        for (var index = 0; index < data.length; index++) {
+                            let indexTemp = 1;
+                            for (var i = 0; i < data[index].length; i++) {
+                                Object.assign(data[index][i], { sttnew: indexTemp });
+                                indexTemp++;
+                                if (data[index].length === i) {
+                                    indexTemp = 1;
+                                }
+                            }
+                        }
+
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                        var bieumauVNTbl = $('#listBieuMauVN').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            "info": false,
+                            pageLength: 5,
+                            data: data[0],
+                            bAutoWidth: false,
+                            columns: renderColumns,
+                        });
+                        //khi click sửa
+                        //editClickVN();
+                        //bieumauVNTbl.on('draw', editClickVN());
+                        $("#listBieuMauVN").on("click", ".EditAccount", function (e) {
+                            // xóa thông tin biểu mẫu trc
+                            let the_return = document.querySelector(".file-return");
+
+                            $("#FormUpdate").trigger("reset");
+                            $("#Index").val(1);
+                            the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB';
+                            $('#multiple-select2').multiselect('refresh');
+                            // add thông tin biểu mẫu mới
+                            e.preventDefault();
+                            let templateID = $(this).data('id');
+                            $.ajax({
+                                url: '@Url.Action("UpdateCheck", "QuanLyBieuMauCBTT")' ,
+                                type: 'POST',
+                                success: function (data) {
+                                    $('#loading').removeClass('loading');
+                                    if (data.code == 0) {
+                                        fillDataUpdate(0, templateID)
+                                    } else {
+                                        toastr.error(data.message);
+                                    }
+                                },
+                                error: function (err) {
+                                    //console.log(err);
+                                    $('#loading').removeClass('loading');
+                                }
+                            })
+                        });
+
+                        //khi click xóa
+                        deleteClick();
+                        bieumauVNTbl.on('draw', deleteClick());
+
+                        //khi click download
+                        function downloadTemplate() {
+
+                            $('.DownloadTemplate').off();
+                            $('table tbody').off().on("click", ".DownloadTemplate", function (e) {
+                                let path = $(this).data('path');
+                                let FileName = $(this).data('filename');
+                                //let companyType = $(this).data('comtype');
+                                //let templateType = $(this).data('templatetype');
+                                @*let templateName = "";
+                                if (templateType == 1) {
+                                    templateName = "Tiếng Việt"
+                                }
+                                else if (templateType == 2) {
+                                    templateName = "Tiếng Anh"
+                                }
+                                else if (templateType == 3) {
+                                    templateName = "Song Ngữ"
+                                }
+                                else {
+                                    templateName = null;
+                                }
+                                let url = $(this).data('url');
+                                var filename;
+                                if (FileName.split('.').pop() == 'doc') {
+                                    filename = `bieumaucbtt_${companyType}_${templateName}.doc`;
+                                }
+                                if (FileName.split('.').pop() == 'docx') {
+                                    filename = `bieumaucbtt_${companyType}_${templateName}.docx`;
+                                }
+                                if (FileName.split('.').pop() == 'pdf') {
+                                    filename = `bieumaucbtt_${companyType}_${templateName}.pdf`;
+                                }
+                                if (FileName.split('.').pop() == 'rar') {
+                                    filename = `bieumaucbtt_${companyType}_${templateName}.rar`;
+                                }
+                                if (FileName.split('.').pop() == 'zip') {
+                                    filename = `bieumaucbtt_${companyType}_${templateType}.zip`;
+                                }*@
+
+                                //Tải file không gọi controller
+                                @*var element = document.createElement('a');
+
+                                element.setAttribute('href', '@_UrlLink' + path);
+                                element.setAttribute('download', FileName);
+                                element.setAttribute('targer', '_blank');
+                                element.setAttribute('rel', 'noreferrer noopener');
+
+                                console.log(element);
+                                document.body.appendChild(element);
+                                element.click();
+                                document.body.removeChild(element);*@
+
+                                //window.open('@_UrlLink' + path);
+                                $('#loading').removeClass('loading');
+                                //toastr.success('Tải file thành công', 'Success');
+
+                                @*return Promise.resolve(
+                                        $.postNative('@Url.Action("DownloadFile", "DoanhNghiepCongBo")', {
+                                            FileName: FileName,
+                                            Url: url,
+                                            Path: Path,
+                                        })
+                                        .done((response, statusCode, xhr) => {
+                                            $('#loading').removeClass('loading');
+                                                //console.log(response);
+                                                if (response.code) {
+                                                    console.log(response);
+                                                    return isMessageSuccess(response);
+                                                }
+                                                const type = xhr.getResponseHeader('Content-Type');
+                                                const blob = new Blob([response], { type: type });
+
+                                                //check nếu là response message , không phải file thì hiển thị lỗi
+                                                if (type.includes("application/json")) {
+                                                    //phải đọc file vì respone ở dạng arraybuffer
+                                                    const fileReader = new FileReader();
+                                                    fileReader.onload = function () {
+                                                        $('#loading').removeClass('loading');
+                                                        isMessageSuccess(JSON.parse(this.result));
+                                                    };
+                                                    fileReader.readAsText(blob);
+                                                    return;
+                                                }
+                                                var filename;
+                                                const currentTime = new Date();
+                                                if (FileName.split('.').pop() == 'doc') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.doc`;
+                                                }
+                                                if (FileName.split('.').pop() == 'docx') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.docx`;
+                                                }
+                                                if (FileName.split('.').pop() == 'pdf') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.pdf`;
+                                                }
+                                                if (FileName.split('.').pop() == 'rar') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.rar`;
+                                                }
+                                                if (FileName.split('.').pop() == 'zip') {
+                                                    filename = `CBTT_${stockcode}_${doctype}.zip`;
+                                                }
+
+                                                saveAs(blob, filename);
+                                                    $('#loading').removeClass('loading');
+                                                    swal.close();
+                                        }).fail((response) => {
+                                            console.log(response);
+                                            $('#loading').removeClass('loading');
+                                        })
+                                );*@
+                            })
+                        }
+
+                        downloadTemplate();
+                        bieumauVNTbl.on('draw', downloadTemplate());
+
+                        var bieumauENTbl = $('#listBieuMauEN').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            "info": false,
+                            pageLength: 5,
+                            data: data[1],
+                            bAutoWidth: false,
+                            columns: renderColumns,
+                        });
+
+                        //khi click sửa
+                        //editClickEN();
+                        //bieumauENTbl.on('draw', editClickEN());
+                        $("#listBieuMauEN").on("click", ".EditAccount", function (e) {
+                            // xóa thông tin biểu mẫu trc
+                            let the_return = document.querySelector(".file-return");
+
+                            $("#FormUpdate").trigger("reset");
+                            $("#Index").val(1);
+                            the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB';
+                            $('#multiple-select2').multiselect('refresh');
+                            // add thông tin biểu mẫu mới
+                            e.preventDefault();
+                            let templateID = $(this).data('id');
+                            $.ajax({
+                                url: '@Url.Action("UpdateCheck", "QuanLyBieuMauCBTT")',
+                            type: 'POST',
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                if (data.code == 0) {
+                                    fillDataUpdate(1, templateID)
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (err) {
+                                //console.log(err);
+                                $('#loading').removeClass('loading');
+                                }
+                            });
+                        });
+                        //khi click xóa
+                        deleteClick();
+                        bieumauENTbl.on('draw', deleteClick());
+
+                        //khi click download
+                        downloadTemplate();
+                        bieumauENTbl.on('draw', downloadTemplate());
+
+                        //console.log(data);
+                        var bieumauEVTbl = $('#listBieuMauEV').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            "info": false,
+                            pageLength: 5,
+                            data: data[2],
+                            bAutoWidth: false,
+                            columns: renderColumns,
+                        });
+                        //khi click sửa
+                        //editClickEV();
+                        //bieumauEVTbl.on('draw', editClickEV());
+
+
+                        $("#listBieuMauEV").on("click", ".EditAccount", function (e) {
+                            // xóa thông tin biểu mẫu trc
+                            let the_return = document.querySelector(".file-return");
+
+                            $("#FormUpdate").trigger("reset");
+                            $("#Index").val(1);
+                            the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB';
+                            $('#multiple-select2').multiselect('refresh');
+                            // add thông tin biểu mẫu mới
+                            e.preventDefault();
+                            let templateID = $(this).data('id');
+                            $.ajax({
+                                url: '@Url.Action("UpdateCheck", "QuanLyBieuMauCBTT")',
+                            type: 'POST',
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                if (data.code == 0) {
+                                    fillDataUpdate(2, templateID)
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (err) {
+                                //console.log(err);
+                                $('#loading').removeClass('loading');
+                                }
+                            });
+                        });
+
+
+                        //khi click xóa
+                        deleteClick();
+                        bieumauEVTbl.on('draw', deleteClick());
+
+                        //khi click download
+                        downloadTemplate();
+                        bieumauEVTbl.on('draw', downloadTemplate());
+                    }
+                })
+            }
+
+            function fillDataUpdate(i, templateID) {
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListBieuMau", "QuanLyBieuMauCBTT")?TemplateID=' + templateID,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+
+                        //console.log(data[0].username);
+                        //chuyển sang tab edit
+                        $('.nav-pills > li:first-child').removeClass('active');
+                        $('.nav-pills > li:last-child').addClass('active');
+                        //$('.nav-pills > li:last-child').tab('show');
+                        jQuery('#updateTab').css('opacity', '1');
+                        $('.nav-pills > li:last-child > a').trigger('click');
+                        $("#btnUpdate").show();
+                        $("#btnUpload").hide();
+                        $("#templateType").val(data[i][0].templateType);
+                        //$("#Index").val();
+                        $("#companyType").val(data[i][0].companyType).trigger('change');
+                       //var companytypelist = data[i][0].listCompanyType.split(',');
+
+                        for (var item in data[i]) {
+                            $('#multiple-select2').multiselect('select', [`${data[i][item].companyType}`]);
+                        }
+
+                        listTypeName = data[i][0].listTypeName.replaceAll("</p><p>", ",").replaceAll("<p>", "").replaceAll("</p>", "");
+                        $('.multiselect .multiselect-selected-text').html(listTypeName);
+                        //console.log(listTypeName);
+                        let the_return = document.querySelector(".file-return");
+                        the_return.innerHTML = data[i][0].fileName;
+                        $("#templateID").val(data[i][0].templateID);
+                        $("#title").val(data[i][0].title);
+                        $("#cCPL").val(data[i][0].ccpl);
+                        $("#detail").val(data[i][0].detail);
+                        $("#OldFileName").val(data[i][0].fileName);
+                        $("#OldPath").val(data[i][0].path);
+                        $("#OldUrl").val(data[i][0].url);
+                        $("#Index").val(data[i][0].stt);
+
+                    }
+                });
+            }
+
+
+            function deleteClick() {
+                $('.DeleteAccount').off();
+                $('body').on("click", ".DeleteAccount", function (e) {
+                    let templateID = $(this).data('id');
+                    //console.log(templateID);
+                    Swal.fire({
+                        title: 'Thông báo',
+                        text: 'Bạn có chắc muốn xóa?',
+                        type: 'warning',
+                        cancelButtonText: 'Hủy',
+                        showCancelButton: true,
+                        confirmButtonText: 'OK'
+                    }).then(result => {
+                        if (result.dismiss == "cancel" || result.dismiss == "overlay") {
+                            return;
+                        }
+
+                        $('#loading').addClass('loading');
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("DeleteTemplate", "QuanLyBieuMauCBTT")?TemplateID=' + templateID,
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                //console.log(data);
+                                if (data.code == 0) {
+                                    toastr.success(data.message);
+
+                                    var selected = [];
+                                    var Companytype = $('#CompanyType').val();
+                                    selected.push(Companytype);
+                                    //console.log(Companytype);
+                                    var data = form.serialize();
+                                    data += "&CompanyTypelist=" + selected;
+                                    loadData(data);
+
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            }
+                        });
+                    });
+
+                })
+            }
+
+                   var registerEvents = function () {
+                document.querySelector("html").classList.add('js');
+
+                var fileInput = document.querySelector(".input-file"),
+                    button = document.querySelector(".input-file-trigger"),
+                    the_return = document.querySelector(".file-return");
+
+                button.addEventListener("keydown", function (event) {
+                    if (event.keyCode == 13 || event.keyCode == 32) {
+                        fileInput.focus();
+                    }
+                });
+                button.addEventListener("click", function (event) {
+                    fileInput.focus();
+                    return false;
+                });
+                fileInput.addEventListener("change", function (event) {
+                    the_return.innerHTML = this.value;
+                });
+
+                $('#btnSearch').click(function (e) {
+                    let formData1 = new FormData();
+                    var file_data = $('#my-file').prop("files")[0];
+                    //console.log(file_data);
+                    //console.log(formData);
+
+                    var selected = [];
+                    var Companytype = $('#CompanyType').val();
+                    selected.push(Companytype);
+
+                    //console.log(Companytype);
+
+                    var data = form.serialize();
+
+                    data += "&CompanyTypelist=" + selected;
+                    //console.log(data);
+                    e.preventDefault();
+                    if ($("#TemplateType").val() == 1) {
+                        loadData(data);
+                        $('.content-tbl-EN').hide();
+                        $('.content-tbl-EV').hide();
+                        $('.content-tbl-VN').show();
+                    }else if ($("#TemplateType").val() == 2) {
+                        loadData(data);
+                        $('.content-tbl-VN').hide();
+                        $('.content-tbl-EV').hide();
+                        $('.content-tbl-EN').show();
+                    }else if ($("#TemplateType").val() == 3) {
+                        loadData(data);
+                        $('.content-tbl-EN').hide();
+                        $('.content-tbl-VN').hide();
+                        $('.content-tbl-EV').show();
+                    }else {
+                        loadData(data);
+                        $('.content-tbl-EN').show();
+                        $('.content-tbl-VN').show();
+                        $('.content-tbl-EV').show();
+                    }
+
+                    var brands = $('#check1 input:checked');
+                    var selected = [];
+                    $(brands).each(function (index, brand) {
+                        //console.log($(this).val());
+                        if ($(this).val() != "multiselect-all") {
+                            selected.push($(this).val());
+                        }
+                    });
+                });
+
+                $('#btnUpload').click(function (e) {
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+                    //var formUpdate = $("FormUpdate").serialize();
+                    let formData = new FormData();
+                    var file_data = $('#my-file').prop("files")[0];
+                    //console.log(file_data);
+                    //console.log(formData);
+                    if ($("#my-file")[0].files[0] != null) {
+                        var file_1 = $("#my-file")[0].files[0].size;
+                        if (file_1 > 30 * 1024 * 1024) {
+                            $('#loading').removeClass('loading');
+                            toastr.error('Kích thước file không được lớn hơn 30MB!');
+                        } else {
+                            var brands = $('#check2 input:checked');
+                            var selected = [];
+                            $(brands).each(function (index, brand) {
+                                //console.log($(this).val());
+                                if ($(this).val() != "multiselect-all") {
+                                    selected.push($(this).val());
+                                }
+                            });
+                    }
+
+                        formData.append("file", file_data);
+                        formData.append("TemplateType", $("#templateType").val());
+                        formData.append("CompanyTypelist", selected);
+                        formData.append("CCPL", $("#cCPL").val());
+                        formData.append("Title", $("#title").val());
+                        formData.append("Detail", $("#detail").val());
+                        formData.append("Order", $("#Index").val());
+                        Check = Validate();
+                        if (Check) {
+                            $.ajax({
+                                url: '@Url.Action("InsertTemplate", "QuanLyBieuMauCBTT")',
+                                type: 'POST',
+                                processData: false,
+                                contentType: false,
+                                data: formData,
+                                success: function (data) {
+                                    $('#loading').removeClass('loading');
+                                    //console.log(data);
+                                    if (data.code == 0) {
+                                        $('.nav-pills > li:first-child').addClass('active');
+                                        $('.nav-pills > li:last-child').removeClass('active');
+                                        jQuery('#k_tabs_1').css('opacity', '1');
+                                        $('.nav-pills > li:first-child > a').trigger('click');
+                                        $('#FormUpdate').trigger("reset");
+
+                                        var selected = [];
+                                        var Companytype = $('#CompanyType').val();
+                                        selected.push(Companytype);
+                                        //console.log(Companytype);
+                                        var data = form.serialize();
+                                        data += "&CompanyTypelist=" + selected;
+                                        loadData(data);
+
+                                        $("#templateType").val(1).trigger('change');
+                                        the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB';
+                                        toastr.success('@SharedLocalizer["MSG_TEZIR_TEMPLATE_INSERT_TEMPLATE_SUCCESS"]');
+
+                                    } else {
+                                        toastr.error(data.message);
+                                    }
+                                },
+                                error: function (err) {
+                                    //console.log(err);
+                                    $('#loading').removeClass('loading');
+                                }
+                            });
+                        } else {
+                            $('#loading').removeClass('loading');
+                        }
+                    }
+
+                });
+
+
+                $('#btnUpdate').click(function (e) {
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+
+
+                    //console.log(file_data);
+                    //console.log(formData);
+
+                    var brands = $('#check2 input:checked');
+                    var selected = [];
+                    $(brands).each(function (index, brand) {
+                        //console.log($(this).val());
+                        if ($(this).val() != "multiselect-all") {
+                            selected.push($(this).val());
+                        }
+                    });
+
+                    let formData = new FormData();
+                    var file_data = $('#my-file').prop("files")[0];
+                    if ($("#my-file")[0].files[0] != null) {
+                        var file_1 = $("#my-file")[0].files[0].size;
+                        if (file_1 > 30 * 1024 * 1024) {
+                            $('#loading').removeClass('loading');
+                            toastr.error('Kích thước file không được lớn hơn 30MB!');
+                        }
+                    }
+                    else {
+                        formData.append("file", file_data);
+                        formData.append("TemplateType", $("#templateType").val());
+                        formData.append("CompanyTypelist", selected);
+                        formData.append("CCPL", $("#cCPL").val());
+                        formData.append("Title", $("#title").val());
+                        formData.append("Detail", $("#detail").val());
+                        formData.append("Order", $("#Index").val());
+                        formData.append("TemplateID", $("#templateID").val());
+                        formData.append("OldFileName", $("#OldFileName").val());
+                        formData.append("OldPath", $("#OldPath").val());
+                        formData.append("OldUrl", $("#OldUrl").val());
+                        formData.append("Order", $("#Index").val());
+
+                        //console.log(selected);
+
+                        Check = Validate();
+                        if (Check) {
+                            $.ajax({
+                                url: '@Url.Action("UpdateTemplate", "QuanLyBieuMauCBTT")',
+                                type: 'POST',
+                                processData: false,
+                                contentType: false,
+                                data: formData,
+                                success: function (data) {
+                                    $('#loading').removeClass('loading');
+                                    //console.log(data);
+                                    if (data.code == 0) {
+                                        $('.nav-pills > li:first-child').addClass('active');
+                                        $('.nav-pills > li:last-child').removeClass('active');
+                                        jQuery('#k_tabs_1').css('opacity', '1');
+                                        $('.nav-pills > li:first-child > a').trigger('click');
+                                        $('#FormUpdate').trigger("reset");
+                                        $("#btnUpdate").hide();
+                                        $("#btnUpload").show();
+                                        $('#btnReset').trigger("click");
+
+                                        var selected = [];
+                                        var Companytype = $('#CompanyType').val();
+                                        selected.push(Companytype);
+                                        //console.log(Companytype);
+                                        var data = form.serialize();
+                                        data += "&CompanyTypelist=" + selected;
+                                        loadData(data);
+
+                                        $("#templateType").val(1).trigger('change');
+                                        the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB';
+                                        toastr.success('@SharedLocalizer["MSG_TEZIR_TEMPLATE_UPDATE_TEMPLATE_SUCCESS"]');
+                                    } else {
+                                        toastr.error(data.message);
+                                    }
+                                },
+                                error: function (err) {
+                                    //console.log(err);
+                                    $('#loading').removeClass('loading');
+                                }
+                            });
+                        } else {
+                            $('#loading').removeClass('loading');
+                        }
+                    }
+                });
+
+
+                $('body').on("change", "#templateType", function () {
+                    // Change Index khi thay đổi Loại hình, Biểu mẫu
+                    //$('#loading').addClass('loading');
+
+                    var brands = $('#check2 input:checked');
+                    var selected = [];
+                    $(brands).each(function (index, brand) {
+                        //console.log($(this).val());
+                        if ($(this).val() != "multiselect-all") {
+                            selected.push($(this).val());
+                        }
+                    });
+
+                    let formData = new FormData();
+
+                    formData.append("TemplateType", $("#templateType").val());
+                    formData.append("CompanyTypelist", selected);
+
+                    $.ajax({
+                        url: '@Url.Action("InDexBieuMau", "QuanLyBieuMauCBTT")',
+                        type: 'POST',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        success: function (data) {
+                            //console.log(data)
+                            //$('#loading').removeClass('loading');
+                            if (data.length > 0) {
+                                if ($('#templateType').val() == 1 && data[0].length > 0) {
+                                    $("#Index").val(data[0][0].indexVN);
+                                }
+                                else if ($('#templateType').val() == 2 && data[1].length > 0) {
+                                    $("#Index").val(data[1][0].indexEN);
+                                }
+                                else if ($('#templateType').val() == 3 && data[2].length > 0) {
+                                    $("#Index").val(data[2][0].indexEV);
+                                } else {
+                                    $("#Index").val(1);
+                                }
+                            }
+                        }
+                    })
+                })
+
+                $('#btnReset').click(function (e) {
+                    e.preventDefault();
+                    $("#FormUpdate").trigger("reset");
+                    $("#btnUpdate").hide();
+                    $("#btnUpload").show();
+                    $("#templateType").val(1).trigger('change');
+                    the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB';
+                    $('#multiple-select2').multiselect('refresh');
+                })
+
+
+                function Validate() {
+                    if ($('#title').val() == '') {
+                        toastr.error('@SharedLocalizer["ATITLE_Empty"]');
+                        return false;
+                    }
+                    if ($('#cCPL').val() == '') {
+                        toastr.error('@SharedLocalizer["ACCPL_Empty"]');
+                        return false;
+                    }
+                    if ($('#title').val().length > 2000) {
+                        toastr.error('@SharedLocalizer["TITLE_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#cCPL').val().length > 2000) {
+                        toastr.error('@SharedLocalizer["CCPL_MAXLENGTH"]');
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+
+        var bieuMauCBTT = new BieuMauCBTT();
+        bieuMauCBTT.init();
+
+    })
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var s = [];
+
+        // render option và append vào select
+        function bindDataLoaiHinhDN() {
+            $.ajax({
+                url: '@Url.Action("GetCompanyType", "QuanLyBieuMauCBTT")',
+                method: 'GET',
+                dataType: 'json',
+                success: function (res) {
+
+                    var html = '';
+
+                    res.listCompanyType.forEach((item) => {
+                        html += `<option value='${item.typeCode}'>${item.typeName}</option>`;
+                    });
+
+                    $('LoaiHinh').append(html);
+
+
+                    //Tab tạo mới biểu mẫu
+
+                    $('#multiple-select2').append(html);
+
+
+                    // cấu hình multi select
+                    $('#multiple-select2').multiselect({
+                        templates: {
+                            button: '<button type="button" style="width:100%; height:100%" class="multiselect dropdown-toggle form-control" data-toggle="dropdown" title="Chọn loại hình"><span class="multiselect-selected-text">Chọn loại hình</span></button>',
+                            popupContainer: '<div style="width:100%;" class="multiselect-container dropdown-menu" id="check2"></div>',
+                            //filter: '<div class="multiselect-filter d-flex align-items-center"><i class="fas fa-sm fa-search text-muted"></i><input type="search" class="multiselect-search form-control" /></div>',
+                            buttonGroup: '<div class="multiselect-buttons btn-group" style="display:flex;"></div>',
+                            buttonGroupReset: '<button type="button" class="multiselect-reset btn btn-secondary btn-block"></button>',
+                            option: '<button style="width:100%;"  type="button" class="multiselect-option dropdown-item"></button>',
+                            divider: '<div class="dropdown-divider"></div>',
+                            optionGroup: '<button type="button" class="multiselect-group dropdown-item"></button>',
+                            resetButton: '<div class="multiselect-reset text-center p-2"><button type="button" class="btn btn-sm btn-block btn-outline-secondary"></button></div>'
+                        },
+                        buttonContainer: '<div class="btn-group" style="width:100%;"  />',
+                        selectAllText: ' Chọn tất cả',
+                        nonSelectedText: 'Chưa chọn',
+                        nSelectedText: 'Đã chọn',
+                        allSelectedText: 'Đã chọn tất cả',
+                        includeSelectAllOption: true,
+                        onChange: function (element, checked) {
+
+                            // Change Index khi thay đổi Loại hình, Biểu mẫu
+                            //$('#loading').addClass('loading');
+
+                        var brands = $('#check2 input:checked');
+                        var selected = [];
+                        $(brands).each(function (index, brand) {
+                            //console.log($(this).val());
+                            if ($(this).val() != "multiselect-all") {
+                                selected.push($(this).val());
+                            }
+                        });
+
+                        let formData = new FormData();
+
+                        formData.append("TemplateType", $("#templateType").val());
+                        formData.append("CompanyTypelist", selected);
+
+                        $.ajax({
+                            url: '@Url.Action("InDexBieuMau", "QuanLyBieuMauCBTT")',
+                            type: 'POST',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (data) {
+                                //console.log(data)
+                                //$('#loading').removeClass('loading');
+                                if (data.length > 0) {
+                                    if ($('#templateType').val() == 1 && data[0].length > 0) {
+                                        $("#Index").val(data[0][0].indexVN);
+                                    }
+                                    else if ($('#templateType').val() == 2 && data[1].length > 0) {
+                                        $("#Index").val(data[1][0].indexEN);
+                                    }
+                                    else if ($('#templateType').val() == 3 && data[2].length > 0) {
+                                        $("#Index").val(data[2][0].indexEV);
+                                    } else {
+                                        $("#Index").val(1);
+                                    }
+                                }
+                            }
+                        })
+                            }
+                        });
+                    $('.form-check-label').css('margin-left', '20px');
+                    $('.multiselect').css('border', '1px solid #CCC');
+                    $('.multiselect').css('border-radius', '4px');
+                },
+                error: function (err) {
+                    //console.log(err);
+                }
+            });
+
+
+        }
+
+        bindDataLoaiHinhDN();
+    });
+
+</script>
+

@@ -1,0 +1,1177 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Builder;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@using Microsoft.AspNetCore.Localization
+@using CoreLib.Configs
+
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+        .ToList();
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+
+    var requestValue = "";
+    var image = "";
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+        image = "icon-EN.png";
+        requestValue = "en-US";
+    }
+    else
+    {
+        image = "iconVietnam.svg.png";
+        requestValue = "vi-VN";
+    }
+}
+
+<div class="k-header__bottom" id="menu_lv1">
+    <div class="k-container">
+
+        <!-- begin: Header Menu -->
+        <button class="k-header-menu-wrapper-close" id="k_header_menu_mobile_close_btn">
+            <i class="la la-close"></i>
+        </button>
+        <div class="k-header-menu-wrapper" id="k_header_menu_wrapper">
+            <div id="" class="display-block" style="padding: 10px 0px 0px 95px; display:none">
+                <div class="logoEzIR"><b style="color: #000">Ez</b><span class="IR">IR</span></div>
+            </div>
+            <div id="k_header_menu" class="k-header-menu k-header-menu-mobile">
+                <ul class="k-menu__nav " id="k-menu__nav_menu_lv1">
+
+
+                    <li class="k-menu__item  k-menu__item--submenu k-menu__item--rel bctc background-white"
+                        data-kmenu-submenu-toggle="click" aria-haspopup="true" id="menu_tongquan">
+
+                        <a class="k-menu__link " id="menu_tq">
+                            <span class="k-menu__link-text " id="tq">@Localizer["Tong_quan"].Value</span>
+
+                        </a>
+
+                        <a class="k-menu__link k-menu__toggle" id="menu_tq_mbile">
+                            <span class="k-menu__link-text " id="">@Localizer["Tong_quan"].Value</span>
+
+                        </a>
+
+                        <div class="k-menu__submenu k-menu__submenu--classic k-menu__submenu--left dkdb__submenu"
+                             style=" width: 270px !important">
+                            <div class="triangle"></div>
+                            <ul class="k-menu__subnav">
+
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="ttc()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text " id="menulv2">
+                                            @Localizer["Thong_tin_chung"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+
+
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="tncl()">
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["Tam_nhin_chien_luoc"].Value
+
+                                        </span>
+                                    </a>
+
+                                </li>
+
+
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="tcbmql()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["To_chuc_bo_may"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="tpld()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["TPLD"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link" onclick="ccsh()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["CCSH"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+
+                    <li class="k-menu__item k-menu__item--submenu k-menu__item--rel bdlinh bqbc background-white"
+                        data-kmenu-submenu-toggle="click" aria-haspopup="true" id="menu_kinhdoanh">
+                        <a class="k-menu__link " id="menu_kd">
+                            <span class="k-menu__link-text " id="kd">@Localizer["Kinh_doanh"].Value</span>
+
+                        </a>
+
+                        <a class="k-menu__link k-menu__toggle" id="menu_kd_mobile">
+                            <span class="k-menu__link-text " id="">@Localizer["Kinh_doanh"].Value</span>
+
+                        </a>
+
+                        <div class="k-menu__submenu k-menu__submenu--classic k-menu__submenu--left dkdb__submenu"
+                             style=" width: 270px !important">
+                            <div class="triangle"></div>
+                            <ul class="k-menu__subnav">
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link "
+                                       onclick="tt_kh_dt()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text " id="menulv2">
+                                            @Localizer["TT_KH_DT"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="tdcn()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["TDCN"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link "
+                                       onclick="nlql()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["NLQL"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="ttdadt()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["TTDADT"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link" onclick="ptswot()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["PTSWOT"].Value
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link"
+                                       onclick="vtdn()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["VTDN"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+
+
+                            </ul>
+                        </div>
+
+                    </li>
+                    <li class="k-menu__item  k-menu__item--submenu k-menu__item--rel bdlinh background-white"
+                        data-kmenu-submenu-toggle="click" aria-haspopup="true" id="menu_taichinh">
+
+                        <a class="k-menu__link " id="menu_tc">
+                            <span class="k-menu__link-text" id="tc">@Localizer["Tai_chinh"].Value</span>
+
+                        </a>
+
+                        <a class="k-menu__link k-menu__toggle" id="menu_tc_mobile">
+                            <span class="k-menu__link-text" id="menu_bctc">@Localizer["Tai_chinh"].Value</span>
+                            <!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                        </a>
+
+                        <div class="k-menu__submenu k-menu__submenu--classic k-menu__submenu--left dkdb__submenu"
+                             style=" width: 270px !important">
+                            <div class="triangle"></div>
+                            <ul class="k-menu__subnav">
+                                <div class="k-menu__subnav-half"
+                                     style="float:left; width: 270px !important">
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link k-menu__toggle"
+                                       onclick="hstc()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text " id="menulv2">
+                                            @Localizer["HSTC"].Value
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link k-menu__toggle"
+                                       onclick="khtc()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["KHTC"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link k-menu__toggle"
+                                       onclick="cdkt()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["CDKT"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link k-menu__toggle"
+                                       onclick="kqhdkd()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["KQHDKD"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link" onclick="icf()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["ICF"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link" onclick="dcf()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["DCF"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+
+
+
+                            </ul>
+                        </div>
+
+
+                    </li>
+                    <li class="k-menu__item  k-menu__item--submenu k-menu__item--rel bdlinh data-kmenu-submenu-toggle= background-white"
+                        click" aria-haspopup="true" id="menu_cophieu">
+
+                        <a class="k-menu__link " id="menu_cp">
+                            <span class="k-menu__link-text " id="cp">@Localizer["Co_phieu"].Value</span>
+
+                        </a>
+
+                        <a class="k-menu__link k-menu__toggle" id="menu_cp_mobile">
+                            <span class="k-menu__link-text " id="">@Localizer["Co_phieu"].Value</span>
+
+                        </a>
+
+
+                        <div class="k-menu__submenu k-menu__submenu--classic k-menu__submenu--left dkdb__submenu"
+                             style=" width: 270px !important">
+                            <div class="triangle"></div>
+                            <ul class="k-menu__subnav">
+
+                                <li class="k-menu__item k-menu__item--submenu uq" data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="lsgd()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text " id="menulv2">
+                                            @Localizer["LSGD"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="lstvtct()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["LSTV_TCT"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="dtkt()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["DTKT"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="k-menu__item k-menu__item--submenu k-menu__item--rel bdlinh bqbc background-white"
+                        data-kmenu-submenu-toggle="click" aria-haspopup="true" id="menu_luutru">
+                        <a class="k-menu__link" id="menu_lt">
+                            <span class="k-menu__link-text" id="lt">@Localizer["Luu_tru"].Value</span>
+                            <!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                        </a>
+
+                        <a class="k-menu__link k-menu__toggle" id="menu_lt_mobile">
+                            <span class="k-menu__link-text " id="">@Localizer["Luu_tru"].Value</span>
+                        </a>
+
+                        <div class="k-menu__submenu k-menu__submenu--classic k-menu__submenu--left dkdb__submenu"
+                             style=" width: 270px !important">
+                            <div class="triangle"></div>
+                            <ul class="k-menu__subnav">
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="tdn()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text " id="menulv2">
+                                            @Localizer["Tin_doanh_nghiep"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+                                </li>
+
+                                <li class="k-menu__item k-menu__item--submenu uq"
+                                    data-kmenu-submenu-toggle="hover" aria-haspopup="true">
+                                    <a class="k-menu__link " onclick="tts()">
+                                        <!--<i class="k-menu__link-bullet k-menu__link-bullet--dot"><span></span></i>-->
+                                        <span class="k-menu__link-text" id="menulv2">
+                                            @Localizer["Tin_tu_so"].Value
+
+                                        </span>
+                                        <!--<i class="k-menu__hor-arrow la la-angle-right"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="k-menu__item  k-menu__item--submenu k-menu__item--rel bdlinh ol background-white"
+                        data-kmenu-submenu-toggle="click" aria-haspopup="true" id="menu_ptfpts">
+                        <a class="k-menu__link " id="menu_ol">
+                            <span class="k-menu__link-text" id="fpts">@Localizer["PTFPTS"].Value</span>
+                            <!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                        </a>
+                        <a class="k-menu__link k-menu__toggle menu_ol_mobile" id="menu_ol_mobile">
+                            <span class="k-menu__link-text " id="">@Localizer["PTFPTS"].Value</span>
+
+                        </a>
+                    </li>
+
+
+
+
+                </ul>
+            </div>
+            <!-- <div class="k-header-toolbar">
+
+
+
+            <!-- end: Header Menu -->
+        </div>
+    </div>
+</div>
+<div class="k-header__bottom" id="menu_lv2">
+    <div class="k-container">
+
+        <!-- begin: Header Menu -->
+        <!--  end: Header Menu-->
+        <!-- Menu p--->
+
+
+    </div>
+</div>
+<div class="k-grid__item k-grid__item--fluid k-grid k-grid--ver k-grid--stretch">
+    <div class="k-container k-content-wrapper  k-grid k-grid--ver" id="k_content_wrapper"
+         style="background-color: white;">
+        <!-- begin:: Content -->
+
+        <div id="noidung" style="width:100%">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    /*ChienND 30/08/2022 Lấy ngôn ngữ qua link website*/
+    var lang;
+    if (window.location.href.includes("?culture=en-US"))
+        lang = "?culture=en-US";
+    else
+        lang = "";
+                    loadTQ();
+
+                    function loadTQ() {
+                       //set màu menu1 khi click vào
+                        $('#menu_lv2').show();
+                        $('#menu_tongquan').css('background-color', '#007db8');
+                        $('#tq').css('color', '#fff');
+                        $("#menu_luutru").css("background-color", '');
+                        $("#lt").css("color", '');
+                        $("#menu_kinhdoanh").css("background-color", '');
+                        $("#kd").css("color", '');
+                        $("#menu_taichinh").css("background-color", '');
+                        $("#tc").css("color", '');
+                        $("#menu_cophieu").css("background-color", '');
+                        $("#cp").css("color", '');
+                        $("#menu_ptfpts").css("background-color", '');
+                        $("#fpts").css("color", '');
+                        let html = `<div class="k-header-menu-wrapper display-flex-center" id="k_header_menu_wrapper2">
+                                <div id="k_header_menu" class="k-header-menu k-header-menu-mobile ">
+                                    <ul class="k-menu__nav " id="k-menu2">
+
+                                        <li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 ttc"
+                                            data-kmenu-submenu-toggle="click" aria-haspopup="true"
+                                            style="padding-left: 0!important">
+                                            <a class="k-menu__link" id="ttc" onclick="ttc()">
+                                                <span class="k-menu__link-text_menu_lv2" id="menu_ttc">
+                                                     @Localizer["Thong_tin_chung"].Value
+                                                </span>
+                                                <!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                            </a>
+
+                                        </li>
+                                        <li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2  tncl"
+                                            data-kmenu-submenu-toggle="click" aria-haspopup="true">
+                                            <a class="k-menu__link" id="menu_tncl1" onclick="tncl()" >
+                                                <span class="k-menu__link-text_menu_lv2" id="menu_tncl">
+                                                    @Localizer["Tam_nhin_chien_luoc"].Value
+                                                </span>
+                                                <!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                            </a>
+
+                                        </li>
+                                        <li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 tcbmql"
+                                            data-kmenu-submenu-toggle="click" aria-haspopup="true">
+                                            <a class="k-menu__link" onclick="tcbmql()">
+                                                <span class="k-menu__link-text_menu_lv2" id="menu_tcbmql">
+                                                    @Localizer["To_chuc_bo_may"].Value
+                                                </span>
+                                                <!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                            </a>
+
+                                        </li>
+                                        <li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 ttld"
+                                            data-kmenu-submenu-toggle="click" aria-haspopup="true">
+                                            <a class="k-menu__link" onclick="tpld()">
+                                                <span class="k-menu__link-text_menu_lv2" id="menu_tpld">
+                                                    @Localizer["TPLD"].Value
+                                                </span>
+                                                <!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+                                            </a>
+
+                                        </li>
+                                        <li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2  cctc"
+                                            data-kmenu-submenu-toggle="click" aria-haspopup="true">
+                                            <a class="k-menu__link" onclick="ccsh()">
+                                                <span class="k-menu__link-text_menu_lv2" id="menu_cctc">
+                                                     @Localizer["CCSH"].Value
+                                                </span>
+                                                <!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu___Lver-arrow la la-angle-right"></i>-->
+                                            </a>
+
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="k-header-toolbar">
+                                </div>
+                            </div>`
+                        $('#menu_lv2 div').empty();
+                        $('#menu_lv2 div').append(html);
+                        $('#noidung').empty();
+                       //set màu menu2 khi click vào
+                        $('#menu_ttc').css('color', '#18f100');
+                        $('#menu_tncl').css('color', '');
+                        $("#menu_tcbmql").css('color', '');
+                        $("#menu_tpld").css('color', '');
+                        $("#menu_ccsh").css('color', '');
+
+                        $("#noidung").load('@Url.Action("ThongTinChung","ThongTinDoanhNghiep")' + lang);
+
+                    }
+                    // menu header 2
+    $('#menu_tq').click(function () {
+        checkcookies();
+                        loadTQ();
+                    });
+
+                    $('#menu_kd').click(function () {
+                        $('#menu_lv2').show();
+                        $('#menu_kinhdoanh').css('background-color', '#007db8');
+                        $('#kd').css('color', '#fff');
+                        $("#menu_luutru").css("background-color",'');
+                        $("#lt").css("color",'');
+                        $("#menu_tongquan").css("background-color",'');
+                        $("#tq").css("color",'');
+                        $("#menu_taichinh").css("background-color",'');
+                        $("#tc").css("color",'');
+                        $("#menu_cophieu").css("background-color",'');
+                        $("#cp").css("color",'');
+                        $("#menu_ptfpts").css("background-color",'');
+                        $("#fpts").css("color",'');
+                        let html = `<div class="k-header-menu-wrapper display-flex-center" id="k_header_menu_wrapper2">
+								<div id="k_header_menu" class="k-header-menu k-header-menu-mobile ">
+									<ul class="k-menu__nav " id="k-menu2_finance">
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 ttc"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true"
+											style="padding-left: 0!important">
+											<a class="k-menu__link" onclick="tt_kh_dt()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_tt_kh_dt">@Localizer["TT_KH_DT"].Value</span>
+
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2  tncl"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link" onclick="tdcn()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_tdcn"> @Localizer["TDCN"].Value</span>
+
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 tcbmql"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link" onclick="nlql()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_nlql"> @Localizer["NLQL"].Value</span>
+
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 ttld"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link" onclick="ttdadt()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_ttdadt">@Localizer["TTDADT"].Value</span>
+
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 cctc"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link" onclick="ptswot()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_ptswot"> @Localizer["PTSWOT"].Value  </span>
+												<!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu___Lver-arrow la la-angle-right"></i>-->
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2  cctc"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link" onclick="vtdn()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_vtdn"> @Localizer["VTDN"].Value</span>
+												<!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu___Lver-arrow la la-angle-right"></i>-->
+											</a>
+
+										</li>
+
+									</ul>
+								</div>
+								<div class="k-header-toolbar">
+								</div>
+							</div>`
+                        $('#menu_lv2 div').empty();
+                        $('#menu_lv2 div').append(html);
+                        tt_kh_dt();
+                    });
+
+                    $('#menu_tc').click(function () {
+                        $('#menu_lv2').show();
+                        $('#menu_taichinh').css('background-color', '#007db8');
+                        $('#tc').css('color', '#fff');
+                        $("#menu_luutru").css("background-color",'');
+                        $("#lt").css("color",'');
+                        $("#menu_tongquan").css("background-color",'');
+                        $("#tq").css("color",'');
+                        $("#menu_kinhdoanh").css("background-color",'');
+                        $("#kd").css("color",'');
+                        $("#menu_cophieu").css("background-color",'');
+                        $("#cp").css("color",'');
+                        $("#menu_ptfpts").css("background-color",'');
+                        $("#fpts").css("color",'');
+                        let html = `<div class="k-header-menu-wrapper display-flex-center" id="k_header_menu_wrapper2">
+								<div id="k_header_menu" class="k-header-menu k-header-menu-mobile ">
+									<ul class="k-menu__nav " id="k-menu2_finance">
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 ttc"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true"
+											style="padding-left: 0!important">
+											<a class="k-menu__link k-menu__toggle" onclick="hstc()">
+												<span class="k-menu__link-text_menu_lv2 " id="menulv2_hstc"> @Localizer["HSTC"].Value</span>
+
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2  tncl"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link k-menu__toggle" onclick="khtc()">
+												<span class="k-menu__link-text_menu_lv2" id="menulv2_khtc">@Localizer["KHTC"].Value</span>
+
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 tcbmql"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link k-menu__toggle" onclick="cdkt()">
+												<span class="k-menu__link-text_menu_lv2" id="menulv2_cdkt">@Localizer["CDKT"].Value</span>
+
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 ttld"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link k-menu__toggle" onclick="kqhdkd()">
+												<span class="k-menu__link-text_menu_lv2" id="menulv2_kqhdkd">@Localizer["KQHDKD"].Value</span>
+
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 cctc"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link k-menu__toggle" onclick="icf()">
+												<span class="k-menu__link-text_menu_lv2" id="menulv2_icf">@Localizer["ICF"].Value</span>
+												<!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu___Lver-arrow la la-angle-right"></i>-->
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2  cctc"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link k-menu__toggle" onclick="dcf()">
+												<span class="k-menu__link-text_menu_lv2" id="menulv2_dcf">@Localizer["DCF"].Value</span>
+												<!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu___Lver-arrow la la-angle-right"></i>-->
+											</a>
+
+										</li>
+
+									</ul>
+								</div>
+								<div class="k-header-toolbar">
+								</div>
+							</div>`
+                        $('#menu_lv2 div').empty();
+                        $('#menu_lv2 div').append(html);
+                        hstc();
+                    });
+
+                    $('#menu_cp').click(function () {
+                        $('#menu_lv2').show();
+                        $('#menu_cophieu').css('background-color', '#007db8');
+                        $('#cp').css('color', '#fff');
+                        $("#menu_luutru").css("background-color",'');
+                        $("#lt").css("color",'');
+                        $("#menu_tongquan").css("background-color",'');
+                        $("#tq").css("color",'');
+                        $("#menu_kinhdoanh").css("background-color",'');
+                        $("#kd").css("color",'');
+                        $("#menu_taichinh").css("background-color",'');
+                        $("#tc").css("color",'');
+                        $("#menu_ptfpts").css("background-color",'');
+                        $("#fpts").css("color",'');
+                        let html = `<div class="k-header-menu-wrapper display-flex-center" id="k_header_menu_wrapper2" @*style="padding-left: 10%;"*@>
+								<div id="k_header_menu" class="k-header-menu k-header-menu-mobile ">
+									<ul class="k-menu__nav " id="k-menu2">
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 ttc"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true"
+											style="padding-left: 0!important">
+											<a class="k-menu__link" onclick="lsgd()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_lsgd">@Localizer["LSGD"].Value</span>
+												<!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2  tncl"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link" onclick="lstvtct()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_lstvtct"> @Localizer["LSTV_TCT"].Value</span>
+												<!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2  cctc"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link" onclick="dtkt()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_dtkt">@Localizer["DTKT"].Value</span>
+												<!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu___Lver-arrow la la-angle-right"></i>-->
+											</a>
+
+										</li>
+
+									</ul>
+								</div>
+								<div class="k-header-toolbar">
+								</div>
+							</div>`
+                        $('#menu_lv2 div').empty();
+                        $('#menu_lv2 div').append(html);
+                        lsgd();
+                    });
+
+    $('#menu_lt').click(function () {
+        checkcookies();
+                        @*$('#menu_luutru').css('background-color', '#007db8');
+                        $('#lt').css('color', '#fff');
+                        $("#menu_cophieu").css("background-color", '');
+                        $("#cp").css("color", '');
+                        $("#menu_tongquan").css("background-color", '');
+                        $("#tq").css("color", '');
+                        $("#menu_kinhdoanh").css("background-color", '');
+                        $("#kd").css("color", '');
+                        $("#menu_taichinh").css("background-color", '');
+                        $("#tc").css("color", '');
+                        $("#menu_ptfpts").css("background-color", '');
+                        $("#fpts").css("color", '');
+                        $('#menu_lv2 div').empty();
+                        $('#menu_lv2').hide();
+                        $("#noidung").load('@Url.Action("LuuTru","ThongTinDoanhNghiep")' + lang);*@
+                        $('#menu_lv2').show();
+                        $("#menu_luutru").css("background-color",'#007db8');
+                        $("#lt").css("color", '#fff');
+                        $('#menu_cophieu').css('background-color', '');
+                        $('#cp').css('color', '');
+                        $("#menu_tongquan").css("background-color",'');
+                        $("#tq").css("color",'');
+                        $("#menu_kinhdoanh").css("background-color",'');
+                        $("#kd").css("color",'');
+                        $("#menu_taichinh").css("background-color",'');
+                        $("#tc").css("color",'');
+                        $("#menu_ptfpts").css("background-color",'');
+                        $("#fpts").css("color",'');
+                        let html = `<div class="k-header-menu-wrapper display-flex-center" id="k_header_menu_wrapper2" @*style="padding-left: 10%;"*@>
+								<div id="k_header_menu" class="k-header-menu k-header-menu-mobile ">
+									<ul class="k-menu__nav " id="k-menu2">
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 menulv2 tdn"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true"
+											style="padding-left: 0!important">
+											<a class="k-menu__link" onclick="tdn()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_tdn">@Localizer["Tin_doanh_nghiep"].Value</span>
+												<!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+											</a>
+
+										</li>
+										<li class="k-menu__item  k-menu__item--submenu k-menu__item--rel-menu2 tts"
+											data-kmenu-submenu-toggle="click" aria-haspopup="true">
+											<a class="k-menu__link" onclick="tts()">
+												<span class="k-menu__link-text_menu_lv2" id="menu_tts"> @Localizer["Tin_tu_so"].Value</span>
+												<!--<i class="k-menu__hor-arrow la la-angle-down"></i><i class="k-menu__ver-arrow la la-angle-right"></i>-->
+											</a>
+
+										</li>
+									</ul>
+								</div>
+								<div class="k-header-toolbar">
+								</div>
+
+							</div>`
+                        $('#menu_lv2 div').empty();
+                        $('#menu_lv2 div').append(html);
+                        tdn();
+                    });
+    @*$('.menu_lt_mobile').click(function () {
+        checkcookies();
+                        $("#noidung").load('@Url.Action("LuuTru","ThongTinDoanhNghiep")' + lang);
+                    });*@
+    $('#menu_ol').click(function () {
+        checkcookies();
+                        $('#menu_ptfpts').css('background-color', '#007db8');
+                        $('#fpts').css('color', '#fff');
+                        $("#menu_cophieu").css("background-color",'');
+                        $("#cp").css("color",'');
+                        $("#menu_tongquan").css("background-color",'');
+                        $("#tq").css("color",'');
+                        $("#menu_kinhdoanh").css("background-color",'');
+                        $("#kd").css("color",'');
+                        $("#menu_taichinh").css("background-color",'');
+                        $("#tc").css("color",'');
+                        $("#menu_luutru").css("background-color",'');
+                        $("#lt").css("color", '');
+                        $('#menu_lv2 div').empty();
+                        $('#menu_lv2').hide();
+                        $("#noidung").load('@Url.Action("PhanTichFPTS","ThongTinDoanhNghiep")' + lang);
+                    });
+    $('#menu_ol_mobile').click(function () {
+        checkcookies();
+                        $("#noidung").load('@Url.Action("PhanTichFPTS","ThongTinDoanhNghiep")' + lang);
+                    });
+                     //Tổng Quan
+    function ttc() {
+        checkcookies();
+                        $('#noidung').empty();
+                        $('#menu_ttc').css('color', '#18f100');
+                        $('#menu_tncl').css('color', '');
+                        $("#menu_tcbmql").css('color', '');
+                        $("#menu_tpld").css('color', '');
+                        $("#menu_cctc").css('color', '');
+                        $("#noidung").load('@Url.Action("ThongTinChung","ThongTinDoanhNghiep")' + lang);
+                    }
+
+    function tncl() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_tncl").css('color', '#18f100');
+                        $("#menu_ttc").css('color', '');
+                        $("#menu_tcbmql").css('color', '');
+                        $("#menu_tpld").css('color', '');
+                        $("#menu_ttdadt").css('color', '');
+                        $("#menu_cctc").css('color', '');
+                        $("#noidung").load('@Url.Action("TamNhinChienLuoc","ThongTinDoanhNghiep")' + lang);
+                    }
+
+    function tcbmql() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_tcbmql").css('color', '#18f100');
+                        $("#menu_ttc").css('color', '');
+                        $("#menu_tncl").css('color', '');
+                        $("#menu_tpld").css('color', '');
+                        $("#menu_cctc").css('color', '');
+                        $("#noidung").load('@Url.Action("ToChucBoMayQuanLy","ThongTinDoanhNghiep")' + lang);
+                    }
+    function tpld() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_tpld").css('color', '#18f100');
+                        $("#menu_ttc").css('color', '');
+                        $("#menu_tncl").css('color', '');
+                        $("#menu_tcbmql").css('color', '');
+                        $("#menu_cctc").css('color', '');
+                        $("#noidung").load('@Url.Action("ThanhPhanLanhDao","ThongTinDoanhNghiep")' + lang);
+                    }
+
+                    // cơ cấu sở hữu
+    function ccsh() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_cctc").css('color', '#18f100');
+                        $("#menu_ttc").css('color', '');
+                        $("#menu_tncl").css('color', '');
+                        $("#menu_tcbmql").css('color', '');
+                        $("#menu_tpld").css('color', '');
+                        $("#noidung").load('@Url.Action("CoCauSoHuu","ThongTinDoanhNghiep")' + lang);
+                    }
+
+                    /// <summary>
+                    /// kinh doanh
+                    /// </summary>
+                    /// <returns></returns>
+                    ///
+                    // site trình độ công nghệ
+    function tdcn() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_tdcn").css('color', '#18f100');
+                        $("#menu_tt_kh_dt").css('color', '');
+                        $("#menu_nlql").css('color', '');
+                        $("#menu_ttdadt").css('color', '');
+                        $("#menu_ptswot").css('color', '');
+                        $("#menu_vtdn").css('color', '');
+                        $("#noidung").load('@Url.Action("TrinhDoCongNghe","ThongTinDoanhNghiep")' + lang);
+    }
+
+    function tdn() {
+        checkcookies();
+        $("#noidung").empty();
+        $("#menu_tdn").css('color', '#18f100');
+        $("#menu_tts").css('color', '');
+        $("#noidung").load('@Url.Action("LuuTruTinDoanhNghiep", "ThongTinDoanhNghiep")' + lang);
+    }
+
+    function tts() {
+        checkcookies();
+        $("#noidung").empty();
+        $("#menu_tts").css('color', '#18f100');
+        $("#menu_tdn").css('color', '');
+        $("#noidung").load('@Url.Action("LuuTruTinTuSoVaVSD", "ThongTinDoanhNghiep")' + lang);
+    }
+
+    function tt_kh_dt() {
+
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_tt_kh_dt").css('color', '#18f100');
+                        $("#menu_tdcn").css('color', '');
+                        $("#menu_nlql").css('color', '');
+                        $("#menu_ttdadt").css('color', '');
+                        $("#menu_ptswot").css('color', '');
+                        $("#menu_vtdn").css('color', '');
+                        $("#noidung").load('@Url.Action("ThiTruongKHDT","ThongTinDoanhNghiep")' + lang);
+                    }
+                    // site thông tin dự án đầu tư
+    function ttdadt() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_ttdadt").css('color', '#18f100');
+                        $("#menu_tt_kh_dt").css('color', '');
+                        $("#menu_nlql").css('color', '');
+                        $("#menu_tdcn").css('color', '');
+                        $("#menu_ptswot").css('color', '');
+                        $("#menu_vtdn").css('color', '');
+                        $("#noidung").load('@Url.Action("ThongTinDuAnDauTu","ThongTinDoanhNghiep")' + lang);
+                    }
+                   //năng lực quản lỹ
+    function nlql() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_nlql").css('color', '#18f100');
+                        $("#menu_tt_kh_dt").css('color', '');
+                        $("#menu_ttdadt").css('color', '');
+                        $("#menu_tdcn").css('color', '');
+                        $("#menu_ptswot").css('color', '');
+                        $("#menu_vtdn").css('color', '');
+                        $("#noidung").load('@Url.Action("NangLucQuanLy","ThongTinDoanhNghiep")' + lang);
+                    }
+                    //Phân tích swot
+    function ptswot() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_ptswot").css('color', '#18f100');
+                        $("#menu_tt_kh_dt").css('color', '');
+                        $("#menu_ttdadt").css('color', '');
+                        $("#menu_tdcn").css('color', '');
+                        $("#menu_nlql").css('color', '');
+                        $("#menu_vtdn").css('color', '');
+                        $("#noidung").load('@Url.Action("PhanTichSWOT","ThongTinDoanhNghiep")' + lang);
+                    }
+                    //vị thế doanh nghiệp
+    function vtdn() {
+        checkcookies();
+                          $("#noidung").empty();
+                          $("#menu_vtdn").css('color', '#18f100');
+                          $("#menu_tt_kh_dt").css('color', '');
+                          $("#menu_ttdadt").css('color', '');
+                          $("#menu_tdcn").css('color', '');
+                          $("#menu_nlql").css('color', '');
+                          $("#menu_ptswot").css('color', '');
+                          $("#noidung").load('@Url.Action("ViTheDoanhNghiep","ThongTinDoanhNghiep")' + lang);
+                    }
+                    // Cổ Phiếu
+    function lsgd() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_lsgd").css('color', '#18f100');
+                        $("#menu_dtkt").css('color', '');
+                        $("#menu_lstvtct").css('color', '');
+                        $("#noidung").load('@Url.Action("LichSuGiaoDich","ThongTinDoanhNghiep")' + lang);
+                    }
+    function lstvtct() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_lsgd").css('color', '');
+                        $("#menu_dtkt").css('color', '');
+                        $("#menu_lstvtct").css('color', '#18f100');
+                        $("#noidung").load('@Url.Action("LichSuTangVonTraCoTuc","ThongTinDoanhNghiep")' + lang);
+                    }
+
+    function dtkt() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menu_dtkt").css('color', '#18f100');
+                        $("#menu_lsgd").css('color', '');
+                        $("#menu_lstvtct").css('color', '');
+                        $("#noidung").load('@Url.Action("DoThiKyThuat","ThongTinDoanhNghiep")' + lang);
+                    }
+
+
+                    // Tab tài chính
+                    // hệ số tài chính
+    function hstc() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menulv2_hstc").css('color', '#18f100');
+                        $("#menulv2_khtc").css('color', '');
+                        $("#menulv2_cdkt").css('color', '');
+                        $("#menulv2_kqhdkd").css('color', '');
+                        $("#menulv2_icf").css('color', '');
+                        $("#menulv2_dcf").css('color', '');
+                        $("#noidung").load('@Url.Action("HeSoTaiChinh","ThongTinDoanhNghiep")' + lang);
+                    }
+    function khtc() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menulv2_hstc").css('color', '');
+                        $("#menulv2_khtc").css('color', '#18f100');
+                        $("#menulv2_cdkt").css('color', '');
+                        $("#menulv2_kqhdkd").css('color', '');
+                        $("#menulv2_icf").css('color', '');
+                        $("#menulv2_dcf").css('color', '');
+                        $("#noidung").load('@Url.Action("KeHoachTaiChinh","ThongTinDoanhNghiep")' + lang);
+                    }
+    function cdkt() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menulv2_hstc").css('color', '');
+                        $("#menulv2_khtc").css('color', '');
+                        $("#menulv2_cdkt").css('color', '#18f100');
+                        $("#menulv2_kqhdkd").css('color', '');
+                        $("#menulv2_icf").css('color', '');
+                        $("#menulv2_dcf").css('color', '');
+                        $("#noidung").load('@Url.Action("CanDoiKeToan","ThongTinDoanhNghiep")' + lang);
+                    }
+    function kqhdkd() {
+        checkcookies();
+                        $("#noidung").empty();
+                        $("#menulv2_hstc").css('color', '');
+                        $("#menulv2_khtc").css('color', '');
+                        $("#menulv2_cdkt").css('color', '');
+                        $("#menulv2_kqhdkd").css('color', '#18f100');
+                        $("#menulv2_icf").css('color', '');
+                        $("#menulv2_dcf").css('color', '');
+                        $("#noidung").load('@Url.Action("KetQuaHoatDongKinhDoanh","ThongTinDoanhNghiep")' + lang);
+                    }
+                    function icf() {
+                        checkcookies();
+                        $("#noidung").empty();
+                        $("#menulv2_hstc").css('color', '');
+                        $("#menulv2_khtc").css('color', '');
+                        $("#menulv2_cdkt").css('color', '');
+                        $("#menulv2_kqhdkd").css('color', '');
+                        $("#menulv2_icf").css('color', '#18f100');
+                        $("#menulv2_dcf").css('color', '');
+                        $("#noidung").load('@Url.Action("LuuChuyenTienTeICF","ThongTinDoanhNghiep")' + lang);
+                    }
+                    function dcf() {
+                        checkcookies();
+                        $("#noidung").empty();
+                        $("#menulv2_hstc").css('color', '');
+                        $("#menulv2_khtc").css('color', '');
+                        $("#menulv2_cdkt").css('color', '');
+                        $("#menulv2_kqhdkd").css('color', '');
+                        $("#menulv2_icf").css('color', '');
+                        $("#menulv2_dcf").css('color', '#18f100');
+                        $("#noidung").load('@Url.Action("LuuChuyenTienTeDCF","ThongTinDoanhNghiep")' + lang);
+                    }
+
+
+</script>
+<!--Update bổ sung gán thêm js cookies khi vào trang home chưa có cookies-->
+<script>
+
+        document.addEventListener('DOMContentLoaded', function (e) {
+            console.log('a');
+            var cokkie = "@requestCulture.RequestCulture.UICulture.Name";
+
+             createCookie('Language', cokkie, 40);
+
+
+
+        });
+
+    checkcookies = function () {
+
+            var cokkie = "@requestCulture.RequestCulture.UICulture.Name";
+
+            createCookie('Language', cokkie, 40);
+
+    };
+
+    createCookie = function (name, value, days) {
+        var expires;
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        else {
+            expires = "";
+        }
+
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
+    getCookie = function (c_name) {
+        if (document.cookie.length > 0) {
+            c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1) {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) {
+                    c_end = document.cookie.length;
+                }
+                return unescape(document.cookie.substring(c_start, c_end));
+            }
+        }
+        return "";
+    }
+
+</script>
+
+
+
+<script src="~/assets/vendors/general/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>

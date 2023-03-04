@@ -1,0 +1,66 @@
+﻿2021-09-14 14:08:39.249 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:tungtt;P_PASSWORD:c1932c7e26afaf1ab5772dcf76f219bd;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2021-09-14 14:08:40.016 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:tungtt;P_PASSWORD:c1932c7e26afaf1ab5772dcf76f219bd;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2021-09-14 14:08:58.130 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:tungtt;P_PASSWORD:c1932c7e26afaf1ab5772dcf76f219bd;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2021-09-14 14:09:11.516 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:tungtt;P_PASSWORD:c1932c7e26afaf1ab5772dcf76f219bd;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2021-09-14 14:09:35.746 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_FORGOT_PASSWORD
+-----paramArr ---
+P_AUSERNAME:tungtt;P_EMAIL:tungtt@fpts.com.vn;P_NEWAPASSWORD:e632342b9e97ab476efa2d824750746b;p_MESSAGE:;p_ERRORCODE:;p_RoleCode:QMK;p_USERNAME:tungtt;
+
+2021-09-14 14:10:00.582 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_FORGOT_PASSWORD
+-----paramArr ---
+P_AUSERNAME:tungtt;P_EMAIL:tungtt@fpts.com.vn;P_NEWAPASSWORD:166195d0563cc72e5c2e8d43f12efc1e;p_MESSAGE:;p_ERRORCODE:;p_RoleCode:QMK;p_USERNAME:tungtt;
+
+2021-09-14 14:10:35.868 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_FORGOT_PASSWORD
+-----paramArr ---
+P_AUSERNAME:tungtt;P_EMAIL:tungtt@fpts.com.vn;P_NEWAPASSWORD:5bddf3292f3f97cc1af92c2b932147f9;p_MESSAGE:;p_ERRORCODE:;p_RoleCode:QMK;p_USERNAME:tungtt;
+
+2021-09-14 14:11:31.304 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:tungtt;P_PASSWORD:41b9ac2e1518c61c081831a68dfdbca9;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2021-09-14 14:12:20.872 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:test_tungtt;P_PASSWORD:e6f0c0d6c28bd459c64ddab9c61a019b;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2021-09-14 14:13:38.133 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:vietdxtestcustomer;P_PASSWORD:564b25dd2023f347e7fc586a036ad686;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2021-09-14 14:15:35.183 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:vietdxtestcustomer;P_PASSWORD:564b25dd2023f347e7fc586a036ad686;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+

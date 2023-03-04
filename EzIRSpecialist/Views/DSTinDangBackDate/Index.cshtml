@@ -1,0 +1,402 @@
+﻿
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Online/BaoCao_TienIch.css" />
+<link href="~/Online/select2_restyle.css" rel="stylesheet" />
+<link href="~/css/siteStyle.css" rel="stylesheet" />
+
+<style>
+
+
+    .content-tbl {
+        margin-top: 3rem;
+    } 
+    div#listNews_length {
+        left: 100%;
+        position: absolute;
+        top: -4rem;
+    }
+
+    select.custom-select.custom-select-sm.form-control.form-control-sm {
+        width: 5rem;
+        font-size: 10pt;
+    }
+
+    label[for="Active"] {
+        margin-left: 0px;
+        /*margin-right: 38px;*/
+    }
+
+    table#listNews th {
+        padding: 15px 10px;
+        color: #2999ce;
+        font-weight: 500;
+    }
+</style>
+
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Báo cáo - tiện ích</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>DS tin đăng backdate</span></a>
+            </li>
+
+
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <div class="row">
+        <div class="col-12 nopadding">
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+                <div class="padt20" style="padding-top: 0px !important;">
+                    <form id="formSearch">
+                        <div class="col-md-12 nopadding d-inline-block m-auto">
+                            <div class="form-group row nopadding">
+                                <div class="col-sm-1 col-md-1 nopadding">
+                                    <label class="padt6">Mã chứng khoán</label>
+                                </div>
+                                <div class="col-sm-5 col-md-5">
+                                    <select class="form-control select2-single" id="stockcode" name="AStockCode" asp-items="@(new SelectList(Model.ListMaCk, "StockCode","AMack"))">
+                                        <option value="">Tất cả</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-1 col-md-1 ">
+                                    <label class="padt6">Loại hình</label>
+                                </div>
+                                <div class="col-sm-5 col-md-5 nopadding">
+                                    <select class="form-control" id="companytype" name="ACompanyType" asp-items="@(new SelectList(Model.ListCompanyType, "TypeCode","TypeName"))">
+                                        <option value="-1">Tất cả</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group row nopadding">
+                                <div class="col-sm-1 col-md-1 nopadding">
+                                    <label class="padt6">Người phụ trách</label>
+                                </div>
+                                <div class="col-sm-5 col-md-5">
+                                    <input class="form-control" type="text" name="AExpert" id="expert">
+
+                                </div>
+                                <div class="col-sm-1 col-md-1 ">
+                                    <label class="padt6">Vùng miền</label>
+                                </div>
+                                <div class="col-sm-5 col-md-5 nopadding">
+                                    <select class="form-control" id="region" name="ARegion">
+                                        <option value="-1">Tất cả</option>
+                                        <option value="1">Hà Nội</option>
+                                        <option value="2">Đà Nẵng</option>
+                                        <option value="3">Hồ Chí Minh</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group row nopadding">
+                                <div class="col-sm-1 col-md-1 nopadding">
+                                    <label class="padt6">Loại tài liệu</label>
+                                </div>
+                                <div class="col-sm-5 col-md-5">
+                                    <select class="form-control" id="doctype" name="ADocType" asp-items="@(new SelectList(Model.ListDocType, "TypeCode","TypeName"))">
+                                        <option value="-1">Tất cả</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-sm-1 col-md-1 ">
+                                    <label class="padt6">Loại tin</label>
+                                </div>
+                                <div class="col-sm-5 col-md-5 nopadding">
+                                    <select class="form-control" id="newtype" name="ANewType" asp-items="@(new SelectList(Model.ListDocType, "TypeCode","TypeName"))">
+                                        <option value="-1">Tất cả</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group row nopadding">
+
+                                <div class="col-sm-1 col-md-1 nopadding">
+                                    <label class="padt6">Từ ngày</label>
+                                </div>
+
+                                <div class="col-sm-5 col-md-5">
+                                    <input class="form-control" id="fromdate" type="date" name="AFromDate">
+
+                                </div>
+                                <div class="col-sm-1 col-md-1 ">
+                                    <label class="padt6">Đến ngày</label>
+                                </div>
+                                <div class="col-sm-5 col-md-5 nopadding">
+                                    <input class="form-control" id="todate" type="date" name="AToDate">
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                        <div class="row col-12 d-flex justify-content-center nopadding">
+                            <button type="button" id="btn_search"
+                                    class=" btn btn-primary save-rules-btn mt-3 col-md-1 col-sm-12 mt-2">
+                                Tìm kiếm
+                            </button>
+                            <button type="button" id="export_button"
+                                    class=" btn btn-primary export-btn mt-3 col-md-1 col-sm-12 mt-2">
+                                Xuất báo cáo
+                            </button>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="content-tbl">
+                                <table id="listNews" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+                                       role="grid" style="width: 1322px;">
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="loading"></div>
+
+<script>
+    $(document).ready(function () {
+
+        $('.select2-single').select2();
+        var renderColumns = [
+            {
+                orderable: true,
+                data: "astockcode",
+                title: "Mã chứng khoán",
+            },
+            {
+                orderable: true,
+
+                title: "Tên công ty",
+                data: "aname"
+            },
+
+            {
+                orderable: false,
+
+                title: "Vùng miền",
+                data: "avungmien"
+            },
+
+            {
+                orderable: false,
+
+                title: "Sàn giao dịch",
+                data: "asangiaodich"
+            },
+            {
+                orderable: false,
+
+                title: "Loại tài liệu",
+                data: "aloaitailieu"
+            },
+            {
+                orderable: false,
+
+                title: "Loại tin",
+                data: "aloaitin"
+            },
+            {
+                orderable: false,
+
+                title: "Tiêu đề",
+                data: "atitle"
+            },
+            {
+                orderable: false,
+
+                title: "Năm",
+                data: "ayear"
+            },
+            {
+                orderable: false,
+
+                title: "Ngày đăng tin ban đầu",
+                //render: function (data, type, listnewsbd) {
+                //    //return formatDateTimeToDate(listnewsbd.angaydangtinbandau);
+                //    return render: (data) => (new Date(data)).toLocaleString().replace(",", "").replace("AM", "SA").replace("PM", "CH")
+                //}
+                data:"angaydangtinbandau",
+                render: (data) => (new Date(data)).toLocaleString().replace(",", "").replace("AM", "SA").replace("PM", "CH")
+            },
+            {
+                orderable: false,
+
+                title: "Người tải lên",
+                data: "acreateby"
+            },
+            {
+                orderable: false,
+
+                title: "Người phụ trách",
+                data: "aexpert"
+            },
+            {
+
+                title: "Ngày đăng tin mới",
+
+                data: "angaydangtin",
+                render: (data) => (new Date(data)).toLocaleString().replace(",", "").replace("AM", "SA").replace("PM", "CH")
+            }
+
+        ]
+
+
+        var DNCongBo = function () {
+            this.init = function () {
+                loadData(null);
+                registerEvents();
+            }
+
+            var loadData = function (data) {
+
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListNewsBackDate", "DSTinDangBackDate")',
+                    data: $("#formSearch").serialize(),
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                        var table = $('#listNews').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex pagingList justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            className: 'dt-body-right',
+                            "bInfo": true,  ////thông tin Showing 1 to 6 of 6 entries
+
+                            /* phân trang theo số lượng data */
+                            lengthChange: true, ///thay đổi số lượng dữ liệu hiển thị
+                            "lengthMenu": [10, 25, 50, 75, 100],
+                            language: {
+                                sLengthMenu: "_MENU_"
+                            },
+                            pageLength: 10,
+                            data: data,
+                            bAutoWidth: false,
+                            columns: renderColumns,
+                            'columnDefs': [
+                                {
+                                    'targets': 0,
+                                    'checkboxes': {
+                                        'selectRow': true
+                                    }
+                                }
+                            ],
+                            'select': {
+                                'style': 'multi'
+                            },
+                            'order': [[1, 'asc']]
+                        });
+
+                        $('#doctype').trigger('change');
+
+                    }
+                })
+            }
+
+
+            var registerEvents = function () {
+
+                $('#doctype').change(function () {
+
+                    $('#loading').addClass('loading');
+                    var doctypeCode = $('#doctype').find(":selected").val();
+                    console.log(doctypeCode);
+                    $.get("@Url.Action("Index", "DSTinDangBackDate")?value=" + doctypeCode, function (data) {
+                        //console.log(data);
+
+                        $('#loading').removeClass('loading');
+                        $("#newtype").html("");
+                        var htmlOption = '<option value="-1">Tất cả</option>';
+                        $.each(data, function (index, value) {
+                            htmlOption = htmlOption + '<option value="' + value.typeCode + '" data-id="' + value.acategory + '">' + value.typeName + '</option>';
+                        });
+
+                        $("#newtype").html(htmlOption);
+                    });
+                });
+
+
+                // Action search
+                    $('#btn_search').click(function (e) {
+                        e.preventDefault();
+                        //console.log(form.serialize());
+                        console.log(new Date($('#fromdate').val()));
+                        console.log(new Date($('#todate').val()));
+                        if (new Date($('#fromdate').val()) > new Date($('#todate').val())) {
+                            toastr.error('@SharedLocalizer["FROMDATE_IS_GREATER_THAN_TODATE"]');
+                            return false;
+                        } else {
+                            loadData($("#formSearch").serialize());
+                        }
+                        $('input[type="datetime"]').val('');
+                    });
+                //Xuất báo cáo danh sách tin đăng back date
+                    $('#export_button').click(function (e){
+                e.preventDefault();
+
+                $('#loading').addClass('loading');
+
+                $.postNative('@Url.Action("ExportExcel", "DSTinDangBackDate")', $("#formSearch").serialize())
+                .done((response, statusCode, xhr) => {
+                    console.log(response);
+                    if (response.code) {
+                        console.log(response);
+                        return isMessageSuccess(response);
+                    }
+                    const type = xhr.getResponseHeader('Content-Type');
+                    const blob = new Blob([response], { type: type });
+
+
+                    //check nếu là response message , không phải file thì hiển thị lỗi
+                    if (type.includes("application/json")) {
+                        //phải đọc file vì respone ở dạng arraybuffer
+                        const fileReader = new FileReader();
+                        fileReader.onload = function () {
+                            $('#loading').removeClass('loading');
+                            isMessageSuccess(JSON.parse(this.result));
+                        };
+                        fileReader.readAsText(blob);
+                        return;
+                    }
+
+                    const currentTime = new Date();
+                    const filename = `DanhSachTinBackDate${currentTime.getSeconds()}.xlsx`;
+                    saveAs(blob, filename);
+                    $('#loading').removeClass('loading');
+                })
+                .fail(() => { });
+                });
+
+
+            }
+
+        }
+
+
+        var dnCongBo = new DNCongBo();
+        dnCongBo.init();
+    });
+</script>
+

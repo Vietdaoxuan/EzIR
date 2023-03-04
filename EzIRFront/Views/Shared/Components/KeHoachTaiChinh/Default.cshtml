@@ -1,0 +1,498 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@{
+}
+
+
+<link href="~/css/taichinh.css" rel="stylesheet" />
+<style>
+    .highcharts-color-0 .highcharts-point {
+        fill: rgb(0, 125, 183) !important;
+    }
+    
+ 
+
+</style>
+<div class="container-fluid">
+
+
+
+    <div class="contentt">
+        <p>@Localizer["FINANCIAL_PLAN"]</p>
+
+    </div>
+
+
+
+    <div class="form_content">
+
+        <form id="taichinhform">
+   
+                    <div class="form-groups row">
+                        <div class="col-md-1">
+                            <label >@Localizer["REPORT_YEAR"]</label>
+                        </div>
+
+                        <div class="col-md-1">
+                            <select class="form-item" id="Year">
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Localizer["UNIT"]</label>
+                        </div>
+                        <div class="col-md-1" id="price">
+                            <select class="form-item" id="Unit">
+                                <option value="m" selected>@Localizer["MILLION"]</option>
+                                <option value="t">@Localizer["THOUSANDS"]</option>
+                                <option value="d">@Localizer["DONG"]</option>
+                            </select>
+                        </div>
+
+
+                        <div class="col-md-3 btn-view">
+                                <button type="button" class="btn btn-success btnSearchKHTC" id="btnxem">
+                                    @Localizer["View"]
+                                </button>
+                                <button class="btn btn-success btnSearchHSTC" type="button" id="btnExport" >
+                                    @Localizer["Export"].Value
+                                </button>
+                        </div>
+
+
+                    </div>
+
+               
+        </form>
+    </div>
+
+    <!-- Page Heading -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+
+    <div class="table_content">
+
+    </div>
+
+    <div class="highcharts_content">
+        <figure class="highcharts-figure">
+            <div id="container"></div>
+            <!-- <p class="highcharts-description">
+                Chart showing stacked horizontal bars. This type of visualization is great for comparing data that accumulates up to a sum.
+            </p> -->
+        </figure>
+    </div>
+
+
+</div>
+
+
+<script src=" assets/vendors/general/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src=" assets/vendors/general/perfect-scrollbar/dist/perfect-scrollbar.js" type="text/javascript"></script>
+<script src=" assets/vendors/general/sticky-js/dist/sticky.min.js" type="text/javascript"></script>
+
+<!--Sử dụng cho JS SaveFile, Xuất báo cáo-->
+<script src=" lib/filesaver/FileSaver.min.js"></script>
+<script src=" js/jquery-ajax-native.js"></script>
+<!--<script src="~/js/jReport.js"></script>-->
+
+<script src=" assets/demo/demo3/base/scripts.bundle.min.js" type="text/javascript"></script>
+
+<script src=" assets/vendors/custom/datatables/datatables.bundle.min.js" type="text/javascript"></script>
+<script src=" assets/vendors/general/sweetalert2/dist/sweetalert2.js" type="text/javascript"></script>
+<script src=" js/site.js"></script>
+
+<script src=" js/lodash.js"></script>
+
+<script src="./js/scroll.js"></script>
+@*<script src="https://code.highcharts.com/highcharts.js"></script>*@
+<script src="~/js/highcharts.js"></script>
+@*<script src="https://code.highcharts.com/modules/exporting.js"></script>*@
+<script src="~/js/exporting.js"></script>
+@*<script src="https://code.highcharts.com/modules/export-data.js"></script>*@
+<script src="~/js/export-data.js"></script>
+@*<script src="https://code.highcharts.com/modules/accessibility.js"></script>*@
+<script src="~/js/accessibility.js"></script>
+
+
+<div id="loading"></div>
+<script>
+    $(document).ready(function () {
+
+        var KHTC = function () {
+            this.init = function () {
+                var width = screen.width;
+                if (width <= 567) {
+                    $('#Unit').val('m');
+                };
+                loadYear();
+                loadDataKHTC($('#Year').val());
+                registerEventsKHTC();
+                
+            }
+
+            var stock_code = window.location.href.split('?')[0].split('/')[4];
+            var stockcode = stock_code.toUpperCase().replace('?', '');
+
+            var loadYear = function () {
+                var htmlYear = ``
+                for (var i = new Date().getFullYear(); i >= new Date().getFullYear() - 7; i--) {
+                    if (i == new Date().getFullYear() - 2) {
+                        htmlYear += `<option value="${i}" selected>${i}</option>`
+                    } else {
+                        htmlYear += `<option value="${i}">${i}</option>`
+                    }
+                    $('#Year').empty();
+                    $('#Year').append(htmlYear);
+                }
+                $('#Year').val(new Date().getFullYear());
+            }
+            var langLink = ReturnLinkLanguage();
+            var loadDataKHTC = function (year) {
+                $('#loading').addClass('loading');
+                var type = $('#cpnytypeid').val();
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetKHTC", "ThongTinDoanhNghiep")' + langLink,
+                    data: {
+                        stock_code: stockcode,
+                        year: year,
+                        type: type
+                    },
+                    success: function (data) {
+                        //console.log(type);
+                        $('#loading').removeClass('loading');
+                        //console.log(data);
+                        var unit = $('#Unit').val();
+
+                        var classtbl = '';
+                        // console.log(type);
+                        var htmltbl = ``
+                        switch (type) {
+                            //cty thường & chứng khoán
+                            case "0":
+                            case "2":
+                                classtbl = 'table_financial_plan_security';
+                                htmltbl += `<table id="table_financial_plan" class="table_financial_plan_security" cellspacing="0" cellpadding="0" border="1" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="2" scope="col">@Localizer["DCDATE"]</th>
+                                                        <th rowspan="2" scope="col">@Localizer["YEAR_KHTC"]</th>
+                                                        <th colspan="4">@Localizer["REVENUE"]</th>
+                                                        <th colspan="4">@Localizer["EARNING_BEFORE_TAX"]</th>
+                                                        <th colspan="4">@Localizer["EARNING_AFTER_TAX"]</th>
+                                                        <th colspan="2">@Localizer["CASH_DIVIDENT"]</th>
+                                                        <th colspan="2">@Localizer["STOCK_DIVIDENT"]</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>`;
+                                $('.table_content').empty();
+                                $('.table_content').append(htmltbl);
+                                if (data != null) {
+                                    renderChartResponsive(300, data, ['@Localizer["REVENUE"]', '@Localizer["EARNING_BEFORE_TAX"]', '@Localizer["EARNING_AFTER_TAX"]'], [200, 200, 200], [data[0].table[0].peR_1_TT_KH, data[0].table[0].peR_50_TT_KH, data[0].table[0].peR_60_TT_KH])
+                                } else {
+                                    renderChartResponsive(300, data, ['@Localizer["REVENUE"]', '@Localizer["EARNING_BEFORE_TAX"]', '@Localizer["EARNING_AFTER_TAX"]'], [200, 200, 200], [null, null, null])
+                                }
+                                break;
+                            //cty bảo hiểm
+                            case "3":
+                            case "5":
+                                classtbl = 'table_financial_plan_insurance';
+                                htmltbl += `<table id="table_financial_plan" class="table_financial_plan_insurance" cellspacing="0" cellpadding="0" border="1" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="2" scope="col">@Localizer["DCDATE"]</th>
+                                                        <th rowspan="2" scope="col">@Localizer["YEAR_KHTC"]</th>
+                                                        <th colspan="4">@Localizer["REVENUE"]</th>
+                                                        <th colspan="4">@Localizer["PREMIUM_FROM_DIRECT_INSURANCE"]</th>
+                                                        <th colspan="4">@Localizer["ASSUMED_PREMIUM"]</th>
+                                                        <th colspan="4">@Localizer["FINANCIAL_INCOME"]</th>
+                                                        <th colspan="4">@Localizer["EARNING_BEFORE_TAX"]</th>
+                                                        <th colspan="4">@Localizer["EARNING_AFTER_TAX"]</th>
+                                                        <th colspan="2">@Localizer["CASH_DIVIDENT"]</th>
+                                                        <th colspan="2">@Localizer["STOCK_DIVIDENT"]</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>`;
+                                $('.table_content').empty();
+                                $('.table_content').append(htmltbl);
+                                if (data != null) {
+                                    renderChartResponsive(500, data, ['@Localizer["REVENUE"]', '@Localizer["PREMIUM_FROM_DIRECT_INSURANCE"]', '@Localizer["ASSUMED_PREMIUM"]', '@Localizer["FINANCIAL_INCOME"]', '@Localizer["EARNING_BEFORE_TAX"]', '@Localizer["EARNING_AFTER_TAX"]'], [200, 200, 200, 200, 200, 200], [data[0].table[0].peR_1_TT_KH, data[0].table[0].peR_2_TT_KH, data[0].table[0].peR_3_TT_KH, data[0].table[0].peR_4_TT_KH, data[0].table[0].peR_50_TT_KH, data[0].table[0].peR_60_TT_KH ])
+                                } else {
+                                    renderChartResponsive(500, data, ['@Localizer["REVENUE"]', '@Localizer["EARNING_BEFORE_TAX"]', '@Localizer["EARNING_AFTER_TAX"]'], [200, 200, 200], [null, null, null])
+                                }
+                                break;
+                            //ngân hàng
+                            case "1":
+                                classtbl = 'table_financial_plan_bank';
+                                htmltbl += `<table id="table_financial_plan" class="table_financial_plan_bank" cellspacing="0" cellpadding="0" border="1" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="2" scope="col">@Localizer["DCDATE"]</th>
+                                                        <th rowspan="2" scope="col">@Localizer["YEAR_KHTC"]</th>
+                                                        <th colspan="4">@Localizer["CHARTERED_CAPITAL"]</th>
+                                                        <th colspan="4">@Localizer["TOTAL_ASSET"]</th>
+                                                        <th colspan="4">@Localizer["MOBILIZING_ECONOMIC_CAPITAL"]</th>
+                                                        <th colspan="4">@Localizer["OUTSTANDING_LOANS"]</th>
+                                                        <th colspan="4">@Localizer["PROFIT_BEFORE_INCOME_TAX"]</th>
+                                                        <th colspan="4">@Localizer["CAPITAL_ADEQUACY_RATIO"]</th>
+                                                        <th colspan="4">@Localizer["BAD_DEBT_RATE"]</th>
+                                                        <th colspan="2">@Localizer["CASH_DIVIDENT"]</th>
+                                                        <th colspan="2">@Localizer["STOCK_DIVIDENT"]</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["TTKHTC"]</th>
+                                                        <th>@Localizer["TT_KH"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                        <th>@Localizer["KH"]</th>
+                                                        <th>@Localizer["KHDC"]</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>`;
+                                $('.table_content').empty();
+                                $('.table_content').append(htmltbl);
+                                if (data != null) {
+                                    renderChartResponsive(500, data, ['@Localizer["CHARTERED_CAPITAL"]', '@Localizer["TOTAL_ASSET"]', '@Localizer["MOBILIZING_ECONOMIC_CAPITAL"]', '@Localizer["OUTSTANDING_LOANS"]', '@Localizer["PROFIT_BEFORE_INCOME_TAX"]', '@Localizer["CAPITAL_ADEQUACY_RATIO"]', '@Localizer["BAD_DEBT_RATE"]'], [200, 200, 200, 200, 200, 200, 200], [data[0].table[0].peR_1_TT_KH , data[0].table[0].peR_2_TT_KH, data[0].table[0].peR_3_TT_KH, data[0].table[0].peR_4_TT_KH, data[0].table[0].peR_5_TT_KH, data[0].table[0].peR_6_TT_KH, data[0].table[0].peR_7_TT_KH])
+                                } else {
+                                    renderChartResponsive(500, data, ['@Localizer["CHARTERED_CAPITAL"]', '@Localizer["TOTAL_ASSET"]', '@Localizer["MOBILIZING_ECONOMIC_CAPITAL"]', '@Localizer["OUTSTANDING_LOANS"]', '@Localizer["PROFIT_BEFORE_INCOME_TAX"]', '@Localizer["CAPITAL_ADEQUACY_RATIO"]', '@Localizer["BAD_DEBT_RATE"]'], [200, 200, 200, 200, 200, 200, 200], [null, null, null, null, null, null, null])
+                                }
+                                break;
+
+                        }
+                        if (data != null) {
+                            var html = ``;
+                            ////$('#table_financial_plan_security').show();
+                            //if (window.screen.width <= 480) {
+                            //    loadChart(320, data[0].table[0].fiscyear, ['Doanh thu', 'LNTT', 'LNST'], [200, 200, 200], [data[0].table[0].peR_1_TT_KH * 2, data[0].table[0].peR_50_TT_KH * 2, data[0].table[0].peR_60_TT_KH * 2 ]);
+                            //}
+                            //else {
+                            //    loadChart(null, data[0].table[0].fiscyear, ['Doanh thu', 'LNTT', 'LNST'], [200, 200, 200], [data[0].table[0].peR_1_TT_KH * 2, data[0].table[0].peR_50_TT_KH * 2, data[0].table[0].peR_60_TT_KH * 2]);
+                            //}
+
+                            html += `<tr>`;
+                            for (var i = 0; i < data[0].table.length; i++) {
+                                var obj = data[0].table[i]
+                                for (var key in obj) {
+                                    if (obj[key] == null) {
+                                        obj[key] = '';
+                                    }
+                                    if (obj[key] != null) {
+                                        if (/^\d+$/.test(obj[key]) && obj[key].toString().replace(/[^0-9]/g, "").length >= 4 && key != 'fiscyear') {
+                                            if (!key.includes('peR') && key != 'acotucbangtien' && key != 'acotucbangtiendc' && key != 'acotucbangcp' && key != 'acotucbangcpdc' ) {
+                                                switch (unit) {
+                                                    //Đơn vị hàng triệu
+                                                    case 'm':
+                                                        obj[key] = parseInt(obj[key] / 1e6);
+                                                        break;
+                                                    //Đơn vị hàng nghìn
+                                                    case 't':
+                                                        obj[key] = parseInt(obj[key] / 1e3);
+                                                        break;
+                                                }
+                                            }
+                                            obj[key] = obj[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                        }
+                                    }
+                                    if (key.includes('alinkdc')) {
+                                        html += `<td class="date_dc">
+                                                    <a target="_blank" href="${obj[key]}">`
+                                    } else if (key.includes('dateDC') && obj[key] != "") {
+                                        html += `${getFormattedDate(obj[key])}
+                                            </a>
+                                        </td>`
+                                    } else if (key.includes('dateDC') && obj[key] == "") {
+                                        html += `</a></td>`
+                                    } else if (key.includes('acpnyid')) {
+                                        html += ``
+                                    } else {
+                                        html += `<td>${obj[key]}</td>`
+                                    }
+                                }
+                                html += `</tr>`
+                            }
+                            //console.log(html);
+                            $('.' + classtbl + ' ' + 'tbody').empty();
+                            $('.' + classtbl + ' ' + 'tbody').append(html);
+                        }
+
+                        else {
+                            $('.table_financial_plan tbody').empty();
+                        }
+
+
+                    }
+                })
+            }
+
+            var registerEventsKHTC = function () {
+                $('body').on('click', '.btnSearchKHTC', function (e) {
+                    loadDataKHTC($('#Year').val());
+                });
+                var lang = langLink.replace('?', '&');
+                $('#btnExport').click(function () {
+                    var a = document.createElement("a");
+                    var urlDownload = '@Url.Action("ExcelKHTC", "ThongTinDoanhNghiep")' + "?stock_code=" + stockcode + "&year=" + $('#Year').val() + "&unit=" + $('#Unit').val() + "&type=" + $('#cpnytypeid').val() + lang ;
+                    a.href = urlDownload;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+
+                })
+            }
+
+
+
+
+            var renderChartResponsive = function (height ,data, listCategory, listPlan, listDone) {
+                if (window.screen.width <= 480) {
+                    loadChart(height, 320, data[0].table[0].fiscyear, listCategory, listPlan, listDone);
+                }
+                else {
+                    loadChart(height, null, data[0].table[0].fiscyear, listCategory, listPlan, listDone);
+                }
+            }
+
+            var loadChart = function (height, width, year, category, perPlan, perDone) {
+                Highcharts.chart('container', {
+                    chart: {
+                        type: 'bar',
+                        height: height,
+                        width: width
+
+                    },
+                    title: {
+                        text: `% @Localizer["TT_KHLABELCHART"] ${year}`
+                    },
+                    xAxis: {
+                        categories: category,
+                        label: {
+                            format: '{value}%'
+                        },
+
+                    },
+                    yAxis: {
+                        min: 0,
+                        max: 200,
+                        title: {
+                            text: ''
+                        },
+                        labels: {
+                            format: '{value}%'
+                        },
+                    },
+                    tooltip: {
+                    },
+
+                    legend: {
+                        reversed: true
+                    },
+                    plotOptions: {
+                        series: {
+                            stacking: 'normal'
+                        }
+                    },
+                    series: [{
+                       name: '@Localizer["TTKHTC"]',
+                        data: perDone,
+                    }]
+                });
+            }
+
+
+        }
+
+
+
+        var khtc = new KHTC();
+        khtc.init();
+
+    })
+
+
+
+
+</script>

@@ -1,0 +1,267 @@
+﻿
+@using Microsoft.AspNetCore.Mvc.Localization
+@using CoreLib.Entities;
+@model EzIRSpecialist.Models.ViewModel.ThongTinPheDuyetViewModel
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "Xem thông tin phê duyệt";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var img = ViewBag.CkeditorImgUrl;
+}
+
+<link rel="stylesheet" href="~/Online/BaoCao_TienIch.css" />
+<link rel="stylesheet" href="~/css/DongBoDL.css" />
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Báo cáo - tiện ích</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="@Url.Action("Index","ViewApprove")"><span>Xem thông tin phê duyệt</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+<div class="tab-content" style="margin-top:50px; text-align:center">
+    <div class="form-group-wrapper col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <form action="">
+            <div class="col-md-12  nopadding">
+                <div class="form-group row">
+                    <div class="col-md-2 text-box-label control-label">
+                        <label for="stockCode">Công ty</label>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        <select class="form-control select2-single" name="CompanyID" id="CompanyID" onchange="changeCompany(this.value)" asp-items="@(new SelectList(Model.listMCKEzSearch,"ACpnyID","NameVN"))">
+                            <option value="tc" selected>Tất cả</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row" id="Form-sl">
+                    <div class="col-md-2 text-box-label control-label">
+                        <label for="status">Thông tin</label>
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        <select id="status" name="Active" class="form-control" onchange="getcbChild();" asp-items="@(new SelectList(Model.listTT,"ALEVELID","ATypename"))">
+                            <option value="0" selected>Tất cả</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-2 text-box-label control-label">
+                        <label for="region">Thông tin chi tiết</label>
+
+                    </div>
+                    <div class="col-md-6 nopadding">
+                        <select id="region" name="RegionID" class="form-control" onchange="myFunction()">
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="show" class="khung" style="margin-top:40px; ">
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var ViewApprove = function () {
+
+            this.init = function () {
+                loadData();
+                registerEvents();
+            }
+
+            var loadData = function () {
+                var url = window.location.href;
+                var getUrlParameter = function getUrlParameter(sParam) {
+                    var sPageURL = window.location.search.substring(1),
+                        sURLVariables = sPageURL.split('&'),
+                        sParameterName,
+                        i;
+
+                    for (i = 0; i < sURLVariables.length; i++) {
+                        sParameterName = sURLVariables[i].split('=');
+
+                        if (sParameterName[0] === sParam) {
+                            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                        }
+                    }
+                };
+
+                var cpnyid = getUrlParameter('CpnyID');
+                var getTT = getUrlParameter('TT');
+                var getValue = getUrlParameter('TTCT');
+
+                if (cpnyid != null) {
+                    $("#CompanyID").val(cpnyid);
+                    $("#status").val(getTT);
+                    $("#region").val(getValue);
+                    getcbChild(getValue);
+                    myFunction(getValue, cpnyid);
+                } else {
+                    $("#CompanyID").val("tc");
+                    return;
+                }
+            }
+
+            var registerEvents = function () {
+                // Style cho Selector Công ty
+                $('#CompanyID').select2();
+                $('#select2-CompanyID-container').css('text-align', 'left');
+                $('#select2-CompanyID-container').css("padding-left", "12px");
+                $(".select2-container .select2-selection--single").css('height', '32px');
+                $(".select2-container--default .select2-selection--single").css('border-color', '#ccc');
+            }
+        }
+        var viewApprove = new ViewApprove();
+        viewApprove.init();
+    });
+
+    function Validate(i) {
+        if ($("#CompanyID").val() == "tc") {
+          toastr.error('@SharedLocalizer["Chua_chon_cong_ty"]');
+
+            return false;
+        }
+          return true;
+    }
+
+    function changeCompany(evt) {
+        $('#show').addClass('loading');
+        $("#show").empty();
+        getcbChild();
+        $('#show').removeClass('loading');
+    }
+
+    function getcbChild(getValue) {
+            $("#show").empty();
+            var cpnId = $("#CompanyID").val();
+            var Check = true;
+            Check = Validate('status');
+            if (Check) {
+                $('#show').addClass('loading');
+                var typecode = $("#status").val();
+                var cpnyid = $("#CompanyID").val();
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("DanhSachThongTinChiTiet", "ViewApprove")',
+                    data: {
+                        alevelID: typecode,
+                        cpnyID: cpnyid
+                    },
+                    success : function(res)
+                    {
+                        $('#show').removeClass('loading');
+                        if (Array.isArray(res) && res.length > 0) {
+                            $('#region option').remove();
+                            let html = '<option value="0" >Tất cả</option>';
+                            for (const item of res) {
+                                html += `<option value=${item.aTypecode}>${item.aTypename}</option>`;
+                            }
+                            $('#region').append(html);
+                            if (getValue != null) {
+                                $("#region").val(getValue);
+                            } else {
+                                $("#region").val("0");
+                            }
+                        } else {
+                            $('#region option').remove();
+                            let html = '<option value="0"></option>';
+                            $('#region').append(html);
+                        }
+                    },
+                    error: function (err) {
+                        $('#show').removeClass('loading');
+                        console.log(err);
+                    }
+                });
+            }
+    };
+
+    function myFunction(getValue, cpnyid) {
+        var cpnId = $("#CompanyID").val()
+        var Check = true;
+        Check = Validate('region');
+        if (Check) {
+            if ($("#status").val() == "0") {
+                toastr.error('@SharedLocalizer["Chua_chon_thong_tin"]');
+                return false;
+            }
+            else {
+                if (cpnId == null) {
+                    return;
+                }
+                else {
+
+                    var getVal = $("#region").val();
+                    if (getValue != null) {
+                        $("#region").val(getValue);
+                    } else {
+                        $("#region").val(getVal);
+                    }
+                    var typecode = $("#status").val();
+                    var cpnId = $("#CompanyID").val();
+                    if (getValue != null || getValue != "") {
+                        $("#show").empty();
+                        $('#show').addClass('loading');
+                        if (getValue == "TTC" || getVal == "TTC") {
+                            //$("#show").load("/ViewApprove/GetThongTinChung", { ALEVELID: typecode, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetThongTinChung", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+                        }
+                        else if (getValue == "TNCL" || getVal == "TNCL") {
+                            //$("#show").load("/ViewApprove/GetTamNhinChienLuoc", { ALEVELID: typecode, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetTamNhinChienLuoc", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+                        }
+                        else if (getValue == "TCBMQL" || getVal == "TCBMQL") {
+                            //$("#show").load("/ViewApprove/GetToChucBoMayQuanLy", { OrgModelID: 0, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetToChucBoMayQuanLy", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+                        }
+                        else if (getValue == "TPLD" || getVal == "TPLD") {
+                            //$("#show").load("/ViewApprove/GetThanhPhanLanhDao", { ALEVELID: typecode, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetThanhPhanLanhDao", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+                        }
+                        else if (getValue == "CCSH" || getVal == "CCSH") {
+                            //$("#show").load("/ViewApprove/GetCoCauSoHuu", { ALEVELID: typecode, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetCoCauSoHuu", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+                        }
+                        else if (getValue == "TTKHDT" || getVal == "TTKHDT") {
+                            //$("#show").load("/ViewApprove/GetKhachHangDoiThu", { ALEVELID: typecode, CpnyID: cpnId });
+                            $("#show").load('@Url.Action("GetKhachHangDoiThu", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+
+                        }
+                        else if (getValue == "TDCN" || getVal == "TDCN") {
+                            //$("#show").load("/ViewApprove/GetTrinhDoCongNghe", { ALEVELID: typecode, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetTrinhDoCongNghe", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+
+                        }
+                        else if (getValue == "NLQL" || getVal == "NLQL") {
+                            //$("#show").load("/ViewApprove/GetNangLucQuanLy", { ALEVELID: typecode, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetNangLucQuanLy", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+
+
+                        }
+                        else if (getValue == "TTDADT" || getVal == "TTDADT") {
+                            //$("#show").load("/ViewApprove/GetThongTinDuAnDT", { ALEVELID: typecode, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetThongTinDuAnDT", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+                        }
+                        else if (getValue == "PTSWOT" || getVal == "PTSWOT") {
+                            //$("#show").load("/ViewApprove/GetSwot", { ALEVELID: typecode, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetSwot", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+                        }
+                        else if (getValue == "VTDN" || getVal == "VTDN") {
+                            //$("#show").load("/ViewApprove/GetViTheDoanhNghiep", { ALEVELID: typecode, CpnyID: cpnId });
+                             $("#show").load('@Url.Action("GetViTheDoanhNghiep", "ViewApprove")?CpnyID=' + cpnId+'&AlEVELID='+typecode);
+                        }
+
+                        $('#show').removeClass('loading');
+                    }
+
+                }
+            }
+        }
+    };
+</script>

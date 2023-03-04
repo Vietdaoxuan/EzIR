@@ -1,0 +1,68 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+<div class="k-footer k-grid__item" id="k_footer">
+    <div class="fpts-securities_slogan_bot">
+        <div class="container fix-container">
+            <p>
+              @Localizer["Luu_y"].Value<a onclick="newwin = window.open('../assets/html/LuuYDacBiet.html', 'Disclaimer', 'toolbar=no,scrollbars=yes,menubar=no,status=no,location=no,width=600,height=500');newwin.focus();"
+             href="javascript://"> @Localizer["Link_luu_y"].Value</a>
+            </p>
+        </div>
+    </div>
+    <div class="k-footer__content">
+        <div class="k-container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 imgfooter">
+                    <img src="~/images/logo_ngang.png" id="logo_footer"/>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-4 info_hn_footer">
+
+                    <p class="fpts-title">
+                        @Localizer["CTTDT"].Value                        
+                    </p>
+                    <div>
+                        <p>@Localizer["So_giay_phep"].Value</p>
+                        <p>@Localizer["CTNC"].Value</p>
+                        <p class="location">
+                            @Localizer["Dia_chi"].Value 
+                        </p>
+                        <p class="phone">19006446 | Fax: 024 3773 9058</p>
+                        <p class="mail">fptsecurities@fpts.com.vn</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 info_hn_footer">
+                    <p class="fpts-title">@Localizer["HCM"].Value </p>
+                    <div>
+                        <p class="location">
+                            @Localizer["DC_HCM"].Value
+                            
+                        </p>
+                        <p class="phone">19006446 | Fax : 028 6291 0607</p>
+                        <p class="mail">fptsecurities@fpts.com.vn</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 info_hn_footer">
+                    <p class="fpts-title">@Localizer["DN"].Value </p>
+                    <div>
+                        <p class="location">
+                            @Localizer["DC_DN"].Value 
+                        </p>
+                        <p class="phone">19006446 | Fax: 0236 3553 888</p>
+                        <p class="mail">fptsecurities@fpts.com.vn</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fpts-securities">
+        <div class="k-container">
+            <p> @Localizer["FPTS"].Value</p>
+        </div>
+    </div>
+</div>

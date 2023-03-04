@@ -1,0 +1,183 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+@using CoreLib.Entities;
+@model List<InfoSheet>;
+
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration;
+
+@{
+    var img = _configuration.GetSection("CkeditorImgUrl").Value;
+    ViewData["Title"] = "_Năng lực quản lý";
+
+    //var cResponseMessage = ViewBag.Data as CoreLib.Entities.CResponseMessage;
+
+    var data = Model.ToList();
+}
+<div class="k-portlet__body">
+    <div class="nopadding" style="margin-bottom: 10px;">
+        <div class="col-md-7 div-button-mobiletop" style="padding-bottom: 10px"></div>
+
+        <div class="respon-mobile">
+            <!-- chất lượng -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 640 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Năng Lực quản lý chất lượng</p>
+                                    @*Năng Lực quản lý chất lượng*@
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 640 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Năng Lực quản lý chất lượng EN</p>
+                                    @*Năng Lực quản lý chất lượngUS *@
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- Tài chính VN -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 641 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Năng lực quản lý tài chính</p>
+                                    @*Năng Lực quản lý chất lượng*@
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 641 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Năng lực quản lý tài chính EN</p>
+                                    @*Năng Lực quản lý chất lượngUS *@
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- Nhân sự VN -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 642 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Năng lực quản lý nhân sự</p>
+                                    @*Năng lực quản lý nhân sự*@
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 642 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Năng lực quản lý nhân sự EN</p>
+                                    @*Năng lực quản lý nhân sự US *@
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+            <!-- Khác VN-->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 643 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Năng lực quản lý khác</p>
+                                    <!-- Khác VN-->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 643 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Năng lực quản lý khác EN</p>
+                                    <!-- Khác US-->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+</div>
+<div id="loading"></div>

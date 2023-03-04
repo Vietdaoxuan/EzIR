@@ -1,0 +1,480 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.AspNetCore.Mvc;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+
+    var CompanyTypeName = "";
+
+    var _UrlLink = ViewBag._UrlFileCommon;
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+
+        CompanyTypeName = @HttpContextAccessor.HttpContext.Session.GetString("CompanyTypeName");
+    }
+    else
+    {
+
+        CompanyTypeName = @HttpContextAccessor.HttpContext.Session.GetString("CompanyTypeNameEN");
+    }
+
+}
+
+<style>
+    .d-inline-flex {
+        display: block !important;
+    }
+    .justify-content-center{
+        display:flex !important;
+        justify-content:center !important;
+    }
+</style>
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <div class="title_line d-flex" style="margin-bottom: 0px;">
+            <div class="container">
+                <span class="title_line_item">
+                    <font color="#4187A6"><a href="" style="color:#4187A6;font-weight: 600;">@Localizer["List_of_forms"].Value</a></font>
+                </span>
+                <span class="title_line_item">
+                    <i class="fa  fa-caret-right"></i>
+                </span>
+                <span class="title_line_item">
+                    <font color="#4187A6" style="font-weight: 600;">@Localizer["List_of_forms"].Value</font>
+                </span>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <div class="tab-content">
+        <div class="form-wrapper">
+            <form action="" id="FormSearch">
+                <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                            <label>@Localizer["Type"].Value</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                            <input type="text" class="form-control" value="@CompanyTypeName" disabled>
+                        </div>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                            <label for="Title">@Localizer["Template"].Value</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                            <input type="text" class="form-control" id="Title" name="Title">
+                        </div>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                            <label for="CCPL">@Localizer["CCPL"].Value</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                            <input type="text" class="form-control" id="CCPL" name="CCPL">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding" style="padding-left: 15px !important;">
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                            <label for="TemplateType">@Localizer["TemplateType"].Value</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                            <select class="form-control" name="TemplateType" id="TemplateType" asp-items="@(new SelectList(Model.listTemplateType,"TypeCode","TypeName"))">
+                                <option selected>@Localizer["All"].Value</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                            <label for="Detail">@Localizer["Detail"].Value</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                            <input type="text" class="form-control" id="Detail" name="Detail">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row d-flex justify-content-center col-12 btn-search-wrapper" style="justify-content: center !important;">
+            <button id="btnSearch" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                @Localizer["Search"].Value
+            </button>
+        </div>
+    </div>
+    <div class="content-tbl-VN" style="margin-top: 2rem;margin-bottom: 2rem;">
+        <table id="listBieuMauVN" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+               role="grid" style="width: 100%;box-shadow: 0px 4px 10px darkgrey;">
+            <thead>
+                <tr>
+                    <th rowspan="1" colspan="6" style="color: #ffffff; background: #007db7;text-align:center">@Localizer["Vietnamese"].Value</th>
+                </tr>
+                <tr>
+                    <th style="width: 5% !important;padding-left: 10px;padding-right: 10px;text-align:center">@Localizer["STT"].Value</th>
+                    <th style="width: 17% !important;padding-left: 10px;padding-right: 10px;">@Localizer["Type"].Value</th>
+                    <th style="width: 24% !important;padding-left: 10px;padding-right: 10px;">@Localizer["CCPL"].Value</th>
+                    <th style="width: 20% !important;padding-left: 10px;padding-right: 10px;">@Localizer["Template"].Value</th>
+                    <th style="width: 22% !important;padding-left: 10px;padding-right: 10px;">@Localizer["Detail"].Value</th>
+                    <th style="width: 11% !important;padding-left: 10px;padding-right: 10px;text-align:center">@Localizer["File"].Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="content-tbl-EN" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <table id="listBieuMauEN" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+               role="grid" style="width: 100%;box-shadow: 0px 4px 10px darkgrey;">
+            <thead>
+                <tr>
+                    <th rowspan="1" colspan="6" style="color: #ffffff; background: #007db7;text-align:center">@Localizer["English"].Value</th>
+                </tr>
+                <tr>
+                    <th style="width: 5% !important;padding-left: 10px;padding-right: 10px;text-align:center">@Localizer["STT"].Value</th>
+                    <th style="width: 17% !important;padding-left: 10px;padding-right: 10px;">@Localizer["Type"].Value</th>
+                    <th style="width: 24% !important;padding-left: 10px;padding-right: 10px;">@Localizer["CCPL"].Value</th>
+                    <th style="width: 20% !important;padding-left: 10px;padding-right: 10px;">@Localizer["Template"].Value</th>
+                    <th style="width: 22% !important;padding-left: 10px;padding-right: 10px;">@Localizer["Detail"].Value</th>
+                    <th style="width: 11% !important;padding-left: 10px;padding-right: 10px;text-align:center">@Localizer["File"].Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="content-tbl-EV" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <table id="listBieuMauEV" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+               role="grid" style="width: 100%;box-shadow: 0px 4px 10px darkgrey; ">
+            <thead>
+                <tr>
+                    <th rowspan="1" colspan="6" style="color: #ffffff; background: #007db7;text-align:center">@Localizer["SongNgu"].Value</th>
+                </tr>
+                <tr>
+                    <th style=" width: 5% !important;padding-left: 10px;padding-right: 10px;text-align:center">@Localizer["STT"].Value</th>
+                    <th style="width: 17% !important;padding-left: 10px;padding-right: 10px;">@Localizer["Type"].Value</th>
+                    <th style="width: 24% !important;padding-left: 10px;padding-right: 10px;">@Localizer["CCPL"].Value</th>
+                    <th style="width: 20% !important;padding-left: 10px;padding-right: 10px;">@Localizer["Template"].Value</th>
+                    <th style="width: 22% !important;padding-left: 10px;padding-right: 10px;">@Localizer["Detail"].Value</th>
+                    <th style="width: 11% !important;padding-left: 10px;padding-right: 10px;text-align:center">@Localizer["File"].Value</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div id="loading"></div>
+<style>
+    .dataTables_wrapper .dataTable thead tr {
+        border-left: 0px !important;
+    }
+
+    .dataTables_wrapper .dataTable tbody tr, .dataTables_wrapper .dataTable thead tr {
+        border-left: 0px !important;
+    }
+
+    table.dataTable.no-footer {
+        border-bottom: 0px !important;
+    }
+
+    table.dataTable thead th, table.dataTable thead td {
+        border-bottom: 0px solid !important;
+    }
+
+    table.dataTable thead th, table.dataTable tfoot th {
+        font-weight: 500;
+        color: rgb(41, 153, 206);
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 8px 10px !important;
+    }
+
+    .table-striped tbody tr:hover {
+        background-color: #ececec;
+        border-left: 5px solid #f3872b !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+        $(".nav-item.col.gsm-link-tab").first().addClass("active");
+        $("#btnUpdate").hide();
+
+        var renderColumns = [
+            {
+                "width": "5%",
+                data: "sttnew",
+                render: function (data) {
+                    return `<div class="d-inline-flex w-100" style="text-align:center">
+                           <p>${data}</p>
+                        </div >`;
+                }
+            },
+            {
+                "width": "17%",
+                data: "typeName",
+            },
+            {
+                "width": "24%",
+                data: "ccpl",
+            }
+            ,
+            {
+                "width": "20%",
+                data: "title",
+            }
+            ,
+            {
+                "width": "22%",
+                data: "detail",
+            }
+            ,
+            {
+                "width": "11%",
+                data: "templateID",
+                render: function (data, type, full) {
+                    return `<div class="d-inline-flex w-100" style="text-align:center">
+                            <a class="DownloadTemplate btn text-primary" data-id='${data}' data-filename='${full['fileName']}' data-path='${full['path']}' data-url='${full['url']}' data-comtype='${full['typeName']}' data-templatetype='${full['templateType']}' href="@_UrlLink/${full['url']}" target="_blank" rel="noopener noreferrer" download><i class="fas fa-download"></i></a>
+                        </div >`;
+                }
+            },
+        ];
+
+        var form = $("#FormSearch");
+
+        var BieuMauCBTT = function () {
+            this.init = function () {
+                loadData(null);
+                registerEvents();
+            }
+
+            var loadData = function (data) {
+                $("#loading").addClass("loading");
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListBieuMau", "DanhMucBieuMau")',
+                    data: data,
+                    success: function (data) {
+                        $("#loading").removeClass("loading");
+                        console.log(data);
+                        for (var index = 0; index < data.length; index++) {
+                            let indexTemp = 1;
+                            for (var i = 0; i < data[index].length; i++) {
+                                Object.assign(data[index][i], { sttnew: indexTemp });
+                                indexTemp++;
+                                if (data[index].length === i) {
+                                    indexTemp = 1;
+                                }
+                            }
+
+                        }
+
+                        var bieumauVNTbl = $('#listBieuMauVN').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            "info": false,
+                            data: data[0],
+                            pageLength: 5,
+                            bAutoWidth: false,
+                            columns: renderColumns,
+                            "lengthChange": false,
+                        });
+
+                        //khi click download
+                        downloadTemplate();
+                        bieumauVNTbl.on('draw', downloadTemplate());
+
+                        var bieumauENTbl = $('#listBieuMauEN').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            "info": false,
+                            data: data[1],
+                            pageLength: 5,
+                            bAutoWidth: false,
+                            columns: renderColumns,
+                            "lengthChange": false,
+                        });
+
+                        //khi click download
+                        downloadTemplate();
+                        bieumauENTbl.on('draw', downloadTemplate());
+
+                        @*console.log(data);*@
+                        var bieumauEVTbl = $('#listBieuMauEV').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            "info": false,
+                            data: data[2],
+                            pageLength: 5,
+                            columns: renderColumns,
+                            "lengthChange": false,
+                        });
+
+                        //khi click download
+                        downloadTemplate();
+                        bieumauEVTbl.on('draw', downloadTemplate());
+                    }
+                })
+            }
+
+            function downloadTemplate() {
+                $('.DownloadTemplate').off();
+                $('.DownloadTemplate').click(function () {
+                    $('#loading').addClass('loading');
+                    @*let companyType = $(this).data('comtype');
+                    let templateType = $(this).data('templatetype');
+                    let templateName = "";
+                    if (templateType == 1) {
+                        templateName = "Tiếng Việt"
+                    }
+                    else if (templateType == 2) {
+                        templateName = "Tiếng Anh"
+                    }
+                    else if (templateType == 3) {
+                        templateName = "Song Ngữ"
+                    }
+                    else {
+                        templateName = null;
+                    }
+                    let Url = $(this).data('url');
+                    let Filename = $(this).data('filename');
+                    let Path = $(this).data('path');
+                    var file_extension = '';
+                    file_extension = Url.split('.').pop();
+                    file_extension = file_extension.replace(/\s+/g, '');
+                    var filedown = '';
+                    if (file_extension == 'doc') {
+                        filedown = `bieumaucbtt_${companyType}_${templateName}.doc`;
+                    }
+                    else if (file_extension == 'docx') {
+                        filedown = `bieumaucbtt_${companyType}_${templateName}.docx`;
+                    }
+                    else if (file_extension == 'pdf') {
+                        filedown = `bieumaucbtt_${companyType}_${templateName}.pdf`;
+                    }
+                    else if (file_extension == 'rar') {
+                        filedown = `bieumaucbtt_${companyType}_${templateName}.rar`;
+                    }
+                    else {
+                        filedown = '';
+                    }*@
+
+                    @*return Promise.resolve(
+                        $.postNative('@Url.Action("DownloadFile", "DanhMucBieuMau")', {
+                            Url: Url, FileName: Filename, Path: Path,
+                                })
+                                .done((response, statusCode, xhr) => {
+                                    $('#loading').removeClass('loading');
+                                    //console.log(response);
+                                    if (response.code) {
+                                        //console.log(response);
+                                        return isMessageSuccess(response);
+                                    }
+                                    const type = xhr.getResponseHeader('Content-Type');
+                                    const blob = new Blob([response], { type: type });
+
+                                    //check nếu là response message , không phải file thì hiển thị lỗi
+                                    if (type.includes("application/json")) {
+                                        //phải đọc file vì respone ở dạng arraybuffer
+                                        const fileReader = new FileReader();
+                                        fileReader.onload = function () {
+                                            $('#loading').removeClass('loading');
+                                            isMessageSuccess(JSON.parse(this.result));
+                                        };
+                                        fileReader.readAsText(blob);
+                                        return;
+                                    }
+
+                                    saveAs(blob, filedown);
+                                        $('#loading').removeClass('loading');
+                                        swal.close();
+                                }).fail((response) => {
+                                    //console.log(response);
+                                })
+                        );*@
+                    $('#loading').removeClass('loading');
+                })
+            }
+
+            var registerEvents = function () {
+                $('#btnSearch').click(function (e) {
+                    $("#loading").addClass("loading");
+                    @*console.log(form.serialize());*@
+                    e.preventDefault();
+                    var data = form.serialize();
+                    //data += "&CompanyTypeTest=" + $('#');
+
+                    if ($("#TemplateType").val() == 1) {
+                        loadData(form.serialize());
+                       @* $("#loading").removeClass("loading");*@
+                        $('.content-tbl-EN').hide();
+                        $('.content-tbl-EV').hide();
+                        $('.content-tbl-VN').show();
+                    }else if ($("#TemplateType").val() == 2) {
+                        loadData(form.serialize());
+                       @* $("#loading").removeClass("loading");*@
+                        $('.content-tbl-VN').hide();
+                        $('.content-tbl-EV').hide();
+                        $('.content-tbl-EN').show();
+                    }else if ($("#TemplateType").val() == 3) {
+                        loadData(form.serialize());
+                        @*$("#loading").removeClass("loading");*@
+                        $('.content-tbl-EN').hide();
+                        $('.content-tbl-VN').hide();
+                        $('.content-tbl-EV').show();
+                    }else {
+                        loadData(form.serialize());
+                        @*$("#loading").removeClass("loading");*@
+                        $('.content-tbl-EN').show();
+                        $('.content-tbl-VN').show();
+                        $('.content-tbl-EV').show();
+                    }
+                });
+
+                function Validate() {
+                    if ($('#title').val().length > 2000) {
+                        toastr.error('@SharedLocalizer["TITLE_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#cCPL').val() > 1000) {
+                        toastr.error('@SharedLocalizer["CCPL_MAXLENGTH"]');
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+
+
+        var bieuMauCBTT = new BieuMauCBTT();
+        bieuMauCBTT.init();
+
+    })
+</script>

@@ -1,0 +1,400 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@{
+}
+<link href="~/css/taichinh.css" rel="stylesheet" />
+
+<style>
+
+
+    tr.data_chitieu:hover .heightauto {
+        background-color: #abd373;
+    }
+
+
+</style>
+
+<div class="container-fluid">
+    <div class="contentt">
+        <p>@Localizer["CDKT"]</p>
+    </div>
+
+    <div class="form_content">
+        <div id="taichinhform">       
+                    <div class="form-groups row">
+                        <div class=" col-md-1">
+                            <label >@Localizer["REPORTING_PERIOD"].Value</label>
+                        </div>
+
+                        <div class=" col-md-1">
+                            <select class="form-item" id="Period" name="platform">
+
+                                <option class="Y" value="12Y">@Localizer["WHOLEYEAR"]</option>
+                                <option class="Q" value="3">@Localizer["QUARTER1"]</option>
+                                <option class="Q" value="6">@Localizer["QUARTER2"]</option>
+                                <option class="Y" value="6Y">@Localizer["6MONTHS"] </option>
+                                <option class="Q" value="9" selected>@Localizer["QUARTER3"]</option>
+                                <option class="Q" value="12">@Localizer["QUARTER4"]</option>
+
+                            </select>
+
+                        </div>
+                        <div class="col-md-1">
+                            <select class="form-item" id="Year">
+                            </select>
+                        </div>
+
+                        <div class="col-md-1">
+                            <label >@Localizer["NUM_OF_PERIOD"].Value</label>
+                        </div>
+                        <div class="col-md-1">
+
+                            <select class="form-item" id="NumOfPeriod">
+                                <option value="5" selected>5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <label>@Localizer["UNIT"].Value</label>
+                        </div>
+                        <div class="col-md-1">
+                            <select class="form-item" id="Unit">
+                                <option value="b">@Localizer["BILLION"]</option>
+                                <option value="m">@Localizer["MILLION"]</option>
+                                <option value="t">@Localizer["THOUSANDS"]</option>
+                                <option value="d" selected>@Localizer["DONG"]</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+
+                            <select class="form-item" id="DataType">
+                                <option value="1" selected>@Localizer["CALENDER_YEAR"]</option>
+                                <option value="2">@Localizer["FINANCIAL_YEAR"]</option>
+
+                            </select>
+                        </div>
+                        <div class="col-md-3 btn-view">
+                            <button class="btn btn-success" type="submit" id="btnxem">
+                                @Localizer["View"].Value
+                            </button>
+                  
+                            <button class="btn btn-success btnSearchHSTC" type="button" id="btnExport">
+                                @Localizer["Export"].Value
+                            </button>
+
+                        </div>
+                    </div>     
+        </div>
+    </div>
+
+    <!-- Page Heading -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+
+    <div class="table_content" style="width:100%;">
+        @*<div class="content_left">
+            <table id="table_taichinh" class="table-fixed" cellspacing="0" cellpadding="0" border="0"
+                   style="width: 100%; ">
+                <tbody>
+                </tbody>
+            </table>
+        </div>*@
+        <div class="wmd-view-topscroll">
+            <div class="scroll-div1">
+            </div>
+        </div>
+        <div class="wmd-view">
+            <div class="scroll-div2">
+                <table id="table_taichinh" class="table-fixed" cellspacing="0" cellpadding="0" border="0"
+                       >
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading"></div>
+<script>
+    // set up two scroll bars on content
+    $(function () {
+        $(".wmd-view-topscroll").scroll(function () {
+            $(".wmd-view")
+                .scrollLeft($(".wmd-view-topscroll").scrollLeft());
+        });
+        $(".wmd-view").scroll(function () {
+            $(".wmd-view-topscroll")
+                .scrollLeft($(".wmd-view").scrollLeft());
+        });
+    });
+    $(document).ready(function () {
+        var CDKT = function () {
+            this.init = function () {
+                loadYear();
+                let month = new Date().getMonth() + 1;
+                if (month < 3) {
+                    $('#Period').val(12);
+                    $('#Year').val($('#Year').val() - 1);
+                } else if (month < 6) {
+                    $('#Period').val(3);
+                } else if (month < 9) {
+                    $('#Period').val(6);
+                } else $('#Period').val(9);
+                var width = screen.width;
+                if (width <= 567) {
+                    $('#Unit').val('m');
+                };
+                loadDataCDKT($('#Year').val(), $('#DataType').val(), $('#Period').val(), 'Q');
+                registerEventsCDKT();
+            }
+            var stock_code = window.location.href.split('?')[0].split('/')[4];
+            var stockcode = stock_code.toUpperCase().replace('?', '');
+            console.log(stockcode);
+            var langLink = ReturnLinkLanguage();
+            var loadDataCDKT = function (year, dataType, period, DateType) {
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetCDKT", "ThongTinDoanhNghiep")' + langLink,
+                    data: {
+                        stock_code: stockcode,
+                        year: year,
+                        datatype: dataType,
+                        period: period,
+                        dateType: DateType
+                    },
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                       // console.log(data);
+                        var numOfPeriods = $('#NumOfPeriod').val();
+                        var unit = $('#Unit').val();
+
+                        var renderContent = function (i,dropdownSymbol) {
+                            var render = ``;
+                            if (data[0].table1[i].alev == '1') {
+                                render += `<tr style="color: #014e94; font-weight: bold;" class="data_chitieu title_row level_${data[0].table1[i].alev}" data-lev='${data[0].table1[i].alev}' id="${data[0].table1[i].arcode}">
+                                            <td class="ReportTitleLeft heightauto headcol"><div class="text-title">${dropdownSymbol} ${data[0].table1[i].adescription}</div></td>`
+                            }
+                            if (data[0].table1[i].alev == '2') {
+                                render += `<tr class="data_chitieu title_row content_hide level_${data[0].table1[i].alev} ${data[0].table1[i].aparentcode}" data-lev='${data[0].table1[i].alev}'  id="${data[0].table1[i].arcode}">
+												<td class="ReportTitleLeft heightauto headcol"><div class="text-title1">${dropdownSymbol}  ${data[0].table1[i].adescription}</div></td>`
+                            }
+                            if (data[0].table1[i].alev != '1' && data[0].table1[i].alev != '2' && data[0].table1[i].alev != data[0].maxLevel.toString()) {
+                                render += `<tr class="data_chitieu title_row content_hide level_${data[0].table1[i].alev} ${data[0].table1[i].aparentcode}" data-lev='${data[0].table1[i].alev}' id="${data[0].table1[i].arcode}">
+												<td class="ReportTitleLeft  heightauto headcol"><div class="text-title2">${dropdownSymbol}  ${data[0].table1[i].adescription}</div></td>`
+                            }
+                            if (data[0].table1[i].alev == data[0].maxLevel.toString()) {
+                                render += `<tr class="data_chitieu ${data[0].table1[i].aparentcode} content_hide level_${data[0].table1[i].alev}" data-lev='${data[0].table1[i].alev}'><td class="ReportTitleLeft heightauto tooltip_taichinh headcol" ><div class="text-title3">${data[0].table1[i].adescription}</div></td>`
+                            }
+                            return render;
+                        }
+
+
+                        if (data != null) {
+                            var html = `<tr class="chitieu"> <th class="ReportTitleLeft headcol " ><div class="text-title">@Localizer["Items"]</div></th>`;
+                            for (var i = 0; i < data[0].table.length; i++) {
+                                var k = 0;
+                                var obj = data[0].table[i]
+                                for (var key in obj) {
+                                    html += `<th class="reportTitle" style="width:155px" >${obj[key]}</th>`
+                                    k++;
+                                    if (k == $('#NumOfPeriod').val()) {
+                                        break;
+                                    }
+                                }
+                            };
+                            html += `</tr>`
+                            for (var i = 0; i < data[0].table1.length; i++) {
+                                var runcode = true;
+                                if (i == data[0].table1.length - 1) {
+                                    html += renderContent(i, '');
+                                    runcode = false;
+                                }
+                                if (runcode) {
+                                    if (i == 0) {
+                                        html += renderContent(i, '<i class="fas fa-caret-down"></i>');
+                                        runcode = false;
+                                    }
+                                }
+
+                                if (runcode) {
+                                    if ((data[0].table1[i].alev == data[0].table1[i + 1].alev && data[0].table1[i].alev > data[0].table1[i - 1].alev)
+                                        || (data[0].table1[i].alev == data[0].table1[i + 1].alev && data[0].table1[i].alev < data[0].table1[i - 1].alev)
+                                        || (data[0].table1[i].alev > data[0].table1[i + 1].alev && data[0].table1[i].alev > data[0].table1[i - 1].alev)
+                                        || (data[0].table1[i].alev < data[0].table1[i - 1].alev && data[0].table1[i].alev > data[0].table1[i + 1].alev)
+                                        || (data[0].table1[i].alev == data[0].table1[i - 1].alev && data[0].table1[i].alev == data[0].table1[i + 1].alev)
+                                        || (data[0].table1[i].alev == data[0].table1[i - 1].alev && data[0].table1[i].alev > data[0].table1[i + 1].alev)) {
+                                        html += renderContent(i, '');
+                                    }
+                                    if ((data[0].table1[i].alev < data[0].table1[i + 1].alev && data[0].table1[i].alev < data[0].table1[i - 1].alev)
+                                        || (data[0].table1[i].alev > data[0].table1[i - 1].alev && data[0].table1[i].alev < data[0].table1[i + 1].alev)
+                                        || data[0].table1[i].alev == data[0].table1[i - 1].alev && data[0].table1[i].alev < data[0].table1[i + 1].alev) {
+                                        html += renderContent(i, '<i class="fas fa-caret-down"></i>');
+                                    }
+                                }
+
+                                var k = 0;
+                                var obj = data[0].table1[i]
+                                for (var key in obj) {
+
+                                    if (key.includes('coL') && obj[key] != null) {
+                                        switch (unit) {
+                                            //đơn vị hàng tỷ
+                                            case 'b':
+                                                obj[key] = parseInt(obj[key] / 1e9);
+                                                break;
+                                            //đơn vị hàng triệu
+                                            case 'm':
+                                                obj[key] = parseInt(obj[key] / 1e6);
+                                                break;
+                                            ////đơn vị hàng nghìn
+                                            case 't':
+                                                obj[key] = parseInt(obj[key] / 1e3);
+                                                break;
+                                        }
+                                    }
+
+                                    if (obj[key] != null) {
+                                        obj[key] = obj[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    }
+
+                                    if (obj[key] == null) {
+                                        obj[key] = "-";
+                                    }
+
+                                    if (obj[key] == '0') {
+                                        obj[key] = "-";
+                                    }
+
+                                    if (obj[key].includes('-') && obj[key] != '-') {
+                                        obj[key] = '(' + obj[key].replace('-', '') + ')';
+                                    }
+                                    html += `<td class="reportTitle heightauto" style="width:155px">${obj[key]}</td>`
+                                    k++;
+                                    if (k == numOfPeriods) {
+                                        break;
+                                    }
+                                }
+                                html += `</tr>`
+                            }
+                            $('#table_taichinh tbody').empty();
+                            $('#table_taichinh tbody').append(html);
+                            $('.content_hide').hide();
+                            isScroll();
+                        }
+                    }
+
+
+                })
+            }
+
+            var loadYear = function () {
+                var htmlYear = ``
+                for (var i = new Date().getFullYear(); i >= new Date().getFullYear() - 7; i--) {
+                    if (i == new Date().getFullYear() - 1) {
+                        htmlYear += `<option value="${i}" selected>${i}</option>`
+                    } else {
+                        htmlYear += `<option value="${i}">${i}</option>`
+                    }
+                    $('#Year').empty();
+                    $('#Year').append(htmlYear);
+                } $('#Year').val(new Date().getFullYear());
+            }
+            var check = function () {
+
+
+            }
+            var registerEventsCDKT = function () {
+                //$('body').on('click', '#btnxem', function (e) {
+                $('#btnxem').click(function (e) {
+                    //var DateType = $('select[name="platform"] :selected').attr('class');
+                    //loadDataCDKT($('#Year').val(), $('#DataType').val(), $('#Period').val(), DateType);
+                    if ($('#Period').val().includes('Y')) {
+                        loadDataCDKT($('#Year').val(), $('#DataType').val(), $('#Period').val().substring(0, $('#Period').val().length - 1), 'Y');
+                    } else {
+                        loadDataCDKT($('#Year').val(), $('#DataType').val(), $('#Period').val(), 'Q');
+                    }
+                });
+
+                $('#btnExport').click(function () {
+                    let period = 12;
+                    let dateType = "Q";
+                    if ($('#Period').val().includes('Y')) {
+                        period = $('#Period').val().substring(0, $('#Period').val().length - 1);
+                        dateType = "Y"
+                    } else {
+                        period = $('#Period').val();
+                        dateType = "Q"
+                    }
+                    var lang = langLink.replace('?', '&');
+                    var a = document.createElement("a");
+                    var urlDownload = '@Url.Action("ExcelCDKT", "ThongTinDoanhNghiep")' + "?stock_code=" + stockcode + "&year=" + $('#Year').val() + "&datatype=" + $('#DataType').val() + "&period=" + period + "&unit=" + $('#Unit').val() + "&dateType=" + dateType + "&numofPeriod=" + $('#NumOfPeriod').val() + lang;
+                    a.href = urlDownload;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+
+                })
+
+                $('body').off().on('click', '.title_row', function () {
+                   // console.log(".level_" + $(this).data('lev'));
+                    var target = $(this).nextUntil(".level_" + $(this).data('lev'));
+
+                    var target1 = $(this).prevUntil(".level_" + $(this).data('lev'));
+
+                    var thisLev = $(this).data('lev');
+                    if (thisLev == 3 && target1.length == 0) {
+                        return false;
+                    }
+                    $(target).slideToggle('fast',function () {
+                        $(this).each(function (index, element) {
+                            var colVal = $(element).text();
+                            var elementLev = $(element).data('lev');
+                            if ($(element).is(':visible') && thisLev == 2 && elementLev == 4 && target1.length == 0) {
+                                return;
+                            } else
+                            var thisclick = $(this).data('lev');
+                            if (elementLev > thisclick) {
+                                return false;
+                            }
+                             if (!$(element).is(':visible') && thisLev > elementLev) {
+                                    $(element).show();
+                            } else if ($(element).is(':visible') && elementLev != thisLev + 1) {
+                                    $(element).hide();
+                                    //$(element).css('display', 'none');
+                            } else if (!$(element).is(':visible') && elementLev == thisLev + 1) {
+                                    $(element).hide();
+                                    //$(element).css('display', 'none');
+                            }
+                        });
+                    });
+                }).css('cursor', 'pointer');
+            }
+
+            var isScroll = function () {
+                // Get on screen image
+                var tableWidth = $("#table_taichinh").width() + 2;
+                var screenWidth1 =  screen.width;
+                var widthpx = tableWidth + "px"
+        
+                $(".scroll-div1").css("width", widthpx);
+                if (screenWidth1 > 1024) {
+                    $(".wmd-view-topscroll").css("height", "5px");
+                } else {
+                    $(".wmd-view-topscroll").css("height", "0px");
+                }
+            }
+
+        }
+        var cdkt = new CDKT();
+        cdkt.init();
+
+    })
+</script>

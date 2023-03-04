@@ -1,0 +1,996 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc
+@{
+
+    var urlimg = ViewBag.Imgbm;
+    var urlimgLogo = ViewBag.ImgbmLogo;
+    var protocol = ViewBag.Protocol;
+    var today = DateTime.Today.ToString("dd/MM/yyyy");
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var requestValue = requestCulture.RequestCulture.UICulture.Name;
+
+
+}
+<style>
+    /* Css Scroll (thanh cuộn dọc)*/
+    .linhvuc {
+        overflow: auto;
+        height: 92%;
+        position: absolute;
+    }
+        /* width */
+        .linhvuc::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+            background-color: #d9d9d9;
+        }
+        /* Track */
+        .linhvuc::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        /* Handle */
+        .linhvuc::-webkit-scrollbar-thumb {
+            background: #bfbfbf;
+        }
+
+    .parent-linhvuc {
+        position: relative;
+    }
+
+    table {
+        border-collapse: unset !important;
+    }
+
+    
+</style>
+<div class="container-fluid fpts-info">
+
+    <!-- Page Heading -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+
+    <div class="row row_1">
+        
+    </div>
+
+    <div class="row">
+        <div class="wrapper">
+            <div class="fpts-info-left padding-0 one">
+
+                <div class="kqgd">
+                    <span>
+                        @Localizer["KQGD"].Value: <span class="time_exchange">
+                            @today
+                        </span>
+                    </span>
+                    <p class="banggia"><a href="https://eztrade.fpts.com.vn/" target="_blank" style="color: white;">@Localizer["Bang_gia"].Value</a></p>
+                </div>
+
+                <div class="trading_view" id="chart">
+
+                </div>
+
+            </div>
+
+            <div class="info-price-daily padding-0 two">
+
+
+                <div class="row table_top">
+                    <div class="col-md-4 fpts-info-price">
+
+                        <div class="row imgphantram">
+
+                            <ul>
+                                <li>
+
+                                    <img id="imgupdown" />
+                                </li>
+
+                                <li id="MatchPrice" style="font-size: 25px;"></li>
+                            </ul>
+                            <ul class="bottom">
+                                <li id="changePrice"></li>
+
+                                <li id="changePricePercentage"></li>
+                            </ul>
+
+                        </div>
+
+                        <div class="col-sm-4 col-6" id="ttgdleft">
+                            <div class="column">
+                                <span class="">@Localizer["TotalQtty"]</span>
+                                <span class=" right" id="khoiluong">0</span>
+                            </div>
+                            <div class="column">
+                                <span class="">@Localizer["PutthroughVolume"]</span>
+                                <span class=" right" id="klgdtt">0</span>
+                            </div>
+                            <div class="column">
+                                <span class="">@Localizer["MarketCapitalisation"]<span class="italic">
+                                        @Localizer["BillionVND"]
+                                    </span>
+                                </span>
+                                <span class=" right" id="gtvonhoa">0</span>
+                            </div>
+                            <div class="column">
+                                <span class="">@Localizer["BookValue"]<span class="italic">
+                                        @Localizer["BillionVND"]
+                                    </span>
+                                </span>
+                                <span class=" right" id="gtSoSach">0</span>
+                            </div>
+                            <div class="column">
+                                <span class="">@Localizer["ForeignOwnership"]</span>
+                                <span class=" right" id="tlshnn">0</span>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="col-md-4 col-6 fpts-info-price-left">
+                        <div class="column">
+                            <span class="">@Localizer["CeilingPrice"]</span>
+                            <span class=" right" id="giatran">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">@Localizer["RefPrice"]</span>
+                            <span class="right" id="giathamchieu">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">@Localizer["Pricefloor"]</span>
+                            <span class=" right" id="giasan">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">@Localizer["OpenPrice"] </span>
+                            <span class=" right" id="giamocua">0</span>
+                        </div>
+                        <div class="column n-mobile">
+                            <span class="">@Localizer["52weekhigh"]</span>
+                            <span class="right " id="giacaonhat52tuan">0</span>
+                        </div>
+                        <div class="column n-mobile">
+                            <span class="">@Localizer["52weeklow"]</span>
+                            <span class="right " id="giathapnhat52tuan">0</span>
+                        </div>
+                        <div class="column n-mobile">
+                            <span class="">@Localizer["30daysaveragetradingvol"]    </span>
+                            <span class="right " id="klgdbq30ngay">0</span>
+                        </div>
+                        <div class="column n-mobile">
+                            <span class="">@Localizer["ForeignBuy(YTD)"]</span>
+                            <span class="right " id="nnytd">0</span>
+                        </div>
+                        <div class="column mobile" style="display:none">
+                            <span class="">P/E</span>
+                            <span class="right" id="pe1">0</span>
+                        </div>
+                        <div class="column mobile" style="display:none">
+                            <span class="">EPS trailing</span>
+                            <span class="right " id="eps1">0</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-6 fpts-info-price-right">
+                        <div class="column">
+                            <span class="">@Localizer["HighlestPrice"] </span>
+                            <span class=" right" id="giamax">0</span>
+                        </div>
+
+                        <div class="column">
+                            <span class="">@Localizer["LowestPrice"] </span>
+                            <span class="right " id="giathapnhat">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">@Localizer["ForeignSell"] </span>
+                            <span class="right " id="nnban">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">@Localizer["ForeignBuy"]  </span>
+                            <span class="right " id="nnmua">0</span>
+                        </div>
+                        <div class="column n-mobile">
+                            <span class="">P/E</span>
+                            <span class="right n-mobile" id="pe">0</span>
+                        </div>
+                        <div class="column n-mobile">
+                            <span class="">EPS trailing</span>
+                            <span class="right " id="eps">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">P/E trailing</span>
+                            <span class="right " id="petra">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">Beta</span>
+                            <span class="right " id="beta">0</span>
+                        </div>
+                    </div>
+
+                    <div id="fpts-info-mobie-display" class="col-sm-4 padding-0 mobile" style="display:none">
+                        <div class="column">
+                            <span class="">@Localizer["52weekhigh"]</span>
+                            <span class="right " id="giacaonhat52tuan1">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">@Localizer["52weeklow"]</span>
+                            <span class="right " id="giathapnhat52tuan1">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">@Localizer["30daysaveragetradingvol"]</span>
+                            <span class="right " id="klgdbq30ngay1">0</span>
+                        </div>
+                        <div class="column">
+                            <span class="">@Localizer["ForeignBuy(YTD)"]</span>
+                            <span class="right " id="nnytd1">0</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+
+            <div class="fpts-info-right three">
+
+                <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row"
+                    role="tablist">
+                    <li class="nav-item  gsm-link-tab col-sm-3 col-mb-1" id=""
+                        style="display: contents;">
+
+                        <a id="tindoanhnghiepcongbo" data-toggle="tab"
+                           class="nav-link active show" href="#tab_tindoanhnghiepcongbo"
+                           role="tab" disabled="disabled" aria-selected="true">
+                            <span class="nav-link-title " style="color:#337ab7;">
+                                @Localizer["Tin_DNCB"].Value
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item  gsm-link-tab col-sm-2 col-mb-1" id=""
+                        style="display: contents;">
+
+                        <a id="tintuc" data-toggle="tab" class="nav-link" href="#tab_tintuc"
+                           role="tab" disabled="disabled" aria-selected="false">
+                            <span class="nav-link-title " style="color:#337ab7;">
+                                @Localizer["Tin_tuc"].Value
+                            </span>
+                        </a>
+
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade active show" id="tab_tindoanhnghiepcongbo"
+                         role="tabpanel">
+                        <div class="table_company_new">
+
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab_tintuc" role="tabpanel">
+                        <div class="table_company_new">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="info-price-company padding-0 four">
+                <div class="tieude_niemyet">
+                    <p>@Localizer["ListingInformation"]</p>
+                    <table id="table2" cellspacing="0" cellpadding="0" border="0">
+                        <tbody>
+                            <tr>
+                                <td class="kl_left">@Localizer["FirstListingDate"]</td>
+                                <td id="aposT_DATE" class="kl_right"></td>
+                            </tr>
+                            <tr>
+                                <td class="kl_left">@Localizer["CurrentListingExchange"]</td>
+                                <td id="aposT_TO" class="kl_right"></td>
+                            </tr>
+                            <tr>
+                                <td class="kl_left">@Localizer["FaceValue"]</td>
+                                <td id="aorG_PRICE" class="kl_right"></td>
+                            </tr>
+                            <tr>
+                                <td class="kl_left">@Localizer["ReferencePrice"]</td>
+                                <td id="afirsT_PRICE" class="kl_right"></td>
+                            </tr>
+                            <tr>
+                                <td class="kl_left">@Localizer["CurrentListingVolume"]</td>
+                                <td id="aqty" class="kl_right"></td>
+                            </tr>
+                            <tr>
+                                <td class="kl_left">@Localizer["TotalListingValue"]</td>
+                                <td id="asumqty" class="kl_right"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                @*<div class="tieude">
+                <p>Lĩnh vực sxxd chính</p>
+                <div class="linhvuc">
+                    <span id="linhvucsxxd">
+
+                    </span>
+                </div>
+
+            </div>*@
+            </div>
+
+        </div>
+        <div class="col-lg-8 info-company padding-0">
+
+            <div class="row">
+                <div class="col-sm-9" id="infocompay">
+                    <p class="ttinchung" style="width:100%">@Localizer["GeneralInformation"] </p>
+
+                    <table id="table_ttinchung" cellspacing="0" cellpadding="0"
+                           border="0" style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td class="left">@Localizer["stockCode"]</td>
+                                <td id="stockCode" class="custom-border-right"></td>
+
+                            </tr>
+                            <tr>
+                                <td class="left">@Localizer["Companyname"]</td>
+                                <td id="companyName" class="custom-border-right"></td>
+                            </tr>
+                            <tr>
+                                <td class="left">@Localizer["Abbreviation"] </td>
+                                <td id="tenviettat" class="custom-border-right"></td>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-sm-3" id="logocompany" style="border: 1px solid #dfdfdf;">
+
+                </div>
+
+            </div>
+
+            <table id="table2" cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+
+
+                    <tr>
+                        <td class="ttc_right">@Localizer["Headquarter"]</td>
+                        <td id="trusochinh">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ttc_right">@Localizer["CharteredCapital"]</td>
+                        <td id="vondieule" class="custom-border-right"></td>
+                    </tr>
+                    <tr>
+                        <td class="ttc_right">@Localizer["Telephone"]</td>
+                        <td id="phone" class="custom-border-right"></td>
+                    </tr>
+                    <tr>
+                        <td class="ttc_right">@Localizer["Fax"]</td>
+                        <td id="fax" class="custom-border-right"></td>
+                    </tr>
+                    <tr>
+                        <td class="ttc_right">@Localizer["Email"]</td>
+                        <td id="email" class="custom-border-right"></td>
+                    </tr>
+                    <tr>
+                        <td class="ttc_right">@Localizer["Website"]</td>
+                        <td class="custom-border-right" id="website"></td>
+                    </tr>
+                    <tr>
+                        <td class="ttc_right">@Localizer["Industry"]</td>
+                        <td id="nganhnghe" class="custom-border-right">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="ttc_right">@Localizer["Taxcode"]</td>
+                        <td id="mst" class="custom-border-right"></td>
+                    </tr>
+                    <tr>
+                        <td class="ttc_right">@Localizer["Businesslicense"]</td>
+                        <td id="dkykinhdoanh" class="custom-border-right">
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+        </div>
+
+        <div class="col-lg-4 info-price parent-linhvuc padding-0">
+
+
+            <div class="tieude">
+                <p>@Localizer["MainBusinessOperation"]</p>
+                <div class="linhvuc">
+                    <span id="linhvucsxxd">
+
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-lg-8 info-price padding-0">
+            <p class="ttinchung">@Localizer["CMLS"].Value</p>
+
+            <table id="table2" class="cacmoclichsu" style="width:100%" cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="col-lg-4 info-price">
+
+
+        </div>
+    </div>
+
+
+</div>
+<input id="stockcode" value="@HttpContextAccessor.HttpContext.Session.GetString("StockCode")" hidden />
+
+
+<script>
+
+    $(document).ready(function () {
+        if ($(window).width() <= 480 && /Android|webOS|iPhone|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            $('.mobile').show();
+            $('.n-mobile').hide();
+        } else {
+            $('.mobile').hide();
+            $('.n-mobile').show();
+        }
+
+        var stock_code = window.location.href.split('?')[0].split('/')[4];
+        var stockcode = stock_code.toUpperCase().replace('?', '');
+        //tin tức
+
+        var TinTuc = function () {
+            this.init = function () {
+
+                sessionStorage.clear();
+
+                Chart();
+                realPriceInterval();
+                getthongtingiaodich();
+                getBeta(stockcode);
+                getthongtinchung();
+                loadData();
+                loadTinDNCB();
+                getklgdthoathuan(stockcode);
+
+
+            }
+            var loadData = function () {
+                $.ajax({
+                    url: '@Url.Action("GetTTC", "ThongTinDoanhNghiep")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { stock_code: stockcode.replace('?', '')} ,
+                    success: function (data) {
+                        //console.log(data);
+                        let html = '';
+                        for (const item of data) {
+                            html += `
+                             <ul>
+                                <li class="custom-border">
+                                  ${item.datePub}
+                                </li>
+                                <li class="custom-border-right">
+                                  <a href="${setProtocol(item.url)}" style="color: #333;" target="_TinTuc"> ${item.stock_code}: ${item.title} </a>
+                                </li>
+                            </ul>`;
+
+                        }
+                        $('#tab_tintuc div').append(html);
+                    },
+                    error: function (err) {
+                       // console.log(err);
+                    }
+                });
+            }
+            var Chart = function () {
+                var stockcode = window.location.href.split('?')[0].split('/')[4];
+                let html = '';
+                html += `<iframe src="@Url.Action("Chart","ThongTinDoanhNghiep")/${stockcode}" style="height: 470px; width: 100%;border:none;"></iframe>`;
+                $('#chart').append(html);
+            }
+
+             var loadTinDNCB = function () {
+                $.ajax({
+                    url: '@Url.Action("GetTinDoanhNghiepCongBo", "ThongTinDoanhNghiep")',
+                    method: 'GET',
+                    dataType: 'json',
+                    data: { stock_code: stockcode} ,
+                    success: function (data) {
+                        //console.log(data);
+                        let html = '';
+
+                        for (const item of data) {
+                            html += `
+                         <ul>
+                            <li class="custom-border">
+                                 ${item.datePub}
+                            </li>
+                            <li class="custom-border-right">
+                                  <a href="${setProtocol(item.url)}" style="color: #333;" target="_blank">${item.title} </a>
+                            </li>
+
+                        </ul>`;
+                        }
+                        $('#tab_tindoanhnghiepcongbo div').append(html);
+
+                        if (data.length == 0) {
+                            $('li #tindoanhnghiepcongbo').hide();
+                            $('#tab_tindoanhnghiepcongbo').hide();
+                            $("#tab_tindoanhnghiepcongbo").removeClass("active show");
+                            $("#tab_tintuc").addClass("active show");
+                            $("#tintuc").addClass("active show");
+                            $("#tintuc").css("margin-right","50%");
+                        }
+                    },
+                    error: function (err) {
+                       // console.log(err);
+                    }
+                });
+            }
+
+        }
+
+        function cacmoclichsu() {
+            $.ajax({
+                url: '@Url.Action("GetCacMocLichSu", "ThongTinDoanhNghiep")',
+                method: 'GET',
+                dataType: 'json',
+                data: { stock_code: stockcode},
+                success: function (data) {
+                   // console.log(data);
+                       var lang = ReturnLanguage();
+                        let html = '';
+                    for (const item of data) {
+                        if (lang == "vi-VN" || lang == '') {
+                            if (item.aeventdesc != null && item.aeventdate != null) {
+                                html += `
+                                <tr>
+                                    <td class="ttc_right">${item.aeventdate}</td>
+                                    <td class="custom-border-right">
+                                        ${item.aeventdesc}
+                                    </td>
+                                </tr>`;
+                            }
+                        } else {
+                            if (item.aeventdescen != null && item.aeventdateen != null) {
+                                html += `
+                                <tr>
+                                    <td class="ttc_right">${item.aeventdateen}</td>
+                                    <td class="custom-border-right">
+                                        ${item.aeventdescen}
+                                    </td>
+                                </tr>`;
+                            }
+                        }
+
+
+                    }
+                    $('.cacmoclichsu tbody').append(html);
+                },
+                error: function (err) {
+                    //console.log(err);
+                }
+            });
+        };
+
+        const dataLivePrice = function (stockCode) {
+             return $.get(`@Url.Action("PriceRealTime", "ThongTinDoanhNghiep")`, { stockCode: stockCode });
+        };
+
+        function sosanhgia(source, dest) {
+            if (source > dest) return "greenPrice";
+            else if (source < dest) return "redPrice";
+            else return "yellowPrice";
+        }
+
+        function displayData(data) {
+            var changePricePercentage = (parseFloat(data.changePrice) / parseFloat(data.matchPrice)) * 100;
+            if (data.foreignSellQtty === "") {
+                data.foreignSellQtty = "0";
+            }
+            if (data.foreignBuyQtty === "") {
+                data.foreignBuyQtty = "0";
+            }
+            $('#giatran').html(data.ceiling);
+            $('#giathamchieu').html(data.refPrice);
+            $('#giasan').html(data.floor);
+
+            //màu thay đổi theo giá giá mở cửa, giá cao nhất, giá thấp nhất
+            $('#giamocua').html(data.openPrice);
+            $('#giamocua').addClass(sosanhgia(data.openPrice, data.refPrice));
+            if (data.highestPrice != "") {
+
+                $('#giamax').html(data.highestPrice);
+                $('#giamax').addClass(sosanhgia(data.highestPrice, data.refPrice));
+            } else { $('#giamax').html("0"); }
+            if (data.lowestPrice != "") {
+                $('#giathapnhat').html(data.lowestPrice);
+                $('#giathapnhat').addClass(sosanhgia(data.lowestPrice, data.refPrice));
+            } else {
+                $('#giathapnhat').html("0");
+            }
+
+
+            $('#khoiluong').html(data.totalQtty);
+            $('#nnban').html(data.foreignSellQtty);
+            $('#nnmua').html(data.foreignBuyQtty);
+            $('#MatchPrice').html(data.matchPrice);
+
+
+            sessionStorage.setItem('TotalQtty', data.totalQtty);
+            sessionStorage.setItem('MatchPrice', data.matchPrice);
+            sessionStorage.setItem('ChangePrice', data.changePrice);
+
+            sessionStorage.setItem('HighestPrice', data.highestPrice);
+            sessionStorage.setItem('LowestPrice', data.lowestPrice);
+
+            var changePricePercentage = (parseFloat(data.changePrice) / parseFloat(data.refPrice)) * 100;
+            sessionStorage.setItem('ChangePricePercentage', changePricePercentage);
+            //set trạng thái up down giá
+            switch (data.upDown) {
+                //up
+                case "u":
+
+                    $('#changePrice').html(`+` + data.changePrice );
+                    $('#changePricePercentage').html(`(+` + changePricePercentage.toFixed(2) + `%)`);
+                    $('#imgupdown').attr("src", "/images/up3.png");
+                    $('#changePrice').css('color', '#0daf4a');
+                    $('#changePricePercentage').css('color', '#0daf4a');
+                    $('#MatchPrice').css('color', '#0daf4a');
+                    break;
+                //down
+                case "d":
+                    $('#changePrice').html(data.changePrice);
+                    $('#changePricePercentage').html(`(` + changePricePercentage.toFixed(2) + `%)`);
+                    $('#imgupdown').attr("src", "/images/down.png");
+                    $('#changePrice').css('color', '#ff0000');
+                    $('#changePricePercentage').css('color', '#ff0000');
+                    $('#MatchPrice').css('color', '#ff0000');
+                    break;
+               //tham chiếu
+                case "b":
+                    $('#changePrice').html(data.changePrice);
+                    $('#changePricePercentage').html(`(` + changePricePercentage.toFixed(2) + `%)`);
+                    $('#imgupdown').attr("src", "/images/nochange.png");
+                    $('#imgupdown').css('height', '18px');
+                    $('#imgupdown').css('margin-top', '15px');
+                    $('#imgupdown').css('padding-right', '15px');
+                    $('#imgupdown').css('padding-left', '10px');
+                    $('#changePrice').css('color', '#FF9900');
+                    $('#changePricePercentage').css('color', '#FF9900');
+                    $('#MatchPrice').css('color', '#FF9900');
+                    break;
+                //tham chiếu
+                case "r": // reference price
+
+                    $('#changePrice').html(data.changePrice);
+                    $('#changePricePercentage').html(`(` + changePricePercentage.toFixed(2) + `%)`);
+                    $('#imgupdown').attr("src", "/images/nochange.png");
+                    $('#imgupdown').css('height', '18px');
+                    $('#imgupdown').css('margin-top', '15px');
+                    $('#imgupdown').css('padding-right', '5px');
+                    $('#imgupdown').css('padding-left', '5px');
+                    $('#changePrice').css('color', '#FF9900');
+                    $('#changePricePercentage').css('color', '#FF9900');
+                    $('#MatchPrice').css('color', '#FF9900');
+                    break;
+                //trần
+                case "c": // ceilling price
+
+                    $('#changePrice').html(`+` + data.changePrice);
+                    $('#changePricePercentage').html(`(+` + changePricePercentage.toFixed(2) + `%)`);
+                    $('#imgupdown').attr("src", "/images/up3.png");
+                    $('#changePrice').css('color', '#ff00ff');
+                    $('#changePricePercentage').css('color', '#ff00ff');
+                    $('#MatchPrice').css('color', '#ff00ff');
+                    break;
+
+                //sàn
+                case "f": //floor price
+
+                    $('#changePrice').html(data.changePrice);
+                    $('#changePricePercentage').html(`(` + changePricePercentage.toFixed(2) + `%)`);
+                    $('#imgupdown').attr("src", "/images/down.png");
+                    $('#changePrice').css('color', '#66ccff');
+                    $('#changePricePercentage').css('color', '#66ccff');
+                    $('#MatchPrice').css('color', '#66ccff');
+                    break;
+
+            }
+        }
+
+
+
+        //hàm đọc giá từ gateway
+        function realPriceInterval() {
+
+            setInterval(function () {
+                let stockCode = window.location.href.split('?')[0].split('/')[4];
+
+                setTimeout(function () {
+
+                    dataLivePrice(stockCode).then(res => {
+
+                        switch (res.upDown) {
+
+                            case "u":
+
+                                if (sessionStorage.length != 0 && res.matchPrice != sessionStorage.getItem('MatchPrice')) {
+
+                                    $('#MatchPrice').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && res.changePrice != sessionStorage.getItem('ChangePrice')) {
+                                    $('#changePrice').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && ((parseFloat(res.changePrice) / parseFloat(res.refPrice)) * 100) != sessionStorage.getItem('ChangePricePercentage') ) {
+                                    $('#changePricePercentage').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && res.changePrice != sessionStorage.getItem('ChangePrice')) {
+                                    $('#giamax').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && ((parseFloat(res.changePrice) / parseFloat(res.refPrice)) * 100) != sessionStorage.getItem('ChangePricePercentage')) {
+                                    $('#giathapnhat').addClass('boldd');
+                                }
+
+                                break;
+                            case "d":
+
+                                if (sessionStorage.length != 0 && res.matchPrice != sessionStorage.getItem('MatchPrice')) {
+
+                                    $('#MatchPrice').addClass('boldd');
+
+                                }
+                                if (sessionStorage.length != 0 && ((parseFloat(res.changePrice) / parseFloat(res.refPrice)) * 100) != sessionStorage.getItem('ChangePricePercentage')) {
+                                    $('#changePricePercentage').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 &&  res.changePrice != sessionStorage.getItem('ChangePrice')) {
+                                    $('#changePrice').addClass('boldd');
+                                }
+
+                                break;
+                            case "r":
+                                if (sessionStorage.length != 0 && ((parseFloat(res.changePrice) / parseFloat(res.refPrice)) * 100) != sessionStorage.getItem('ChangePricePercentage')) {
+                                    $('#changePricePercentage').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && res.changePrice != sessionStorage.getItem('ChangePrice')) {
+                                    $('#changePrice').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && res.matchPrice != sessionStorage.getItem('MatchPrice')) {
+                                    $('#MatchPrice').addClass('boldd');
+                                }
+                                break;
+                            case "c":
+                                if (sessionStorage.length != 0 && ((parseFloat(res.changePrice) / parseFloat(res.refPrice)) * 100) != sessionStorage.getItem('ChangePricePercentage')) {
+                                    $('#changePricePercentage').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && res.changePrice != sessionStorage.getItem('ChangePrice')) {
+                                    $('#changePrice').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && res.matchPrice != sessionStorage.getItem('MatchPrice')) {
+                                    $('#MatchPrice').addClass('boldd');
+                                }
+                                break;
+                            case "f":
+                                if (sessionStorage.length != 0 && ((parseFloat(res.changePrice) / parseFloat(res.refPrice)) * 100) != sessionStorage.getItem('ChangePricePercentage')) {
+                                    $('#changePricePercentage').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && res.changePrice != sessionStorage.getItem('ChangePrice')) {
+                                    $('#changePrice').addClass('boldd');
+                                }
+                                if (sessionStorage.length != 0 && res.matchPrice != sessionStorage.getItem('MatchPrice')) {
+                                    $('#MatchPrice').addClass('boldd');
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (sessionStorage.length != 0 && res.totalQtty != sessionStorage.getItem('TotalQtty')) {
+
+                            $('#khoiluong').addClass('boldd');
+                        }
+                        if (sessionStorage.length != 0 && res.highestPrice != sessionStorage.getItem('HighestPrice')) {
+                            $('#giamax').addClass('boldd');
+                        }
+                        if (sessionStorage.length != 0 && res.lowestPrice != sessionStorage.getItem('LowestPrice')) {
+                            $('#giathapnhat').addClass('boldd');
+                        }
+
+                        displayData(res);
+
+                    });
+                }, 1000);
+
+                $('#khoiluong').removeClass('boldd');
+                $('#MatchPrice').removeClass('boldd');
+                $('#changePrice').removeClass('boldd');
+                $('#changePricePercentage').removeClass('boldd');
+                $('#giamax').removeClass('boldd');
+                $('#giathapnhat').removeClass('boldd');
+
+
+            }, 2000);
+
+        }
+
+        //chạy sau hàm realtime
+        function getthongtingiaodich() {
+            $.get("@Url.Action("GetThongTinGiaoDich", "ThongTinDoanhNghiep")?stockCode=" + stockcode, function (data) {
+
+                $('#giacaonhat52tuan').html(formatNumber(data[0].high52));
+                $('#giathapnhat52tuan').html(formatNumber(data[0].low52));
+                $('#klgdbq30ngay').html(formatNumber((parseFloat(data[0].klgD_30_Days)).toFixed(2)));
+                $('#tlshnn').html(formatNumber(data[0].tlshnn) + '%');
+
+                /*$('#nnytd').html(data[0].);*/
+
+                /*Dữ liệu giao diện khi xem trên điện thoại*/
+                $('#giacaonhat52tuan1').html(formatNumber(data[0].high52));
+                $('#giathapnhat52tuan1').html(formatNumber(data[0].low52));
+                $('#klgdbq30ngay1').html(formatNumber((parseFloat(data[0].klgD_30_Days)).toFixed(2)));
+                /*$('#nnytd').html(data[0].);*/
+                $('#pe1').html(parseFloat(data[0].last4qPEAdj).toFixed(2)); //4 quý gần nhất
+                $('#eps1').html(parseFloat(data[0].last4qEPSAdj).toFixed(4));
+
+                $('#beta').html(data[0].beta);
+                $('#gtSoSach').html(formatNumber((parseFloat(data[0].vBVPeriod) / 1e9).toFixed(2))); // TungLX 09/01/2023: sửa lại tên giá trị đúng với api trả ra vbvperiod -> vBVPeriod
+                $('#gtvonhoa').html(formatNumber3((parseFloat(data[0].mktCap) / 1e9)));
+                /*$('#pe').html(parseFloat(data[0].last4qPEAdj).toFixed(2));*/ //4 quý gần nhất
+                $('#eps').html(formatNumber(Math.round(parseFloat(data[0].last4qEPSAdj)))); //EPS điều chỉnh 4 quý gần nhất
+                $('#petra').html(parseFloat(data[0].last4qPEAdj).toFixed(2)); // giá trị cổ phiếu hiện tại(khớp giá mua bán)/eps trailling
+            });
+        }
+
+
+        function getklgdthoathuan(stock_code) {
+
+            //var stockurl = window.location.href.split('?')[0].split('/')[4];
+
+            $.get("@Url.Action("GetKhoiLuongGiaoDichThoaThuan", "ThongTinDoanhNghiep")", function (data) {
+                let arrKLGD = JSON.parse(data);
+                let arr = arrKLGD.PUT_EXEC.filter(x => x.Info[1][1] == stock_code);
+                if (arr.length != 0) {
+                    $('#klgdtt').html(formatNumber(arr[0].Info[7][1]));
+                } else {
+                    $('#klgdtt').html(0);
+                }
+            });
+        }
+
+        function getBeta(stock_code) {
+            // lấy ngày hiện tại định dạnh "mm/dd/yyyy"
+            const date = new Date();
+            let day = date.getDate();
+            let month = date.getMonth() + 1;
+            let year = date.getFullYear();
+            let lastyear = date.getFullYear() - 1;
+
+
+            let currentDate = `${month}-${day}-${year}`;// ngày hiện tại
+            let lastDate = `${month-1}-${day}-${lastyear}`;// Chiennd:lùi 13 tháng và chặn chỉ lấy 52 tuần trong DataService
+
+            console.log(currentDate);
+            console.log(lastDate);
+            $.get(`@Url.Action("CalBetaStock", "ThongTinDoanhNghiep")?stock_code=${stock_code}&fromDate=${lastDate}&toDate=${currentDate}`, function (data) {
+                let betaObj = JSON.parse(data);
+                let beta = betaObj.data[0].item1;
+
+                $('#beta').html(formatNumber(beta.toFixed(2)));
+            });
+        }
+
+        function getthongtinchung() {
+            var stockurl = window.location.href.split('?')[0].split('/')[4];
+            $.get("@Url.Action("GetThongTinChung", "ThongTinDoanhNghiep")?stockCode=" + stockurl, function (data) {
+                  //Get cookies language
+               // var value = "@requestCulture.RequestCulture.UICulture.Name";
+                var value = ReturnLanguage();
+
+                //console.log('data:', data);
+                //console.log('datalogo:', data[0].alogopath);
+
+                if (value == "vi-VN") {
+                    //thông tin chung
+                    $('#stockCode').html(data[0].astocK_CODE);
+                    $('#companyName').html(data[0].anamE_VN);
+                    $('#tenviettat').html(data[0].anamE_SHORT);
+                    $('#trusochinh').html(data[0].aheadoffice);
+                    //lĩnh vực sản xuất xây dựng
+                    $('#linhvucsxxd').html(data[0].asummary);
+                    $('#nganhnghe').html(data[0].minisnamevn);
+                }
+                else {
+                     //thông tin chung
+                    $('#stockCode').html(data[0].astocK_CODE);
+                    $('#companyName').html(data[0].anamE_EN);
+                    $('#tenviettat').html(data[0].anamE_SHORT);
+                    $('#trusochinh').html(data[0].aheadofficeen);
+                    //lĩnh vực sản xuất xây dựng
+                    $('#linhvucsxxd').html(data[0].asummarY_EN);
+                    $('#nganhnghe').html(data[0].minisnameen);
+                }
+
+                //Thông tin chung
+                $('#phone').html(data[0].aphone);
+                $('#fax').html(data[0].afax);
+                $('#email').html(data[0].aemail);
+
+                if (data[0].acapital != null) {
+                    $('#vondieule').html(formatNumber(data[0].acapital)); // QuangKS edit
+                } else {
+                    $('#vondieule').html('0'); // QuangKS edit
+                }
+
+                $('#website').append('<a href="' + 'http://' + (data[0].awebsite == 'null' ? "" : removeHttp(data[0].awebsite)) + '" target="_blank"> ' + (data[0].awebsite == null ? "" : data[0].awebsite) + '</a>');
+                //$('#nganhnghe').html(data[0].cpnytypename);
+                $('#mst').html(data[0].ataxcode);
+                $('#dkykinhdoanh').html(data[0].areG_BIZ_NO);//đăng ký kinh doanh
+
+                //console.log('append:', `<img src="@urlimgLogo${data[0].alogopath}" class="logofpts">`);
+                $('#logocompany').append(`<img src="@urlimgLogo${data[0].alogopath}" class="logofpts">`);
+
+                //THông tin niêm yết
+                $('#aposT_DATE').html(getFormattedDate(data[0].aposT_DATE));
+                $('#aposT_TO').html(data[0].aposT_TO);
+                $('#afirsT_PRICE').html(formatNumber(data[0].afirsT_PRICE));
+                $('#aorG_PRICE').html(formatNumber(data[0].aorG_PRICE));
+                $('#aqty').html(formatNumber(data[0].aqty));
+                $('#asumqty').html(formatNumber(data[0].aorG_PRICE * data[0].aqty));
+            });
+
+        }
+
+        function removeHttp(url) {
+            if (url.startsWith('https://')) {
+                const https = 'https://';
+                return url.slice(https.length);
+            }
+
+            if (url.startsWith('http://')) {
+                const http = 'http://';
+                return url.slice(http.length);
+            }
+
+            return url;
+        }
+
+        //thay đổi giao thức của link file theo giao thức của link trang hiện tại
+        function setProtocol(url) {
+            //Cắt chuỗi thành 2 phần: [0] là protocol của chuỗi, [1] là phần còn lại của đường dẫn
+            var arr = url.split('://');
+            if (arr[0] !== '@protocol') {
+                return '@protocol' + '://' + arr[1];
+            }
+            return url;
+        }
+
+
+        var tinTuc = new TinTuc();
+        tinTuc.init();
+        cacmoclichsu();
+    });
+</script>

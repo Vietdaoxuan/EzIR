@@ -1,0 +1,313 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/css/DongBoDL.css" />
+<style>
+
+    .margin {
+        margin-top:40px;
+    }
+</style>
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Support</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="@Url.Action(" Index","Support")"><span>Đồng bộ dữ liệu</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+<div class="container">
+    <div class="khung" style="margin-top:20px;">
+        <div class="col-sm-12 nopadding boxshadow">
+            <div class="gsm-info-bar row mb-3 p-2">
+                THÔNG TIN DOANH NGHIỆP
+            </div>
+        </div>
+        <div class="row" id="mid">
+            <div class="col-sm-4">
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+
+                        @*<input type="checkbox" id="dldoanhnghiep" name="Checkbox[]" value="Dongbothongtincongty">*@
+                        <input type="checkbox" id="dldoanhnghiep" name="Checkbox[]" value="SPEZSTEMP_COMPANY_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ thông tin công ty</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="ttlanhdao" name="Checkbox[]" value="SPEZSTEMP_COMPANYTYPE_SYNC ">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ loại sở hữu công ty</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="chucvu" name="Checkbox[]" value="SPEZSTEMP_DEVELOPPROGRESS_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ thông tin developprogress</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="chucvu" name="Checkbox[]" value="SPEZSTEMP_HOLDER_ONLY_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ cổ đông</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="chucvu" name="Checkbox[]" value="SPEZSTEMP_INFOSHEET_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ thông tin free text</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="db-loaicty" name="Checkbox[]" value="SPEZSTEMP_SH_HOLDER_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ danh sách cổ đông</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="chucvu" name="Checkbox[]" value="SPEZSTEMP_KNOWLEDGELEVEL_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ trình độ học vấn</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="chucvu" name="Checkbox[]" value="SPEZSTEMP_MANAGER_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ thông tin Ban lãnh đạo</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="bomay-quanly" name="Checkbox[]" value="SPEZSTEMP_MANAGERORG_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ thông tin Chức danh/ Chức vụ</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="codonglon" name="Checkbox[]" value="SPEZSTEMP_MANAGERROLEORG_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ thông tin Mã Chức danh/ Chức vụ</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="congtycon-lk" name="Checkbox[]" value="SPEZSTEMP_MENUS_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ danh sách Menu Free - Text</p>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="chucvu" name="Checkbox[]" value="SPEZSTEMP_MINISTRY_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ thông tin ngành</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="chucvu" name="Checkbox[]" value="SPEZSTEMP_ORGMODEL_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ danh sách Tổ chức bộ máy quản lý</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="free-text" name="Checkbox[]" value="SPEZSTEMP_PAR_SUBCOMPANYTYPE_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ loại Công ty sở hữu</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="db-menu" name="Checkbox[]" value="SPEZSTEMP_SH_CPNYHOLDER_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ danh sách Cơ cấu sở hữu</p>
+                </div>
+                <div class="row">
+                    <label class="k-checkbox k-checkbox--bold k-checkbox--brand col-12">
+                        <input type="checkbox" id="db-loaicty" name="Checkbox[]" value="SPEZSTEMP_SUBCOMPANY_SYNC">
+                        <span></span>
+                    </label>
+                    <p style="padding-left:30px">Đồng bộ danh sách Công ty sở hữu</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="btn-luu">
+            <button type="button" class="btn btn-primary" id="btn-save">Lưu</button>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="content-tbl">
+                <table id="listJOBS" class="table table-striped  dataTable no-footer " role="grid" style="width: 1317px;">
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="loading"></div>
+
+<script type="text/javascript">
+
+    function Validate(i) {
+        if (($("input[name*='Checkbox']:checked").length) <= 0) {
+            toastr.error('Bạn chưa chọn ô nào để đồng bộ!');
+            return false;
+        }
+        return true;
+    }
+
+    function uncheck_checkboxes(id) {
+        for (var x = 0; x < id.length; x++) {
+            $("input[name*='Checkbox']:checked").prop("checked", false);
+        }
+    }
+
+    $(document).ready(function () {
+
+        var renderColumns = [
+            {
+                orderable: true,
+                title: "STT",
+                data: "index"
+            },
+            {
+                orderable: true,
+                title: "Tên Job",
+                data: "aquery"
+            },
+            {
+                orderable: false,
+                title: "Ngày đăng tải",
+                data: "aid",
+                render: (data) => (new Date(data)).toLocaleDateString()
+            },
+            {
+                orderable: false,
+                title: "Trạng thái",
+                data: "status"
+            }
+        ];
+
+
+        var Jobs = function () {
+            this.init = function () {
+                loadData(null);
+                registerEvents();
+            }
+
+            var loadData = function (data) {
+                $('#loading').addClass('loading');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetJobsStatus", "Support")',
+                    data: data,
+                    success: function (data) {
+                        let index = 1;
+                        data.forEach(x => {
+                            x.index = index++;
+                        });
+                        console.log(data);
+                        $('#loading').removeClass('loading');
+
+                        if ($.isArray(data)) {
+
+                            $('#listJOBS').DataTable({
+                                ordering: false,
+                                dom: "lti<'d-flex pagingListUser justify-content-center margin'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                lengthChange: false,
+                                className: 'dt-body-right',
+                                "bInfo": true,
+                                data: data,
+                                columns: renderColumns
+                            });
+                            return;
+                        }
+                    }
+                })
+            }
+            var registerEvents = function () {
+
+                $('body').on('click', '#btn-save', function (e) {
+
+                    e.preventDefault();
+
+                    //check valid
+                    var Check = true;
+                    Check = Validate('btn-save');
+                    if (Check) {
+                    $('#loading').addClass('loading');
+                    var listChecked = [];
+                    $("input[name*='Checkbox']:checked").map(function () {
+                        listChecked.push(this.value);
+                    });
+                        if (listChecked.length > 1) {
+                            uncheck_checkboxes(listChecked);
+                        toastr.warning('Chỉ được chọn 1 chức năng đồng bộ!');
+                        $('#loading').removeClass('loading');
+                    }
+                    else {
+                        $("input[name*='Checkbox']").Checked = false;
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("XuLyDongBo", "Support")',
+                            dataType: 'json',
+                            data: {
+                                Loai: listChecked
+                            },
+                            success: function (data) {
+
+                                toastr.success('Đồng bộ thông tin thành công!');
+                                uncheck_checkboxes(listChecked);
+                                loadData();
+                                $('#loading').removeClass('loading');
+
+                            },
+                            error: function (err) {
+                                uncheck_checkboxes(listChecked);
+                                $('#loading').removeClass('loading');
+                                toastr.error('Đồng bộ thông tin không thành công!');
+                                console.log(err);
+                            }
+                        });
+                    }
+
+                }
+                    });
+            }
+        }
+
+        var jobs = new Jobs();
+        jobs.init();
+
+    })
+
+
+</script>

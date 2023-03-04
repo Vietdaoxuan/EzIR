@@ -1,0 +1,1418 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHttpContextAccessor _httpContextAccessor;
+
+@{
+    ViewData["Title"] = "Cơ cấu sở hữu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var cpnyID = _httpContextAccessor.HttpContext.Session.GetInt32(SessionTypes.CPNY_ID) ?? null;
+}
+
+<link href="~/css/cocausohuu.css" type="text/css" rel="stylesheet" />
+
+<input type="text" id="cpnyid" name="CpnyID" value="@Context.Session.GetInt32(SessionTypes.CPNY_ID)" style="display:none" />
+
+<div class="title_line d-flex" style="margin-bottom: 0px;">
+    <div class="container">
+        <span class="title_line_item">
+            <font color="#4187A6"><a href="/internal" style="color:#4187A6;font-weight: 600;">@Localizer["Update_Infomation"].Value</a></font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Tong_Quan"].Value</font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Shareholder_structure"].Value</font>
+        </span>
+    </div>
+</div>
+<div class="k-portlet__body">
+    <div class="row col-12 nopadding">
+        <div class="col-md-7 div-button-mobiletop" style="padding-bottom: 10px"></div>
+        <div class="col-md-5 div-button" style="padding-bottom: 10px">
+            <div class="set_up-button" style="padding-left: 37%;">
+                <input type="button" class="btn btn-primary form-control  mx-2 my-1" value="@Localizer["SaveAndSend"].Value" id="btnSave">
+                <input type="button" class="btn btn-primary form-control  mx-2 my-1" value="@Localizer["Refresh"].Value" id="btnRefesh">
+            </div>
+        </div>
+
+        <div class="respon-mobile">
+            <div class="col-md-12 text-box-label-general" style="padding-left: 0px;">
+
+                <div class="col-md-12" style="padding-right: 0px;padding-left: 0px">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px;">
+                            <div class="content-leadership-composition">
+                                <p class="text-leadership" for="" style="width: 100%;padding: 5px;color: #2D6696">@Localizer["SubCompany"].Value</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-box-label-general" style="padding-bottom: 15px;padding-left: 0px;padding-right: 0px;">
+                            <div class="forms-leadership-composition">
+                                <table id="list_SUBSIDIARIES" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" aria-describedby="listAccount_info" style="width: 100%;border-bottom: 1px solid #cec5c5;">
+
+                                   
+                                </table>
+                                <div class="row col-12 nopadding">
+                                    <div class="col-md-7"></div>
+                                    <div class="col-md-5" style="padding-top: 10px">
+                                        <div class="set_up-add-button" style="padding-left: 88%; display:inline-flex;">
+                                            <span id="addCompany_SUBSIDIARIES" class="buttons-add btn-primary form-control  mx-2 my-1" style="border-radius:15px;height:30px;font-size: 12px;background-color: #EE6E24;padding: 6px 14px;">
+                                                @Localizer["Add"].Value
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px;">
+                    <div class="col-md-12" style="padding-right: 0px;padding-left: 0px;">
+                        <div class="row">
+                            <div class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px">
+                                <div class="content-leadership-composition">
+                                    <p class="text-leadership" for="" style="width: 100%;padding: 5px;color: #2D6696;">@Localizer["Associated_Company"].Value</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12 text-box-label-general " style="padding-bottom: 15px;padding-left: 0px;padding-right: 0px;">
+                                <div class="forms-leadership-composition">
+                                    <table id="listAssociated_Company" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" aria-describedby="listAccount_info" style="width: 100%;border-bottom: 1px solid #cec5c5;">
+                                    </table>
+                                    <div class="row col-12 nopadding">
+                                        <div class="col-md-7"></div>
+                                        <div class="col-md-5" style="padding-top: 10px">
+                                            <div class="set_up-add-button" style="padding-left: 88%;display:inline-flex;">
+                                                <span id="addCompany_Associated" class="buttons-add btn-primary form-control  mx-2 my-1" style="border-radius:15px;height:30px;font-size: 12px;background-color: #EE6E24;padding: 6px 14px;">
+                                                    @Localizer["Add"].Value
+                                                </span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px;">
+                        <div class="col-md-12" style="padding-right: 0px;padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general" style="padding-right: 0px;padding-left: 0px">
+                                    <div class="content-leadership-composition">
+                                        <p class="text-leadership" for="" style="width: 100%;padding: 5px;color: #2D6696;">@Localizer["Major_shareholder"].Value</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 text-box-label-general" style="padding-left: 0px;padding-right: 0px;">
+                                    <div class="forms-leadership-composition">
+                                        <table id="listMajor_shareholder" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" aria-describedby="listAccount_info" style="width: 100%; border-bottom: 1px solid rgb(206, 197, 197);">
+                                        </table>
+                                        <div class="row col-12 nopadding">
+                                            <div class="col-md-7"></div>
+                                            <div class="col-md-5" style="padding-top: 10px">
+                                                <div class="set_up-add-button" style="padding-left: 88%;display:inline-flex;">
+                                                    <span id="add_Shareholder" class="buttons-add btn-primary form-control  mx-2 my-1" onclick="addAttribute()" style="border-radius:15px;height:30px;background-color: #EE6E24;font-size:12px;padding: 6px 14px;">
+                                                        @Localizer["Add"].Value
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+@section Scripts
+{
+    <script type="text/javascript">
+
+        // check không cho nhập chữ vào
+        @*function isNumber() {
+            var inputField = document.getElementsByClassName('testabcd');
+            if (!inputField.value.match(/^(\d|-)+$/)) {
+                inputField.value = inputField.value.replace(/[^0-9/,%]/g, '');
+            }
+        }*@
+
+        $(document).ready(function () {
+
+
+
+            var CommonConst = {
+                MODIFIED: 2,
+                UNMODIFIED: 0,
+                CREATE_NEW: 1,
+
+
+            };
+
+            var CoCauSoHuu = function () {
+                var result_Subcompanyytype = null;
+                var result_Industry = null;
+                this.init = async function () {
+
+                    LoadData();
+                    registerEvents();
+
+                }
+
+
+
+                //columns table công ty con
+                var rendercolumssubcompany = [
+                    {
+                        title: "@Localizer["Order"].Value",
+                        width: '8%',
+                        render: function (data, type, company) {
+                            let checkOrder = company.aorder ?? '';
+                            return `<input style="border:none" type = "number" class="company_order form-control-general" min="0" value = "${checkOrder}" name="Aorder" readonly/><input type="number" class="status_company_order" value="0" hidden>`
+                        }
+                    },
+                    {
+                        title: "@Localizer["Ten"].Value",
+                        width: '12%',
+                        render: function (data, type, company) {
+                            return `<input style="border:none" type = "text" class="company_name form-control-general" value = "${company.asubcompanyname}" name="Asubcompanyname" readonly/><input type="number" class="status_company_name" value="0" hidden>`
+                        }
+                    },
+                    {
+                        title: "@Localizer["Address"].Value",
+                        width: '15%',
+                        render: function (data, type, company) {
+                            return `<input style="border:none" type = "text" class="company_address form-control-general" value = "${company.aaddress}" name="Aaddress" readonly/><input type="number" class="status_company_address" value ="0" hidden>`
+                        }
+                    },
+                    {
+                        title: "@Localizer["Ministry"].Value",
+                        width:'25%',
+                        render: function (data, type, company) {
+
+                            var dataIndustry = null;
+
+                            dataIndustry = result_Industry;
+
+                            var slindustry = $("<select></select>", {
+                                id: "selectIndustry",
+                                class: "form-control",
+                                disabled: true,
+                                name: "Aministryid"
+                            });
+                            $.each(dataIndustry, function (k, v) {
+
+                                var $option = $("<option></option>", {
+                                    "text": v.anamevn,
+                                    "value": v.aministryid
+                                });
+
+                                if (company.aministryid == v.aministryid) {
+
+                                    $option.attr("selected", "selected");
+                                }
+                                slindustry.append($option);
+
+                            });
+                            slindustry.append("<input type='number' class='status_company_ministryid' value='0' hidden/>");
+
+                            return slindustry.prop("outerHTML");
+                        }
+
+                    },
+
+                    {
+                        title: "@Localizer["Subcompany_Type"].Value",
+                        width: '25%',
+                        render: function (data, type, company) {
+
+                            var dataSubcompanytype = new Array();
+
+                            dataSubcompanytype = result_Subcompanyytype;
+
+                            var slsubcompanytype = $("<select></select>", {
+                                id: "selectSubcompanytype",
+                                class: "form-control",
+                                disabled: true,
+                                name: "Asubcompanytypeid"
+                            });
+
+
+                            $.each(dataSubcompanytype, function (k, v) {
+
+                                var $option = $("<option></option>", {
+                                    "text": v.asubcompanytypedesc,
+                                    "value": v.asubcompanytypeid
+                                });
+
+                                if (company.asubcompanytypeid == v.asubcompanytypeid) {
+
+                                    $option.attr("selected", "selected");
+                                }
+                                slsubcompanytype.append($option);
+
+
+                            });
+                            slsubcompanytype.append("<input type='number' class='status_company_asubcompanytypeid' value='0' hidden/>");
+                            return slsubcompanytype.prop("outerHTML");
+
+                        }
+                    },
+
+                    {
+                        title: "@Localizer["Owned"].Value",
+                        width: '10%',
+                        render: function (data, type, company) {
+                            return `<input style="border:none" type = "text" class="company_asharerate form-control-general" value = "${company.asharerate}" name="Asharerate" readonly/><input type="number" class="status_company_asharerate" value="0" hidden>`
+                        }
+                    },
+                    {
+                        render: function (data, type, company) {
+                            return `<input style="border:none" type = "text" class="company_asubcompanyid form-control-general" value = "${company.asubcompanyid}" name="Asubcompanyid" readonly/><input type="number" class="status_company_asubcompanyid" hidden>`
+                        }
+
+                    },
+                    {
+                        width: "51px",
+                        render: function (data, type, company) {
+                            return `<input type="button" class="btn btn-primary form-control EditCongTy ctycon${company.aapprove}" id="${company.asubcompanyid}" value="@Localizer["Edit"].Value" />`;
+
+                        }
+                    }
+
+                ];
+
+                //colums table công ty liên kết
+
+                var rendercolumssubcompany_affiliated = [
+                    {
+                        title: "@Localizer["Order"].Value",
+                        width: '8%',
+                        render: function (data, type, company) {
+                            let checkOrder = company.aorder ?? '';
+                            return `<input style="border:none" type = "number" min="0" class="company_order form-control-general" value = "${checkOrder}" name="Aorder" readonly/><input type="number" class="status_affiliated_order" value="0" hidden>`
+                        }
+                    },
+                    {
+                        title: "@Localizer["Ten"].Value",
+                        width: '15%',
+                        render: function (data, type, company) {
+                            return `<input style="border:none" type = "text" class="company_name form-control-general" value = "${company.asubcompanyname}" name="Asubcompanyname" readonly/><input type="number" class="status_affiliated_asubcompanyname" value ="0" hidden>`
+                        }
+                    },
+                    {
+                        title: "@Localizer["Address"].Value",
+                        width: '15%',
+                        render: function (data, type, company) {
+                            return `<input style="border:none" type = "text" class="company_address form-control-general" value = "${company.aaddress}" name="Aaddress" readonly/><input type="number" class="status_affiliated_address" value ="0" hidden>`
+                        }
+                    },
+                    {
+                        title: "@Localizer["Ministry"].Value",
+                        width: '25%',
+                        render: function (data, type, company) {
+
+                            var dataIndustry = new Array();
+
+                            dataIndustry = result_Industry;
+
+
+                            var slindustry = $("<select></select>", {
+                                id: "selectIndustry_affiliated",
+                                class: "form-control",
+                                disabled: true,
+                                name: "affiliated_Aministryid"
+                            });
+
+
+
+                            $.each(dataIndustry, function (k, v) {
+
+                                var $option = $("<option></option>", {
+                                    "text": v.anamevn,
+                                    "value": v.aministryid
+                                });
+
+                                if (company.aministryid == v.aministryid) {
+
+                                    $option.attr("selected", "selected");
+                                }
+                                slindustry.append($option);
+
+                            });
+                            slindustry.append("<input type='number' class='status_affiliate_industry' value='0' hidden/>");
+                            return slindustry.prop("outerHTML");
+                        }
+
+                    },
+
+                    {
+                        title: "@Localizer["Owned"].Value",
+                        render: function (data, type, company) {
+                            return `<input style="border:none" type = "text" class="company_asharerate form-control-general" value = "${company.asharerate}" name="Asharerate"  readonly/><input type="number" class="status_affiliated_asharerate" value ="0" hidden>`
+                        }
+
+
+                    },
+                    {
+                        render: function (data, type, company) {
+                            return `<input style="border:none" type = "text" class="company_asubcompanyid form-control-general" value = "${company.asubcompanyid}" name="Asubcompanyid" readonly/><input type="number" class="status_company_asubcompanyid" value ="0" hidden>`
+                        }
+
+                    },
+                    {
+                        render: function (data, type, company) {
+                            return `
+                            <input style="border:none" type = "text" class="company_asubcompanytypeid form-control-general" value = "${company.asubcompanytypeid}" name = "affiliated_Aministryid" readonly hidden/><input type="number" class="company_affiliate_asubcompanytypeid" value="100" name="Asubcompanytypeid" hidden/>
+                       `
+                        }
+
+                    },
+                    {
+
+                        render: function (data, type, company) {
+                            @*if (company.aapprove > 0) {
+                                return `<input type="button" class="btn btn-primary form-control EditCongTy lienket${company.aapprove}" id="${company.asubcompanyid}" value="@Localizer["Edit"].Value" disable/>`;
+                            }else*@ return `<input type="button" class="btn btn-primary form-control EditCongTy lienket${company.aapprove}" id="${company.asubcompanyid}" value="@Localizer["Edit"].Value" />`;
+
+                        }
+                    }
+
+                ];
+
+                //colums table cổ đông lớn
+                var rendercolumsshareholder = [
+                    {
+                        title: "@Localizer["Order"].Value",
+                        width: '8%',
+                        render: function (data, type, company) {
+                            let checkOrder = company.aorder ?? '';
+                            return `<input style="border:none" type = "number" min="0" class="shareholder_order form-control-general" value = "${checkOrder}" name="Aorder" readonly/><input type="number" class="status_shareholder_order" value="0" hidden>`
+                        }
+                    },
+                    {
+                        title: "@Localizer["Shareholder"].Value",
+                        width: '30%',
+                        render: function (data, type, shareholder) {
+                            return `<input  style="border:none" type = "text" class="shareholder_ashname form-control-general" value = "${shareholder.ashname}" name="Ashname" readonly/><input type="number" class="status_shareholder_ashname" value ="0" hidden>`
+                        }
+
+                    },
+                    {
+                        title: "@Localizer["Share"].Value",
+                        width: '25%',
+                        render: function (data, type, shareholder) {
+                            return `
+                            <input  style="border:none" type = "text" class="shareholder_acurshareno form-control-general" value = "${shareholder.acurshareno.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}" name="Acurshareno" readonly/><input type="number" class="status_shareholder_acurshareno" value ="0" hidden>
+                        `
+                        }
+                    },
+                    {
+                        title: "@Localizer["Rate"].Value",
+                        render: function (data, type, shareholder) {
+                            return `
+                            <input style="border:none" type = "text" class="shareholder_acursharerate form-control-general" value ="${shareholder.acursharerate}" name = "Acursharerate" readonly/><input type="number" class="status_shareholder_acursharerate" value ="0" hidden>
+                       `
+                        }
+
+                    },
+
+                    {
+
+                        render: function (data, type, shareholder) {
+                            return `
+                            <input style="border:none" type = "text" class="shareholder_asherid form-control-general" value = "${shareholder.asherid}" name = "Asherid" readonly/>
+                       `
+                        }
+
+                    },
+
+                    {
+                        render: function (data, type, shareholder) {
+                            return `
+                              <input type="button" class ="btn btn-primary form-control EditShareholder" id="${shareholder.asherid}" value="@Localizer["Edit"].Value" />
+                         `;
+                        }
+                    }
+
+
+
+                ];
+
+                @*function loadData1() {
+                    var cpid = $('#cpnyid').val();
+
+                    $('#loading').addClass('loading');
+
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetCongTy", "CoCauSoHuu")',
+                        dataType: 'json',
+                        data: { CpnyID: cpid },
+                        success: function (data) { }
+                    })
+                }*@
+
+                function LoadData() {
+
+                    //Láy thông tin công ty con
+
+                    var cpid = $('#cpnyid').val();
+
+                    $('#loading').addClass('loading');
+
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetCongTy", "CoCauSoHuu")',
+                        dataType: 'json',
+                        data: { CpnyID: cpid },
+                        success: function (data) {
+
+                            Promise.all([Load_Industry(), Load_Subcompany_Type()])
+                                .then(function (result) {
+
+                                    result_Industry = result[0];
+                                    result_Subcompanyytype = result[1];
+                                    $('#list_SUBSIDIARIES').DataTable({
+                                        language: {
+                                            "zeroRecords": " "
+                                        },
+                                        ordering: true,
+                                        dom: "lti<'pagingList justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        data: data[0],
+                                        "pageLength": 15,
+                                        columns: rendercolumssubcompany,
+                                        "drawCallback": function () {
+                                            commons.setDataFormCCSH(data, 0);
+                                            $("input[name='Asharerate']").val(function (i, v) {
+                                                return v.replace('%', '') + '%';
+                                            });
+                                        }
+                                    });
+
+                                    //Table Công ty liên kết
+                                    $('#listAssociated_Company').DataTable({
+                                        ordering: true,
+                                        dom: "lti<'pagingList justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        data: data[1],
+                                        "pageLength": 15,
+                                        columns: rendercolumssubcompany_affiliated,
+                                        "drawCallback": function () {
+                                            commons.setDataFormCCSH(data, 1);
+                                            $("input[name='Asharerate']").val(function (i, v) {
+                                                return v.replace('%', '') + '%';
+                                            });
+                                        }
+                                    });
+
+                                    //Table Cổ đông lớn
+                                    $('#listMajor_shareholder').DataTable({
+                                        ordering: true,
+                                        dom: "lti<'pagingList justify-content-center'p>",
+                                        destroy: true,
+                                        "ordering": false,
+                                        searching: false,
+                                        className: 'dt-body-right',
+                                        "info": false,
+                                        "lengthChange": false,
+                                        data: data[2],
+                                        "pageLength": 15,
+                                        columns: rendercolumsshareholder,
+                                        "drawCallback": function (settings) {
+                                            commons.setDataFormCCSH(data, 2);
+                                            $("input[name='Acursharerate']").val(function (i, v) {
+                                                return v.replace('%', '') + '%';
+                                            });
+                                        }
+                                    });
+                                    //hide no data available in tables
+                                    $('.dataTables_empty').hide();
+
+
+                                    //Công ty con, công ty liên kết, cổ đông lớn đang trong trạng thái phê duyệt
+                                    commons.setDataFormCCSH(data);
+
+                                    //var percent_sharerate = $("input[name='Asharerate']").val();
+                                    //$("input[name='Asharerate']").val(percent_sharerate + '%');
+
+                                    $("input[name='Asharerate']").val(function (i, v) {
+                                        return v.replace('%', '') + '%';
+                                    });
+
+                                    $("input[name='Acursharerate']").val(function (i, v) {
+                                        return v.replace('%', '') + '%';
+                                    });
+
+
+                                    $('#loading').removeClass('loading');
+                                })
+
+                            //Table Công ty con
+
+
+
+                        },
+                        error: function (err) {
+
+                            $('#loading').removeClass('loading');
+
+                        }
+
+                    });
+
+                }
+
+                //Click button edit shareholder
+
+
+
+                function Load_Subcompany_Type() {
+                    return $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetSubCompanyType","CoCauSoHuu")',
+                        data: {},
+                        success: function (data) {
+                            return data;
+
+                        }
+                    });
+
+                }
+
+
+
+                function Load_Industry() {
+
+                   /* var data = */
+
+                    return $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetNganh","CoCauSoHuu")',
+                        data: {},
+                        success: function (data) {
+
+                        }
+                    });
+
+                }
+
+                 //Add Row cơ cấu sở hữu
+
+                var html_company = '<tr role="row" class=""><td tabindex="0"><input  type = "number" min="0" class="company_order form-control-general" value = "" name="Aorder" /><input type="number" class="status_company_order" value="1" hidden></td><td><input type = "text" class="company_name form-control-general" value = "" name="Asubcompanyname"><input type="number" value="1" class="status_company_name" hidden/></td><td><input type = "text" class="company_address form-control-general" value = "" name="Aaddress"/><input type="number" value="1" class="status_company_address" hidden/></td><td><select id="selectIndustry" class="form-control" name="Aministryid">';
+
+                var html_company_middle = '</select><input type="number" class="status_company_ministryid" value="1" hidden/></td><td><select id="selectSubcompanytype" class="form-control" name="Asubcompanytypeid">';
+
+                var html_company_last = '</select><input type="number" class="status_company_asubcompanytypeid" value ="1" hidden/></td><td><input type = "text" class="company_asharerate form-control-general" value = ""/ name="Asharerate"><input type="number" class="status_company_asharerate" value="1" hidden/></td><td><input style="display:none" type="text" class="company_asubcompanyid" value="0" name="Asubcompanyid"/><input type="number" class="status_company_asubcompanyid" hidden /></td><td><input type="button" class="btn-danger form-control mx-2 my-1 Delete_Company" style="max-width:85px; border-radius:15px;" value="@Localizer["Delete"].Value"></td></td></td></tr>';
+
+                var html_company_afaffiliated = '<tr role="row" class=""><td tabindex="0"><input type = "number" min="0" class="company_order form-control-general" value = "" name="Aorder"/><input type="number" class="status_affiliated_order" value="1" hidden></td><td><input type = "text" class="company_name form-control-general" value = "" name="Asubcompanyname"><input type="number" value="1" class="status_affiliated_asubcompanyname" hidden/></td><td><input type = "text" class="company_address form-control-general" value = "" name="Aaddress"><input type="number" value="1" class="status_affiliated_address" hidden/></td><td><select id="selectIndustry_affiliated" class="form-control" name="affiliated_Aministryid">'
+
+                var html_company_afaffiliated_last = '</select><input type="number"  class="status_affiliate_industry" hidden/></td><td><input type="text" class="company_asharerate form-control-general" value = ""/ name="Asharerate"><input type="number" class="status_affiliated_asharerate" value="1" hidden/></td><td><input style="display:none" type="text" class="company_asubcompanyid" value="0" name="Asubcompanyid"/></td><td><input class="company_affiliate_asubcompanytypeid" style="display:none" type="text" value="100" name="Asubcompanytypeid"></td><td><input type="button" class="btn-danger form-control mx-2 my-1 Delete_Company" style="max-width:85px; border-radius:15px;" value="@Localizer["Delete"].Value"></td></td></tr>';
+
+                var registerEvents = function () {
+
+                    //format percent input sharerate
+
+                    //$('body').on('keypress', 'input[name="Asharerate"]', function () {
+                    //    $(this).val(function (i, v) {
+                    //       return v.replace('%', '') + '%';
+                    //    });
+                    //})
+
+
+
+
+                var percent_sharerate = $("input[name='Asharerate']").val();
+                $("input[name='Asharerate']").val(percent_sharerate + '%');
+
+                $('body').on('mousedown.edit', ".EditShareholder", function (e) {
+
+                         if ($(this).val() == 'Sửa') {
+
+                             $(this).val('Hủy');
+
+                             var $row = $(this).closest("tr").off("mousedown");
+
+                             var $tds = $row.find("td input").not(':last');
+
+                             var $tdss = $tds.not(".shareholder_asherid");
+
+                             $.each($tdss, function (i, el) {
+
+                                 $(this).css({ 'border': '' });
+
+                             });
+
+                             $tds.attr('readonly', false);
+
+
+                             return;
+                         }
+
+                         $(this).val('Sửa');
+
+                         var $row = $(this).closest("tr").off("mousedown");
+
+                         var $tds = $row.find("td input").not(':last');
+
+                         var $tdss = $tds.not(".shareholder_asherid");
+
+                         $.each($tdss, function (i, el) {
+
+                             $(this).css({ 'border': 'none' });
+
+                         });
+
+                        $tds.attr('readonly', true);
+
+                     });
+
+                $('body').on('click', "#addCompany_SUBSIDIARIES", function (e) {
+
+                    e.preventDefault();
+
+                    var ministrylist = new Array();
+
+                    ministrylist = result_Industry;
+
+                    var htmlIndustry = '';
+
+                    $.each(ministrylist, function (index, value) {
+
+
+
+                        htmlIndustry += '<option value =' + value.aministryid + '>' + value.anamevn + '</option>';
+
+                    });
+
+                    var subcompanytypelist = new Array();
+
+                    subcompanytypelist = result_Subcompanyytype;
+
+                    var htmlSubcompanytype = '';
+
+                    $.each(subcompanytypelist, function (index, value) {
+
+
+
+                        htmlSubcompanytype += '<option value =' + value.asubcompanytypeid + '>' + value.asubcompanytypedesc + '</option>';
+
+                    });
+
+
+                    $('#list_SUBSIDIARIES').append(html_company + htmlIndustry + html_company_middle + htmlSubcompanytype + html_company_last);
+
+                });
+
+                //ADD Row công ty liên kết
+                $('body').on('click', "#addCompany_Associated", function (e) {
+
+                    e.preventDefault();
+
+                    var ministrylist = new Array();
+
+                    ministrylist = result_Industry;
+
+                    var htmlIndustry = '';
+
+                    $.each(ministrylist, function (index, value) {
+
+                        htmlIndustry += '<option value =' + value.aministryid + '>' + value.anamevn + '</option>';
+
+                    });
+
+                    $('#listAssociated_Company').append(html_company_afaffiliated + htmlIndustry + html_company_afaffiliated_last);
+
+                });
+
+                //Click button reset
+                $('body').on('click', '#btnRefesh', function (e) {
+                    e.preventDefault();
+                    location.reload();
+                });
+
+                //add percent input rate subcompany
+                $('body').on('input', 'input[name="Asharerate"]', function () {
+                    $(this).val(function (i, v) {
+                        return v.replace('%', '') + '%';
+                    });
+                });
+                //add percent input rate shareholder
+                $('body').on('input', 'input[name="Acursharerate"]', function () {
+                    $(this).val(function (i, v) {
+                        return v.replace('%', '') + '%';
+                    });
+                });
+
+
+                //Click button edit company
+                $('body').on('mousedown.edit', ".EditCongTy", function (e) {
+
+
+
+                    if ($(this).val() == 'Sửa') {
+
+                        $(this).val('Hủy');
+
+                        var $row = $(this).closest("tr").off("mousedown");
+                        var $tdinput = $row.find("input").not(':last');
+
+                       /* var $tds = $row.find("td input").not(':last');*/
+
+                        var tdd = $row.find("td").not(':last');
+                        var $tdselect = tdd.find('select');
+                        $.each($tdinput, function (i, el) {
+
+                            $(this).css({ 'border': '' });
+
+                        });
+
+                        $tdinput.attr('readonly', false);
+                        $tdselect.attr('disabled', false);
+
+                        return;
+                    }
+
+                    $(this).val('Sửa');
+
+                    //set bỏ trạng thái đã sửa
+
+                    var $row = $(this).closest("tr").off("mousedown");
+                    var $tdinput = $row.find("input").not(':last');
+                    var tdd = $row.find("td").not(':last');
+                    var $tdselect = tdd.find('select');
+
+                    $.each($tdinput, function (i, el) {
+
+                        $(this).css({ 'border': 'none' });
+
+                    });
+
+
+                    $tdinput.attr('readonly', true);
+                    $tdselect.attr('disabled', true);
+
+
+
+                });
+
+                commons.eventModified();
+
+                //Click button Save
+                $('body').on('click', '#btnSave', function (e) {
+                    e.preventDefault();
+                    $('#loading').addClass('loading');
+
+                    let data = new FormData();
+                    let listCompany = [];
+                    let listShareholder = [];
+                    let dataChangeCheck = false;
+
+                    let dataTable_subcompany = $('#list_SUBSIDIARIES tbody');
+
+                    dataTable_subcompany.find('tr').each(function (i, el) {
+
+                        let changeCCSH = '';
+
+                        var status_company_name = $(this).find('td input.status_company_name').val();
+                        var status_company_address = $(this).find('td input.status_company_address').val();
+                        var status_company_asharerate = $(this).find('td input.status_company_asharerate').val();
+                        var status_company_ministryid = $(this).find('td input.status_company_ministryid').val();
+                        var status_company_asubcompanytypeid = $(this).find('td input.status_company_asubcompanytypeid').val();
+                        var status_company_order = $(this).find('td input.status_company_order').val();
+
+
+                        if (status_company_name != 0 && typeof (status_company_name) != 'undefined')
+                            changeCCSH += 'asubcompanyname' + ';';
+                        if (status_company_order != 0 && typeof (status_company_order) != 'undefined')
+                            changeCCSH += 'aorder' + ';';
+                        if (status_company_address != 0 && typeof (status_company_address) != 'undefined')
+                            changeCCSH += 'aaddress' + ';';
+                        if (status_company_asharerate != 0 && typeof (status_company_asharerate) != 'undefined')
+                            changeCCSH += 'asharerate' + ';';
+                        if (status_company_ministryid != 0 && typeof (status_company_ministryid) != 'undefined')
+                            changeCCSH += 'aministryid' + ';';
+                        if (status_company_asubcompanytypeid != 0 && typeof (status_company_asubcompanytypeid) != 'undefined')
+                            changeCCSH += 'asubcompanytypeid' + ';';
+
+                        if (changeCCSH.length > 0) {
+
+                            var company_name = $(this).find('td input.company_name').val();
+                            var company_address = $(this).find('td input.company_address').val();
+                            var company_industry = $(this).find('select[name="Aministryid"] option:selected').val();
+                            var company_typeid = $(this).find('select[name="Asubcompanytypeid"] option:selected').val();
+                            var asharerate = $(this).find('td input.company_asharerate').val().replace(',', '.');
+                            var company_asharerate = asharerate.replace('%', '');
+                            var company_subid = $(this).find('td input.company_asubcompanyid').val();
+                            var company_order = $(this).find('td input.company_order').val();
+
+                            if (company_order < 0 ) {
+                                $("#loading").removeClass("loading");
+                                toastr.error('Index_minus');
+                                dataChangeCheck = true;
+                                return false;
+                            }
+                            else if (company_asharerate < 0 || company_asharerate > 100 ) {
+                                $("#loading").removeClass("loading");
+                                toastr.error('@Localizer["SHARERATE_DISTANCE"]');
+                                dataChangeCheck = true;
+                                return false;
+                            }
+
+                            if (company_name == "" || company_address == "") {
+                                @*$("#loading").removeClass("loading");
+                                toastr.error('@Localizer["DataHasNotBeenChanged"]');*@
+
+                                return false;
+                            } else {
+                                dataChangeCheck = true;
+                            }
+
+
+
+
+                            if (company_subid != 0) {
+
+                                    let list_SubCompany = {
+                                        aorder: company_order,
+                                        asubcompanyname: company_name,
+                                        aaddress: company_address,
+                                        aministryid: company_industry,
+                                        asharerate: company_asharerate,
+                                        asubcompanyid: company_subid,
+                                        asubcompanytypeid: company_typeid,
+                                        anote: changeCCSH,
+                                        acompanyid: $('#cpnyid').val(),
+                                        aapprove: CommonConst.MODIFIED
+                                    }
+                                    listCompany.push(list_SubCompany);
+                                }
+
+                            if (company_subid == 0 && company_name.trim() && company_address.trim()) {
+
+                                    let list_SubCompany = {
+                                        aorder: company_order,
+                                        asubcompanyname: company_name,
+                                        aaddress: company_address,
+                                        aministryid: company_industry,
+                                        asharerate: company_asharerate,
+                                        asubcompanyid: company_subid,
+                                        asubcompanytypeid: company_typeid,
+                                        anote: changeCCSH,
+                                        acompanyid: $('#cpnyid').val(),
+                                        aapprove: CommonConst.CREATE_NEW
+                                    }
+                                    listCompany.push(list_SubCompany);
+                                }
+                            }
+                    });
+
+                    let dataTable_Affiliated_Company = $('#listAssociated_Company tbody');
+
+
+                    dataTable_Affiliated_Company.find('tr').each(function (i, el) {
+
+                        let change_Affiliated_CCSH = '';
+
+                        var status_affiliated_asubcompanyname = $(this).find('td input.status_affiliated_asubcompanyname').val();
+                        var status_affiliated_address = $(this).find('td input.status_affiliated_address').val();
+                        var status_affiliated_asharerate = $(this).find('td input.status_affiliated_asharerate').val();
+                        var status_affiliate_industry = $(this).find('td input.status_affiliate_industry').val();
+                        var status_affiliated_order = $(this).find('td input.status_affiliated_order').val();
+
+                        if (status_affiliated_asubcompanyname != 0 && typeof (status_affiliated_asubcompanyname) != 'undefined')
+                            change_Affiliated_CCSH += 'aorder' + ';';
+                        if (status_affiliated_order != 0 && typeof (status_affiliated_order) != 'undefined')
+                            change_Affiliated_CCSH += 'asubcompanyname' + ';';
+                        if (status_affiliated_address != 0 && typeof (status_affiliated_address) != 'undefined')
+                            change_Affiliated_CCSH += 'aaddress' + ';';
+                        if (status_affiliated_asharerate != 0 && typeof (status_affiliated_asharerate) != 'undefined')
+                            change_Affiliated_CCSH += 'asharerate' + ';';
+                        if (status_affiliate_industry != 0 && typeof (status_affiliate_industry) != 'undefined')
+                            change_Affiliated_CCSH += 'aministryid' + ';';
+
+                        if (change_Affiliated_CCSH.length > 0) {
+
+                            var affiliated_name = $(this).find('td input.company_name').val();
+                            var affiliated_order = $(this).find('td input.company_order').val();
+                            var affiliated_address = $(this).find('td input.company_address').val();
+                            var affiliated_industry = $(this).find('select[name="affiliated_Aministryid"] option:selected').val();
+                            var affiliated =$(this).find('td input.company_asharerate').val().replace(',', '.');
+                            var affiliated_asharerate = affiliated.replace('%', '');
+                            var affiliated_subid = $(this).find('td input.company_asubcompanyid').val();
+                            var affiliated_typeid = $(this).find('td input.company_affiliate_asubcompanytypeid').val();
+
+                            if (affiliated_asharerate < 0 || affiliated_asharerate > 100) {
+                                $("#loading").removeClass("loading");
+                                toastr.error('@Localizer["SHARERATE_DISTANCE"]');
+                                dataChangeCheck = true;
+                                return false;
+                            }  else if (affiliated_order < 0) {
+                                $("#loading").removeClass("loading");
+                                toastr.error('Index_minus');
+                                dataChangeCheck = true;
+                                return false;
+                            }
+
+                            if (affiliated_name == "" || affiliated_address == "") {
+                                @*$("#loading").removeClass("loading");
+                                toastr.error('@Localizer["DataHasNotBeenChanged"]');*@
+                                return false;
+                            } else {
+                                dataChangeCheck = true;
+                            }
+
+                            if (affiliated_subid != 0) {
+
+                                let list_affiliatedCompany = {
+                                    aorder:affiliated_order,
+                                    asubcompanyname: affiliated_name,
+                                    aaddress: affiliated_address,
+                                    aministryid: affiliated_industry,
+                                    asharerate: affiliated_asharerate,
+                                    asubcompanyid: affiliated_subid,
+                                    asubcompanytypeid: affiliated_typeid,
+                                    anote: change_Affiliated_CCSH,
+                                    acompanyid: $('#cpnyid').val(),
+                                    aapprove: CommonConst.MODIFIED
+
+                                }
+                                listCompany.push(list_affiliatedCompany);
+                            }
+
+                            if (affiliated_subid == 0) {
+
+                                let list_affiliatedCompany = {
+                                    aorder: affiliated_order,
+                                    asubcompanyname: affiliated_name,
+                                    aaddress: affiliated_address,
+                                    aministryid: affiliated_industry,
+                                    asharerate: affiliated_asharerate,
+                                    asubcompanyid: affiliated_subid,
+                                    asubcompanytypeid: affiliated_typeid,
+                                    anote: change_Affiliated_CCSH,
+                                    acompanyid: $('#cpnyid').val(),
+                                    aapprove: CommonConst.CREATE_NEW
+                                }
+                                listCompany.push(list_affiliatedCompany);
+                            }
+                        }
+
+                    });
+
+                    let dataTable_Major_shareholder = $('#listMajor_shareholder tbody');
+
+                    dataTable_Major_shareholder.find('tr').each(function (i, el) {
+
+                        let change_ShareHolder_CCSH = '';
+
+                        var status_shareholder_name = $(this).find("td input.status_shareholder_ashname").val();
+                        var status_shareholder_order = $(this).find("td input.status_shareholder_order").val();
+                        var status_shareholder_acurshareno = $(this).find("td input.status_shareholder_acurshareno").val();
+                        var status_shareholder_acursharerate = $(this).find("td input.status_shareholder_acursharerate").val();
+
+                        if (status_shareholder_name != 0 && typeof (status_shareholder_name) != 'undefined') change_ShareHolder_CCSH += 'ashname' + ';';
+                        if (status_shareholder_order != 0 && typeof (status_shareholder_order) != 'undefined') change_ShareHolder_CCSH += 'aorder' + ';';
+                        if (status_shareholder_acurshareno != 0 && typeof (status_shareholder_acurshareno) != 'undefined') change_ShareHolder_CCSH += 'acurshareno' + ';';
+                        if (status_shareholder_acursharerate != 0 && typeof (status_shareholder_acursharerate) != 'undefined') change_ShareHolder_CCSH += 'acursharerate' + ';';
+
+                        if (change_ShareHolder_CCSH.length > 0) {
+                            var Major_shareholder_ashname = $(this).find('td input.shareholder_ashname').val();
+                            var Major_shareholder_order = $(this).find('td input.shareholder_order').val();
+                            var Major_shareholder_asherid = $(this).find('td input.shareholder_asherid').val();
+                            var Major_shareholder_acurshareno = $(this).find('td input.shareholder_acurshareno').val().split(',').join('');
+                            var Shareholder_acursharerate = $(this).find('td input.shareholder_acursharerate').val().replace(',', '.');
+                            var Major_shareholder_acursharerate = Shareholder_acursharerate.replace('%', '');
+
+
+
+                            if (Major_shareholder_acursharerate < 0) {
+                                $("#loading").removeClass("loading");
+                                toastr.error('Index_minus');
+                                dataChangeCheck = true;
+                                return false;
+                            } else if (Major_shareholder_order < 0) {
+                                $("#loading").removeClass("loading");
+                                toastr.error('@Localizer["SHARERATE_DISTANCE"]');
+                                dataChangeCheck = true;
+                                return false;
+                            }
+
+                            if (Major_shareholder_ashname == "" || Major_shareholder_acurshareno == "") {
+                                @*$("#loading").removeClass("loading");
+                                toastr.error('@Localizer["DataHasNotBeenChanged"]');*@
+                                return false;
+                            } else {
+                                dataChangeCheck = true;
+                            }
+
+
+                            if (Major_shareholder_asherid != 0) {
+                                let listShareholderr = {
+                                    aorder: Major_shareholder_order.trim() == '' ? null : Major_shareholder_order,
+                                    ashname: Major_shareholder_ashname,
+                                    asherid: Major_shareholder_asherid,
+                                    acurshareno: Major_shareholder_acurshareno,
+                                    acursharerate: Major_shareholder_acursharerate,
+                                    anote: change_ShareHolder_CCSH,
+                                    acpnyid: $('#cpnyid').val(),
+                                    aapprove: CommonConst.MODIFIED
+                                }
+
+                                listShareholder.push(listShareholderr);
+                            }
+                            if (Major_shareholder_asherid == 0) {
+
+                                let listShareholderr = {
+                                    aorder: Major_shareholder_order,
+                                    ashname: Major_shareholder_ashname,
+                                    asherid: Major_shareholder_asherid,
+                                    acurshareno: Major_shareholder_acurshareno,
+                                    acursharerate: Major_shareholder_acursharerate,
+                                    anote: change_ShareHolder_CCSH,
+                                    acpnyid: $('#cpnyid').val(),
+                                    aapprove: CommonConst.CREATE_NEW
+                                }
+
+                                listShareholder.push(listShareholderr);
+                            }
+
+                        }
+
+
+                    });
+
+                    if (!dataChangeCheck) {
+                        $("#loading").removeClass("loading");
+                        toastr.error('@Localizer["DataHasNotBeenChanged"]');
+                    }
+
+
+                    if (listCompany.length > 0 || listShareholder.length > 0) {
+                        for (var i = 0; i < listCompany.length; i++) {
+                            for (const [key, value] of Object.entries(listCompany[i])) {
+                               // console.log(`${key}: ${value}`);
+                                if (`${key}` == "asharerate" && `${value}` == "") {
+                                    toastr.error('@Localizer["Percentage_empty"].Value');
+                                    $('#loading').removeClass('loading');
+                                    return false;
+                                }
+                                else if (`${key}` == "asharerate" && isNaN(`${value}`)) {
+                                    toastr.error('@Localizer["Invalid_data"].Value');
+                                    $('#loading').removeClass('loading');
+                                    return false;
+                                }
+                            }
+                        }
+
+                        for (var i = 0; i < listShareholder.length; i++) {
+                            for (const [key, value] of Object.entries(listShareholder[i])) {
+                               // console.log(`${key}: ${value}`);
+                                if (`${key}` == "acursharerate" && `${value}` == "") {
+                                    toastr.error('@Localizer["Percentage_empty"].Value');
+                                    $('#loading').removeClass('loading');
+                                    return false;
+                                }
+                                else if (`${key}` == "acursharerate" && isNaN(`${value}`)) {
+                                    toastr.error('@Localizer["Invalid_data"].Value');
+                                    $('#loading').removeClass('loading');
+                                    return false;
+                                }
+                            }
+                         }
+
+                        data.append('jsonSubCompany', JSON.stringify(listCompany));
+                        data.append('jsonSharehoder', JSON.stringify(listShareholder));
+
+
+
+                        $.ajax({
+                            url: '@Url.Action("SaveCCSH", "CoCauSoHuu")',
+                            method: 'POST',
+                            contentType: false,
+                            processData: false,
+                            data: data,
+                            success: (res) => {
+
+
+                                if (res.code == 0) {
+                                    LoadData();
+                                    toastr.success(res.message);
+                                    Swal.fire({
+                                        html: "@Localizer["Approving"].Value",
+                                        type: 'success',
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                                else {
+                                    toastr.error(res.message);
+                                }
+
+                                $('#loading').removeClass('loading');
+                            },
+                            error: (err) => {
+                                $('#loading').removeClass('loading');
+                               // console.log(err);
+
+                            }
+                        });
+
+
+                    }
+                    else {
+                        $('#loading').removeClass('loading');
+
+                    }
+
+
+
+                });
+
+
+
+                $('body').on('click', '.Delete_Company', function (e) {
+
+                    e.preventDefault();
+                    let parent = $(this).parent().parent();
+                    parent.remove();
+
+                });
+
+
+                $('body').on('click', '.Delete_Holder', function (e) {
+
+                    e.preventDefault();
+                    let parent = $(this).parent().parent();
+                    parent.remove();
+
+                });
+                    $('body').on('keyup', '.shareholder_acurshareno', function (event) {
+
+                        // skip for arrow keys
+                        if (event.which >= 37 && event.which <= 40) return;
+
+                        // format number
+                        $(this).val(function (index, value) {
+                            return value
+                                .replace(/\D/g, "")
+                                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                        });
+                    });
+
+                }
+
+                var commons = {
+
+                    setDataFormCCSH: (data,number = 3) => {
+
+                        if (data == null) return;
+                        let listSubCompany = data[0];
+                        let listAffiliateCompany = data[1];
+                        let listshareholder = data[2];
+
+
+                        //disabled button công ty con
+                        if (Array.isArray(listSubCompany) && listSubCompany.length > 0 && (number == 0||number == 3)) {
+                            for (let subcpny of listSubCompany) {
+                                if (subcpny.aapprove == 1 || subcpny.aapprove == 2) {
+                                    if (subcpny.asubcompanyid != 0) {
+                                        $(`#${subcpny.asubcompanyid}`).prop('disabled', true);
+                                    }
+                                    else if (subcpny.asubcompanyid == 0) {
+                                            $('.ctycon1').prop('disabled', true);
+                                    }
+                                }
+                                else {
+                                    $(`#${subcpny.asubcompanyid}`).prop('disabled', false);
+                                }
+                            }
+
+                        }
+
+                        //disabled button công ty liên kết
+                        if (Array.isArray(listAffiliateCompany) && listAffiliateCompany.length > 0 && (number == 1 || number == 3)) {
+
+                            for (let affcpny of listAffiliateCompany) {
+                                if (affcpny.aapprove == 1 || affcpny.aapprove == 2) {
+                                    if (affcpny.asubcompanyid != 0) {
+                                        $(`#${affcpny.asubcompanyid}`).prop('disabled', true);
+                                    }
+                                    else if (affcpny.asubcompanyid == 0) {
+                                        $('.lienket1').prop('disabled', true);
+                                    }
+                                }
+                                else {
+                                    $(`#${affcpny.asubcompanyid}`).prop('disabled', false);
+                                }
+                            }
+
+                        }
+
+                        //disabled button cổ đông lớn
+                        if (Array.isArray(listshareholder) && listshareholder.length > 0 && (number == 2 || number == 3)) {
+                            for (let shareholder of listshareholder) {
+                                if (shareholder.aapprove == 1 || shareholder.aapprove == 2) {
+                                    $(`#${shareholder.asherid}`).prop('disabled', true);
+                                }
+                                else {
+                                    $(`#${shareholder.asherid}`).prop('disabled', false);
+                                }
+                            }
+                        }
+
+                    },
+
+                    //set status
+                    eventModified: () => {
+
+                        //set trạng thái sửa của công ty con
+                        $('body').on('change', '.company_order', function () {
+
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_company_order').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('keypress', '.company_name', function () {
+
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_company_name').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('keypress', '.company_address', function () {
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_company_address').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('keypress', '.company_asharerate', function () {
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_company_asharerate').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('change','#selectIndustry', function () {
+                              let parent = $(this).parent().parent();
+                                parent.find('input.status_company_ministryid').val(CommonConst.MODIFIED);
+
+                        });
+
+                        $('body').on('change', '#selectSubcompanytype', function () {
+                            let parent = $(this).parent().parent();
+                            parent.find('input.status_company_asubcompanytypeid').val(CommonConst.MODIFIED);
+
+                        });
+
+
+                        //Set status của công ty liên kết
+                        $('body').on('change', '.company_order', function () {
+                            let parent = $(this).parent().parent();
+                            parent.find('input.status_affiliated_order').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('keypress', '.company_name', function () {
+                            let parent = $(this).parent().parent();
+                            parent.find('input.status_affiliated_asubcompanyname').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('keypress', '.company_address', function () {
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_affiliated_address').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('keypress', '.company_asharerate', function () {
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_affiliated_asharerate').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('change', '#selectIndustry_affiliated', function () {
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_affiliate_industry').val(CommonConst.MODIFIED);
+                        });
+
+                        //set status sửa của cổ đông
+                        $('body').on('change', '.shareholder_order', function () {
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_shareholder_order').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('keypress', '.shareholder_ashname', function () {
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_shareholder_ashname').val(CommonConst.MODIFIED);
+                        });
+
+                        $('body').on('keypress', '.shareholder_acurshareno', function () {
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_shareholder_acurshareno').val(CommonConst.MODIFIED);
+                        });
+
+
+                        $('.shareholder_acurshareno').keyup(function (event) {
+
+                            // skip for arrow keys
+                            if (event.which >= 37 && event.which <= 40) return;
+
+                            // format number
+                            $(this).val(function (index, value) {
+                                return value
+                                    .replace(/\D/g, "")
+                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                            });
+                        });
+
+                        $('body').on('keypress', '.shareholder_acursharerate', function () {
+                            let parent = $(this).parent().parent();
+
+                            parent.find('input.status_shareholder_acursharerate').val(CommonConst.MODIFIED);
+
+                        });
+
+                    }
+                }
+            }
+
+
+            var cocauSoHuu = new CoCauSoHuu();
+            cocauSoHuu.init();
+    });
+
+    //Click AddRow table shareholder
+        var html_shareholder = '<tr role="row" class=""><td tabindex = "0" ><input type="number" min="0" class="shareholder_order form-control-general" value = "" name="Aorder" /><input type="number" class="status_shareholder_order" value="1" hidden></td><td><input type="text" class="shareholder_ashname form-control-general" value="" name="Ashname"/><input type="text" class="status_shareholder_ashname form-control-general" value="1" name="Ashname"/ hidden></td><td><input class="shareholder_acurshareno form-control-general" value="" name="Acurshareno"><input type="number" class="status_shareholder_acurshareno form-control-general" value="1" name="Acurshareno" hidden></td><td><input type="text" class="shareholder_acursharerate form-control-general" value="" name="Acursharerate"><input type="text" class="status_shareholder_acursharerate form-control-general" value="1" name="Acursharerate" hidden></td><td><input type="number" value ="0" class="shareholder_asherid" hidden></td><td><input type="button" class="btn-danger form-control mx-2 my-1 Delete_Holder" style="max-width:85px; border-radius:15px;" value="@Localizer["Delete"].Value"></td></tr>';
+        function addAttribute() {
+
+            $('#listMajor_shareholder').append(html_shareholder);
+
+        }
+
+
+    </script>
+}

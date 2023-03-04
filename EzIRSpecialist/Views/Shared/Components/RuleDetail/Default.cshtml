@@ -1,0 +1,114 @@
+﻿@model EzIRSpecialist.Models.BaoCaoTienIch.Rules
+
+@{
+    Layout = null;
+
+}
+
+<style>
+    .nopadding {
+        word-break: break-word;
+    }
+</style>
+<body>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Loại hình:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="LoaiHinh">@Model.LoaiHinh</label>
+        </div>
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Niên độ BCTC:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="NienDoBCTC">@Model.ATenNienDoBCTC</label>
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Loại tài liệu:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.ATenLoaiTaiLieu</label>
+        </div>
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Loại tin:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.AloaiTin</label>
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Quy định CBTT:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.Aqdcbtt</label>
+        </div>
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Căn cứ pháp lý CBTT:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.Accplcbtt</label>
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Loại biểu mẫu:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="LoaiBieuMau"></label>
+        </div>
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Biểu mẫu số:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.ATenBieuMauSo</label>
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">DeadlineCBTT :</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.ADeadline</label>
+        </div>
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Ngày tính từ thời điểm:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.ADate?.ToString("dd/MM")</label>
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">DeadlineCBTT (Gia hạn):</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.ADeadline_Giahan</label>
+        </div>
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Ngày tính từ thời điểm:</label>
+        </div>
+        <div class="col-md-3 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.ADateExtend?.ToString("dd/MM")</label>
+        </div>
+    </div>
+    <div class="form-group row nopadding nomargin">
+        <div class="col-md-2 nopadding">
+            <label class="col-form-label">Đối tượng áp dụng:</label>
+        </div>
+        <div class="col-md-5 nopadding">
+            <label class="col-form-label k-font-bold gsm-data-value" id="">@Model.ADoiTuongApDung</label>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var loaiBieuMau = $('#slLoaiBieuMauSearch option:selected').text();
+        $("#LoaiBieuMau").empty();
+        $("#LoaiBieuMau").append(loaiBieuMau);
+
+    })
+</script>

@@ -1,0 +1,268 @@
+﻿
+@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+@using CoreLib.Entities;
+@model List<InfoSheet>;
+
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHttpContextAccessor _httpContextAccessor;
+@inject Microsoft.Extensions.Configuration.IConfiguration _configuration;
+
+
+@{
+    ViewData["Title"] = "Thị trường khách hàng đối thủ";
+
+    var img = ViewBag.imgurl;
+    var data = Model.ToList();
+
+}
+
+<link type="text/css" href="~/lib/ckeditor/contents.css" rel="stylesheet" />
+
+
+<div class="k-portlet__body">
+    <div class="nopadding" style="margin-bottom: 10px;">
+        <div class="respon-mobile">
+
+            <!-- Nguyên liệu đầu vào, nhà cung cấp VN -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 635 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["NLDV"].Value</p>
+                                    <!-- Nguyên liệu đầu vào, nhà cung cấp VN -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 635 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["NLDV"].Value EN</p>
+                                    <!-- Nguyên liệu đầu vào, nhà cung cấp us -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- Cơ cấu doanh thu VN -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 636 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["CCDT"].Value</p>
+                                    <!-- Cơ cấu doanh thu VN -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 636 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["CCDT"].Value EN</p>
+                                    <!-- Cơ cấu doanh thu us -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- sản phẩm thay thế VN -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 637 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["SPTT"].Value</p>
+                                    <!-- Sản phẩm thay thế VN-->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 637 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["SPTT"].Value EN</p>
+                                    <!-- Sản phẩm thay thế US-->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+            <!-- Đối thủ cạnh tranh VN -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 638 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["DTCT"].Value</p>
+                                    <!-- Đối thủ cạnh tranh VN -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 638 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["DTCT"].Value EN</p>
+                                    <!-- Đối thủ cạnh tranh US -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+            <!-- Thị trường/ Khác hàng VN -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 639 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["TTKH"].Value</p>
+                                    <!-- Thị trường/ Khác hàng VN -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 639 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["TTKH"].Value EN</p>
+                                    <!-- Thị trường/ Khác hàng US -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            <!-- Khác VN -->
+            @foreach (var item in data.ToList())
+            {
+                if (item.MenuID == 651 && item.Language == "VN")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["TTKHDTK"].Value</p>
+                                    <!-- Khác VN -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (item.MenuID == 651 && item.Language == "US")
+                {
+                    <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            <div class="row">
+                                <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                                    <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">@Localizer["TTKHDTK"].Value EN</p>
+                                    <!-- Khác US -->
+                                    <div class="viewapprove_outline cke_editable cke_editable_themed cke_contents_ltr cke_show_borders" style="min-height:100px">
+                                        <input type="number" id="txtMenuID_CHALLENGE" value="647" readonly hidden />
+                                        @Html.Raw(item.Content.Replace("Images/Inforsheet", img));
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+            
+        </div>
+    </div>
+</div>
+<div id="loading"></div>

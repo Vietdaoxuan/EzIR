@@ -1,0 +1,75 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+@using CoreLib.Entities.ModelViews;
+@model List<ToChucBoMayQuanLyModelView>;
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@{
+    ViewData["Title"] = "view tổ chức bộ máy quản lý";
+    var data = Model.ToList();
+    var link_EzIRCustomer = ViewBag.imgLogo;
+    var dataList = Model.ToList();
+}
+<!-- begin:: Content -->
+@for (int i = 0; i < dataList.Count(); i++)
+{
+<div class="k-portlet__body">
+    <div class=" nopadding" style="margin-bottom: 10px;">
+        <div class="respon-mobile">
+            <div class="col-md-12 text-box-label-general" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;padding-left: 5px;">Mô tả sơ đồ</p>
+                            <!--  -->
+                            <div class="row d-flex" style="min-height:100px">
+                                @Html.Raw(dataList[i].OrgModelDesc)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Loại sơ đồ</p>
+                            <!--  -->
+                            <div class="row d-flex" style="min-height:100px">
+                                    @if (dataList[i].OrgType == 1)
+                                    {
+                                        <p>Sơ đồ tổ chức</p>
+                                    }
+                                    else
+                                    {
+                                        <p>Sơ đồ bộ máy Quản lý</p>
+                                    }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;    padding-left: 5px;">Ảnh</p>
+                            <!--  -->
+                            <div class="row d-flex" style="min-height:100px">             
+                                    <img src="@Html.Raw(link_EzIRCustomer + dataList[i].OrgModelPath.Replace("Images/",""))" />                           
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
+
+
+

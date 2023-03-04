@@ -1,0 +1,167 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Localization;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@{
+    var url = ViewBag.Imgbm;
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+}
+<div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor DaiHoiform"
+     id="k_content">
+
+
+    <div id="content">
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid" id="banlanhdao">
+
+            <!-- Page Heading -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+
+            <div class="contentt">
+                <p>@Localizer["Ban_lanh_dao"].Value</p>
+            </div>
+            <div class="scroll_table">
+                <table id="table_banlanhdao" cellspacing="0" cellpadding="0" border="0"
+                       style="width: 100%; height: auto; ">
+                    <thead>
+                        <tr style="color: #4A82BD;">
+                            <th width="15%">@Localizer["Ho_ten"].Value </th>
+                            <th width="15%">@Localizer["Chuc_vu"].Value</th>
+                            <th width="15%" style="padding-left: 20px;">@Localizer["Nam_sinh"].Value</th>
+                            <th width="15%">@Localizer["Quoc_tich"].Value</th>
+                            <th width="20%">@Localizer["Trinh_do_chuyen_mon"].Value</th>
+                            <th width="10%">@Localizer["So_yeu_ly_lich"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+
+    <!-- End of Main Content -->
+
+
+</div>
+<div id="loading" ></div>
+<script>
+
+    $(document).ready(function () {
+        var TPLD = function () {
+            this.init = function () {
+                loadData();
+            }
+            //format date
+           @* function formatDate(date) {
+                var datePart = date.match(/\d+/g),
+                    year = datePart[0], // get only two digits
+                    month = datePart[1], day = datePart[2];
+                return day + '/' + month + '/' + year;
+            }*@
+            var loadData = function () {
+                $('#loading').addClass('loading');
+                        var cpnyId = $("#cpnyid").val();
+                         $.ajax({
+                            url: '@Url.Action("GetTPLD", "ThongTinDoanhNghiep")',
+                            method: 'GET',
+                            dataType: 'json',
+                             data: { cpnyID: cpnyId} ,
+                             success: function (data) {
+                                 //console.log(data);
+                                 $('#loading').removeClass('loading');
+                                 if (data.length == 0) {
+                                     $('#banlanhdao').hide();
+                                 }
+                                  var lang = ReturnLanguage();
+                                let html = '';
+                                 for (const item of data) {
+                                     if (item.adateofbirthvn == null) {
+                                         item.adateofbirthvn = " ";
+                                     }
+                                     if (item.anationality == null) {
+                                         item.anationality = " ";
+                                     }
+                                     if (item.aknowledgespeciallevel == null) {
+                                         item.aknowledgespeciallevel = " ";
+                                     }
+                                     if (item.aknowledgespeciallevelen == null) {
+                                         item.aknowledgespeciallevelen = " ";
+                                     }
+                                     if (lang == "vi-VN" || lang == '') {
+                                         if (item.acvpath != null) {
+                                             html += `
+                                 <tr>
+                                    <td>${item.amngername}</td>
+                                    <td >${item.listmanagerorgofmanager}</td>
+                                    <td typeof="date" style="padding-left: 20px;">${item.adateofbirthvn}</td>
+                                    <td>${item.anationality}</td>
+                                    <td>${item.aknowledgespeciallevel}</td>
+                                    <td style="text-align: center;" id="file">
+                                        <a class='text-primary' style="padding-left:0px" href='@url${item.acvpath}' target="_blank">
+                                            <img style="padding-right: 20%;" src="../images/pdf.png">
+                                        </a>
+                                    </td>
+                                </tr>`;
+                                         } else {
+                                              html += `
+                                 <tr>
+                                    <td>${item.amngername}</td>
+                                    <td>${item.listmanagerorgofmanager}</td>
+                                    <td typeof="date" style="padding-left: 20px;">${item.adateofbirthvn}</td>
+                                    <td>${item.anationality}</td>
+                                    <td>${item.aknowledgespeciallevel}</td>
+                                     <td></td>
+                                </tr>`
+                                         }
+
+
+                                     } else {
+                                         if (item.acvpath != null) {
+                                             html += `
+                                 <tr>
+                                    <td>${item.amngername}</td>
+                                    <td>${item.listmanagerorgofmanageren}</td>
+                                    <td typeof="date" style="padding-left: 20px;">${item.adateofbirthvn}</td>
+                                    <td>${item.anationality}</td>
+                                    <td>${item.aknowledgespeciallevelen}</td>
+                                    <td style="text-align: center;" id="file">
+                                        <a class='text-primary' style="padding-left:0px" href='@url${item.acvpath}' target="_blank">
+                                            <img style="padding-right: 20%;" src="../images/pdf.png">
+                                        </a>
+                                    </td>
+                                </tr>`;
+                                         } else {
+                                              html += `
+                                 <tr>
+                                    <td>${item.amngername}</td>
+                                    <td>${item.listmanagerorgofmanageren}</td>
+                                    <td typeof="date" style="padding-left: 20px;">${item.adateofbirthvn}</td>
+                                    <td>${item.anationality}</td>
+                                    <td>${item.aknowledgespeciallevelen}</td>
+                                    <td></td>
+                                </tr>`
+                                         }
+                                     }
+                                 }
+                                $('#table_banlanhdao tbody').append(html);
+                            },
+                             error: function (err) {
+                                 $('#loading').removeClass('loading');
+                                //console.log(err);
+                            }
+                         });
+            }
+
+        }
+        var tT = new TPLD();
+        tT.init();
+
+    });
+</script>

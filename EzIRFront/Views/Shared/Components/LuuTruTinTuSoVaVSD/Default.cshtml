@@ -1,0 +1,544 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Builder;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@using Microsoft.AspNetCore.Localization
+@using CoreLib.Configs
+@{
+    var date = DateTime.Now.Year;
+    int[] dem = new int[26];
+    //folderluutru
+    var BCTN = ViewBag.BCTN;
+    var BCQT = ViewBag.BCQT;
+    var BCTC = ViewBag.BCTC;
+    var CBTT = ViewBag.CBTT;
+    var DLQT = ViewBag.DLQT;
+    var HDQT = ViewBag.HDQT;
+    var NQDHCD = ViewBag.NQDHCD;
+    var TLDHCD = ViewBag.TLDHCD;
+    var BCTNEN = ViewBag.BCTNEN;
+    var BCQTEN = ViewBag.BCQTEN;
+    var BCTCEN = ViewBag.BCTCEN;
+    var CBTTEN = ViewBag.CBTTEN;
+    var DLQTEN = ViewBag.DLQTEN;
+    var HDQTEN = ViewBag.HDQTEN;
+    var NQDHCDEN = ViewBag.NQDHCDEN;
+    var TLDHCDEN = ViewBag.TLDHCDEN;
+    var IR = ViewBag.IR;
+    var TinKhac = ViewBag.TinKhac;
+
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+        .ToList();
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
+    var protocol = ViewBag.Protocol;
+
+
+
+}
+<style>
+    #tableIR tr td {
+        font-size: 14px;
+        padding: 10px 5px;
+    }
+
+    .cus_border {
+        width: 20%;
+    }
+
+    /*#content p {
+        width: 100%;
+        font-size: 14px;
+        color: #007eb3;
+        text-transform: uppercase;
+        background-color: #DEE9EF;
+        padding: 5px 10px;*/
+        /* margin-left: 10px; */
+    /*}*/
+
+    #content {
+        padding-top: 7px;
+    }
+</style>
+<link rel="stylesheet" href="~/assets/vendors/custom/datatables/datatables.bundle.css">
+<script src="~/js/jquery.dataTables.min.js"></script>
+<script src="~/assets/vendors/custom/datatables/datatables.bundle.js"></script>
+@*<div id="k_content_wrapper">*@
+
+    <!-- begin:: Content -->
+<div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor DaiHoiform"
+        id="k_content">
+    <div id="content">
+        @*<p>@Localizer["Tin_tu_so"]</p>*@
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+
+            <div class="row" id="TinTuc_">
+                <div class="col-md-9 fpts-info-left" style="padding-left:0px;">
+
+                    <div class="kbc form-inline">
+                        <span>@Localizer["Ky_bao_cao"].Value</span>
+                        <select class="form-control col-sm-6 col-mb-2 col-md-2"
+                                style="margin-left:30px; background-color:#E5E5E5" id="namBaoCao">
+                            <option value="tc" selected>@Localizer["All"].Value</option>
+                            @for (int i = 0; i <= 25; i++)
+                            {
+                                dem[i] = date - i;
+                                <option value="@dem[i]">@dem[i]</option>
+                            }
+                        </select>
+                    </div>
+                    <div style="padding-top:10px;">
+                        <table id="table4" cellspacing="0" style="border-top: 1px solid #dadada">
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <table id="table2" cellspacing="0" hidden>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="col-md-3 document" style="padding-right:0px; font-size:12px;">
+                    <p class="kbc">
+                        <span>@Localizer["Loai_tai_lieu"].Value</span>
+                    </p>
+                    <div style="padding-top:10px; color: #555;" class="loaitailieu">
+
+                        <ul id="loaitailieu">
+                            <li>
+                                <input type="checkbox" class="autocheck form-check-input Check_all"
+                                        checked value="tatca" name="Checkbox[]"><label class="form-check-label">@Localizer["All"].Value</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" value="191,554" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">
+                                    @Localizer["Bao_cao_tai_chinh"].Value
+
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" value="@DLQT,@DLQTEN" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">
+                                    @Localizer["Dieu_le_quy_che"].Value
+
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" value="@CBTT,@CBTTEN" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">
+                                    @Localizer["Ban_CBTT"].Value
+
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" value="@BCTN,@BCTNEN" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">
+                                    @Localizer["Bao_cao_thuong_nien"].Value
+
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" value="@BCQT,@BCQTEN" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">
+                                    @Localizer["Bao_cao_quan_tri"].Value
+
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" value="@TLDHCD,@TLDHCDEN" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">
+                                    @Localizer["Tai_lieu_DHDCD"].Value
+
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" value="@NQDHCD,@NQDHCDEN" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">
+                                    @Localizer["Quyet_dinh_dhdcd"].Value
+
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" value="@HDQT,@HDQTEN" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">
+                                    @Localizer["Quyet_dinh_HĐQT"].Value</label>
+                            </li>
+                            @*<li>
+                                <input type="checkbox" value="@IR" id="tinIR" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">@Localizer["ban_tin_ir"].Value</label>
+                            </li>
+                            <li>
+                                <input type="checkbox" value="@TinKhac" name="Checkbox[]" class="autocheck form-check-input check_con"><label class="form-check-label">@Localizer["Tin_khac"].Value</label>
+                            </li>*@
+                        </ul>
+                    </div>
+
+                    <div class="kbcMobile form-inline">
+                        <span>@Localizer["Loai_tai_lieu"].Value</span>
+                        <select class="form-control  col-sm-6 col-mb-6" style="margin-left:30px; background-color:#E5E5E5" id="loaitailieuMobile">
+                            <option value="tatca" selected>@Localizer["All"].Value</option>
+                            <option value="191,554">@Localizer["Bao_cao_tai_chinh"].Value</option>
+                            <option value="@DLQT,@DLQTEN">@Localizer["Dieu_le_quy_che"].Value</option>
+                            <option value="@CBTT,@CBTTEN">@Localizer["Ban_CBTT"].Value</option>
+                            <option value="@DLQT,@DLQTEN">@Localizer["Bao_cao_thuong_nien"].Value</option>
+                            <option value="@BCQT,@BCQTEN">@Localizer["Bao_cao_quan_tri"].Value</option>
+                            <option value="@TLDHCD,@TLDHCDEN">@Localizer["Tai_lieu_DHDCD"].Value</option>
+                            <option value="@NQDHCD,@NQDHCDEN">@Localizer["Quyet_dinh_dhdcd"].Value</option>
+                            <option value="@HDQT,@HDQTEN">@Localizer["Quyet_dinh_HĐQT"].Value</option>
+                            <option value="@IR">@Localizer["ban_tin_ir"].Value</option>
+                            <option value="@TinKhac">@Localizer["Tin_khac"].Value</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- End of Main Content -->
+</div>
+@*</div>*@
+    <div id="loading"></div>
+
+    <script>
+    $(document).ready(function () {
+        var stock_code = window.location.href.split('?')[0].split('/')[4];
+        var stockcode = stock_code.toUpperCase();
+        /*ChienND 30/08/2022 Lấy ngôn ngữ qua link website*/
+        var lang;
+        if (window.location.href.includes("?culture=en-US"))
+            lang = "?culture=en-US";
+        else
+            lang = "";
+        //tin tức lưu trữ
+        var ThongTin = function () {
+            this.init = function () {
+                checkAll();
+                loadData();
+                searchNam();
+                searchLoaiTaiLieu();
+            }
+            //check checkbox
+            function checkAll() {
+                $(".Check_all").click(function () {
+                    if ($(this).is(":checked")) {
+                        $('.check_con').prop('checked', false)
+                    } else {
+                        $('.check_con').prop('checked', false)
+                    }
+                });
+                $(".check_con").click(function () {
+                    if ($(this).is(":checked")) {
+                        $('.Check_all').prop('checked', false)
+                    } else {
+                        $('.Check_all').prop('checked', false)
+                    }
+                });
+            };
+            var renderColumns = [
+                {
+                    width: "20%",
+                    render: function (data, type, full) {
+                        return `${full['datePub']}`;
+                    },
+                    class: "cus_border"
+                },
+                {
+                    width: "1000px",
+                    render: function (data, type, full) {
+                        return `<a href="${setProtocol(full['url'])}" style="color: #333;" target="_blank">${full['title']}</a>`;
+                    },
+                    class: "kl_right1"
+                },
+            ];
+
+            var loadData = function () {
+                $('#loading').addClass('loading');
+                var val = $("#namBaoCao").val();
+                var listChecked = [];
+                $("input[name*='Checkbox']:checked").map(function () {
+                    listChecked.push(this.value);
+                });
+                var cpnyId = $("#cpnyid").val();
+                $.ajax({
+                    url: '@Url.Action("GetLuuTruTinTuSoVaVSD", "ThongTinDoanhNghiep")' + lang,
+                    method: 'GET',
+                    dataType: 'json',
+                    data: {
+                        stock_code: stockcode,
+                        cpnyID: cpnyId
+                    },
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        var dulieu1 = [];
+                        var lang = "vi-VN";
+                        for (var item of data) {
+                            //console.log(item.MFolder);
+                            if (lang == "vi-VN" || lang == '') {
+                                if (item.language == 1 || item.language == null) {
+                                    if (item.FiscYear == val) {
+                                        dulieu1.push(item);
+                                    } else if (val == "tc") {
+                                        dulieu1.push(item);
+                                    }
+                                }
+                            } else {
+                                if (item.language == 2 || item.language == null) {
+                                    if (item.FiscYear == val) {
+                                        dulieu1.push(item);
+                                    } else if (val == "tc") {
+                                        dulieu1.push(item);
+                                    }
+                                }
+                            }
+                        };
+                        $('#table4').empty();
+                        $('#table4').DataTable({
+                            ordering: false,
+                            dom: "lti<'pagingList justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            className: 'dt-body-right',
+                            "info": false,
+                            "lengthChange": false,
+                            pagingType: $(window).width() < 425 ? "simple" : "simple_numbers",
+                            data: dulieu1,
+                            columns: renderColumns
+                        });
+                        $("#table4 thead").hide();
+                    },
+                    error: function (err) {
+                        $('#loading').removeClass('loading');
+                    }
+                });
+            };
+            //tìm kiếm theo năm
+            var searchNam = function () {
+                $('body').on('change', '#namBaoCao', function () {
+                    $('#loading').addClass('loading');
+                    var val = $("#namBaoCao").val();
+                    var listChecked = [];
+                    $("input[name*='Checkbox']:checked").map(function () {
+                        listChecked.push(this.value);
+                    });
+                    var cpnyId = $("#cpnyid").val();
+                    $.ajax({
+                        url: '@Url.Action("GetLuuTruTinTuSoVaVSD", "ThongTinDoanhNghiep")' + lang,
+                        method: 'GET',
+                        dataType: 'json',
+                        data: {
+                            stock_code: stockcode,
+                            cpnyID: cpnyId
+                        },
+                        success: function (data) {
+                            $('#loading').removeClass('loading');
+                            var lang = "vi-VN";
+                            var dulieu1 = [];
+                            for (const item of data) {
+                                //console.log(item.MFolder);
+                                if (lang == "vi-VN" || lang == '') {
+                                    if ((item.language == 1 || item.language == null)) {
+                                        if (listChecked.length == 0 && (item.fiscYear == val || val == "tc")) {
+                                            dulieu1.push(item);
+                                        }
+                                        else {
+                                            for (var i of listChecked) {
+                                                if (item.fiscYear == val && ((i.includes(item.folderLuutru) == true || i == "tatca"))) {
+                                                    dulieu1.push(item);
+                                                } else if (val == "tc" && ((i.includes(item.folderLuutru) == true || i == "tatca"))) {
+                                                    dulieu1.push(item);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                } else {
+                                    if ((item.language == 2 || item.language == null)) {
+                                        if (listChecked.length == 0 && (item.fiscYear == val || val == "tc")) {
+                                            dulieu1.push(item);
+                                        } else {
+                                            for (var i of listChecked) {
+                                                if (item.fiscYear == val && (i.includes(item.folderLuutru) == true || i == "tatca")) {
+                                                    dulieu1.push(item);
+                                                } else if (val == "tc" && (i.includes(item.folderLuutru) == true || i == "tatca")) {
+                                                    dulieu1.push(item);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            };
+                            $('#table4').empty();
+                            $('#table4').DataTable({
+                                ordering: false,
+                                dom: "lti<'pagingList justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                className: 'dt-body-right',
+                                "info": false,
+                                "lengthChange": false,
+                                pagingType: $(window).width() < 425 ? "simple" : "simple_numbers",
+                                data: dulieu1,
+                                columns: renderColumns
+                            });
+
+                            $("#table4 thead").hide();
+                        },
+                        error: function (err) {
+                            $('#loading').removeClass('loading');
+                        }
+                    });
+                });
+            };
+            //tìm kiếm theo loại tài liệu
+            var searchLoaiTaiLieu = function () {
+                $('body').on('change', '#loaitailieu', function () {
+                    $('#loading').addClass('loading');
+                    var val = $("#namBaoCao").val();
+                    var listChecked = [];
+                    $("input[name*='Checkbox']:checked").map(function () {
+                        listChecked.push(this.value);
+                    });
+                    var cpnyId = $("#cpnyid").val();
+                    $.ajax({
+                        url: '@Url.Action("GetLuuTruTinTuSoVaVSD", "ThongTinDoanhNghiep")' + lang,
+                        method: 'GET',
+                        dataType: 'json',
+                        data: {
+                            stock_code: stockcode,
+                            cpnyID: cpnyId
+                        },
+                        success: function (data) {
+                           // console.log(data);
+                            $('#loading').removeClass('loading');
+                            var dulieu = [];
+                            var dulieu1 = [];
+                            var lang = "vi-VN";
+                            for (const item of data) {
+                                //console.log(item.MFolder);
+                                if (lang == "vi-VN" || lang == '') {
+                                    if ((item.language == 1 || item.language == null)) {
+                                        for (var i of listChecked) {
+                                            if ((i.includes(item.folderLuutru) == true || i == "tatca") && (item.fiscYear == val || val == "tc")) {
+                                                dulieu1.push(item);
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if ((item.language == 2 || item.language == null)) {
+                                        for (var i of listChecked) {
+                                            if ((i.includes(item.folderLuutru) == true || i == "tatca") && (item.fiscYear == val || val == "tc")) {
+                                                dulieu1.push(item);
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                            };
+                            $('#table4').empty();
+                            $('#table4').DataTable({
+                                ordering: false,
+                                dom: "lti<'pagingList justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                className: 'dt-body-right',
+                                "info": false,
+                                "lengthChange": false,
+                                pagingType: $(window).width() < 425 ? "simple" : "simple_numbers",
+                                data: dulieu1,
+                                columns: renderColumns
+                            });
+                            $("#table4 thead").hide();
+                        },
+                        error: function (err) {
+                            $('#loading').removeClass('loading');
+                        }
+                    });
+                });
+            };
+
+            var searchLoaiTaiLieuMobile = function () {
+                $('body').on('change', '#loaitailieuMobile', function () {
+                    $('#loading').addClass('loading');
+                    var val = $("#namBaoCao").val();
+                    var listChecked = [];
+                    var e = document.getElementById("loaitailieuMobile");
+                    var value = e.value;
+                    listChecked.push(value);
+                    var cpnyId = $("#cpnyid").val();
+                    $.ajax({
+                        url: '@Url.Action("GetLuuTruTinDoanhNghiep", "ThongTinDoanhNghiep")' + lang,
+                        method: 'GET',
+                        dataType: 'json',
+                        data: {
+                            stock_code: stockcode,
+                            cpnyID: cpnyId
+                        },
+                        success: function (data) {
+                            //console.log(data);
+                            $('#loading').removeClass('loading');
+                            var dulieu = [];
+                            var dulieu1 = [];
+                            var lang = "vi-VN";
+                            for (const item of data) {
+
+                                if (lang == "vi-VN" || lang == '') {
+                                    if ((item.language == 1 || item.language == null)) {
+                                        for (var i of listChecked) {
+                                            if ((i.includes(item.folderLuutru) == true || i == "tatca") && (item.fiscYear == val || val == "tc")) {
+                                                dulieu.push(item);
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    if ((item.language == 2 || item.language == null)) {
+                                        for (var i of listChecked) {
+                                            if ((i.includes(item.folderLuutru) == true || i == "tatca") && (item.fiscYear == val || val == "tc")) {
+                                                dulieu.push(item);
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                            };
+                            $('#table3').empty();
+                            $('#table3').DataTable({
+                                ordering: false,
+                                dom: "lti<'pagingList justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                className: 'dt-body-right',
+                                "info": false,
+                                "lengthChange": false,
+                                pagingType: $(window).width() < 425 ? "simple" : "simple_numbers",
+                                data: dulieu,
+                                columns: renderColumns
+                            });
+                            $("#table3 thead").hide();
+                        },
+                        error: function (err) {
+                            $('#loading').removeClass('loading');
+                        }
+                    });
+                });
+            };
+
+            //thay đổi giao thức của link file theo giao thức của link trang hiện tại
+            function setProtocol(url) {
+                //Cắt chuỗi thành 2 phần: [0] là protocol của chuỗi, [1] là phần còn lại của đường dẫn
+                var arr = url.split('://');
+                if (arr[0] !== '@protocol') {
+                    return '@protocol' + '://' + arr[1];
+                }
+                return url;
+            }
+        };
+         var thongTin = new ThongTin();
+         thongTin.init();
+    });
+    </script>

@@ -1,0 +1,24 @@
+﻿2021-08-26 10:12:41.692 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_FORGOT_PASSWORD
+-----paramArr ---
+P_AUSERNAME:tungtt;P_EMAIL:tranthanhtungg2@gmail.com;P_NEWAPASSWORD:158f3d5aab1371634f9ab794d10dbc2a;p_MESSAGE:;p_ERRORCODE:;p_RoleCode:QMK;p_USERNAME:tungtt;
+
+2021-08-26 10:13:10.124 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_FORGOT_PASSWORD
+-----paramArr ---
+P_AUSERNAME:tungtt;P_EMAIL:tungtt@fpts.com.vn;P_NEWAPASSWORD:a7ce7818bcf0f9dd77d1949b6da25ec7;p_MESSAGE:;p_ERRORCODE:;p_RoleCode:QMK;p_USERNAME:tungtt;
+
+2021-08-26 10:13:45.235 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_LOGIN
+-----paramArr ---
+P_USERNAME:tungtt;P_PASSWORD:a7ce7818bcf0f9dd77d1949b6da25ec7;P_IP:::1;P_BROWSER:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) coc_coc_browser/97.0.194 Chrome/91.0.4472.194 Safari/537.36;p_MESSAGE:;p_ERRORCODE:;
+
+2021-08-26 10:13:45.336 +07:00 [ERR] 
+-----SPname-----
+SPEZIR_CUSTOMER_SEARCH
+-----paramArr ---
+P_USERNAME:tungtt;P_FULLNAME:;P_EMAIL:;P_ACTIVE:;REFCURSOR:;
+

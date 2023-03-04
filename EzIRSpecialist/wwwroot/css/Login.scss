@@ -1,0 +1,31 @@
+﻿body {
+}
+.header-source {
+    display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+    .k-footer {
+        bottom: unset !important;
+    }
+
+}
+@media only screen and (max-width : 600px){
+    .lang-flag{
+        margin-top:10px;
+    }
+    .hcm-phone{
+        padding-left:22px;
+    }
+ 
+}
+@media only screen and (min-width: 600px) {
+    .header-newline {
+        display: none;
+    }
+    .header-source{
+        display:inline;
+    }
+  
+}
+

@@ -1,0 +1,669 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+@using CoreLib.Entities;
+@using EzIRSpecialist.Models.ViewModel;
+@using Microsoft.Extensions.Configuration;
+
+@model ThongTinChungViewModel;
+
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IConfiguration _configuration;
+@{
+    ViewData["Title"] = "Thông tin chung";
+    var link_EzIRCustomer = ViewBag.imgLogo;
+
+}
+
+<link re l="stylesheet" href="~/Online/siteStyle.css">
+
+<link rel="stylesheet" href="~/css/siteStyle.css">
+<style>
+    .text-information:before {
+        width: 97%;
+    }
+
+    .left-text {
+        width: 31%;
+    }
+
+    .left-text-table2 {
+        width: 23%;
+    }
+</style>
+<div class="k-portlet__body" style="min-height: 600px; margin-left:20px">
+    <div class="row col-12 nopadding" style="margin-bottom: 10px;">
+        <div class="col-md-7 div-button-mobiletop" style="padding-bottom: 10px"></div>
+        <div class="respon-mobile" style="width:100%;">
+            <div class="row col-12 nopadding">
+                <!-- Thông tin chung -->
+                <div class="col-md-8" style="padding-right: 0px !important;padding-left: 0px !important;">
+                    <form id="frmTTC" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-9 text-box-label-general" style="padding-left: 0px;">
+                                <p class="text-general-information" for="" style="width: 100%;padding-bottom: 15px;">Thông tin chung</p>
+                                <table id="text-general-information" cellspacing="0" cellpadding="0" border="0" style="width:100%">
+                                    <tbody>
+                                        <tr>
+                                            <td class="left-text">
+                                                <label class="title-general-information" for="AStockCode">Mã chứng khoán</label>
+                                            </td>
+                                            <td class="right-textbox">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    @Html.Raw(item.AStockCode)
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-text">
+                                                <label class="title-general-information" for="NameVN">Tên công ty</label>
+                                            </td>
+                                            <td class="right-textbox">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    @Html.Raw(item.NameVN)
+
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left-text">
+                                                <label class="title-general-information" for="AName_Short">Tên viết tắt</label>
+                                            </td>
+                                            <td class="right-textbox">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    @Html.Raw(item.AName_Short)
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-3 div-img-insert " style="padding-left: 0px; padding-top: 14px;">
+                                <div class="img_insert-general" style="border:none !important">
+                                    <div class="avatar-upload">
+                                        <div class="avatar-preview">
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                            <div id="imagePreview" style="background-image:url( @(link_EzIRCustomer + item.ALogoPath))">
+                                                
+                                            </div>
+                                               
+                                                @*@Html.Raw(_configuration["Upload"] + item.ALogoPath)*@
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-box-label-general " style="padding-left: 0px;">
+                            <table id="table2" cellspacing="0" cellpadding="0" border="0" style="width: 100%">
+                                <tbody>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AHeadOffice">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    if (item.ANote != null && item.ANote.Length > 0)
+                                                    {
+                                                        var names = item.ANote.Split(';');
+                                                        bool check = false;
+                                                        foreach (var name in names)
+                                                        {
+                                                            if (name == "AHeadOffice")
+                                                            {
+                                                                check = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (check == true)
+                                                        {
+                                                            <p style="color:red">
+                                                                Trụ sở chính
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>
+                                                                Trụ sở chính
+                                                            </p>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>Trụ sở chính</p>
+                                                    }
+                                                }
+
+                                            </label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex; width: 100%;">
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                                @Html.Raw(item.AHeadOffice)
+
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="ACapital">Vốn điều lệ</label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex; width: 100%;">
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                                @Html.Raw(String.Format("{0:#,#}", item.ACapital).Replace('.', ','));
+                                            }
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="APhone">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    if (item.ANote != null && item.ANote.Length > 0)
+                                                    {
+                                                        var names = item.ANote.Split(';');
+                                                        bool check = false;
+                                                        foreach (var name in names)
+                                                        {
+                                                            if (name == "APhone")
+                                                            {
+                                                                check = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (check == true)
+                                                        {
+                                                            <p style="color:red">
+                                                                Điện thoại
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>
+                                                                Điện thoại
+                                                            </p>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>Điện thoại</p>
+                                                    }
+                                                }
+                                            </label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex; width: 100%;">
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                                @Html.Raw(item.APhone)
+                                            }
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AFax">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    if (item.ANote != null && item.ANote.Length > 0)
+                                                    {
+                                                        var names = item.ANote.Split(';');
+                                                        bool check = false;
+                                                        foreach (var name in names)
+                                                        {
+                                                            if (name == "AFax")
+                                                            {
+                                                                check = true;
+
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (check == true)
+                                                        {
+                                                            <p style="color:red">
+                                                                AFax
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>
+                                                                AFax
+                                                            </p>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>AFax</p>
+                                                    }
+                                                }
+                                            </label>
+                                        </td>
+                                        <td>
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                                @Html.Raw(item.AFax)
+
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AEmail">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    if (item.ANote != null && item.ANote.Length > 0)
+                                                    {
+                                                        var names = item.ANote.Split(';');
+                                                        bool check = false;
+                                                        foreach (var name in names)
+                                                        {
+                                                            if (name == "AEmail")
+                                                            {
+                                                                check = true;
+
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (check == true)
+                                                        {
+                                                            <p style="color:red">
+                                                                AEmail
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>
+                                                                AEmail
+                                                            </p>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>AEmail</p>
+                                                    }
+                                                }
+                                            </label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex; width: 100%;">
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                                @Html.Raw(item.AEmail)
+
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AWebsite">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    if (item.ANote != null && item.ANote.Length > 0)
+                                                    {
+                                                        var names = item.ANote.Split(';');
+                                                        bool check = false;
+                                                        foreach (var name in names)
+                                                        {
+                                                            if (name == "AWebsite")
+                                                            {
+                                                                check = true;
+
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (check == true)
+                                                        {
+                                                            <p style="color:red">
+                                                                Website
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>
+                                                                Website
+                                                            </p>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>Website</p>
+                                                    }
+                                                }
+                                            </label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex; width: 100%;">
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                                @Html.Raw(item.AWebsite)
+
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="CompanyTypeDesc">Ngành nghề</label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex; width: 100%;">
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                                @Html.Raw(item.minisnamevn)
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="ATaxCode">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    if (item.ANote != null && item.ANote.Length > 0)
+                                                    {
+                                                        var names = item.ANote.Split(';');
+                                                        bool check = false;
+                                                        foreach (var name in names)
+                                                        {
+                                                            if (name == "ATaxCode")
+                                                            {
+                                                                check = true;
+
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (check == true)
+                                                        {
+                                                            <p style="color:red">
+                                                                MST
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>
+                                                                MST
+                                                            </p>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>MST</p>
+                                                    }
+                                                }
+                                            </label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex; width: 100%;">
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                                @Html.Raw(item.ATaxCode)
+
+                                            }
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table2">
+                                            <label class="title-general-information" for="AReg_Biz_No">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    if (item.ANote != null && item.ANote.Length > 0)
+                                                    {
+                                                        var names = item.ANote.Split(';');
+                                                        bool check = false;
+                                                        foreach (var name in names)
+                                                        {
+                                                            if (name == "AReg_Biz_No")
+                                                            {
+                                                                check = true;
+
+                                                                break;
+                                                            }
+                                                        }
+                                                        if (check == true)
+                                                        {
+                                                            <p style="color:red">
+                                                                Đăng ký kinh doanh
+                                                            </p>
+                                                        }
+                                                        else
+                                                        {
+                                                            <p>
+                                                                Đăng ký kinh doanh
+                                                            </p>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>Đăng ký kinh doanh</p>
+                                                    }
+                                                }
+                                            </label>
+                                        </td>
+                                        <td class="right-textbox-multiple" style="display: flex;width: 100%;">
+                                            @foreach (var item in Model.listTTC)
+                                            {
+                                                @Html.Raw(item.AReg_Biz_No)
+
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <!-- Thông tin niêm yết -->
+                <div class="col-md-4" style="padding-right: 0px !important;padding-left: 0px !important;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general" style="padding-left: 0px;">
+                            <p class="text-information" for="" style="width: 100%;padding-bottom: 15px;">Thông tin niêm yết</p>
+                            <table id="text-general-information" cellspacing="0" cellpadding="0" border="0" style="width:100%; margin-bottom: 20px">
+                                <tbody>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" style="padding-bottom: 10px" for="APost_Date">Ngày niêm yết lần đầu</label>
+                                        </td>
+                                        <td class="right-textbox-table3" style=" padding-bottom: 10px">
+                                            <span typeof="date" class="LblItemContent" id="txtAPost_Date">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    @Html.Raw(String.Format("{0:dd/MM/yyyy}", item.APost_Date))
+                                                }
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" style="padding-bottom: 10px" for="APost_To">Nơi niêm yết hiện tại</label>
+                                        </td>
+                                        <td class="right-textbox-table3" style=" padding-bottom: 10px">
+                                            <span id="txtAPost_To" class="LblItemContent">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    @Html.Raw(item.APost_To)
+
+                                                }
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" style="padding-bottom: 10px" for="AFirst_Price">Mệnh giá</label>
+                                        </td>
+                                        <td class="right-textbox-table3" style=" padding-bottom: 10px">
+                                            <span id="txtAFirst_Price" class="LblItemContent numbers">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    @Html.Raw(String.Format("{0:#,#}", item.AFirst_Price).Replace('.', ','))
+
+                                                }
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" style="padding-bottom: 10px" for="AOrg_Price">Giá chào sàn</label>
+                                        </td>
+                                        <td class="right-textbox-table3" style=" padding-bottom: 10px">
+                                            <span id="txtAOrg_Price" class="LblItemContent numbers">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    @Html.Raw(String.Format("{0:#,#}", item.AOrg_Price).Replace('.', ','))
+
+                                                }
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" style="padding-bottom: 10px" for="AQty">KL đang niêm yết hiện tại</label>
+                                        </td>
+                                        <td class="right-textbox-table3" style=" padding-bottom: 10px">
+                                            <span class="LblItemContent numbers" id="txtAQty">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    @Html.Raw(String.Format("{0:#,#}", item.AQty).Replace('.', ','))
+
+                                                }
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="left-text-table3">
+                                            <label class="title-general-information" style="padding-bottom: 10px" for="ACapital">Tổng giá trị niêm yết</label>
+                                        </td>
+                                        <td class="right-textbox-table3" style=" padding-bottom: 10px">
+                                            <span class="LblItemContent numbers" id="txtACapital2">
+                                                @foreach (var item in Model.listTTC)
+                                                {
+                                                    @Html.Raw(String.Format("{0:#,#}", item.ACapital).Replace('.', ','))
+                                                }
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Lĩnh Vực SXKD Chính -->
+                        <div class="col-md-12 text-box-label-general" style="padding-left: 0px;margin-bottom: 30px">
+                            <p class="text-information" for="" style="width: 100%;padding-bottom: 15px;">Lĩnh Vực SXKD Chính</p>
+                            <td style="text-align:justify">
+                                <textarea id="txtASummary" class="LblItemContent" style="height: 230%; width: inherit; border: none;" readonly> @foreach (var item in Model.listTTC)
+                                   {
+                                    @Html.Raw(item.ASummary)
+                                   }
+                                </textarea>
+                            </td>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Các mốc lịch sử -->
+            <div class="row col-12 nopadding" style="margin-top: 10px;">
+                <div class="col-md-8" style="padding-right: 0px !important;padding-left: 0px !important;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general" style="padding-left: 0px;margin-bottom: 30px">
+                            <p class="text-general-information" for="" style="width: 100%;padding-bottom: 10px;">Các mốc lịch sử</p>
+                            <div class="Event timetable">
+                                <table id="List-Historical" cellspacing="0" cellpadding="0" border="0" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th class="left-text-table4" style="width: 10%">
+                                                <p class="title-Event-time">STT</p>
+                                            </th>
+                                            <th class="left-text-table4" style="width: 20%">
+                                                <p class="title-Event-time">Mốc thời gian</p>
+
+                                            </th>
+                                            <th class="right-textbox-table4" style="width: 70%;padding-left: 2%">
+                                                <p class="title-Event-time">Sự kiện tiêu biểu</p>
+
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach (var item in Model.listCMLS)
+                                        {
+                                              if (item.Note != null && item.Note.Length > 0)
+                                              {
+                                                   var names = item.Note.Split(';');
+                                                   bool check = false;
+                                                   foreach (var name in names)
+                                                   {
+                                                        if (name == "EventDate" || name == "EventDesc" || name == "EventDateEN" || name == "EventDescEN" || name == "EventOrder")
+                                                        {
+                                                            check = true;
+
+                                                            break;
+                                                        }
+                                                   }
+                                                   if (check == true)
+                                                   {
+                                                        <tr role="row">
+                                                            <td class="left-text-table4" style="width: 10%">
+                                                                <p style="color:red">@Html.Raw(item.EventOrder)</p>
+                                                            </td>
+                                                            <td class="left-text-table4" style="width: 20%">
+                                                                <p style="color:red">@Html.Raw(item.EventDate)</p>
+                                                            </td>
+                                                            <td class="right-textbox-table4" style="width: 60%; padding-left: 2%">
+                                                                <p style="color:red">@Html.Raw(item.EventDesc)</p>
+                                                            </td>
+                                                        </tr>
+                                                   }
+                                                   else
+                                                   {
+                                                        <tr role="row">
+                                                            <td class="left-text-table4" style="width: 10%">
+                                                                <p>@Html.Raw(item.EventOrder)</p>
+                                                            </td>
+                                                            <td class="left-text-table4" style="width: 20%">
+                                                                <p>@Html.Raw(item.EventDate)</p>
+                                                            </td>
+                                                            <td class="right-textbox-table4" style="width: 60%; padding-left: 2%">
+
+                                                                <p>@Html.Raw(item.EventDesc)</p>
+                                                            </td>
+                                                        </tr>
+                                                   }
+
+                                              }
+                                              else
+                                              {
+                                                   <tr role="row">
+                                                        <td class="left-text-table4" style="width: 10%">
+                                                            <p>@Html.Raw(item.EventOrder)</p>
+                                                        </td>
+                                                        <td class="left-text-table4" style="width: 20%">
+                                                            <p>@Html.Raw(item.EventDate)</p>
+                                                        </td>
+
+                                                        <td class="right-textbox-table4" style="width: 60%; padding-left: 2%">
+                                                            <p>@Html.Raw(item.EventDesc)</p>
+                                                        </td>
+                                                   </tr>
+                                              }
+                                            
+                                         }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+<script type="text/javascript" src="~/js/dist/navbar_responsive.js"></script>
+
+
+

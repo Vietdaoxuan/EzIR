@@ -1,0 +1,781 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Localization;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Builder
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var cResponseMessage = ViewBag.Data as CoreLib.Entities.CResponseMessage;
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+
+    var StockName = "";
+    var _UrlLink = ViewBag._UrlFileCommon;
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+
+        StockName = @HttpContextAccessor.HttpContext.Session.GetString("StockName");
+    }
+    else
+    {
+
+        StockName = @HttpContextAccessor.HttpContext.Session.GetString("StockNameEn");
+    }
+}
+<!-- begin:: Content -->
+<div class="container" style="min-height: 70vh;">
+    <div class="title_line d-flex" style="margin-bottom: 0px;">
+        <div class="container">
+            <span class="title_line_item">
+                <font color="#4187A6"><a href="" style="color:#4187A6;font-weight: 600;">@Localizer["Information_Disclosure"].Value</a></font>
+            </span>
+            <span class="title_line_item">
+                <i class="fa  fa-caret-right"></i>
+            </span>
+            <span class="title_line_item">
+                <font color="#4187A6" style="font-weight: 600;">@Localizer["Information_Disclosure"].Value</font>
+            </span>
+        </div>
+    </div>
+    <div class="k-portlet__body">
+        <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist" style="cursor:pointer">
+            <li class="nav-item col gsm-link-tab">
+                <a class="nav-link active show " data-toggle="tab" data-target="#k_tabs_1" role="tab"
+                   aria-selected="true">
+                    <span class="nav-link-title text-uppercase">@Localizer["Look_up_published_news"].Value</span>
+                </a>
+            </li>
+            <li class="nav-item col gsm-link-tab" style="background-color: gainsboro;">
+
+                <a class="nav-link" data-toggle="tab" data-target="#updateTab" role="tab" aria-selected="false">
+                    <span class="nav-link-title text-uppercase">@Localizer["Information_Disclosure"].Value</span>
+                </a>
+            </li>
+        </ul>
+        <div class="line_top col-md-12">
+
+        </div>
+        <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+            <div class="tab-content">
+                <div class="form-wrapper">
+                    <form id="formSearch" style="padding-left: 4px;">
+                        <div class="form-row" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="col-md-12 form-section form-search" style="padding-left: 0px; padding-right: 0px;">
+                                <div class="form-group col-md-6" style="padding-left: 0px;">
+                                    <label class="text-box-left" for="DocType">@Localizer["Type_of_document"].Value</label>
+                                    <select id="DocType" class="form-control" name="DocType" asp-items="@(new SelectList(Model.listloaitl, "TypeCode","TypeName"))">
+                                        <option>
+                                            @Localizer["All"].Value
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6" style="padding-right: 5px;">
+                                    <label class="text-box-left" for="">@Localizer["Type_of_news"].Value</label>
+                                    <select id="NewsType" class="form-control" name="NewType" asp-items="@(new SelectList(Model.listloaitin, "TypeID","TypeName"))">
+                                        <option>
+                                            @Localizer["All"].Value
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row form-section" style="padding-left: 0px; padding-right: 0px;">
+                            <div class="col-md-12 form-section form-search" style="padding-left: 0px; padding-right: 0px;">
+                                <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal" style="padding-left: 0px;">
+                                    <label for="FromDate">@Localizer["From_date"].Value</label>
+                                    <input type="date" class="form-control" id="FromDate" name="FromDate">
+                                </div>
+                                <div class="form-group col-lg-3 col-md-equal col-sm-equal col-xs-equal">
+                                    <label for="ToDate">@Localizer["To_date"].Value</label>
+                                    <input type="date" class="form-control" id="ToDate" name="ToDate">
+                                </div>
+                                <div class="form-group col-md-6" style="padding-right: 5px;">
+                                    <label class="text-box-left" for="">@Localizer["User_posted"].Value</label>
+                                    <input type="text" class="form-control" id="CreateBy" name="CreateBy">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row d-flex justify-content-center col-12 btn-search-wrapper" style="justify-content: center !important;padding-bottom: 1.5rem;">
+                    <button id="btnSearch" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                        @Localizer["Search"].Value
+                    </button>
+                </div>
+            </div>
+            <div class="content-tbl" style=" box-shadow: 0px 4px 10px darkgrey; margin-bottom: 25px; padding-left: 0px;padding-right: 0px;">
+                <table id="listdata" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+                       role="grid" style="width: 1138px;border-bottom: 1px solid #c4c4c4 !important">
+                    <thead>
+                        <tr>
+                            <th>@Localizer["User_posted"].Value</th>
+                            <th>@Localizer["Posting_date"].Value</th>
+                            <th>@Localizer["Type_of_document"].Value</th>
+                            <th>@Localizer["NewsType"].Value</th>
+                            <th>@Localizer["Title"].Value</th>
+                            <th>@Localizer["Download_file"].Value</th>
+                            <th>@Localizer["Action"].Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--Tab tạo Tin công bố-->
+        <div id="updateTab" class="tab-pane fade tab-acc" style="padding: 0px;">
+            <div class="tab-content">
+                <div class="form-wrapper">
+                    <form id="FormUpdate" style="padding-top: 20px;">
+                        <input type="text" class="form-control" id="newID" hidden>
+                        <input type="text" class="form-control" id="oldFileName" hidden>
+                        <input type="text" class="form-control" id="oldUrl" hidden>
+                        <input type="text" class="form-control" id="oldPath" hidden>
+                        <input type="text" class="form-control" id="sID" hidden>
+                        <div class="form-group row ">
+                            <div class="col-md-2 text-box-label " style="padding-left: 0px;">
+                                <label class="text-box-left" for="">@Localizer["StockCode"].Value</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" value="@StockName" disabled>
+                            </div>
+                            <div class="col-md-5">
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="col-md-2 text-box-label" style="padding-left: 0px;">
+                                <label class="text-box-left" for="">@Localizer["Type_of_document"].Value</label>
+                            </div>
+                            <div class="col-md-5">
+                                <select id="docType" class="form-control" name="ADocType" asp-items="@(new SelectList(Model.listloaitl, "TypeCode","TypeName"))">
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="col-md-2 text-box-label" style="padding-left: 0px;">
+                                <label class="text-box-left" for="">@Localizer["Type_of_news"].Value</label>
+                            </div>
+                            <div class="col-md-5">
+                                <select id="newType" class="form-control" name="ANewType" asp-items="@(new SelectList(Model.listloaitin,"TypeCode","TypeName"))">
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="col-md-2 text-box-label note" style="padding-left: 0px;">
+                                <label class="text-box-left" for="">@Localizer["Title"].Value</label>
+                            </div>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control" name="Title" id="Title" placeholder="@SharedLocalizer["TITLE_MAXLENGTH"]">
+                            </div>
+                            <div class="col-md-5">
+
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2 text-box-label note" style="padding-left: 0px;">
+                                <label class="text-box-left" for="">@Localizer["Year"].Value</label>
+                            </div>
+                            <div class="col-md-5">
+                                <select class="form-control" id="Year">
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+
+                            </div>
+                        </div>
+                        <div class="form-group row ">
+                            <div class="col-md-2 text-box-label note" style="padding-left: 0px;">
+                                <label class="text-box-left" for="">@Localizer["Upload_file"].Value</label>
+                            </div>
+                            <div class="col-md-6 input_file-EzIR">
+                                <div class="input_file">
+                                    <input class="input-file" id="my-file" type="file">
+                                    <label tabindex="0" for="my-file" class="input-file-trigger">@Localizer["Choose_from_computer"].Value</label>
+                                </div>
+                                <p class="file-return" style="padding-left: 5%;
+                                                    padding-top: 2%;
+                                                    color: #C9C9C9;">
+                                    @Localizer["Formats_supported"].Value
+                                    <br> @Localizer["Up_to"].Value
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                            </div>
+                        </div>
+                        <div class="form-upfile">
+                            <div class="upfile-left">
+
+                            </div>
+                            <div class="upfile-button">
+                                <input type="button" class="buttons btn-upload mt-3 ml-3 update-btn" id="btnUpload"
+                                       value="@Localizer["Upload"].Value">
+                                <input type="button" class="buttons btn-upload mt-3 ml-3 update-btn" id="btnUpdate"
+                                       value="@Localizer["Edit"].Value">
+                                <button class="buttons btn-upload mt-3 ml-3 reset-btn" id="btnReset">@Localizer["Refresh"].Value</button>
+                            </div>
+                            <div class="upfile-right">
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+<style>
+    div.dataTables_wrapper div.dataTables_length label {
+        color: white !important;
+    }
+
+    table.dataTable thead th, table.dataTable tfoot th {
+        font-weight: 500;
+        color: rgb(41, 153, 206);
+    }
+
+    .tab-pane {
+        padding: 0px;
+    }
+
+    .dataTables_wrapper .dataTable tbody tr, .dataTables_wrapper .dataTable thead tr {
+        border-left: 0px solid #fff;
+    }
+
+    table.dataTable tbody th, table.dataTable tbody td {
+        padding: 8px 12px;
+    }
+
+    table.dataTable thead th, table.dataTable thead td {
+        padding: 10px 10px;
+    }
+
+    .fa-download {
+        padding-left: 13px !important;
+    }
+
+    .nav-pills.nav-tabs-btn .nav-link {
+        background-color: lightgray;
+    }
+
+    .dataTables_wrapper .dataTable {
+        border-collapse: unset !important;
+    }
+</style>
+<script>
+    //Load dữ liệu tìm kiếm theo năm (năm hiện tại + thêm 1 năm và tìm kiếm trong khoảng 31 năm)
+    var loadYear = function () {
+        var htmlYear = ``
+        for (var i = new Date().getFullYear(); i >= new Date().getFullYear() - 31; i--) {
+            if (i == new Date().getFullYear()) {
+                htmlYear += `<option value="${i}" selected>${i}</option>`
+            } else {
+                htmlYear += `<option value="${i}">${i}</option>`
+            }
+
+            $('#Year').empty();
+            $('#Year').append(htmlYear);
+        }
+    }
+    loadYear();
+    $(document).ready(function () {
+           $(".nav-item.col.gsm-link-tab").first().addClass("active");
+           $("#btnUpdate").hide();
+
+           var renderColumns = [
+               {
+                   data: "aUserPort",
+               },
+               {
+                   data: "aDatePub",
+                   render: (data) => (new Date(data)).toLocaleString().replace(",", "").replace("AM", "SA").replace("PM", "CH")
+               },
+               {
+                   data: "atypename"
+               },
+               {
+                   data: "anewtypename"
+               },
+               {
+                   data: "aTitle"
+               },
+
+               {
+                   data: "aPath",
+                   render: function (data, type, full) {
+                       return `<div class="d-inline-flex w-100">
+                              <a class='DownloadCongBo btn text-primary' style="padding-left:0px" data-id='${data}' data-filename='${full['aFileName']} 'data-title='${full['aTitle']}' data-typename='${full['atypename']}' href="@_UrlLink/${full['aurl']}" target="_blank" rel="noopener noreferrer" download><i class="fas fa-download"></i></a>
+                            </div >`;
+                   }
+               },
+               {
+                   data: "aNewID",
+                   render: function (data, type, full) {
+                       return `<div class="d-inline-flex w-100">
+                            <a class='EditCongBo btn action-btn' data-id='${data}'><i class="far fa-edit"></i></a>
+                            <a class='DeleteCongBo btn action-btn' data-id='${data}'data-sid='${full['asid']}'><i class="fas fa-delete"></i></a>
+                            </div >`;
+                   }
+               }
+           ];
+
+        var form = $("#formSearch");
+
+        var CongBo = function () {
+            this.init = function () {
+                loadData(null);
+                registerEvents();
+                $('#docType').val(1).trigger('change');
+            }
+
+            var loadData = function (data) {
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetCongBo", "CongBoThongTin")',
+                    data: data,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                       @* console.log(data);*@
+                        var table = $('#listdata').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-space-around'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            "info": false,
+                            data: data,
+                            columns: renderColumns,
+                            "ordering": false,
+                            searching: false,
+                            className: 'dt-body-right',
+                            "info": false,
+                            pageLength: 10,
+                            "lengthChange": true,
+                            "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]]
+                        });
+
+
+                        function editClick() {
+                            $('.EditCongBo').off();
+                            $('.EditCongBo').click(function () {
+                                let newID = $(this).data('id');
+                                var the_return = document.querySelector(".file-return");
+                                @*console.log(newID);*@
+                                $.ajax({
+                                    type: "GET",
+                                    url: '@Url.Action("GetCongBo", "CongBoThongTin")?NewID=' + newID,
+                                    success: function (data) {
+                                        @*console.log(data);
+                                        console.log(data[0].username);*@
+                                        //chuyển sang tab edit
+                                        $('.nav-pills > li:first-child').removeClass('active');
+                                        $('.nav-pills > li:last-child').addClass('active');
+                                        //$('.nav-pills > li:last-child').tab('show');
+                                        jQuery('#updateTab').css('opacity', '1');
+                                        $('.nav-pills > li:last-child > a').trigger('click');
+                                        $("#btnUpdate").show();
+                                        $("#btnUpload").hide();
+                                        $("#docType").val(data[0].aDocType).trigger('change');
+                                        $("#newType").val(data[0].aNewType);
+                                        //$("#DocType").val(data[0].aDocType).trigger('change');
+                                        //$("#NewsType").val(data[0].aNewType);
+                                        $("#Title").val(data[0].aTitle);
+                                        $("#Year").val(data[0].ayear);
+                                        $("#oldFileName").val(data[0].aFileName);
+                                        $("#oldUrl").val(data[0].aurl);
+                                        $("#oldPath").val(data[0].aPath);
+                                        $("#sID").val(data[0].asid);
+                                        the_return.innerHTML = data[0].aPath.substring(0, 3) + "fakepath\\" + data[0].aFileName
+                                        $("#newID").val(data[0].aNewID);
+                                        @*$(".file-return").html(data[0].aurl);*@
+                                    }
+                                });
+                            })
+                        }
+
+
+                        //khi click sửa
+                        editClick();
+                        table.on('draw', editClick);
+
+                        downloadClick();
+                        table.on('draw', downloadClick);
+
+                function downloadClick() {
+                    $('.DownloadCongBo').off();
+                    $('.DownloadCongBo').click(function () {
+                        $('#loading').addClass('loading');
+                        @*let aPath = $(this).data('id');
+                        let FileName = $(this).data('filename');
+                        let TypeName = $(this).data('typename');
+                        let Title = $(this).data('title');
+                        var file_extension = '';
+                        file_extension = FileName.split('.').pop();
+                        file_extension = file_extension.replace(/\s+/g, '');
+                        var filedown = '';
+                        if (file_extension == 'doc') {
+                            filedown = `CBTT_${TypeName}_${Title}.doc`;
+                        }
+                        else if (file_extension == 'docx') {
+                            filedown = `CBTT_${TypeName}_${Title}.docx`;
+                        }
+                        else if (file_extension == 'pdf') {
+                            filedown = `CBTT_${TypeName}_${Title}.pdf`;
+                        }
+                        else if (file_extension == 'rar') {
+                            filedown = `CBTT_${TypeName}_${Title}.rar`;
+                        }
+                        else if (file_extension == 'zip') {
+                            filedown = `CBTT_${TypeName}_${Title}.zip`;
+                        }
+                        else {
+                            filedown = '';
+                        }*@
+                        @*console.log(filedown);*@
+                        @*return Promise.resolve(
+                                $.postNative('@Url.Action("DownloadFile", "CongBoThongTin")', {
+                                    Path: aPath, FileName: FileName,
+                                })
+                            .done((response, statusCode, xhr) => {
+                                $('#loading').removeClass('loading');
+                                    //console.log(response);
+                                    if (response.code) {
+                                        //console.log(response);
+                                        return isMessageSuccess(response);
+                                    }
+                                    const type = xhr.getResponseHeader('Content-Type');
+                                    const blob = new Blob([response], { type: type });
+
+                                    //check nếu là response message , không phải file thì hiển thị lỗi
+                                    if (type.includes("application/json")) {
+                                        //phải đọc file vì respone ở dạng arraybuffer
+                                        const fileReader = new FileReader();
+                                        fileReader.onload = function () {
+                                            $('#loading').removeClass('loading');
+                                            isMessageSuccess(JSON.parse(this.result));
+                                        };
+                                        fileReader.readAsText(blob);
+                                        return;
+                                    }
+
+                                    saveAs(blob, filedown);
+                                        $('#loading').removeClass('loading');
+                                        swal.close();
+                                }).fail((response) => {
+                                    //console.log(response);
+                                    $('#loading').removeClass('loading');
+                                })
+                        );*@
+                        $('#loading').removeClass('loading');
+
+                })
+            }
+
+
+                        function deleteClick() {
+                            $('.DeleteCongBo').off();
+                            $('.DeleteCongBo').click(function () {
+                                let newID = $(this).data('id');
+                                let sid = $(this).data('sid');
+                               @* console.log(newID);*@
+                                @*console.log(sid);*@
+                                    Swal.fire({
+                                        title: 'Thông báo',
+                                        text: 'Bạn có chắc muốn xóa?',
+                                        type: 'warning',
+                                        cancelButtonText: 'Hủy',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'OK'
+                                    }).then(result => {
+                                        if (result.dismiss == "cancel" || result.dismiss == "overlay") {
+                                            return;
+                                        }
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '@Url.Action("DeleteCongBo", "CongBoThongTin")?NewID=' + newID + '&Sid=' + sid,
+                                        success: function (data) {
+                                            @*console.log(data);*@
+                                            if (data.code == 0) {
+                                                toastr.success(data.message);
+                                                $('#FormUpdate').trigger("reset");
+                                                loadData(null);
+                                            } else {
+                                                toastr.error(data.message);
+                                            }
+                                            loadData();
+                                        }
+                                    });
+                                });
+
+                            })
+                        }
+
+                        //khi click xóa
+                        deleteClick();
+                        table.on('draw', deleteClick);
+
+                    }
+                })
+            }
+
+
+            var registerEvents = function () {
+                document.querySelector("html").classList.add('js');
+
+                var fileInput = document.querySelector(".input-file"),
+                    button = document.querySelector(".input-file-trigger"),
+                    the_return = document.querySelector(".file-return");
+
+                button.addEventListener("keydown", function (event) {
+                    if (event.keyCode == 13 || event.keyCode == 32) {
+                        fileInput.focus();
+                    }
+                });
+                button.addEventListener("click", function (event) {
+                    fileInput.focus();
+                    return false;
+                });
+                fileInput.addEventListener("change", function (event) {
+                    the_return.innerHTML = this.value;
+                });
+
+
+
+               $('#DocType').change(function () {
+                   $('#loading').addClass('loading');
+                   var doctypeCode = $('#DocType').find(":selected").val();
+                   if (true) {
+
+                   }
+                @*console.log(doctypeCode);*@
+                $.get("@Url.Action("Index", "CongBoThongTin")?value=" + doctypeCode, function (data) {
+
+                    $('#loading').removeClass('loading');
+                    $("#NewsType").html("");
+                    var htmlOption = '';
+                    if (doctypeCode == 'Tất cả') {
+                        htmlOption += `<option selected>Tất cả</option>`
+                    }
+                    else if (doctypeCode == 'All') {
+                        htmlOption += `<option selected>All</option>`
+                    }
+                    else {
+
+                    $.each(data, function (index, value) {
+
+                        htmlOption = htmlOption + '<option value="' + value.typeCode + '" data-id="' + value.acategory + '">' + value.typeName + '</option>';
+                    });
+                    }
+
+                    $("#NewsType").html(htmlOption);
+
+                });
+
+               });
+
+                $('#docType').change(function () {
+                    $('#loading').addClass('loading');
+                    var doctypeCode = $('#docType').find(":selected").val();
+                    @*console.log(doctypeCode);*@
+                    $.get("@Url.Action("Index", "CongBoThongTin")?value=" + doctypeCode, function (data) {
+                        @*console.log(data);*@
+                        $('#loading').removeClass('loading');
+                        $("#newType").html("");
+                        var htmlOption = '';
+
+                        $.each(data, function (index, value) {
+
+                            htmlOption = htmlOption + '<option value="' + value.typeCode + '" data-id="' + value.acategory + '">' + value.typeName + '</option>';
+                        });
+                        $("#newType").html(htmlOption);
+                    });
+                });
+
+
+
+
+                //Action search
+               $('#btnSearch').click(function (e) {
+                   e.preventDefault();
+                   if (new Date($('#FromDate').val()) > new Date($('#ToDate').val())) {
+                        toastr.error('@SharedLocalizer["FROMDATE_IS_GREATER_THAN_TODATE"]');
+                        return false;
+                    } else {
+                        loadData(form.serialize());
+                    }
+
+                    //$('#formSearch').trigger("reset");
+                    //console.log(form.serialize());
+                    //loadData(form.serialize());
+                });
+
+
+                $('#btnUpload').click(function (e) {
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+                    let formData = new FormData();
+                    var file_data = $('#my-file').prop("files")[0];
+                    @*console.log(file_data);*@
+                    formData.append("file", file_data);
+                    formData.append("DocType", $("#docType").val());
+                    formData.append("NewType", $("#newType").val());
+                    formData.append("Title", $("#Title").val());
+                    formData.append("Year", $("#Year").val());
+                    formData.append("Datepub", $("#datePub").val());
+                    Check = Validate();
+                    if (Check) {
+                        $.ajax({
+                            url: '@Url.Action("InsertCongBo", "CongBoThongTin")',
+                            type: 'POST',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                @*console.log(data);*@
+                                if (data.code == 0) {
+                                    $('.nav-pills > li:first-child').addClass('active');
+                                    $('.nav-pills > li:last-child').removeClass('active');
+                                    jQuery('#k_tabs_1').css('opacity', '1');
+                                    $('.nav-pills > li:first-child > a').trigger('click');
+                                    $('#FormUpdate').trigger("reset");
+                                    the_return.innerHTML = '@Localizer["Formats_supported"] <br> @Localizer["Up_to"]';
+                                    loadData(null);
+                                    toastr.success(data.message);
+                                    $('#docType').val(1).trigger('change');
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (err) {
+                                @*console.log(err);*@
+                            }
+                        });
+                    }
+                });
+
+                $('#btnUpdate').click(function (e) {
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+                    let formData = new FormData();
+                    var file_data = $('#my-file').prop("files")[0];
+                    @*console.log(file_data);*@
+                    formData.append("file", file_data);
+                    formData.append("DocType", $("#docType").val());
+                    formData.append("NewType", $("#newType").val());
+                    formData.append("Title", $("#Title").val());
+                    formData.append("Year", $("#Year").val());
+                    formData.append("NewID", $("#newID").val());
+                    formData.append("OldFileName", $("#oldFileName").val());
+                    formData.append("OldUrl", $("#oldUrl").val());
+                    formData.append("OldPath", $("#oldPath").val());
+                    formData.append("Datepub", $("#datePub").val());
+                    formData.append("Sid", $("#sID").val());
+                    Check = Validate();
+                    if (Check) {
+                        $.ajax({
+                            url: '@Url.Action("UpdateCongBo", "CongBoThongTin")',
+                            type: 'POST',
+                            processData: false,
+                            contentType: false,
+                            data: formData,
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                @*console.log(data);*@
+                                if (data.code == 0) {
+                                    $('.nav-pills > li:first-child').addClass('active');
+                                    $('.nav-pills > li:last-child').removeClass('active');
+                                    jQuery('#k_tabs_1').css('opacity', '1');
+                                    $('.nav-pills > li:first-child > a').trigger('click');
+                                    $('#FormUpdate').trigger("reset");
+                                    the_return.innerHTML = '@Localizer["Formats_supported"] <br> @Localizer["Up_to"]';
+                                    $("#btnUpdate").hide();
+                                    $("#btnUpload").show();
+                                    loadData(null);
+                                    toastr.success(data.message);
+                                    $('#docType').val(1).trigger('change');
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            error: function (err) {
+                               @* console.log(err);*@
+                            }
+                        });
+                    }
+                });
+
+                $('body').on('click', '#btnReset', function (e) {
+                    e.preventDefault();
+                    $('#FormUpdate').trigger("reset");
+                    $("#docType").val(1).trigger('change');
+                    $("#btnUpdate").hide();
+                    $("#btnUpload").show();
+                    the_return.innerHTML = '@Localizer["Formats_supported"] <br> @Localizer["Up_to"]';
+                });
+
+                function Validate() {
+                    if ($('#Title').val() == '') {
+                        toastr.error('@SharedLocalizer["TITLE_NULL"]');
+                        $('#loading').removeClass('loading');
+                        return false;
+                    }
+                    if ($('#Title').val().length > 2000) {
+                        toastr.error('@SharedLocalizer["TITLE_MAXLENGTH"]');
+                        $('#loading').removeClass('loading');
+                        return false;
+                    }
+                    if ($('#Year').val() == '') {
+                        toastr.error('@SharedLocalizer["YEAR_NULL"]');
+                        $('#loading').removeClass('loading');
+                        return false;
+                    }
+                    if ($('#Year').val() < 1996) {
+                        toastr.error('@SharedLocalizer["Invalid_year"]');
+                        $('#loading').removeClass('loading');
+                        return false;
+                    }
+                    if ($('#Year').val() > new Date().getFullYear()) {
+                        toastr.error('@SharedLocalizer["Invalid_year"]');
+                        $('#loading').removeClass('loading');
+                        return false;
+                    }
+
+
+                    var inputFile = document.getElementById('my-file');
+                    var file = inputFile.files[0];
+                    if (file != undefined) {
+                        if (file.size > 30e6) {
+                            toastr.error('@SharedLocalizer["FileIsOver30MB"]');
+                            $('#loading').removeClass('loading');
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+            }
+
+
+        }
+
+
+
+        var congbos = new CongBo();
+           congbos.init();
+    });
+</script>

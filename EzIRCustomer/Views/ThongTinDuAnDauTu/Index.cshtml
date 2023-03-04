@@ -1,0 +1,320 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHttpContextAccessor _httpContextAccessor;
+
+@{
+    ViewData["Title"] = "Thông tin dự án đầu tư";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    //var cResponseMessage = ViewBag.Data as CoreLib.Entities.CResponseMessage;
+
+    var cpnyID = _httpContextAccessor.HttpContext.Session.GetInt32(SessionTypes.CPNY_ID) ?? null;
+}
+
+<link type="text/css" href="~/lib/ckeditor/contents.css" rel="stylesheet" />
+
+<div class="title_line d-flex" style="margin-bottom: 0px;">
+    <div class="container">
+        <span class="title_line_item">
+            <font color="#4187A6"><a href="/internal" style="color:#4187A6;font-weight: 600;">@Localizer["Update_Infomation"].Value</a></font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Business"].Value</font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Project_Investments"].Value</font>
+        </span>
+    </div>
+</div>
+<div class="k-portlet__body">
+    <div class="row col-12 nopadding" style="margin-bottom: 10px;">
+        <div class="col-md-7 div-button-mobiletop" style="padding-bottom: 10px"></div>
+        <div class="col-md-5 div-button" style="padding-bottom: 10px;padding-right: 0%;">
+            <div class="set_up-button" style="padding-left: 70%;">
+                <input type="button" class="btn btn-primary form-control  mx-2 my-1" id="btnSave" value="@Localizer["Save_send"].Value">
+            </div>
+        </div>
+        <div class="respon-mobile">
+            <div class="col-md-12 text-box-label-general" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["Project_Investments"].Value</p>
+                            <div class="row d-flex justify-content-center">
+                                <input type="number" id="txtMenuID_TTDADT" value="600" readonly hidden />
+                                <input type="number" id="txtID_TTDADT" readonly hidden />
+                                <input type="number" id="txtApprove_TTDADT" readonly hidden />
+                                <input type="number" id="keyPress_TTDADT" readonly hidden />
+                                <textarea class="d-none" cols="100" id="editorTTDADT" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    body {
+        margin: 0px;
+    }
+</style>
+@section Scripts
+{
+    @*@await Html.PartialAsync(@"_FormMessage", cResponseMessage)*@
+
+    <script type="text/javascript" src="~/lib/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="~/lib/ckeditor/config.js"></script>
+    <script type="text/javascript" src="~/lib/ckeditor/build-config.js"></script>
+    <script type="text/javascript" src="~/lib/ckeditor/styles.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            // Configs constant
+            const TTDADT_CONFIGS = {
+                MENUID_TTDADT: 600,
+                IS_KEY_PRESS: 1,
+            }
+
+            // Cấu hình CKEditor
+            function CreateEditor() {
+
+                CKEDITOR.replace('editorTTDADT',
+                    {
+                        extraPlugins: 'image2 , uploadimage',
+
+                        toolbar: toolbar = [
+                            {
+                                name: 'document',
+                                items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates']
+                            },
+                            {
+                                name: 'clipboard',
+                                items: [
+                                    'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+                                ]
+                            },
+                            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                            {
+                                name: 'forms',
+                                items: [
+                                    'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button',
+                                    'HiddenField'
+                                ]
+                            },
+                            '/',
+                            {
+                                name: 'basicstyles',
+                                items: [
+                                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-',
+                                    'CopyFormatting', 'RemoveFormat'
+                                ]
+                            },
+                            {
+                                name: 'paragraph',
+                                items: [
+                                    'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
+                                    'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                                    'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
+                                ]
+                            },
+                            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                            {
+                                name: 'insert',
+                                items: [
+                                    'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak',
+                                    'Iframe', 'texzilla'
+                                ]
+                            },
+                            '/',
+                            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                            { name: 'colors', items: ['TextColor', 'BGColor'] },
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                            { name: 'about', items: ['About'] }
+                        ],
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserBrowseUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageBrowseUrl: '@Url.Action("UploadImage")',
+
+
+                        // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '@Url.Action("UploadImage")',
+
+                        // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+                        format_tags: 'p;h1;h2;h3;pre',
+                        // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+                        removeDialogTabs: 'image:advanced;link:advanced',
+
+                        height: 200,
+                        width: '100%'
+                    }
+                );
+
+            }
+
+            // Object TTDADT
+            var TTDADT = function () {
+
+                this.init = function () {
+                    CreateEditor();
+                    setTimeout(function () {
+                        registerEvents();
+                        loadData();
+                    }, 500);
+                }
+
+                var loadData = async function () {
+                    $('#loading').addClass('loading');
+                    destroyCKEDITOR();
+
+                    setTimeout(function () {
+                        $.ajax({
+                        url: '@Url.Action("GetTtdadt", "ThongTinDuAnDauTu")',
+                        method: 'GET',
+                        dataType: 'json',
+                        data: {  }
+                        })
+                        .done((data) => {
+
+                            //console.log(data);
+                            $('#loading').removeClass('loading');
+                            if (data.code == 0) {
+
+                                if (Array.isArray(data.data) && data.data.length > 0) {
+                                    /*$('#btnSave').attr('disabled', 'disabled');*/
+                                    let arrObj = data.data;
+
+                                    for (const value of arrObj) {
+
+                                        if (value.menuID == TTDADT_CONFIGS.MENUID_TTDADT) {
+                                            $('#txtMenuID_TTDADT').val(value.menuID);
+                                            $('#txtID_TTDADT').val(value.id);
+                                            $('#txtApprove_TTDADT').val(value.approve);
+
+                                            if (!CKEDITOR.instances.editorTTDADT) CreateEditor();
+
+                                            CKEDITOR.instances.editorTTDADT.setData(value.content);
+
+                                            if (value.approve == 1 || value.approve == 2) CKEDITOR.instances.editorTTDADT.setReadOnly(true);
+                                        }
+                                    }
+                                }
+                            }
+                        })
+                            .fail((err) => { //console.log(err);
+                            });
+                    }, 500);
+                }
+
+                var registerEvents = function () {
+
+                    // Save TTDADT
+                    $('body').on('click', '#btnSave', function () {
+                        $('#loading').addClass('loading');
+                        // status key press
+                        let keyPress_TTDADT = $('#keyPress_TTDADT').val();
+                        /*$('#btnSave').attr('disabled', 'disabled');*/
+                        let infoSheetViewModels = [];
+
+                        if (keyPress_TTDADT == TTDADT_CONFIGS.IS_KEY_PRESS) {
+                            let dataEditorTtdadt = CKEDITOR.instances.editorTTDADT.getData();
+                            let idTtdadt = $('#txtID_TTDADT').val();
+                            let menuIdTtdadt = $('#txtMenuID_TTDADT').val();
+                            //let approveTtdadt = $('#txtApprove_TTDADT').val();
+                            infoSheetViewModels.push({ /*Approve: approveTtdadt,*/ ID: idTtdadt, MenuID: menuIdTtdadt, Content: dataEditorTtdadt, CpnyID: @cpnyID });
+                            CKEDITOR.instances.editorTTDADT.setReadOnly(true);
+                            $('#keyPress_TTDADT').val(0);
+                        }
+
+
+                        //console.log(infoSheetViewModels);
+
+                        if (infoSheetViewModels.length == 0) return toastr.error('@Localizer["DataHasNotBeenChanged"].Value');
+
+                        $.ajax({
+                            url: '@Url.Action("SaveTtdadt", "ThongTinDuAnDauTu")',
+                            method: 'POST',
+                            dataType: 'json',
+                            data: { infoSheetViewModels }
+                        })
+                        .done((data) => {
+                            ////console.log(data);
+                            $('#loading').removeClass('loading');
+                            if (data.code == 0) {
+                                loadData();
+                                Swal.fire({
+                                    html: "@Localizer["Approving"].Value",
+                                    type: 'success',
+                                    confirmButtonText: 'OK'
+                                });
+                                //toastr.success(data.message);
+                                return;
+                            } else {
+                                return toastr.error(data.message);
+                            }
+                        })
+                            .fail((err) => {
+                                //console.log(err);
+                            });
+                    });
+
+                    CKEDITOR.instances.editorTTDADT.on('key', function () {
+                        let isApprove = $('#txtApprove_TTDADT').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+                        //console.log(isApprove);
+                        $('#keyPress_TTDADT').val(1);
+                    });
+
+                    fileUploadResponse(0);
+                }
+
+                function destroyCKEDITOR() {
+                    CKEDITOR.instances.editorTTDADT.setData('');
+
+                    //CKEDITOR.instances.editorTTDADT.destroy();
+                }
+
+                function fileUploadResponse() {
+                    CKEDITOR.instances.editorTTDADT.on('fileUploadResponse', function () {
+                        let isApprove = $('#txtApprove_TTDADT').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        $('#keyPress_TTDADT').val(1);
+                    });
+                }
+            }
+
+            // Instance of TTDADT
+            var tdcn = new TTDADT();
+            tdcn.init();
+        });
+
+        // Get giá trị cho CKEDITOR
+        // CKEDITOR.instances.editorTTDADT.getData();
+
+        // Set giá trị cho CKEDITOR
+        // CKEDITOR.instances.editorTTDADT.setData("object");
+
+        // Hủy bỏ instance của CKEDITOR hiện tại
+        // CKEDITOR.instances.editorTTDADT.destroy();
+    </script>
+}
+

@@ -1,0 +1,833 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model EzIRSpecialist.Models.ViewModel.ThuVienPhapLuatViewModel
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{
+    ViewData["Title"] = "Index";
+    var _UrlLink = ViewBag._UrlFileCommon;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var d = DateTime.Now.Year;
+}
+
+<link href="~/Online/QuanLyBieuMauCBTT.css" rel="stylesheet" />
+<style>
+    .d-inline-flex {
+        display: block !important;
+    }
+
+    .dataTables_wrapper .dataTable th, .dataTables_wrapper .dataTable td {
+        text-align: left !important;
+    }
+
+    div.dataTables_wrapper div.dataTables_length select {
+        width: 5rem !important;
+        font-size: 10pt !important;
+        position: absolute;
+        right: 0;
+    }
+
+    .dataTables_length label {
+        padding-bottom: 18px;
+    }
+
+    .dataTables_wrapper .dataTables_length {
+        float: right;
+    }
+
+    .btn-search-wrapper {
+        margin-bottom: 0px;
+    }
+
+    #listThuVienVN_wrapper {
+        padding-top: 1px;
+    }
+
+    #listThuVienVN {
+        margin-top: 36px !important;
+    }
+
+    span.select2.select2-container.select2-container--default,
+    span.select2.select2-container.select2-container--default.select2-container--below,
+    span.select2.select2-container.select2-container--default.select2-container--below.select2-container--open,
+    span.select2.select2-container.select2-container--default.select2-container--below.select2-container--focus {
+        width: 75% !important;
+    }
+
+    #select2-YearPub-results > li:first-child,
+    #select2-YearEff-results > li:first-child {
+        height: 32px;
+    }
+</style>
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Thư viện pháp luật</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Thư viện pháp luật</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist">
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link active show " data-toggle="tab" data-target="#k_tabs_1" role="tab"
+               aria-selected="true">
+                <span class="nav-link-title text-uppercase">Quản lý thư viện pháp luật</span>
+            </a>
+        </li>
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link" data-toggle="tab" data-target="#updateTab" role="tab" aria-selected="false">
+                <span class="nav-link-title text-uppercase">Tạo mới</span>
+            </a>
+        </li>
+    </ul>
+    <div class="line_top col-md-12">
+
+    </div>
+    <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper">
+                <form action="" id="FormSearch">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="EnterpriseType" class="note">Loại văn bản</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                @*<select class="form-control" name="Companytype" id="CompanyType" asp-items="@(new SelectList(Model.listCompanyType,"TypeCode","TypeName"))">
+                                    </select>*@                 <select class="form-control" name="TypeDoc" id="TypeDoc" asp-items="@(new SelectList(Model.listTypeDoc,"TypeCode","TypeName"))">
+                                    <option value="0" selected>Tất cả</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="Title">Cơ quan ban hành</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <input type="text" class="form-control" id="Company" name="Company">
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="CCPL">Số/Kí hiệu</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <input type="text" class="form-control" id="NO" name="NO">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label for="TemplateType">Năm ban hành</label>
+                            </div>
+                            @*<div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                    <input type="number" class="form-control" id="YearPub" name="YearPub" min="1950" max="2050">
+                                </div>*@
+                            <select class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding form-control select2-single" id="YearPub" name="YearPub">
+                                <option></option>
+                                @for (int i = d; i >= 1945; i--)
+                                {
+                                    <option value="@i">@i.ToString()</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label>Năm hiệu lực</label>
+                            </div>
+                            @*<div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                    <input type="number" class="form-control" id="YearEff" name="YearEff"  min="1950" max="2050">
+                                </div>*@
+                            <select class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding form-control select2-single" id="YearEff" name="YearEff">
+                                <option></option>
+                                @for (int i = d; i >= 1945; i--)
+                                {
+                                    <option value="@i">@i.ToString()</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label for="Detail">Trích yếu</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                <input type="text" class="form-control" id="TextNote" name="TextNote">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row d-flex justify-content-center col-12 btn-search-wrapper">
+                <button id="btnSearch" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                    Tìm kiếm
+                </button>
+
+            </div>
+            <div class="content-tbl-VN">
+                <table id="listThuVienVN" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+                       role="grid" style="width: 1138px;">
+                    <thead>
+
+                        <tr>
+                            <th style="text-align: center">STT</th>
+                            <th>Loại văn bản</th>
+                            <th>Cơ quan ban hành</th>
+                            <th>Số/Kí hiệu</th>
+                            <th>Trích yếu</th>
+                            <th>Ngày ban hành</th>
+                            <th>Ngày hiệu lực</th>
+                            <th style="text-align: center;padding: 15px 30px !important">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+    <div id="updateTab" class="tab-pane fade tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper">
+                <form action="" id="FormUpdate">
+                    <input type="text" class="form-control" name="ID" id="id" hidden>
+                    <input type="text" class="form-control" name="OldFileName" id="OldFileName" hidden>
+                    <input type="text" class="form-control" name="OldPath" id="OldPath" hidden>
+                    <input type="text" class="form-control" name="OldUrl" id="OldUrl" hidden>
+                    <div class="form-group row form-text" style="display:none;">
+                        <label for="Index" class="col-sm-3 col-md-3 col-lg-2 col-form-label">STT <span>*</span></label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" id="Index" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="FormType" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Loại văn bản<span>*</span>
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <select class="form-control" name="TypeDoc" id="typeDoc" asp-items="@(new SelectList(Model.listTypeDoc,"TypeCode","TypeName"))">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="EnterpriseType" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Cơ quan ban hành </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" id="company" placeholder="Độ dài không vượt quá 2000 ký tự">
+
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="title" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Số/Ký hiệu
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="text" class="form-control" id="number" placeholder="Độ dài không vượt quá 500 ký tự">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="cCPL" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Ngày ban hành <span>*</span>
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="date" class="form-control" id="datePub">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="detail" class="col-sm-3 col-md-3 col-lg-2 col-form-label">Trích yếu</label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <textarea type="text" class="form-control" id="textNote" placeholder="Độ dài không vượt quá 2000 ký tự"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="cCPL" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            Ngày hiệu lực <span>*</span>
+                        </label>
+                        <div class="col-sm-12 col-md-5 col-lg-5">
+                            <input type="date" class="form-control" id="dateEff">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="FileName" class="col-sm-3 col-md-3 col-lg-2 col-form-label">
+                            File biểu mẫu <span>*</span>
+                        </label>
+                        <div class="input-file-container col-sm-5">
+                            <input class="input-file" id="my-file" type="file">
+                            <label tabindex="0" for="my-file" class="input-file-trigger">
+                                Chọn từ máy
+                                tính
+                            </label>
+                        </div>
+                        <p class="file-return">
+                            Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB
+                        </p>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="" class="col-sm-3 col-md-3 col-lg-2 col-form-label"></label>
+                        <div class="update-btn-section col-sm-12 col-md-5 col-lg-5">
+                            <input type="button" class="btn btn-primary update-btn" id="btnUpload"
+                                   value="Tải lên">
+                            <input type="button" class="btn btn-primary update-btn" id="btnUpdate"
+                                   value="Sửa">
+                            <button class="btn btn-primary reset-btn" id="btnReset">Làm mới</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="loading"></div>
+<script>
+    $(document).ready(function () {
+
+        $('.select2-single').select2();
+        $(".nav-item.col.gsm-link-tab").first().addClass("active");
+        $("#btnUpdate").hide();
+
+        // options render bảng
+        var renderColumns = [
+            {
+                "width": "5%",
+                data: "sttnew",
+                render: function (data) {
+                    return `<div class="d-inline-flex w-100" style="text-align:center">
+                           <p>${data}</p>
+                        </div >`;
+                }
+                //orderable: true,
+                //width: "5%",
+                //title: "STT"
+            },
+            {
+                "width": "12%",
+                data: "typeName",
+            },
+            {
+                "width": "15%",
+                data: "company",
+            },
+            {
+                "width": "8%",
+                data: "no",
+            }
+            ,
+            {
+                "width": "20%",
+                data: "textNote",
+            }
+            ,
+            {
+                "width": "12%",
+                data: "datePub",
+                render: function (data) {
+                    let year = data.substring(0, 4);
+                    let month = data.substring(5, 7);
+                    let day = data.substring(8, 10);
+                    return day + "/" + month + "/" + year;
+                }
+            }
+            ,
+            {
+                "width": "12%",
+                data: "dateEff",
+                render: function (data) {
+                    let year = data.substring(0, 4);
+                    let month = data.substring(5, 7);
+                    let day = data.substring(8, 10);
+                    return day + "/" + month + "/" + year;
+                }
+            }
+            ,
+            {
+                "width": "15%",
+                data: "id",
+                render: function (data, type, full) {
+                    return `<div class="d-inline-flex w-100 style="text-align:center;padding: 15px 30px !important">
+                            <a class='EditAccount btn text-primary' data-id='${data}'><i class="far fa-edit"></i></a>
+                            <a class='DeleteAccount btn text-primary' data-id='${data}'><i class="fas fa-delete"></i></a>
+                            <a class="DownloadFile btn text-primary" data-id='${data}' data-path='${full['path']}' data-filename='${full['fileName']}'
+                                        data-comtype='${full['typeName']}' data-filetype='${full['typeDoc']}' data-url='${full['path']}'
+                            href="@_UrlLink/${full['path']}" target="_blank" rel="noopener noreferrer"><i class="fas fa-download"></i></a>
+                        </div >`;
+                }
+            },
+        ];
+
+        var form = $("#FormSearch");
+
+
+        var thuVienPL = function () {
+            this.init = function () {
+                var data = form.serialize();
+                loadData(data);
+                registerEvents();
+
+            }
+            //Load dữ liệu
+            var loadData = function (data) {
+                $('#loading').addClass('loading');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListThuVienPhapLuat", "ThuVienPhapLuat")',
+                    data: data,
+                    success: function (data) {
+                        // tạo stt
+                        console.log(data);
+                        $('#loading').removeClass('loading');
+                            let indexTemp = 1;
+                            for (var i = 0; i < data.length; i++) {
+                                Object.assign(data[i], { sttnew: indexTemp });
+                                indexTemp++;
+                                if (data.length === i) {
+                                    indexTemp = 1;
+                                }
+                            }
+
+                        var thuVienVNTbl = $('#listThuVienVN').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: true,
+                            className: 'dt-body-right',
+                            "info": false,
+                            //pageLength: 5,
+                            "lengthMenu": [5, 25, 50, 75, 100],
+                            data: data,
+                            bAutoWidth: false,
+                            language: {
+                                sLengthMenu: "_MENU_"
+                            },
+                            columns: renderColumns,
+                        });
+                        //khi click sửa
+                        //editClickVN();
+                        //bieumauVNTbl.on('draw', editClickVN());
+                        $("#listThuVienVN").on("click", ".EditAccount", function (e) {
+                            // xóa thông tin biểu mẫu trc
+
+
+                            $("#FormUpdate").trigger("reset");
+                            $("#Index").val(1);
+
+
+                            // add thông tin biểu mẫu mới
+                            e.preventDefault();
+                            let liboID = $(this).data('id');
+
+                            $.ajax({
+                                url: '@Url.Action("GetVanBanByID", "ThuVienPhapLuat")?ID=' + liboID,
+                                type: 'GET',
+                                success: function (data) {
+                                    $('#loading').removeClass('loading');
+
+
+                                    //chuyển sang tab edit
+                                    $('.nav-pills > li:first-child').removeClass('active');
+                                    $('.nav-pills > li:last-child').addClass('active');
+                                    //$('.nav-pills > li:last-child').tab('show');
+                                    jQuery('#updateTab').css('opacity', '1');
+                                    $('.nav-pills > li:last-child > a').trigger('click');
+                                    $("#btnUpdate").show();
+                                    $("#btnUpload").hide();
+                                    let the_return = document.querySelector(".file-return");
+                                    the_return.innerHTML = data[0].fileName;
+                                    $("#typeDoc").val(data[0].typeDoc);
+                                    $("#company").val(data[0].company);
+                                    $("#number").val(data[0].no);
+                                    $("#datePub").val(getFormattedDate1(data[0].datePub));
+                                    $("#textNote").val(data[0].textNote);
+                                    $("#dateEff").val(getFormattedDate1(data[0].dateEff));
+                                    $("#OldPath").val(data[0].path);
+                                    $("#OldUrl").val(data[0].url);
+                                    $("#OldFileName").val(data[0].fileName);
+                                    $("#id").val(data[0].id);
+
+                                },
+                                error: function (err) {
+                                    //console.log(err);
+                                    $('#loading').removeClass('loading');
+                                }
+                            })
+                        });
+
+                        //khi click xóa
+                        deleteClick();
+                        thuVienVNTbl.on('draw', deleteClick());
+
+                        //khi click download
+                        DownloadFile();
+                        thuVienVNTbl.on('draw', DownloadFile());
+
+
+                    }
+                })
+            }
+
+
+
+            //xóa văn bản
+            function deleteClick() {
+                $('.DeleteAccount').off();
+                $('body').on("click", ".DeleteAccount", function (e) {
+                    let liboID = $(this).data('id');
+
+                    Swal.fire({
+                        title: 'Thông báo',
+                        text: 'Bạn có chắc muốn xóa?',
+                        type: 'warning',
+                        cancelButtonText: 'Hủy',
+                        showCancelButton: true,
+                        confirmButtonText: 'OK'
+                    }).then(result => {
+                        if (result.dismiss == "cancel" || result.dismiss == "overlay") {
+                            return;
+                        }
+
+                        $('#loading').addClass('loading');
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("DeleteLibo", "ThuVienPhapLuat")?ID=' + liboID,
+
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+
+                                if (data.code == 0) {
+                                    toastr.success('@SharedLocalizer["MSG_TEZIR_TEMPLATE_DELETE_TEMPLATE_SUCCESS_0"]');
+                                    var data = form.serialize();
+                                    loadData(data);
+
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            }
+                        });
+                    });
+
+                })
+            }
+            //down file văn bản
+            function DownloadFile() {
+                $('.DownloadFile').off();
+                $('table tbody').off().on("click", ".DownloadFile", function (e) {
+                    $('#loading').addClass('loading');
+                    let path = $(this).data('path');
+                    let FileName = $(this).data('filename');
+
+                    //Tải file không gọi controller
+                    @*var element = document.createElement('a');
+
+                    element.setAttribute('href', '@_UrlLink' + path);
+                    element.setAttribute('download', FileName);
+                    element.setAttribute('targer', '_blank');
+                    element.setAttribute('rel', 'noreferrer noopener');
+
+                    console.log(element);
+                    document.body.appendChild(element);
+                    element.click();
+                    document.body.removeChild(element);*@
+
+                    //window.open('@_UrlLink' + path);
+                    $('#loading').removeClass('loading');
+                    //toastr.success('Tải file thành công', 'Success');
+
+                    @*return Promise.resolve(
+                                $.postNative('@Url.Action("DownloadFile", "ThuVienPhapLuat")', {
+                                    FileName: FileName,
+
+                                    Path: path,
+                                })
+                            .done((response, statusCode, xhr) => {
+                                $('#loading').removeClass('loading');
+
+                                    if (response.code) {
+                                        //console.log(response);
+                                        return isMessageSuccess(response);
+                                    }
+                                    const type = xhr.getResponseHeader('Content-Type');
+                                    const blob = new Blob([response], { type: type });
+
+                                    //check nếu là response message , không phải file thì hiển thị lỗi
+                                    if (type.includes("application/json")) {
+                                        //phải đọc file vì respone ở dạng arraybuffer
+                                        const fileReader = new FileReader();
+                                        fileReader.onload = function () {
+                                            $('#loading').removeClass('loading');
+                                            isMessageSuccess(JSON.parse(this.result));
+                                        };
+                                        fileReader.readAsText(blob);
+                                        return;
+                                    }
+
+                                    saveAs(blob, filename);
+                                        $('#loading').removeClass('loading');
+                                        swal.close();
+                                }).fail((response) => {
+                                    //console.log(response);
+                                    $('#loading').removeClass('loading');
+                                })
+                            );*@
+                })
+            }
+
+            var registerEvents = function () {
+                document.querySelector("html").classList.add('js');
+
+                var fileInput = document.querySelector(".input-file"),
+                    button = document.querySelector(".input-file-trigger"),
+                    the_return = document.querySelector(".file-return");
+
+                button.addEventListener("keydown", function (event) {
+                    if (event.keyCode == 13 || event.keyCode == 32) {
+                        fileInput.focus();
+                    }
+                });
+                button.addEventListener("click", function (event) {
+                    fileInput.focus();
+                    return false;
+                });
+                fileInput.addEventListener("change", function (event) {
+                    the_return.innerHTML = this.value;
+                });
+
+                $('#btnSearch').click(function (e) {
+                    var data = form.serialize();
+                    loadData(data);
+
+                });
+                //Sự kiện nhấn thêm mới dữ liệu
+                $('#btnUpload').click(function (e) {
+
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+                    //var formUpdate = $("FormUpdate").serialize();
+                    let formData = new FormData();
+                    var file_data = $('#my-file').prop("files")[0];
+
+
+                    if ($("#my-file")[0].files[0] != null) {
+
+                        var file_1 = $("#my-file")[0].files[0].size;
+                        if (file_1 > 30 * 1024 * 1024) {
+                            $('#loading').removeClass('loading');
+                            toastr.error('Kích thước file không được lớn hơn 30MB!');
+                        } else {
+
+                            if (Validate()) {
+                                formData.append("file", file_data)
+                                formData.append("TypeDoc", $("#typeDoc").val());
+                                formData.append("Company", $("#company").val());
+                                formData.append("NO", $("#number").val());
+                                formData.append("DatePub", $("#datePub").val());
+                                formData.append("TextNote", $("#textNote").val());
+                                formData.append("DateEff", $("#dateEff").val());
+
+                                $.ajax({
+                                    url: '@Url.Action("InsertLibo", "ThuVienPhapLuat")',
+                                    type: 'POST',
+                                    processData: false,
+                                    contentType: false,
+                                    data: formData,
+                                    success: function (data) {
+                                        $('#loading').removeClass('loading');
+                                        //console.log(data);
+                                        if (data.code == 0) {
+                                            $('.nav-pills > li:first-child').addClass('active');
+                                            $('.nav-pills > li:last-child').removeClass('active');
+                                            jQuery('#k_tabs_1').css('opacity', '1');
+                                            $('.nav-pills > li:first-child > a').trigger('click');
+                                            $('#FormUpdate').trigger("reset");
+
+                                            var data = form.serialize();
+                                            loadData(data);
+
+                                            //$("#templateType").val(1).trigger('change');
+                                            the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB';
+                                            toastr.success('@SharedLocalizer["MSG_TEZIR_TEMPLATE_INSERT_TEMPLATE_SUCCESS_0"]');
+
+                                        } else {
+                                            toastr.error(data.message);
+                                        }
+                                    },
+                                    error: function (err) {
+                                        //console.log(err);
+                                        $('#loading').removeClass('loading');
+                                    }
+                                });
+                            } else { $('#loading').removeClass('loading');  }
+                        }
+                    } else { toastr.error('Vui lòng thêm file!'); $('#loading').removeClass('loading'); }
+
+                });
+
+                //Sự kiện nhấn update form
+                $('#btnUpdate').click(function (e) {
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+                    let formData = new FormData();
+                    var file_data = $('#my-file').prop("files")[0];
+                    if ($("#my-file")[0].files[0] != null) {
+                        var file_1 = $("#my-file")[0].files[0].size;
+                        if (file_1 > 30 * 1024 * 1024) {
+                            $('#loading').removeClass('loading');
+                            toastr.error('Kích thước file không được lớn hơn 30MB!');
+                        }
+                        formData.append("file", file_data);
+                    }
+
+                        formData.append("TypeDoc", $("#typeDoc").val());
+                        formData.append("Company", $("#company").val());
+                        formData.append("NO", $("#number").val());
+                        formData.append("DatePub", $("#datePub").val());
+                        formData.append("TextNote", $("#textNote").val());
+                        formData.append("DateEff", $("#dateEff").val());
+                        formData.append("ID", $("#id").val());
+                        formData.append("OldFileName", $("#OldFileName").val());
+                        formData.append("OldPath", $("#OldPath").val());
+                        formData.append("OldUrl", $("#OldUrl").val());
+
+                        if (Validate()) {
+
+                            $.ajax({
+                                url: '@Url.Action("UpdateLibo", "ThuVienPhapLuat")',
+                                type: 'POST',
+                                processData: false,
+                                contentType: false,
+                                data: formData,
+                                success: function (data) {
+                                    $('#loading').removeClass('loading');
+                                    //console.log(data);
+                                    if (data.code == 0) {
+                                        $('.nav-pills > li:first-child').addClass('active');
+                                        $('.nav-pills > li:last-child').removeClass('active');
+                                        jQuery('#k_tabs_1').css('opacity', '1');
+                                        $('.nav-pills > li:first-child > a').trigger('click');
+                                        $('#FormUpdate').trigger("reset");
+                                        $("#btnUpdate").hide();
+                                        $("#btnUpload").show();
+                                        $('#btnReset').trigger("click");
+                                        var data = form.serialize();
+                                        loadData(data);
+
+                                        //$("#templateType").val(1).trigger('change');
+                                        the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB';
+                                        toastr.success('@SharedLocalizer["MSG_TEZIR_TEMPLATE_UPDATE_TEMPLATE_SUCCESS_0"]');
+                                    } else {
+                                        toastr.error(data.message);
+                                    }
+                                },
+                                error: function (err) {
+                                    //console.log(err);
+                                    $('#loading').removeClass('loading');
+                                }
+                            });
+                        } else {
+                            $('#loading').removeClass('loading');
+                        }
+
+                });
+
+
+                @*$('body').on("change", "#templateType", function () {
+                    // Change Index khi thay đổi Loại hình, Biểu mẫu
+                    //$('#loading').addClass('loading');
+
+                    //var brands = $('#check2 input:checked');
+                    var selected = [];
+                    $(brands).each(function (index, brand) {
+                        //console.log($(this).val());
+                        if ($(this).val() != "multiselect-all") {
+                            selected.push($(this).val());
+                        }
+                    });
+
+                    let formData = new FormData();
+
+                    formData.append("TemplateType", $("#templateType").val());
+                    formData.append("CompanyTypelist", selected);
+
+                    $.ajax({
+                        url: '@Url.Action("InDexBieuMau", "QuanLyBieuMauCBTT")',
+                        type: 'POST',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        success: function (data) {
+                            //console.log(data)
+                            //$('#loading').removeClass('loading');
+                            if (data.length > 0) {
+                                if ($('#templateType').val() == 1 && data[0].length > 0) {
+                                    $("#Index").val(data[0][0].indexVN);
+                                }
+                                else if ($('#templateType').val() == 2 && data[1].length > 0) {
+                                    $("#Index").val(data[1][0].indexEN);
+                                }
+                                else if ($('#templateType').val() == 3 && data[2].length > 0) {
+                                    $("#Index").val(data[2][0].indexEV);
+                                } else {
+                                    $("#Index").val(1);
+                                }
+                            }
+                        }
+                    })
+                })*@
+
+                //sự kiện nhấn reset form
+                $('#btnReset').click(function (e) {
+                    e.preventDefault();
+                    $("#FormUpdate").trigger("reset");
+                    $("#btnUpdate").hide();
+                    $("#btnUpload").show();
+                    //$("#templateType").val(1).trigger('change');
+                    the_return.innerHTML = 'Hỗ trợ định dạng *.doc, *.docx, *.pdf, *.rar, *.zip.<br>Dung lượng tối đa 30MB';
+                    //$('#multiple-select2').multiselect('refresh');
+                })
+
+
+                function Validate() {
+
+                    if ($('#typeDoc').val() == '') {
+                        toastr.error('Loại văn bản không được để trống');
+                        return false;
+                    }
+                    if ($('#company').val().length > 2000) {
+                        toastr.error('@SharedLocalizer["CCPL_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#number').val().length > 500) {
+                        toastr.error('Độ dài không được vượt quá 500 kí tự');
+                        return false;
+                    }
+                    if ($('#datePub').val() == "" || $('#datePub').val() == null ) {
+                        toastr.error('Ngày ban hành không được để trống');
+                        return false;
+                    }
+                    if ($('#dateEff').val() == "" || $('#dateEff').val() == null  ) {
+                        toastr.error('Ngày hiệu lực không được để trống');
+                        return false;
+                    }
+                    if ($('#textNote').val().length > 2000) {
+                        toastr.error('@SharedLocalizer["CCPL_MAXLENGTH"]');
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+
+
+        var thuVienPL = new thuVienPL();
+        thuVienPL.init();
+
+    })
+</script>

@@ -1,0 +1,828 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="30daysaveragetradingvol" xml:space="preserve">
+    <value>30 days average trading vol</value>
+  </data>
+  <data name="52weekhigh" xml:space="preserve">
+    <value>52 weeks high</value>
+  </data>
+  <data name="52weeklow" xml:space="preserve">
+    <value>52 weeks low</value>
+  </data>
+  <data name="6MONTHS" xml:space="preserve">
+    <value>6 Months</value>
+  </data>
+  <data name="Abbreviation" xml:space="preserve">
+    <value>Abbreviation</value>
+  </data>
+  <data name="Associatedcompanies" xml:space="preserve">
+    <value>Associated companies</value>
+  </data>
+  <data name="Balance_sheet" xml:space="preserve">
+    <value>Balance sheet</value>
+  </data>
+  <data name="Bang_gia" xml:space="preserve">
+    <value>Price list</value>
+  </data>
+  <data name="Ban_CBTT" xml:space="preserve">
+    <value>Prospectus</value>
+  </data>
+  <data name="Ban_lanh_dao" xml:space="preserve">
+    <value>Management Board</value>
+  </data>
+  <data name="ban_tin_ir" xml:space="preserve">
+    <value>IR News</value>
+  </data>
+  <data name="Bao_cao_kq" xml:space="preserve">
+    <value>FPTS' Analysis</value>
+  </data>
+  <data name="Bao_cao_quan_tri" xml:space="preserve">
+    <value>Regulations Report</value>
+  </data>
+  <data name="Bao_cao_tai_chinh" xml:space="preserve">
+    <value>Financial Report</value>
+  </data>
+  <data name="Bao_cao_thuong_nien" xml:space="preserve">
+    <value>Annual Report</value>
+  </data>
+  <data name="BILLION" xml:space="preserve">
+    <value>Billion Dong</value>
+  </data>
+  <data name="BookValue" xml:space="preserve">
+    <value>Book Value</value>
+  </data>
+  <data name="BPTC" xml:space="preserve">
+    <value>Corporate Finance Consulting Department</value>
+  </data>
+  <data name="BPTVQT" xml:space="preserve">
+    <value>Business Administration Consulting Division</value>
+  </data>
+  <data name="Businesslicense" xml:space="preserve">
+    <value>Business license</value>
+  </data>
+  <data name="CALENDER_YEAR" xml:space="preserve">
+    <value>Calender year</value>
+  </data>
+  <data name="CCDT" xml:space="preserve">
+    <value>REVENUES STRUCTURE BY SECTOR/ PRODUCT LINE</value>
+  </data>
+  <data name="CCSH" xml:space="preserve">
+    <value>Shareholders' structure</value>
+  </data>
+  <data name="CDKT" xml:space="preserve">
+    <value>Balance Sheet</value>
+  </data>
+  <data name="CeilingPrice" xml:space="preserve">
+    <value>Ceiling</value>
+  </data>
+  <data name="CH" xml:space="preserve">
+    <value>OPPORTUNITY</value>
+  </data>
+  <data name="CharteredCapital" xml:space="preserve">
+    <value>Chartered Capital</value>
+  </data>
+  <data name="Chien_luoc" xml:space="preserve">
+    <value>STRATEGY</value>
+  </data>
+  <data name="Chuc_vu" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="CMLS" xml:space="preserve">
+    <value>MILESTONES</value>
+  </data>
+  <data name="Companyname" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="Cong_quan_he_dau_tu_truc_tuyen" xml:space="preserve">
+    <value>Online investment relations portal</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="ContentofChanges" xml:space="preserve">
+    <value>Content of Changes</value>
+  </data>
+  <data name="CoPhanCoDongLon" xml:space="preserve">
+    <value>% Owned in the Company</value>
+  </data>
+  <data name="Co_phieu" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="CTNC" xml:space="preserve">
+    <value>Principal Manager: Mr. Nguyen Diep Tung - General Director</value>
+  </data>
+  <data name="CTTDT" xml:space="preserve">
+    <value>ELECTRONIC INFORMATION PORTAL</value>
+  </data>
+  <data name="CurrentListingExchange" xml:space="preserve">
+    <value>Current Listing Exchange</value>
+  </data>
+  <data name="CurrentListingVolume" xml:space="preserve">
+    <value>Current Listing Volume</value>
+  </data>
+  <data name="DCF" xml:space="preserve">
+    <value>Direct Cash Flow</value>
+  </data>
+  <data name="DC_DN" xml:space="preserve">
+    <value>No. 100 Quang Trung, Thach Thang Ward, Hai Chau District, Da Nang City</value>
+  </data>
+  <data name="DC_HCM" xml:space="preserve">
+    <value>Floor 3 – Ben Thanh Times Square, 136 - 138 Le Thi Hong Gam, Nguyen Thai Binh Ward, District 1, Ho Chi Minh City</value>
+  </data>
+  <data name="DiaChiCongTyConLienKet" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Dia_chi" xml:space="preserve">
+    <value>No. 52 Lac Long Quan Road, Buoi Ward, Tay Ho District, Hanoi City</value>
+  </data>
+  <data name="Dieu_le_quy_che" xml:space="preserve">
+    <value>Chartered Documents and Regulations</value>
+  </data>
+  <data name="DM" xml:space="preserve">
+    <value>STRENGTH</value>
+  </data>
+  <data name="DN" xml:space="preserve">
+    <value>Danang Branch</value>
+  </data>
+  <data name="Doi_tac_DN" xml:space="preserve">
+    <value>Business partner</value>
+  </data>
+  <data name="DONG" xml:space="preserve">
+    <value>Dong</value>
+  </data>
+  <data name="DTCT" xml:space="preserve">
+    <value>Đối thủ cạnh tranh_EN</value>
+  </data>
+  <data name="DTKT" xml:space="preserve">
+    <value>Technical Chart</value>
+  </data>
+  <data name="DY" xml:space="preserve">
+    <value>WEAKNESS</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="ExRightdateRightExercrises" xml:space="preserve">
+    <value>Ex-Rightdate Right Exercrises</value>
+  </data>
+  <data name="FaceValue" xml:space="preserve">
+    <value>Face Value</value>
+  </data>
+  <data name="Fax" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="FINANCIAL_YEAR" xml:space="preserve">
+    <value>Financial year</value>
+  </data>
+  <data name="FirstListingDate" xml:space="preserve">
+    <value>First Listing Date</value>
+  </data>
+  <data name="ForeignBuy" xml:space="preserve">
+    <value>Foreign Buy</value>
+  </data>
+  <data name="ForeignBuy(YTD)" xml:space="preserve">
+    <value>Foreign Buy (YTD)</value>
+  </data>
+  <data name="ForeignOwnership" xml:space="preserve">
+    <value>Foreign Ownership</value>
+  </data>
+  <data name="ForeignSell" xml:space="preserve">
+    <value>Foreign Sell</value>
+  </data>
+  <data name="FPTS" xml:space="preserve">
+    <value>© 2021 FPT Securities Joint Stock Company</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="GeneralInformation" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="GSM" xml:space="preserve">
+    <value>Online Shareholder Meeting</value>
+  </data>
+  <data name="HCM" xml:space="preserve">
+    <value>Ho Chi Minh City Branch</value>
+  </data>
+  <data name="HighlestPrice" xml:space="preserve">
+    <value>Highest</value>
+  </data>
+  <data name="HN" xml:space="preserve">
+    <value>Hanoi Headquarters</value>
+  </data>
+  <data name="Ho_ten" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="HRM" xml:space="preserve">
+    <value>HR Management</value>
+  </data>
+  <data name="HSTC" xml:space="preserve">
+    <value>Financial Ratios</value>
+  </data>
+  <data name="ICF" xml:space="preserve">
+    <value>Indirect Cash Flow</value>
+  </data>
+  <data name="Industry" xml:space="preserve">
+    <value>Industry</value>
+  </data>
+  <data name="IR" xml:space="preserve">
+    <value>Online investment relations portal</value>
+  </data>
+  <data name="Items" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="Khop_lenh" xml:space="preserve">
+    <value>Order Matching</value>
+  </data>
+  <data name="KHTC" xml:space="preserve">
+    <value>Financial Plan</value>
+  </data>
+  <data name="Kinh_doanh" xml:space="preserve">
+    <value>Business</value>
+  </data>
+  <data name="KQGD" xml:space="preserve">
+    <value>Day Trading Result</value>
+  </data>
+  <data name="KQHDKD" xml:space="preserve">
+    <value>Income Statement</value>
+  </data>
+  <data name="Ky_bao_cao" xml:space="preserve">
+    <value>Reporting period</value>
+  </data>
+  <data name="Lien_he" xml:space="preserve">
+    <value>Contact FPTS</value>
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value>Securities Custody</value>
+  </data>
+  <data name="Link_luu_y" xml:space="preserve">
+    <value>See here</value>
+  </data>
+  <data name="ListingInformation" xml:space="preserve">
+    <value>Listing Information</value>
+  </data>
+  <data name="Loai_tai_lieu" xml:space="preserve">
+    <value>Type of document</value>
+  </data>
+  <data name="LowestPrice" xml:space="preserve">
+    <value>Lowest</value>
+  </data>
+  <data name="LSGD" xml:space="preserve">
+    <value>Historical Data</value>
+  </data>
+  <data name="LSTV_TCT" xml:space="preserve">
+    <value>Capital Raising History - Right Exercises</value>
+  </data>
+  <data name="Luu_tru" xml:space="preserve">
+    <value>Archives</value>
+  </data>
+  <data name="Luu_y" xml:space="preserve">
+    <value>Any use or redistribution of this information without permission is considered a violation and is prohibited by law</value>
+  </data>
+  <data name="MainBusinessOperation" xml:space="preserve">
+    <value>Main Business Operation</value>
+  </data>
+  <data name="MAJORSHAREHOLDERS" xml:space="preserve">
+    <value>MAJOR SHAREHOLDERS</value>
+  </data>
+  <data name="MarketCapitalisation" xml:space="preserve">
+    <value>Market Capitalisation</value>
+  </data>
+  <data name="MILLION" xml:space="preserve">
+    <value>Million Dong</value>
+  </data>
+  <data name="NamGiuCongTyConLienKet" xml:space="preserve">
+    <value>% Owned by the Company</value>
+  </data>
+  <data name="Nam_sinh" xml:space="preserve">
+    <value>Year of Birth</value>
+  </data>
+  <data name="NLDV" xml:space="preserve">
+    <value>Nguyên liệu đầu vào_EN</value>
+  </data>
+  <data name="NLQL" xml:space="preserve">
+    <value>Management Competencies</value>
+  </data>
+  <data name="NLQLCL" xml:space="preserve">
+    <value>Quality Management Competencies</value>
+  </data>
+  <data name="NLQLK" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="NLQLNS" xml:space="preserve">
+    <value>Human resource Management Competencies</value>
+  </data>
+  <data name="NLQLTC" xml:space="preserve">
+    <value>Financial Management Competencies</value>
+  </data>
+  <data name="Numberofsharesissued" xml:space="preserve">
+    <value>Number of sharesissued</value>
+  </data>
+  <data name="NUM_OF_PERIOD" xml:space="preserve">
+    <value>Number of periods displayed</value>
+  </data>
+  <data name="OpenPrice" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Pricefloor" xml:space="preserve">
+    <value>Floor</value>
+  </data>
+  <data name="PTFPTS" xml:space="preserve">
+    <value>FPTS' Analysis</value>
+  </data>
+  <data name="PTSWOT" xml:space="preserve">
+    <value>SWOT analysis</value>
+  </data>
+  <data name="PutthroughVolume" xml:space="preserve">
+    <value>Put-through Volume</value>
+  </data>
+  <data name="QLCL" xml:space="preserve">
+    <value>QUALITY MANAGEMENT COMPETENCIES</value>
+  </data>
+  <data name="QLK" xml:space="preserve">
+    <value>OTHER MANAGEMENT COMPETENCIES</value>
+  </data>
+  <data name="QUARTER1" xml:space="preserve">
+    <value>Quarter 1</value>
+  </data>
+  <data name="QUARTER2" xml:space="preserve">
+    <value>Quarter 2</value>
+  </data>
+  <data name="QUARTER3" xml:space="preserve">
+    <value>Quarter 3</value>
+  </data>
+  <data name="QUARTER4" xml:space="preserve">
+    <value>Quarter 4</value>
+  </data>
+  <data name="Quoc_tich" xml:space="preserve">
+    <value>Nationality</value>
+  </data>
+  <data name="Quyet_dinh_dhdcd" xml:space="preserve">
+    <value>BOD's Meeting Minutes</value>
+  </data>
+  <data name="Quyet_dinh_HĐQT" xml:space="preserve">
+    <value>Resolutions/Decisions of the Shareholders' Council</value>
+  </data>
+  <data name="ReferencePrice" xml:space="preserve">
+    <value>Reference Price</value>
+  </data>
+  <data name="RefPrice" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="Registrationtime" xml:space="preserve">
+    <value>Registration time</value>
+  </data>
+  <data name="Registrationtime1" xml:space="preserve">
+    <value>Registrationtime EPS</value>
+  </data>
+  <data name="REPORTING_PERIOD" xml:space="preserve">
+    <value>Reporting period</value>
+  </data>
+  <data name="SearchStockCode" xml:space="preserve">
+    <value>Search by symbol or company name</value>
+  </data>
+  <data name="So_do_bo_may" xml:space="preserve">
+    <value>Management apparatus diagram</value>
+  </data>
+  <data name="So_giay_phep" xml:space="preserve">
+    <value>License No. 3438/GP-TTDT dated July 4, 2016</value>
+  </data>
+  <data name="Soát_xét_6_tháng" xml:space="preserve">
+    <value>Soát xét 6 tháng</value>
+  </data>
+  <data name="SPTT" xml:space="preserve">
+    <value>Sản phẩm thay thế_EN</value>
+  </data>
+  <data name="stockCode" xml:space="preserve">
+    <value>Stock Code</value>
+  </data>
+  <data name="Subsidiaries" xml:space="preserve">
+    <value>Subsidiaries</value>
+  </data>
+  <data name="Tai_chinh" xml:space="preserve">
+    <value>Financial</value>
+  </data>
+  <data name="Tai_lieu_DHDCD" xml:space="preserve">
+    <value>Shareholders' Documents</value>
+  </data>
+  <data name="Tam_nhin" xml:space="preserve">
+    <value>VISION</value>
+  </data>
+  <data name="Tam_nhin_chien_luoc" xml:space="preserve">
+    <value>Visions - Strategies</value>
+  </data>
+  <data name="Taxcode" xml:space="preserve">
+    <value>Tax Code</value>
+  </data>
+  <data name="TC" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="TDCN" xml:space="preserve">
+    <value>Technological Level</value>
+  </data>
+  <data name="Telephone" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
+  <data name="TenCoDongLon" xml:space="preserve">
+    <value>Name of Shareholder</value>
+  </data>
+  <data name="TenCongTyConLienKet" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Thoa_thuan" xml:space="preserve">
+    <value>Put-through</value>
+  </data>
+  <data name="Thonggd" xml:space="preserve">
+    <value>Foreign Trading Statistics</value>
+  </data>
+  <data name="Thongkedatlenh" xml:space="preserve">
+    <value>Trading Statistic</value>
+  </data>
+  <data name="Thongkegia" xml:space="preserve">
+    <value>Price Statistics</value>
+  </data>
+  <data name="Thong_tin_chung" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="Thong_tin_du_an_dau_tu" xml:space="preserve">
+    <value>Information on Investment Projects</value>
+  </data>
+  <data name="THOUSANDS" xml:space="preserve">
+    <value>Thousand Dong</value>
+  </data>
+  <data name="ThuocNganhCongTyConLienKet" xml:space="preserve">
+    <value>Industry</value>
+  </data>
+  <data name="TileCoDongLon" xml:space="preserve">
+    <value>Percentage</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Tim_kiem_theo_ma" xml:space="preserve">
+    <value>Search by name or symbol</value>
+  </data>
+  <data name="Tin_DNCB" xml:space="preserve">
+    <value>Business news</value>
+  </data>
+  <data name="Tin_khac" xml:space="preserve">
+    <value>Other news</value>
+  </data>
+  <data name="Tin_tuc" xml:space="preserve">
+    <value>news</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="Tong_quan" xml:space="preserve">
+    <value>Overview</value>
+  </data>
+  <data name="TotalListingValue" xml:space="preserve">
+    <value>Total Listing Value</value>
+  </data>
+  <data name="TotalQtty" xml:space="preserve">
+    <value>Total Volume</value>
+  </data>
+  <data name="To_chuc_bo_may" xml:space="preserve">
+    <value>Management Structure</value>
+  </data>
+  <data name="To_chuc_bo_may_quan_ly" xml:space="preserve">
+    <value>Management Structure</value>
+  </data>
+  <data name="TPLD" xml:space="preserve">
+    <value>Management Board</value>
+  </data>
+  <data name="Trade" xml:space="preserve">
+    <value>Online Stock Trading</value>
+  </data>
+  <data name="Trading_Value" xml:space="preserve">
+    <value>Trading Value (Million Dong)</value>
+  </data>
+  <data name="Trading_Volume" xml:space="preserve">
+    <value>Trading Volume</value>
+  </data>
+  <data name="Trinh_do_chuyen_mon" xml:space="preserve">
+    <value>Speciality</value>
+  </data>
+  <data name="Trinh_do_cong_nghe" xml:space="preserve">
+    <value>Technology</value>
+  </data>
+  <data name="TT" xml:space="preserve">
+    <value>CHALLENGE</value>
+  </data>
+  <data name="TTDADT" xml:space="preserve">
+    <value>Project Investments</value>
+  </data>
+  <data name="TTKH" xml:space="preserve">
+    <value>Actual data/Planned data</value>
+  </data>
+  <data name="TTKHDTK" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="TT_KH_DT" xml:space="preserve">
+    <value>Market/Customer/Competitor</value>
+  </data>
+  <data name="UNIT" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Vi_the_trong_linh_vuc" xml:space="preserve">
+    <value>POSITION IN EACH BUSINESS FIELD</value>
+  </data>
+  <data name="VTC" xml:space="preserve">
+    <value>General Position</value>
+  </data>
+  <data name="VTDN" xml:space="preserve">
+    <value>Company’s Position</value>
+  </data>
+  <data name="VTTTLV" xml:space="preserve">
+    <value>Position In Each Business Field</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="WHOLEYEAR" xml:space="preserve">
+    <value>Whole Year</value>
+  </data>
+  <data name="Xem" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Fiscal year</value>
+  </data>
+  <data name="Indirect_Cash_Flow" xml:space="preserve">
+    <value>Indirect Cash Flow</value>
+  </data>
+  <data name="FINANCIAL_RATIOS" xml:space="preserve">
+    <value>Financial Ratios by Reporting Periods</value>
+  </data>
+  <data name="ASSUMED_PREMIUM" xml:space="preserve">
+    <value>Assumed premium</value>
+  </data>
+  <data name="BAD_DEBT_RATE" xml:space="preserve">
+    <value>Bad debt rate</value>
+  </data>
+  <data name="CAPITAL_ADEQUACY_RATIO" xml:space="preserve">
+    <value>Capital adequacy ratio</value>
+  </data>
+  <data name="CASH_DIVIDENT" xml:space="preserve">
+    <value>Cash divident</value>
+  </data>
+  <data name="CHARTERED_CAPITAL" xml:space="preserve">
+    <value>Chartered capital</value>
+  </data>
+  <data name="DCDATE" xml:space="preserve">
+    <value>Date DC</value>
+  </data>
+  <data name="EARNING_AFTER_TAX" xml:space="preserve">
+    <value>Earning after tax</value>
+  </data>
+  <data name="EARNING_BEFORE_TAX" xml:space="preserve">
+    <value>Earning before tax</value>
+  </data>
+  <data name="FINANCIAL_INCOME" xml:space="preserve">
+    <value>Financial Income</value>
+  </data>
+  <data name="FINANCIAL_PLAN" xml:space="preserve">
+    <value>Financial Plan</value>
+  </data>
+  <data name="KH" xml:space="preserve">
+    <value>Planned data</value>
+  </data>
+  <data name="KHDC" xml:space="preserve">
+    <value>Adjusted plan data</value>
+  </data>
+  <data name="MOBILIZING_ECONOMIC_CAPITAL" xml:space="preserve">
+    <value>Mobilizing economic capital</value>
+  </data>
+  <data name="NUM_OF_YEARS" xml:space="preserve">
+    <value>Number of years displayed</value>
+  </data>
+  <data name="OUTSTANDING_LOANS" xml:space="preserve">
+    <value>Outstanding loans</value>
+  </data>
+  <data name="PREMIUM_FROM_DIRECT_INSURANCE" xml:space="preserve">
+    <value>Premium from direct insurance</value>
+  </data>
+  <data name="PROFIT_BEFORE_INCOME_TAX" xml:space="preserve">
+    <value>Profit before income tax</value>
+  </data>
+  <data name="REPORT_YEAR" xml:space="preserve">
+    <value>Reporting Year</value>
+  </data>
+  <data name="REVENUE" xml:space="preserve">
+    <value>Revenue</value>
+  </data>
+  <data name="STOCK_DIVIDENT" xml:space="preserve">
+    <value>Stock divident</value>
+  </data>
+  <data name="TOTAL_ASSET" xml:space="preserve">
+    <value>Total asset</value>
+  </data>
+  <data name="TTKHTC" xml:space="preserve">
+    <value>Actual data</value>
+  </data>
+  <data name="TT_KH" xml:space="preserve">
+    <value>% Actual data/Planned data</value>
+  </data>
+  <data name="TT_KHLABELCHART" xml:space="preserve">
+    <value>Actual data/Planned data in</value>
+  </data>
+  <data name="YEAR_KHTC" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="BEST_Buy" xml:space="preserve">
+    <value>Best Buy</value>
+  </data>
+  <data name="BEST_Sell" xml:space="preserve">
+    <value>Best Sell</value>
+  </data>
+  <data name="Buy_Sell" xml:space="preserve">
+    <value>Buy - Sell</value>
+  </data>
+  <data name="Gia" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="KL_ban" xml:space="preserve">
+    <value>KL_ban</value>
+  </data>
+  <data name="kl_duocphep" xml:space="preserve">
+    <value>Volume Holding</value>
+  </data>
+  <data name="KL_mua" xml:space="preserve">
+    <value>KL_mua</value>
+  </data>
+  <data name="Lenh_ban" xml:space="preserve">
+    <value>Sell Orders</value>
+  </data>
+  <data name="Lenh_mua" xml:space="preserve">
+    <value>Buy Orders</value>
+  </data>
+  <data name="Remaining_Room" xml:space="preserve">
+    <value>Remaining Room</value>
+  </data>
+  <data name="sohuunuocngoai" xml:space="preserve">
+    <value>% Foreign ownership</value>
+  </data>
+  <data name="Whole_Market" xml:space="preserve">
+    <value>% Whole Market</value>
+  </data>
+  <data name="FROMDATE_IS_GREATER_THAN_TODATE" xml:space="preserve">
+    <value>Khoảng thời gian tìm kiếm không hợp lệ _EN</value>
+  </data>
+  <data name="Direct_cash_flow" xml:space="preserve">
+    <value>Direct cash flow</value>
+  </data>
+  <data name="MACK" xml:space="preserve">
+    <value>Stock code</value>
+  </data>
+  <data name="NgayGD" xml:space="preserve">
+    <value>Ex-Right date (***)</value>
+  </data>
+  <data name="string" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Ti_le_traCT" xml:space="preserve">
+    <value>Registration time</value>
+  </data>
+  <data name="Adjusted_Closing_Price" xml:space="preserve">
+    <value>Adjusted Closing Price</value>
+  </data>
+  <data name="Tin_doanh_nghiep" xml:space="preserve">
+    <value>Business information</value>
+  </data>
+  <data name="Tin_tu_so" xml:space="preserve">
+    <value>Department information and VSD information</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Mail" xml:space="preserve">
+    <value>Mail</value>
+  </data>
+  <data name="Modify_date" xml:space="preserve">
+    <value>Modify date</value>
+  </data>
+  <data name="BillionVND" xml:space="preserve">
+    <value>(Billion VND)</value>
+  </data>
+</root>

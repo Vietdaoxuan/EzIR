@@ -1,0 +1,593 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.Extensions.Options;
+@using Microsoft.AspNetCore.Builder;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@using Microsoft.AspNetCore.Localization
+@using EzIRFront.Models.ViewModels
+
+@using CoreLib.Configs
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var cultureItems = LocOptions.Value.SupportedUICultures
+        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+        .ToList();
+    var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}{Context.Request.QueryString.Value}";
+
+    var requestValue = "";
+    var image = "";
+
+    if (requestCulture.RequestCulture.UICulture.Name == "vi-VN")
+    {
+        image = "icon-EN.png";
+        requestValue = "en-US";
+    }
+    else
+    {
+        image = "iconVietnam.svg.png";
+        requestValue = "vi-VN";
+    }
+
+
+    //var rolesCompany = Context.Request.Cookies[CookieTypes.LIST_ROLECODE];
+    //string[] menuList = rolesCompany.Split(',');
+
+}
+
+<!DOCTYPE html>
+<html>
+<!-- begin::Head -->
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="EzIR">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <link rel="shortcut icon" href="~/favicon.png">
+    <!--begin::Web font -->
+    <!--end::Web font -->
+    <!--begin::Page Vendors Styles -->
+    <!--data table style sheet -->
+    <!-- <link href="css/fpts-main.min.css" rel="stylesheet" type="text/css"> -->
+    <link href="~/css/tongquan.css" rel="stylesheet" type="text/css">
+
+    <link href="~/assets/vendors/custom/datatables/datatables.bundle.min.css" rel="stylesheet" type="text/css">
+
+    <link href="~/assets/demo/demo3/base/style.bundle.css" rel="stylesheet" type="text/css">
+    <!--end::Page Vendors Styles -->
+    <!--begin:: Global Mandatory Vendors -->
+    <link href="~/assets/vendors/general/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" type="text/css">
+    <!--end:: Global Mandatory Vendors -->
+    <!--begin:: Global Optional Vendors -->
+
+    <link href="~/assets/vendors/general/toastr/build/toastr.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/assets/vendors/general/sweetalert2/src/sweetalert2.js"></script>
+    <script src="~/assets/vendors/general/sweetalert2/dist/sweetalert2.js"></script>
+    <script src="~/js/polyfill.min.js" type="text/javascript"></script>
+    <script src="~/assets/vendors/general/jquery/dist/jquery.min.js" type="text/javascript"></script>
+
+    <link href="~/assets/vendors/general/select2/css/select2.min.css" rel="stylesheet">
+    <script src="~/assets/vendors/general/select2/js/select2.min.js"></script>
+    <script src="~/assets/vendors/general/toastr/build/toastr.min.js"></script>
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    @* <script>
+            const encodeHtmlString = function (rawString) {
+                return rawString.replace(/[<>\&]/gim,
+                    function (i) {
+                        return '&#' + i.charCodeAt(0) + ';';
+                    });
+            }
+            $.ajaxSetup({
+                converters: {
+                    "text json": function (data) {
+                        return JSON.parse(encodeHtmlString(data));
+                    }
+                }
+            });
+        </script>*@
+
+    <link href="~/assets/vendors/custom/vendors/line-awesome/css/line-awesome.css" rel="stylesheet" type="text/css">
+    <!-- <link href=" assets/vendors/general/animate.css/animate.css" rel="stylesheet" type="text/css">
+    <link href=" assets/vendors/general/toastr/build/toastr.css" rel="stylesheet" type="text/css"> -->
+    <link href="~/assets/vendors/custom/vendors/fontawesome5/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/general/sweetalert2/dist/sweetalert2.css" rel="stylesheet" type="text/css">
+    <link href="~/css/Customer.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="~/css/site.css">
+    <!--end:: Global Optional Vendors -->
+    <script src="~/js/site.js"></script>
+
+    <style>
+        .card-body {
+            padding: 1.3rem;
+            background: none;
+            cursor: pointer;
+        }
+
+        .info-card :hover {
+        }
+
+        .text-gray-800 {
+            color: #5a5c69 !important;
+        }
+
+        .text-gray-300 {
+            color: #dddfeb !important;
+        }
+
+        .border-left-primary {
+            border-left: .25rem solid #4e73df !important;
+        }
+
+        .shadow {
+            box-shadow: 0 .15rem 1.75rem 0 rgba(58, 59, 69, .25) !important;
+        }
+
+        .no-gutters {
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        .border-left-success {
+            border-left: .25rem solid #1cc88a !important;
+        }
+
+        .border-left-info {
+            border-left: .25rem solid #36b9cc !important;
+        }
+
+        .border-left-warning {
+            border-left: .25rem solid #f6c23e !important;
+        }
+
+        .text-primary {
+            font-size: inherit;
+        }
+
+        .easy-autocomplete-container {
+            max-height: 370px;
+            overflow-y: scroll;
+            width: 99%;
+        }
+
+            .easy-autocomplete-container::-webkit-scrollbar {
+                width: 5px;
+                height: 5px;
+                background-color: #d9d9d9;
+            }
+
+            .easy-autocomplete-container::-webkit-scrollbar-thumb {
+                background: #bfbfbf;
+            }
+        body {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -o-user-select: none;
+            user-select: none;
+        }
+    </style>
+    <title>Home Page - EzIR</title>
+
+    <script src="~/js/block.js"></script>
+</head>
+
+<body class="k-page--loading-enabled k-page--loading k-page--fixed k-header--fixed k-header--minimize-menu k-header-mobile--fixed"
+      style="background-color: white">
+    <div id="k_header_mobile" class="k-header-mobile">
+        <div class="fpts-header">
+            <div class="container d-flex header-mobile-language">
+                <div class="fpts-left">
+                    @*<span>Công ty cổ phần FPT (HOSE: FPT)</span>*@
+                    <span class="title_line_item_company_name"></span>
+                    @*@HttpContextAccessor.HttpContext.Session.GetString("StockName") (@HttpContextAccessor.HttpContext.Session.GetString("CompanyType"):  @HttpContextAccessor.HttpContext.Session.GetString("StockCode"))*@
+
+                </div>
+                <div class="fpts-right d-flex justify-content-end align-items-center">
+                    <form id="selectLanguage" asp-controller="ThongTinDoanhNghiep" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal mb-0" role="form">
+                        <input type="hidden" name="culture" asp-for="@requestValue" asp-items="cultureItems" />
+                        <button type="submit" style="border-style: hidden; background-color: inherit;">
+                            <a class="culture-image">
+                                <img src="/images/@image" />
+                            </a>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="k-header-mobile-bottom">
+            <div class="k-header-mobile__toolbar">
+                <button class="k-header-mobile__toolbar-toggler" id="k_header_mobile_toggler"><span></span></button>
+            </div>
+            <div class="k-header-mobile__logo">
+                <a href="/">
+                    <span class="logoEzIR"><b class="E-title_">E</b><b class="Z-title_">z</b><span class="IR">IR</span></span>
+                </a>
+            </div>
+            <div class="header-info d-flex align-items-center p-2" id="icon_search_top">
+
+                <span class="fa fa-search iconsearch"></span>
+
+            </div>
+        </div>
+
+        <!--Search Mobile-->
+
+        <div class="search_mobile" style="display: none;">
+            <div class="eac-square easy-autocomplete" width="100px;" >
+                <input onkeypress="" type="text"
+                       placeholder="@Localizer["SearchStockCode"]" id="search_stockcode_mobile" class="fptsSearchAuto"
+                       autocomplete="off">
+                <div class="easy-autocomplete-container" id="eac-container-search_stockcode_mobile">
+                    <ul></ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="k-grid k-grid--hor k-grid--root">
+        <div class="k-grid__item k-grid__item--fluid k-grid k-grid--ver k-page">
+            <div class="k-grid__item k-grid__item--fluid k-grid k-grid--hor k-wrapper " id="k_wrapper">
+
+                <!-- begin:: Header -->
+                <div id="k_header" class="k-header k-grid__item  k-header--fixed " data-kheader-minimize="on"
+                     style="background: linear-gradient(45deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 12%, rgba(52, 152, 219, 1) 43%)">
+                    @*<div class="fpts-header">
+                        <div class="k-container d-flex ">
+                            <div class="fpts-left">
+
+                            </div>
+                            <div class="col-md-4 col-sm-9 flag-btn">
+
+                                <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal mb-0" role="form">
+                                    <input type="hidden" name="culture" asp-for="@requestValue" asp-items="cultureItems" />
+                                    <button type="submit" style="border-style: hidden; background-color: inherit;">
+                                        <a class="culture-image">
+                                            <img src="/images/@image" />
+                                        </a>
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>*@
+
+                    <!--Hide logo EzIR Screen PC-->
+
+                    <div class="k-header__bottom" id="EzIR_Header">
+                        <div class="k-container">
+                            <!-- <img src="logo.PNG"> -->
+                            <div class=" fpt-logoslogan">
+                                <a href="@Url.Action("Index","Home")">
+                                    <div class="fpts-titleEz_">
+                                        <span class="logoEzIR"><b class="E-title_">E<b class="Z-title_">z</b></b><span class="IR">IR</span></span>
+                                        <span class="slogan_EzIR">@Localizer["Cong_quan_he_dau_tu_truc_tuyen"].Value</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-md-4 col-sm-9 flag-btn">
+
+                                <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl" method="post" class="form-horizontal mb-0" role="form">
+                                    <input type="hidden" name="culture" asp-for="@requestValue" asp-items="cultureItems" />
+                                    <button type="submit" style="border-style: hidden; background-color: inherit;">
+                                        <a class="culture-image">
+                                            <img src="/images/@image" />
+                                        </a>
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="k-header__bottom" style="background-color: #dddfeb;" id="txtcompany">
+                        <div class="k-container row" id="company_search">
+                            <div class="" style="padding-left: 0px !important;">
+                                <span class="title_line_item_company_name"></span>
+
+                                <span></span>
+                            </div>
+                            <div class="display-flex-center" id="input_search">
+                                <input type="text" class="form-control" placeholder="@Localizer["SearchStockCode"]"
+                                       id="search_stockcode" onkeypress="enterSearch(event)">
+                                <div class="input-group-prepend">
+                                    <button class="btn btn-outline-secondary" type="button" id="btn_search_stockcode">
+                                        <i class="fas fa-search fa-custom1" style="color: white;"></i><span class="search">
+                                            @Localizer["Search"].Value
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @await Html.PartialAsync("_MenuEzirPartial")
+
+                @RenderBody()
+                <!-- begin:: Footer -->
+                @Html.Partial("_PartialFooter")
+
+                <!-- end:: Footer -->
+                <!-- begin::Scrolltop -->
+                <div id="k_scrolltop" class="k-scrolltop">
+                    <i class="la la-arrow-up"></i>
+                </div>
+                <input type="text" id="cpnyid" hidden />
+                <input type="text" id="cpnytypeid" hidden />
+                <!-- end::Scrolltop -->
+                <!-- begin::Global Config -->
+                <script>
+                    var KAppOptions = {
+                        "colors": {
+                            "state": {
+                                "brand": "#4d5cf2",
+                                "metal": "#c4c5d6",
+                                "light": "#ffffff",
+                                "accent": "#00c5dc",
+                                "primary": "#5867dd",
+                                "success": "#34bfa3",
+                                "info": "#36a3f7",
+                                "warning": "#ffb822",
+                                "danger": "#fd3995",
+                                "focus": "#9816f4"
+                            },
+                            "base": {
+                                "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"],
+                                "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"]
+                            }
+                        }
+                    };
+                </script>
+                <script src="~/js/scroll.js"></script>
+
+                <script src="~/js/scroll.js" type="text/javascript"></script>
+                <script src="~/assets/demo/demo3/base/popper.min.js"></script>
+                <script src="~/assets/vendors/general/bootstrap/dist/js/bootstrap.min.js" type="text/javascript"></script>
+                <script src="~/assets/vendors/general/perfect-scrollbar/dist/perfect-scrollbar.js" type="text/javascript"></script>
+                <script src="~/assets/vendors/general/sticky-js/dist/sticky.min.js" type="text/javascript"></script>
+
+                <!--Sử dụng cho JS SaveFile, Xuất báo cáo-->
+                <script src="~/lib/filesaver/FileSaver.min.js"></script>
+                <script src="~/js/jquery-ajax-native.js"></script>
+                <!--<script src="~/js/jReport.js"></script>-->
+
+                <script src="~/assets/demo/demo3/base/scripts.bundle.min.js" type="text/javascript"></script>
+
+                <script src="~/assets/vendors/custom/datatables/datatables.bundle.min.js" type="text/javascript"></script>
+                <script src="~/assets/vendors/general/sweetalert2/dist/sweetalert2.js" type="text/javascript"></script>
+                <script src="~/assets/vendors/general/sweetalert2/src/sweetalert2.js"  type="text/javascript"></script>
+                @*<script src="~/js/site.js"></script>*@
+
+                <script src="~/js/lodash.js"></script>
+                <script src="~/js/highcharts-lib.js"></script>
+                <script src="~/js/highchart-3d.js"></script>
+                <script src="~/js/highchart-module-exporting.js"></script>
+                <script src="~/js/highchart-module-export-data.js"></script>
+                <script src="~/js/highchart-module-accessibility.js"></script>
+
+                <!--css + js search_mobile-->
+                <link href="~/Public/css/easy-autocomplete.min.css" rel="stylesheet">
+                <script src="~/js/jquery.easy-autocomplete.js  "></script>
+
+                <script src="~/js/scroll.js"></script>
+                <script src="~/js/scoll_notmenu2.js"></script>
+                <!--Lấy tilte company-->
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#icon_search_top").click(function () {
+
+                            $('.search_mobile').slideToggle();
+                        });
+                        /*ChienND 30/08/2022 Lấy ngôn ngữ qua link website*/
+                        var lang;
+                        if (window.location.href.includes("?culture=en-US"))
+                            lang = "?culture=en-US";
+                        else
+                            lang = "";
+
+                        //Kiểm tra chiều dài màn hình
+                        if ($(window).width() < 425) {
+                            //alert("Xoay ngang hoặc truy cập màn hình ở lớn hơn để có trải nghiệm tốt hơn");
+                            Swal.fire({
+                                title: 'Xoay ngang hoặc truy cập bằng màn hình lớn hơn để có trải nghiệm tốt hơn',
+                                showClass: {
+                                    popup: 'animate__animated animate__fadeInDown'
+                                },
+                                hideClass: {
+                                    popup: 'animate__animated animate__fadeOutUp'
+                                }
+                            })
+                        }
+
+                        //Lấy thông tin Company
+                        var stock_code = window.location.href.split('?')[0].split('/')[4];
+                        var stockurl = stock_code.toUpperCase();
+                        var vi_en = "@requestCulture.RequestCulture.UICulture.Name";
+                        $.ajax({
+                            url: '@Url.Action("ThongTinCompanyViEn", "ThongTinDoanhNghiep")?stock_Code=' + stockurl + lang.replace('?','&'),
+                            type: 'POST',
+                            dataType:'json',
+                            success: function (data) {
+
+                                if ($(window).width() <= 375) {
+                                    $('.title_line_item_company_name').html(data[0].aposT_TO + `:` + data[0].astock_CODE);
+                                } else {
+                                    // console.log(data);
+                                    $('.title_line_item_company_name').html(data[0].astockname + ` ` + `(` + data[0].aposT_TO + `:` + data[0].astock_CODE + `)`);
+                                }
+                                $('#cpnyid').val(data[0].acpnyid);
+                            },
+
+                            error: function (err) {
+                                console.log(err);
+
+                            }
+                        });
+
+                        //Search stockCode layout cổng thông tin
+                        //Sửa lại đoạn search mã chứng khoán
+                        $.ajax({
+                            url: '@Url.Action("GetStockCodeThongTinDN", "ThongTinDoanhNghiep")',
+                            dataType: 'json',
+                            method: 'GET',
+                            success: function (res) {
+                                var strJSON = JSON.stringify(res);
+                                sessionStorage.setItem('dataSearch', strJSON);
+
+                                //Search StockCode trang Home
+                                var json = JSON.parse(sessionStorage.getItem('dataSearch'));
+
+                                var options = {
+                                    data: json ,
+
+                                    getValue: function (e) {
+                                        return e.nameSearch;
+                                    },
+
+
+                                    template: {
+                                        type: "custom",
+                                        method: function (value, item) {
+                                            return `<form action="@Url.Action("SelectStockCode")" enctype="multipart/form-data" method="post" class="col-12">
+                                                    <button id="btn_stck" class="button">
+                                                         <p>${value}</p>
+                                                         <input style="display:none" name="astock_CODE" value="${item.astock_CODE}"/>
+
+                                                    </button>
+
+                                            </form>`;
+
+                                        }
+                                    },
+
+                                    list: {
+                                        match: {
+                                            enabled: true
+                                        },
+                                        sort: {
+                                            enabled: true
+                                        },
+                                        maxNumberOfElements: 100,
+
+                                    },
+                                };
+
+
+
+                                if (document.getElementById('search_stockcode')) {
+
+                                    $("#search_stockcode").easyAutocomplete(
+                                        options
+                                    );
+
+                                }
+
+                                if (document.getElementById('search_stockcode_mobile')) {
+                                    $("#search_stockcode_mobile").easyAutocomplete(
+                                        options
+                                    );
+
+                                }
+
+                            },
+                            error: function (err) {
+                                console.log(err);
+                            }
+                        });
+
+                        //Lấy ra mã chứng khoán từ home
+                        $.ajax({
+                            url: '@Url.Action("GetStockCode", "HomeDemo")',
+                            dataType: 'json',
+                            method: 'GET',
+                            success: function (res) {
+                                var strJSON = JSON.stringify(res);
+                                sessionStorage.setItem('dataSearchHome', strJSON);
+                            },
+                            error: function (err) {
+                                console.log(err);
+                            }
+                        });
+
+                        //lấy loại công ty
+                        $.ajax({
+                             url: '@Url.Action("ThongTin", "ThongTinDoanhNghiep")?stock_Code=' + stockurl,
+                            type: 'POST',
+                            dataType:'json',
+                            success: function (data) {
+
+                               // console.log(data);
+
+                                $('#cpnytypeid').val(data[0].acpnytype);
+                            },
+
+                            error: function (err) {
+                               // console.log(err);
+
+                            }
+                        });
+
+                    });
+
+                    //Hàm kiểm tra ấn enter input search
+                    function enterSearch(e) {
+                        //See notes about 'which' and 'key'
+                        if (e.keyCode == 13) {
+                            //debugger;
+                            var valSerach = document.getElementById("search_stockcode").value;
+
+                            if (valSerach != null && valSerach != "") {
+                                // viet vao day
+                                var json = JSON.parse(sessionStorage.getItem('dataSearch'));
+                                for (var i = 0; i < json.length; i++) {
+                                    if (valSerach.toUpperCase() === json[i].astock_CODE.toUpperCase()) {
+                                            return window.location.href = `/ThongTinDoanhNghiep/${valSerach.toUpperCase()}` + lang;
+                                    } else if (valSerach === json[i].nameSearch) {
+                                            return window.location.href = `/ThongTinDoanhNghiep/${json[i].astock_CODE.toUpperCase()}` + lang;
+                                    }
+                                }
+                            }
+
+                            return false;
+                        }
+                    };
+
+                </script>
+
+         
+
+
+                <script type="text/javascript">
+                    toastr.options = {
+                        "closeButton": true,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-bottom-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "20000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                </script>
+                <script>
+
+                </script>
+                <!--end:: Body-->
+</body>
+
+</html>

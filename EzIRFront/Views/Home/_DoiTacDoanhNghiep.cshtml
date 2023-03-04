@@ -1,0 +1,30 @@
+﻿@model EzIRFront.Models.CompanyService;
+@{
+    var url = "https://ezsearch.fpts.com.vn/images/";
+    ViewData["Title"] = "Đố tác doanh nghiệp";
+    var listlogo = ViewBag.ListLogo as List<CompanyService>;
+
+}
+<div id="enterprises" class="owl-carousel owl-theme owl-loaded owl-drag">
+
+    <div class="owl-stage-outer">
+        <div class="owl-stage"
+             style="transform: translate3d(-25491px, 0px, 0px); transition: all 0.25s ease 0s; width: 99667px;" id="logo">
+            @for (int i = 0; listlogo != null && i < listlogo.Count; i++)
+            {
+                <div class="owl-item" style="width: 181.667px; margin-right: 10px;">
+                    <div class="item">
+                        <div class="img-media">
+                            <a href="@listlogo[i].awebsite" target="_blank">
+                                <img class="img-content" src="@url@listlogo[i].alogopath.Replace("\\", "/")">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <div class="owl-dots disabled"></div>
+</div>

@@ -1,0 +1,709 @@
+﻿@using EzIRSpecialist.DataAccess.Interfaces;
+@using Microsoft.AspNetCore.Http;
+@using EzIRSpecialist.Models.ViewModel;
+@using EzIRSpecialist.Commons;
+@using EzIRSpecialist.Models.ModelView;
+@using CoreLib.Configs;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    var contextAccessor = (IHttpContextAccessor)Context.RequestServices.GetService(typeof(IHttpContextAccessor));
+    var systemManagementContext = (ISystemManagementContext)Context.RequestServices.GetService(typeof(ISystemManagementContext));
+
+    var username = contextAccessor.HttpContext.Session.GetString(ConstantsSessionName.USERNAME);
+    var groupCode = contextAccessor.HttpContext.Session.GetString(ConstantsSessionName.GROUP_CODE);
+
+    //lấy các role mà người dùng có thể vào
+    var roleList = (List<RoleModelView>)systemManagementContext.GetListRoleByUser(new RoleGroupViewModel { UserName = username, RoleType = ConstantsCommon.SPECIALIST_ROLE_TYPE }).Data;
+
+    roleList = roleList.Where(a => a.GroupCode == groupCode).ToList();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"] - EzIR Specialist</title>
+    <link rel="shortcut icon" href="~/assets/images/icons/faviconFPTS.png">
+    <!-- Favicons -->
+    @*<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">*@
+    <link rel="stylesheet" type="text/css" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/bootstrap/css/bootstrap.css">
+    <!-- HELPERS -->
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/backgrounds.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/border-radius.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/grid.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/page-transitions.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/spacing.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/utils.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/colors.css">
+
+
+    <!-- ICONS -->
+    <link rel="stylesheet" type="text/css" href="~/assets/icons/fontawesome/fontawesome.css">
+
+
+    <!-- SNIPPETS -->
+
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/chat.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/files-box.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/login-box.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/notification-box.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/progress-box.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/todo.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/user-profile.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/snippets/mobile-navigation.css">
+
+    <!-- APPLICATIONS -->
+    <link rel="stylesheet" type="text/css" href="~/assets/applications/mailbox.css">
+
+    <!-- Admin theme -->
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/admin/layout.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/admin/color-schemes/default.css">
+
+    <!-- Components theme -->
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/components/default.css">
+    <link rel="stylesheet" type="text/css" href="~/assets/themes/components/border-radius.css">
+
+    <!-- Admin responsive -->
+    <link rel="stylesheet" type="text/css" href="~/assets/helpers/admin-responsive.css">
+
+    <!-- CSS vendor   -->
+    @*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.css">*@
+    <link href="~/assets/vendors/custom/datatables/jquery.dataTables.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/assets/vendors/custom/datatables/datatables.bundle.css">
+    <link href="~/assets/vendors/general/perfect-scrollbar/css/perfect-scrollbar.css" rel="stylesheet" type="text/css">
+
+    <link href="~/assets/vendors/custom/vendors/line-awesome/css/line-awesome.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/custom/vendors/fontawesome5/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/vendors/general/sweetalert2/dist/sweetalert2.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Online/select2_restyle.css">
+
+    <link rel="stylesheet" href="~/assets/demo/demo3/base/style.bundle.css">
+    <!-- <link rel="stylesheet" href="Online/style.bundle.css"> -->
+    <link rel="stylesheet" href="~/css/site.css">
+    <link rel="stylesheet" href="~/Online/layout.css">
+    <link href="~/Online/layout_chuyenvien.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Online/site.css">
+    @*<link rel="stylesheet" type="text/css" href="Online/AccountManagement.css">*@
+    <link re l="stylesheet" href="~/Online/siteStyle.css">
+    <link rel="stylesheet" href="~/Online/navbar_responsive.css">
+
+    @*<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />*@
+    <link href="~/assets/vendors/custom/select2/select2.min.css" rel="stylesheet" />
+    @*<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">*@
+    <link href="~/assets/js-core/jquery-ui.css" rel="stylesheet" />
+    @*<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>*@
+    <script src="~/assets/demo/demo3/base/popper.min.js"></script>
+    <link href="~/assets/vendors/general/toastr/build/toastr.css" rel="stylesheet" type="text/css" />
+
+    <!-- JS Core -->
+    <script type="text/javascript" src="~/assets/js-core/jquery-core.js"></script>
+    <script type="text/javascript" src="~/assets/js-core/jquery-ui-core.js"></script>
+    <script type="text/javascript" src="~/assets/js-core/jquery-ui-widget.js"></script>
+    <script type="text/javascript" src="~/assets/js-core/jquery-ui-mouse.js"></script>
+    <script type="text/javascript" src="~/assets/js-core/jquery-ui-position.js"></script>
+
+    <!--<script type="text/javascript" src="~/assets/js-core/transition.js"></script>-->
+    <script type="text/javascript" src="~/assets/js-core/modernizr.js"></script>
+    <script type="text/javascript" src="~/assets/js-core/jquery-cookie.js"></script>
+
+    <script type="text/javascript" src="~/assets/bootstrap/js/bootstrap.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/assets/vendors/general/toastr/build/toastr.min.js"></script>
+    <script src="~/assets/vendors/general/sweetalert2/dist/sweetalert2.js"></script>
+    <script src="~/assets/vendors/general/sweetalert2/dist/sweetalert2.all.min.js"></script>
+
+
+    @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>*@
+    <script src="~/lib/jquery/dist/jquery-1.12.4.js"></script>
+    @*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+    <script src="~/assets/js-core/jquery-ui.js"></script>
+    <!--Sử dụn JS SaveFile, Xuất báo cáo-->
+    <script src="~/js/jquery-ajax-native.js"></script>
+    <script src="~/lib/filesaver/FileSaver.min.js"></script>
+    <script src="~/assets/vendors/general/sticky-js/dist/sticky.min.js" type="text/javascript"></script>
+    <!-- DataTable -->
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>*@
+    <script src="~/assets/bootstrap/js/bootstrap-switch.min.js"></script>
+    <!-- Multiple select -->
+    <link href="~/assets/multi-select/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <script src="~/assets/multi-select/dist/js/bootstrap-multiselect.js"></script>
+
+    @RenderSection("Styles", false)
+
+</head>
+
+<body>
+    <div id="k_header_mobile" class="k-header-mobile">
+        <div class="fpts-header">
+            <div class="d-flex ">
+                <div class="fpts-left">
+                </div>
+                <div class="fpts-right d-flex justify-content-end align-items-center">
+                    <span style="text-transform:none; color: white; margin-right: 19px;">
+
+                    </span>
+                    <a href="@Url.Action("Logout", "Home")" title="Logout" class="fpts-btn-signout">
+                        <i class="fas fa-sign-out-alt" style="color: white;"></i>
+                    </a>
+                    <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnurl="" method="post" class="form-horizontal" role="form">
+                        <input type="hidden" name="culture" asp-items="cultureItems">
+                        <a class="culture-image" id="img_avatar">
+                            <img src="~/assets/images/icons/icon-EN.png">
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="k-header-mobile-bottom">
+            <div class="k-header-mobile__toolbar">
+                <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar" aria-expanded="false"><span></span></button>
+            </div>
+            <div class="k-header-mobile__logo">
+                <a href="/">
+                    <img src="~/assets/images/icons/logo.jpg" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div id="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="header-contain">
+                    <div class="col-md-8 col-sm-4 cd-info">
+                        <a class="text-light" href="#">
+                            <span>@username - @groupCode</span>
+                        </a>
+                    </div>
+                    <div class="col-md-4 col-sm-9 flag-btn">
+                        <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" asp-route-returnurl="" method="post" class="form-horizontal" role="form">
+                            <input type="hidden" name="culture" asp-items="cultureItems">
+                            <a class="culture-image" id="img_avatar">
+                                <img src="~/assets/images/icons/icon-EN.png">
+                            </a>
+                        </form>
+                        <a href="@Url.Action("Logout", "Home")" title="Logout" class="fpts-btn-signout">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                        <span class="header-title header-username" id="header-username"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="logo-header">
+        <div class="container">
+            <div class="logo-wrapper">
+                <div class="logo-section">
+                    <img src="~/assets/images/icons/logo.jpg" alt="" width="112" height="81">
+                </div>
+                <div class="text-section">
+                    <h1>Cổng quan hệ nhà đầu tư trực tuyến</h1>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="page-sidebar" class="bg-fpts fpts-menu--gsm collapse" aria-expanded="false" style="height: 0px;">
+        <div class="container">
+            <div class="row">
+                <div class="scroll-sidebar">
+                    <ul id="sidebar-menu" class="sf-js-enabled sf-arrows navbar-nav mr-auto">
+                        <!-- QUẢN LÝ TÀI KHOẢN -->
+                        <li class="dropdownmenu nav-item dropdown fpts-dropdown" id="k_drdwn_mng_lv1">
+                            <a href="#" title="" class="nav-link dropdownMenu1" data-toggle="dropdown" id="dropdownMenu1">
+                                <span id="ctl00_lblHome">Quản lý tài khoản</span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <div class="triangle"></div>
+                                <li class="dropdown-menu-item f1_dropdown dropdown-submenu" id="k_drdwn_mng_lv2">
+                                    <a id="dropdownMenu2" class="dropdown-item dropdown dropdown-general" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" style="border-bottom: 1px solid gainsboro;">
+                                        <span>Quản lý tài khoản</span>
+                                    </a>
+                                    <ul aria-labelledby="dropdownMenu2" class="dropdown-menu fpts-submenu-lv2_1">
+                                        @*<div class="triangle"></div>*@
+                                        @try
+                                        {
+                                            foreach (var role in roleList)
+                                            {
+                                                if (role.RoleCode == RoleCode.ACCOUNT_CHUYENVIEN && role.View == true)
+                                                {
+                                                    <li>
+                                                        <a tabindex="-1" class="dropdown-item" href="@Url.Action("Index", "QLTKChuyenVien")" style="border-bottom: 1px solid gainsboro !important;">
+                                                            <span>Chuyên viên</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            }
+
+                                            foreach (var role in roleList)
+                                            {
+                                                if (role.RoleCode == RoleCode.ACCOUNT_DOANH_NGHIEP && role.View == true)
+                                                {
+                                                    <li>
+                                                        <a class="dropdown-item" href="@Url.Action("Index", "QLTKDoanhNghiep")">
+                                                            <span>Doanh nghiệp</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                        }
+                                    </ul>
+                                </li>
+                                @try
+                                {
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.QL_DOANH_NGHIEP && role.View == true)
+                                        {
+                                            <li class="dropdown-menu-item f2_dropdown">
+                                                <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index", "QuanLyDoanhNghiep")">
+                                                    <span>Quản lý doanh nghiệp</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+                            </ul>
+                        </li>
+                        <li class="divider"></li>
+                        <!-- QUẢN LÝ DOANH NGHIỆP CÔNG BỐ -->
+                        @try
+                        {
+                            foreach (var role in roleList)
+                            {
+                                if (role.RoleCode == RoleCode.QL_DOANH_NGHIEP_CONG_BO && role.View == true)
+                                {
+                                    <li class="dropdownmenu nav-item dropdown fpts-dropdown">
+                                        <a href="@Url.Action("Index", "DoanhNghiepCongBo")" title="" class="nav-link">
+                                            <span id="ctl00_Label1">Quản lý dn công bố</span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                        catch (Exception) { }
+                        <li class="divider"></li>
+                        <!-- THƯ VIỆN PHÁP LUẬT -->
+                        @try
+                        {
+                            foreach (var role in roleList)
+                            {
+                                if (role.RoleCode == RoleCode.THU_VIEN_PHAP_LUAT && role.View == true)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index", "ThuVienPhapLuat")" title="">
+                                            <span id="ctl00_Label22">Thư viện pháp luật</span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+
+                        catch (Exception) { }
+                        <li class="divider"></li>
+                        <!-- QUẢN LÝ BIỂU MẪU CÁN BỘ THÔNG TIN -->
+                        @try
+                        {
+                            foreach (var role in roleList)
+                            {
+                                if (role.RoleCode == RoleCode.QL_BIEU_MAU_CBTT && role.View == true)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Index", "QuanLyBieuMauCBTT")" title="">
+                                            <span id="ctl00_Label4">Quản lý biểu mẫu cbtt</span>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+
+                        catch (Exception) { }
+                        <li class="divider"></li>
+                        <!-- BÁO CÁO TIÊN ÍCH -->
+                        <li class="dropdownmenu nav-item dropdown fpts-dropdown" id="k_drdwn_ex_lv1">
+                            <a href="#" title="" class="nav-link dropdownMenu1" data-toggle="dropdown" id="dropdownMenu1">
+                                <span id="ctl00_Label8">Báo cáo - Tiện ích</span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                @try
+                                {
+                                    var isTrue = false;
+
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.QUAN_LY_NHOM && role.View == true) isTrue = true;
+                                        if (role.RoleCode == RoleCode.PHAN_NHOM_NGUOI_DUNG && role.View == true) isTrue = true;
+                                        if (role.RoleCode == RoleCode.PHAN_QUYEN_CHO_NHOM && role.View == true) isTrue = true;
+                                    }
+
+                                    if (isTrue)
+                                    {
+                                        <div class="triangle"></div>
+                                        <li class="dropdown-menu-item f1_dropdown dropdown-submenu" id="k_drdwn_ex_lv2">
+                                            <a id="dropdownMenu2" class="dropdown-item dropdown dropdown-general" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" style="border-bottom: 1px solid gainsboro;">
+                                                <span>Phân quyền</span>
+                                            </a>
+                                            <!-- Admin - Begin -->
+                                            <ul aria-labelledby="dropdownMenu2" class="dropdown-menu fpts-submenu-lv2_1">
+                                                @try
+                                                {
+                                                    foreach (var role in roleList)
+                                                    {
+                                                        if (role.RoleCode == RoleCode.QUAN_LY_NHOM && role.View == true)
+                                                        {
+                                                            <li>
+                                                                <a class="dropdown-item" href="@Url.Action("Index", "GroupAdmin")" style="border-bottom: 1px solid gainsboro !important;">
+                                                                    <span>Quản lý nhóm</span>
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                    }
+
+                                                    foreach (var role in roleList)
+                                                    {
+                                                        if (role.RoleCode == RoleCode.PHAN_NHOM_NGUOI_DUNG && role.View == true)
+                                                        {
+                                                            <li>
+                                                                <a class="dropdown-item" href="@Url.Action("Index", "UserGroupAdmin")" style="border-bottom: 1px solid gainsboro !important;">
+                                                                    <span>Phân nhóm người dùng</span>
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                    }
+
+                                                    foreach (var role in roleList)
+                                                    {
+                                                        if (role.RoleCode == RoleCode.PHAN_QUYEN_CHO_NHOM && role.View == true)
+                                                        {
+                                                            <li>
+                                                                <a class="dropdown-item" href="@Url.Action("Index", "RoleGroupAdmin")">
+                                                                    <span>Phân quyền cho nhóm</span>
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                    }
+                                                }
+                                                catch (Exception) { }
+
+
+
+
+                                            </ul>
+                                            <!-- Admin - End -->
+                                        </li>
+                                    }
+                                }
+                                catch (Exception)
+                                {
+                                }
+
+                                @try
+                                {
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.QL_RULES && role.View == true)
+                                        {
+                                            <li class="dropdown-menu-item f1_dropdown">
+                                                <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","QuanLyRules")" style="border-bottom: 1px solid gainsboro;">
+                                                    <span>Quản lý Rules</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+
+                                @try
+                                {
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.QUAN_LY_BANNER && role.View == true)
+                                        {
+                                            <li class="dropdown-menu-item f1_dropdown">
+                                                <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","QuanLyBanner")" style="border-bottom: 1px solid gainsboro;">
+                                                    <span>Quản lý Banners</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+
+                                @try
+                                {
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.NHAT_KY_HOAT_DONG && role.View == true)
+                                        {
+                                            <li class="dropdown-menu-item f2_dropdown">
+                                                <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","NhatKyHoatDong")" style="border-bottom: 1px solid gainsboro;">
+                                                    <span>Nhật ký hoạt động</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+
+                                @try
+                                {
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.NHAC_CBTT && role.View == true)
+                                        {
+                                            <li class="dropdown-menu-item f2_dropdown">
+                                                <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","NhacCongBoThongTin")" style="border-bottom: 1px solid gainsboro;">
+                                                    <span>Nhắc công bố thông tin</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+
+                                @try
+                                {
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.THONG_TIN_PHE_DUYET && role.View == true)
+                                        {
+                                            <li class="dropdown-menu-item f2_dropdown">
+                                                <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","ViewApprove")" style="border-bottom: 1px solid gainsboro;">
+                                                    <span>Xem thông tin phê duyệt</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+
+                                @try
+                                {
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.PHE_DUYET_THONG_TIN && role.View == true)
+                                        {
+                                            <li class="dropdown-menu-item f2_dropdown">
+                                                <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","Approve")" style="border-bottom: 1px solid gainsboro;">
+                                                    <span>Phê duyệt thông tin</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+
+                                @try
+                                {
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.DS_TIN_DANG_THEO_KHACH_HANG && role.View == true)
+                                        {
+                                            <li class="dropdown-menu-item f2_dropdown" style="display:none">
+                                                <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","DSTinDangTheoKhachHang")" style="border-bottom: 1px solid gainsboro;">
+                                                    <span>DS tin đăng theo khách hàng</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+
+                                @try
+                                {
+                                    foreach (var role in roleList)
+                                    {
+                                        if (role.RoleCode == RoleCode.DS_TIN_DANG_BACKDATE && role.View == true)
+                                        {
+                                            <li class="dropdown-menu-item f2_dropdown">
+                                                <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","DSTinDangBackDate")">
+                                                    <span>Danh sách tin đăng BackDate</span>
+                                                </a>
+                                            </li>
+                                        }
+                                    }
+                                }
+                                catch (Exception) { }
+
+                            </ul>
+                        </li>
+
+
+                        @*SUPPORT*@
+                        @try
+                        {
+                            var isTue = false;
+
+                            foreach (var role in roleList)
+                            {
+                                if (role.RoleCode == RoleCode.COMMONTYPE && role.View == true) isTue = true;
+                                if (role.RoleCode == RoleCode.SUPPORT && role.View == true) isTue = true;
+                            }
+
+                            if (isTue)
+                            {
+                                <li class="divider"></li>
+                                <li class="dropdownmenu nav-item dropdown fpts-dropdown" id="k_drdwn_ex_lv1">
+                                    <a href="#" title="" class="nav-link dropdownMenu1" data-toggle="dropdown" id="dropdownMenu1">
+                                        <span id="ctl00_Label8">Support</span>
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        @try
+                                        {
+                                            foreach (var role in roleList)
+                                            {
+                                                if (role.RoleCode == RoleCode.COMMONTYPE && role.View == true)
+                                                {
+                                                    <li class="dropdown-menu-item f2_dropdown">
+                                                        <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","CommonType")" style="border-bottom: 1px solid gainsboro;">
+                                                            <span>Quản lý danh mục</span>
+                                                        </a>
+                                                    </li>
+                                                }
+                                            }
+                                        }
+                                        catch (Exception) { }
+                                        @try
+                                        {
+                                            foreach (var role in roleList)
+                                            {
+                                                if (role.RoleCode == RoleCode.SUPPORT && role.View == true)
+                                                {
+                                                    @*<li class="dropdown-menu-item f2_dropdown">
+                                                            <a class="dropdown-item dropdown dropdown-business" aria-haspopup="true" aria-expanded="false" href="@Url.Action("Index","Support")">
+                                                                <span>Đồng bộ dữ liệu</span>
+                                                            </a>
+                                                        </li>*@
+                                                }
+                                            }
+                                        }
+                                        catch (Exception) { }
+
+
+                                    </ul>
+                                </li>
+                            }
+                        }
+                        catch (Exception)
+                        {
+                        }
+
+
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+
+        @RenderBody()
+
+    </div>
+    <div class="ScrollTop" onclick="topFunction()" id="k_scrolltop"></div>
+
+    <div class="k-footer k-grid__item" id="k_footer">
+        <div class="fpts-caption">
+        </div>
+        <div class="k-footer__content">
+            <div class="k-container">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <p class="fpts-title">CỔNG THÔNG TIN ĐIỆN TỬ</p>
+                        <div>
+                            <p>Số giấy phép: 3438/GP-TTĐT ngày 04/07/2016</p>
+                            <p>Chịu trách nhiệm chính: Ông Nguyễn Điệp Tùng – Tổng Giám đốc</p>
+                            <p class="location">52 đường Lạc Long Quân, phường Bưởi, quận Tây Hồ, TP. Hà Nội</p>
+                            <p class="phone">19006446 | Fax : 024 3773 9058</p>
+                            <p class="mail">fptsecurities@fpts.com.vn</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <p class="fpts-title">Chi nhánh Tp.Hồ Chí Minh</p>
+                        <div>
+                            <p class="location">Tầng 3, Tòa nhà 136-138 Lê Thị Hồng Gấm, Phường Nguyễn Thái Bình, Quận 1, TP.Hồ Chí Minh</p>
+                            <p class="phone">19006446 | Fax : 028 6291 0607</p>
+                            <p class="mail">fptsecurities@fpts.com.vn</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <p class="fpts-title">Chi nhánh Đà Nẵng</p>
+                        <div>
+                            <p class="location">Số 100 Quang Trung, phường Thạch Thang, quận Hải Châu, TP Đà Nẵng</p>
+                            <p class="phone">19006446 | Fax: 0236 3553 888</p>
+                            <p class="mail">fptsecurities@fpts.com.vn</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fpts-securities">
+            <div class="k-container">
+                <p>© 2021 Công ty cổ phần chứng khoán FPT</p>
+            </div>
+        </div>
+    </div>
+    <style>
+        .k-footer .k-footer__content {
+            background-color: #4d4d4d;
+            color: #fff;
+            padding: 25px 35px;
+        }
+    </style>
+
+    <script src="~/js/navbar_responsive.js"></script>
+    <script type="text/javascript" src="~/assets/vendors/custom/datatables/datatables.bundle.js"></script>
+    <script src="~/assets/vendors/custom/datatables/jquery-datatables-checkboxes-1.2.12/js/dataTables.checkboxes.min.js"></script>
+    <script type="text/javascript" src="~/js/scrolltop.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/vendors/general/sweetalert2/dist/sweetalert2.js" type="text/javascript"></script>
+    <script type="text/javascript" src="~/js/site.js"></script>
+    <script src="~/assets/vendors/custom/select2/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    @*<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>*@
+
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //$('#k_drdwn_mng_lv1').click(false);
+
+            $('#k_drdwn_mng_lv1').click(function () {
+                $(this).removeClass('show');
+                $(".dropdown-menu").removeClass('show');
+            })
+        })
+    </script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

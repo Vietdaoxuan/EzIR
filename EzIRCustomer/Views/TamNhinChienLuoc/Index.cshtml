@@ -1,0 +1,498 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@using Microsoft.AspNetCore.Http;
+@using CoreLib.Configs;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@inject IHttpContextAccessor _httpContextAccessor;
+
+ @*dùng thư viện*@
+@using Microsoft.AspNetCore.Localization;
+
+@{
+    ViewData["Title"] = "Tầm nhìn chiến lược";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    // khai bao lấy ngôn ngữ trên site
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+    var language = requestCulture.RequestCulture.UICulture.Name;
+
+    var cpnyID = _httpContextAccessor.HttpContext.Session.GetInt32(SessionTypes.CPNY_ID) ?? null;
+}
+
+<link type="text/css" href="~/lib/ckeditor/contents.css" rel="stylesheet" />
+
+<div class="title_line d-flex" style="margin-bottom: 0px;">
+    <div class="container">
+        <span class="title_line_item">
+            <font color="#4187A6"><a href="/internal" style="color:#4187A6;font-weight: 600;">@Localizer["Update_Infomation"].Value</a></font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Tong_Quan"].Value</font>
+        </span>
+        <span class="title_line_item">
+            <i class="fa  fa-caret-right"></i>
+        </span>
+        <span class="title_line_item">
+            <font color="#4187A6" style="font-weight: 600;">@Localizer["Vision_Strategy"].Value</font>
+        </span>
+    </div>
+</div>
+<div class="k-portlet__body">
+    <div class="row col-12 nopadding" style="margin-bottom: 10px;">
+        <div class="col-md-7 div-button-mobiletop" style="padding-bottom: 10px"></div>
+        <div class="col-md-5 div-button" style="padding-bottom: 10px;padding-right: 0%;">
+            <div class="set_up-button" style="padding-left: 70%;">
+                <input type="button" class="btn btn-primary form-control  mx-2 my-1" id="btnSave" value="@Localizer["Save_send"].Value">
+            </div>
+        </div>
+        <div class="respon-mobile">
+            <div class="col-md-12 text-box-label-general" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["Vision"].Value</p>
+                            <!-- Tầm nhìn -->
+                            <div class="row d-flex justify-content-center">
+                                <input type="number" id="txtMenuID_Vision" value="216" readonly hidden />
+                                <input type="number" id="txtID_Vision" readonly hidden />
+                                <input type="number" id="txtApprove_Vision" readonly hidden />
+                                <input type="number" id="keyPress_Vision" readonly hidden />
+                                <textarea class="d-none" cols="100" id="editorVision" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 text-box-label-general mt-5" style="padding-right: 0px !important;padding-left: 0px !important;">
+                <div class="col-md-12" style="padding-left: 0px;">
+                    <div class="row">
+                        <div class="col-md-12 text-box-label-general " style="padding-right: 0px !important;padding-left: 0px !important;">
+                            <p class="text-product-sales" for="" style="width: 100%;padding-bottom: 15px;">@Localizer["Strategy"].Value</p>
+                            <!-- Chiến lược -->
+                            <div class="row d-flex justify-content-center">
+                                <input type="number" id="txtMenuID_Strategy" value="483" readonly hidden />
+                                <input type="number" id="txtID_Strategy" readonly hidden />
+                                <input type="number" id="txtApprove_Strategy" readonly hidden />
+                                <input type="number" id="keyPress_Strategy" readonly hidden />
+                                <textarea class="d-none" cols="100" id="editorStrategy" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+<style>
+    body {
+        margin: 0px;
+    }
+</style>
+@section Scripts
+{
+
+    <script type="text/javascript" src="~/lib/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript" src="~/lib/ckeditor/config.js"></script>
+    <script type="text/javascript" src="~/lib/ckeditor/build-config.js"></script>
+    <script type="text/javascript" src="~/lib/ckeditor/styles.js"></script>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            // Configs constant
+            const TNCL_CONFIGS = {
+                MENUID_VISION: 216,
+                MENUID_STRATEGY: 483,
+                IS_KEY_PRESS: 1,
+            }
+
+            // Cấu hình CKEditor
+            function CreateEditor() {
+
+                 // Tầm nhìn
+                CKEDITOR.replace('editorVision',
+                    {
+                        extraPlugins: 'image2 , uploadimage',
+
+                        toolbar: toolbar = [
+                            {
+                                name: 'document',
+                                items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates']
+                            },
+                            {
+                                name: 'clipboard',
+                                items: [
+                                    'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+                                ]
+                            },
+                            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                            {
+                                name: 'forms',
+                                items: [
+                                    'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button',
+                                    'HiddenField'
+                                ]
+                            },
+                            '/',
+                            {
+                                name: 'basicstyles',
+                                items: [
+                                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-',
+                                    'CopyFormatting', 'RemoveFormat'
+                                ]
+                            },
+                            {
+                                name: 'paragraph',
+                                items: [
+                                    'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
+                                    'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                                    'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
+                                ]
+                            },
+                            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                            {
+                                name: 'insert',
+                                items: [
+                                    'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak',
+                                    'Iframe', 'texzilla'
+                                ]
+                            },
+                            '/',
+                            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                            { name: 'colors', items: ['TextColor', 'BGColor'] },
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                            { name: 'about', items: ['About'] }
+                        ],
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageUploadUrl: '@Url.Action("UploadImage")',
+                        @*filebrowserBrowseUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageBrowseUrl: '@Url.Action("UploadImage")',*@
+
+
+                        // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '@Url.Action("UploadImage")',
+
+                        // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+                        format_tags: 'p;h1;h2;h3;pre',
+                        // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+                        removeDialogTabs: 'image:advanced;link:advanced',
+
+                        height: 200,
+                        width: '100%'
+                    }
+                );
+
+                 // Chiến lược
+                CKEDITOR.replace('editorStrategy',
+                    {
+                        extraPlugins: 'image2 , uploadimage',
+
+                        toolbar: toolbar = [
+                            {
+                                name: 'document',
+                                items: ['Source', '-', 'NewPage', 'Preview', 'Print', '-', 'Templates']
+                            },
+                            {
+                                name: 'clipboard',
+                                items: [
+                                    'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+                                ]
+                            },
+                            { name: 'editing', items: ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'] },
+                            {
+                                name: 'forms',
+                                items: [
+                                    'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button',
+                                    'HiddenField'
+                                ]
+                            },
+                            '/',
+                            {
+                                name: 'basicstyles',
+                                items: [
+                                    'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-',
+                                    'CopyFormatting', 'RemoveFormat'
+                                ]
+                            },
+                            {
+                                name: 'paragraph',
+                                items: [
+                                    'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote',
+                                    'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight',
+                                    'JustifyBlock', '-', 'BidiLtr', 'BidiRtl', 'Language'
+                                ]
+                            },
+                            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+                            {
+                                name: 'insert',
+                                items: [
+                                    'Image', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak',
+                                    'Iframe', 'texzilla'
+                                ]
+                            },
+                            '/',
+                            { name: 'styles', items: ['Styles', 'Format', 'Font', 'FontSize'] },
+                            { name: 'colors', items: ['TextColor', 'BGColor'] },
+                            { name: 'tools', items: ['Maximize', 'ShowBlocks'] },
+                            { name: 'about', items: ['About'] }
+                        ],
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageUploadUrl: '@Url.Action("UploadImage")',
+                        filebrowserBrowseUrl: '@Url.Action("UploadImage")',
+                        filebrowserImageBrowseUrl: '@Url.Action("UploadImage")',
+
+
+                        // Upload dropped or pasted images to the CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '@Url.Action("UploadImage")',
+
+                        // Reduce the list of block elements listed in the Format drop-down to the most commonly used.
+                        format_tags: 'p;h1;h2;h3;pre',
+                        // Simplify the Image and Link dialog windows. The "Advanced" tab is not needed in most cases.
+                        removeDialogTabs: 'image:advanced;link:advanced',
+
+                        height: 200,
+                        width: '100%'
+                    }
+                );
+
+            }
+
+            // Object TNLC
+            var TNCL = function () {
+
+                this.init = function () {
+                    CreateEditor();
+                    setTimeout(function () {
+                        registerEvents();
+                        loadData();
+                    }, 500);
+                }
+
+                // Lấy ngôn ngữ trên site
+                var lang = "@language".split("-")[1];
+                var Language = lang;
+                //console.log(Language);
+
+                var loadData = async function () {
+
+                    $('#loading').addClass('loading');
+
+                    destroyCKEDITOR();
+
+                    setTimeout(function () {
+                        $.ajax({
+                        url: '@Url.Action("GetTNCL", "TamNhinChienLuoc")',
+                        method: 'GET',
+                        dataType: 'json',
+                            data: { Language: Language }
+                        })
+                        .done((data) => {
+
+                            @*console.log(data);*@
+
+                            $('#loading').removeClass('loading');
+
+                            if (data.code == 0) {
+
+                                if (Array.isArray(data.data) && data.data.length > 0) {
+                                    let arrObj = data.data;
+
+                                    for (const value of arrObj) {
+
+                                        if (value.menuID == TNCL_CONFIGS.MENUID_VISION) {
+                                            $('#txtMenuID_Vision').val(value.menuID);
+                                            $('#txtID_Vision').val(value.id);
+                                            $('#txtApprove_Vision').val(value.approve);
+
+                                            if (!CKEDITOR.instances.editorVision) CreateEditor();
+
+                                            CKEDITOR.instances.editorVision.setData(value.content);
+
+
+                                            if (value.approve == 1 || value.approve == 2) CKEDITOR.instances.editorVision.setReadOnly(true);
+                                        }
+
+                                        if (value.menuID == TNCL_CONFIGS.MENUID_STRATEGY) {
+                                            $('#txtMenuID_Strategy').val(value.menuID);
+                                            $('#txtID_Strategy').val(value.id);
+                                            $('#txtApprove_Strategy').val(value.approve);
+
+                                            if (!CKEDITOR.instances.editorStrategy) CreateEditor();
+
+                                            CKEDITOR.instances.editorStrategy.setData(value.content);
+
+
+                                            if (value.approve == 1 || value.approve == 2) CKEDITOR.instances.editorStrategy.setReadOnly(true);
+                                        }
+
+                                    }
+                                }
+                            }
+
+                        })
+                        .fail((err) => {
+                            $('#loading').removeClass('loading');
+                            @*console.log(err);*@
+                        });
+                    }, 500);
+
+
+                }
+
+                var registerEvents = function () {
+
+                    // Save TNCL
+                    $('body').on('click', '#btnSave', function () {
+
+                        $('#loading').addClass('loading');
+
+                        // status key press
+                        let keyPress_Vision = $('#keyPress_Vision').val();
+                        let keyPress_Strategy = $('#keyPress_Strategy').val();
+
+                        // lấy ngôn ngữ trên site
+                        var lang = "@language".split("-")[1];
+                        var Language = lang;
+
+                        let infoSheetViewModels = [];
+
+                        if (keyPress_Vision == TNCL_CONFIGS.IS_KEY_PRESS) {
+                            let dataEditorVision = CKEDITOR.instances.editorVision.getData();
+                            let idStrength = $('#txtID_Vision').val();
+                            let menuIdStrength = $('#txtMenuID_Vision').val();
+                            //let approveStrength = $('#txtApprove_Vision').val();
+                            infoSheetViewModels.push({ /*Approve: approveStrength,*/ ID: idStrength, MenuID: menuIdStrength, Content: dataEditorVision, CpnyID: @cpnyID, Language: Language });
+                            CKEDITOR.instances.editorVision.setReadOnly(true);
+                            $('#keyPress_Vision').val(0);
+                        }
+
+                        if (keyPress_Strategy == TNCL_CONFIGS.IS_KEY_PRESS) {
+                            let dataEditorStrategy = CKEDITOR.instances.editorStrategy.getData();
+                            let idWeakness = $('#txtID_Strategy').val();
+                            let menuIdWeakness = $('#txtMenuID_Strategy').val();
+                            //let approveWeakness = $('#txtApprove_Strategy').val();
+                            infoSheetViewModels.push({ /*Approve: approveWeakness,*/ ID: idWeakness, MenuID: menuIdWeakness, Content: dataEditorStrategy, CpnyID: @cpnyID, Language: Language });
+                            CKEDITOR.instances.editorStrategy.setReadOnly(true);
+                            $('#keyPress_Strategy').val(0);
+                        }
+
+
+                        @*console.log(infoSheetViewModels);*@
+
+                        if (infoSheetViewModels.length == 0) {
+                            $('#loading').removeClass('loading');
+                            toastr.error('@Localizer["DataHasNotBeenChanged"].Value');
+                            return;
+                        };
+
+                        $.ajax({
+                            url: '@Url.Action("SaveTNCL", "TamNhinChienLuoc")',
+                            method: 'POST',
+                            dataType: 'json',
+                            data: { infoSheetViewModels }
+                        })
+                        .done((data) => {
+                            //console.log(data);
+
+                            $('#loading').removeClass('loading');
+
+                            if (data.code == 0) {
+                                loadData();
+                                Swal.fire({
+                                    html: '@Localizer["Approving"].Value',
+                                    type: 'success',
+                                    confirmButtonText: 'OK'
+                                });
+                                //toastr.success(data.message);
+                                return;
+                            } else {
+                                return toastr.error(data.message);
+                            }
+
+                        })
+                        .fail((err) => {
+                            @*console.log(err);*@
+                            $('#loading').removeClass('loading');
+                        });
+
+                    });
+
+                    CKEDITOR.instances.editorVision.on('key', function () {
+                        let isApprove = $('#txtApprove_Vision').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        @*console.log(isApprove);*@
+
+                        $('#keyPress_Vision').val(1);
+                    });
+
+                    CKEDITOR.instances.editorStrategy.on('key', function () {
+                        let isApprove = $('#txtApprove_Strategy').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        @*console.log(isApprove);*@
+
+                        $('#keyPress_Strategy').val(1);
+                    });
+
+                    fileUploadResponse();
+
+                }
+
+                function destroyCKEDITOR() {
+                    CKEDITOR.instances.editorVision.setData('');
+                    CKEDITOR.instances.editorStrategy.setData('');
+
+                }
+
+                function fileUploadResponse() {
+                    CKEDITOR.instances.editorVision.on('fileUploadResponse', function () {
+                        let isApprove = $('#txtApprove_Vision').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        @* console.log(isApprove);*@
+
+                        $('#keyPress_Vision').val(1);
+                    });
+
+                    CKEDITOR.instances.editorStrategy.on('fileUploadResponse', function () {
+                        let isApprove = $('#txtApprove_Strategy').val();
+
+                        if (isApprove == 1 || isApprove == 2) return;
+
+                        @* console.log(isApprove);*@
+
+                        $('#keyPress_Strategy').val(1);
+                    });
+                }
+            }
+
+            // Instance of TNCL
+            var tncl = new TNCL();
+            tncl.init();
+        });
+
+        // Get giá trị cho CKEDITOR
+        // CKEDITOR.instances.editorVision.getData();
+
+        // Set giá trị cho CKEDITOR
+        // CKEDITOR.instances.editorVision.setData("object");
+
+        // Hủy bỏ instance của CKEDITOR hiện tại
+        // CKEDITOR.instances.editorVision.destroy();
+    </script>
+}
+
+

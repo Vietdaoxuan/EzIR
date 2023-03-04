@@ -1,0 +1,166 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script src="https://ezfutures.fpts.com.vn/chart3r/lib/signalr/signalr.js"></script>
+    <script>
+        "use strict";
+        try {
+            const objHNXSymbol = {
+                "UPCOMINDEX": "HNXUPCOMINDEX"
+            };
+            const arrListSolutionDay = ["D", "1D", "M", "W"];
+            const arrListSolutionIntraDay = ["1", "5", "15", "30"];
+
+            var changeSymbolHNXIndex = function (symbol) {
+                var _symbol = objHNXSymbol[symbol];
+                if (_symbol == null || _symbol == void 0 || _symbol == "" || typeof (_symbol) != typeof ("longht")) return symbol;
+                return _symbol;
+            }
+
+            // do có thể dùng nhiều chart trên cùng 1 tab nên cần phải khai báo datafeed và widget riêng
+            var param = window.location.search;
+            if (param == "") throw "datafeed chưa được khởi tạo";
+            else {
+                var datafeed = {};
+                if (param.startsWith("?datafeed")) {
+                    var arr = param.split("&");
+                    var keyDataFeed = arr[0].replace("?datafeed=", "");
+                    //lấy datafeed theo tham số truyền vào
+                    datafeed[keyDataFeed] = window.parent.g_Chart3UI.GetDataFeed(keyDataFeed);
+                    // hàm update data vào chart
+                    var updateDataRealTime = function (key, value, interval) {
+                        var result = {};
+                        result[key] = proccessData(key, value, interval);
+                        datafeed[keyDataFeed]._dataPulseProvider.updateDataRealTime(key, result[key], interval);
+                    }
+                    // hàm xử lý data
+                    var proccessData = function (key, data, interval) {
+                        var check = true;
+                        // khai báo trước 1 object data có struct như trên
+                        var objData = {
+                            "bars": [],
+                            "meta": { "noData": check }
+                        };
+                        if (!key) return objData;
+                        // nếu key (VN30F1M_1D) => 1D = interval ko ?
+                        if (key.split('_')[1] !== interval) return objData;
+                        // for data
+                        for (var i = 0; data != null && i < data.length; i++) {
+                            var myItem = data[i];
+                            //console.log("key :", key, "resolution :", interval, "H :", arrListSolutionDay.includes(interval), " I :", (arrListSolutionIntraDay.includes(interval)))
+                            //  (arrListSolutionDay.includes(interval) && myItem.t == "H") chart day
+                            //  (arrListSolutionIntraDay.includes(interval) && myItem.t == "I") chart intraday (phút)
+                            if ((arrListSolutionDay.includes(interval) && myItem.t == "H") || (arrListSolutionIntraDay.includes(interval) && myItem.t == "I")) {
+                                var item = data[i].d;
+                                var now = new Date();
+                                var x = item.t.split(':'); // do struct time = "HH:mm" (intraday - I) "yyyy-MM-dd" (History - H) 
+                                var time = x.length > 1 ? new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(x[0]), parseInt(x[1])) : item.t;
+                                // item của bar [] : {open,heigh,low,volume,time} struct {o,h,l,c,v,t};
+                                var objItem = {
+                                    "time": data[i].t == "H" ? new Date(item.t + " 07:00:00").getTime() : time.getTime(),
+                                    "close": item.c,
+                                    "open": item.o,
+                                    "high": item.h,
+                                    "low": item.l,
+                                    "volume": item.v
+                                }
+                                // thêm item vào bars
+                                objData.bars.push(objItem);
+                                // có data nên noData = false
+                                check = false;
+                            }
+                        }
+                        // cần ít nhất 2 row trong bars
+                        if (objData.bars.length == 1) objData.bars.push(objData.bars[0]);
+                        objData.meta.noData = check;
+                        //console.log("proccessData", objData, test);
+                        return objData;
+                    }
+                    // kiểm tra widget đã sẵn sàng chưa nếu rồi kết nối đến server
+                    datafeed[keyDataFeed].onReady(function () {
+                        var subscribers = datafeed[keyDataFeed]._dataPulseProvider._subscribers;
+                        // key trong phần updateDataRealtime
+                        var keySub = Object.keys(subscribers)[0]; // FPT_D (FPT là mã chứng khoán , D là interval - 1 ngày , 1 = 1 phút) 
+                        // sau này dùng để phần biệt data realtime hist và realtime intraday
+                        var interval = keySub != void 0 ? keySub.split('_')[1] : "D";
+                        // mã chứng để tạo group
+                        var symbol = keySub != void 0 ? keySub.split('_')[0] : "FPT";
+
+                        // ép transport webscoket
+                        //.withUrl("TAChartHub", {
+                        //    skipNegotiation: true,
+                        //        transport: signalR.HttpTransportType.WebSockets
+                        //})
+                        // khởi tạo signalr
+                        var connection = new signalR.HubConnectionBuilder().withUrl("https://ezfutures.fpts.com.vn/chart3r/TAChartHub").build();
+                        // nhận message
+                        connection.on("ReceiveMessage", function (user, message) {
+                            // lấy lại cá tham số cần check . do có thể bị thay đổi
+                            subscribers = datafeed[keyDataFeed]._dataPulseProvider._subscribers;
+                            // key trong phần updateDataRealtime
+                            keySub = Object.keys(subscribers)[0]; // FPT_D (FPT là mã chứng khoán , D là interval - 1 ngày , 1 = 1 phút) 
+                            // sau này dùng để phần biệt data realtime hist và realtime intraday
+                            interval = keySub != void 0 ? keySub.split('_')[1] : "D";
+                            // mã chứng để tạo group
+                            symbol = keySub != void 0 ? keySub.split('_')[0] : "FPT";
+                            ///console.info({ user: user }, { message: message }); // 2019-08-07 16:07:16 ngocta2 ;  pub => sub => push
+                            // kiểm tra interval
+                            if (interval == "1" || interval == "D" || interval == "1D") {
+                                //console.info({ user: user }, { message: message }); // 2019-08-07 16:07:16 ngocta2 ;  pub => sub => push
+                                if (message.startsWith("[")) {
+                                    message = JSON.parse(message);
+                                }
+                                if (typeof (message) == "object") {
+                                    /// nhận data và update // thêm check hnx index
+                                    if (user = changeSymbolHNXIndex(symbol)) {
+                                        updateDataRealTime(keySub, message, interval);
+                                    }
+                                }
+                            }
+                        });
+                        // bắt đầu kết nối
+                        var startConnection = function () {
+                            if (connection.connectionState == 1) {
+                                connection.stop();
+                            }
+                            connection.start().then(function () {
+                                if (window.parent.g_AppChartBase != void 0 || window.g_AppChartBase != void 0) {
+                                    var infoUser = window.parent.g_AppChartBase != void 0 ? window.parent.g_AppChartBase.getClientInfo() : window.g_AppChartBase.getClientInfo();
+                                    infoUser.symbol = symbol;
+                                    //console.log("userinfo : ", infoUser);
+                                }
+                                //đổi mã hnxindex
+                                //console.log("symbol : ", changeSymbolHNXIndex(symbol));
+                                // kết nối sẽ add connection và group symbol cần (symbol là mã chứng khoán)
+                                connection.invoke("AddToGroup", changeSymbolHNXIndex(symbol)).catch(function (err) {
+                                    return console.error(err.toString());
+                                });
+                            }).catch(function (err) {
+                                setTimeout(function () { startConnection(); }, 5000);
+                                return console.error(err.toString());
+                            });
+                        };
+                        // đóng kết nối thì tự connect lại
+                        connection.onclose(function () {
+                            startConnection();
+                        });
+                        // chạy hàm kết nối
+                        startConnection();
+                        //connection.onclose(startConnection());
+                        //connection.stop().then(function () {
+                        //    //console.log("stop ");
+                        //});
+                    })
+                }
+                else throw "widget và datafeed chưa được khởi tạo";
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    </script>
+</body>
+</html>

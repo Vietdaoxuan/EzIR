@@ -1,0 +1,334 @@
+﻿@model EzIRSpecialist.Models.ViewModel.UserViewModel
+
+@{
+    ViewData["Title"] = "Quản lý người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#">
+                    <span>Báo cáo - tiên ích</span>
+                </a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#">
+                    <span>Phân quyền</span>
+                </a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="@Url.Action("Index","UserAdmin")">
+                    <span>Quản lý người dùng</span>
+                </a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist">
+        <li class="nav-item col gsm-link-tab active" id="liUser">
+            <a class="nav-link active show " data-toggle="tab" data-target="#k_tabs_1" role="tab" aria-selected="true" id="aUser">
+                <span class="nav-link-title text-uppercase">Quản lý người dùng</span>
+            </a>
+        </li>
+        <li class="nav-item col gsm-link-tab" id="liCreateUser">
+            <a class="nav-link" data-toggle="tab" data-target="#updateTab" role="tab" aria-selected="false" id="aCreateUser">
+                <span class="nav-link-title text-uppercase">Tạo người dùng</span>
+            </a>
+        </li>
+    </ul>
+    <div class="line_top col-md-12">
+
+    </div>
+    <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+        <div class="tab-content">
+            <form action="" id="frmSearchUser">
+                <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                            <label class="" for="Username">Tài khoản</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                            <input type="text" class="form-control" name="Username" id="txtUserName" />
+                        </div>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                            <label class="" for="FullName">Họ và tên</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                            <input type="text" class="form-control" name="FullName" id="txtFullName" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                            <label class="" for="Email">Email</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                            <input type="text" class="form-control" name="Email" id="txtEmail" />
+                        </div>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                            <label class="" for="ClientStatus">Trạng thái</label>
+                        </div>
+                        <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                            <select class="form-control" name="ClientStatus" id="slClientStatus">
+                                <option selected="selected" value="">Tất cả</option>
+                                <option value="true">Đã kích hoạt</option>
+                                <option value="false">Đã xóa</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row d-flex justify-content-center col-12">
+            <button id="btnSearch" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                Tìm kiếm
+            </button>
+        </div>
+        <div class="content-tbl">
+            <table id="listUser" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th>Tài khoản</th>
+                        <th>Họ và tên</th>
+                        <th>Email</th>
+                        <th>Modified By</th>
+                        <th>Modified On</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="updateTab" class="tab-pane fade tab-acc">
+        <div class="tab-content">
+            <form id="userform" enctype="multipart/form-data" class="col-12 nopadding">
+                <div class="col-sm-12 col-md-6 nopadding">
+                    <div class="form-group row">
+                        <div class="col-md-3 text-box-label control-label">
+                            <label class="label-required" for="Username">Tài khoản</label>
+                        </div>
+                        <div class="col-md-9 nopadding">
+                            <input type="text" class="form-control" name="Username" id="txtUsername" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row matkhau">
+                        <div class="col-md-3 text-box-label control-label">
+                            <label class="label-required" for="Password">Mật khẩu</label>
+                        </div>
+                        <div class="col-md-9 nopadding">
+                            <input type="password" autocomplete="new-password" class="form-control" name="Password" id="txtPassword" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-md-3 text-box-label">
+                            <label class="label-required" for="RePassword">Nhập lại mật khẩu</label>
+                        </div>
+                        <div class="col-md-9 nopadding">
+                            <input type="password" autocomplete="new-password" class="form-control" name="RePassword" id="txtRePassword" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 nopadding">
+                    <div class="form-group row nopadding">
+                        <div class="col-md-3 text-box-label">
+                            <label class="" for="FullName">Họ và tên</label>
+                        </div>
+                        <div class="col-md-9 nopadding">
+                            <input type="text" class="form-control" name="FullName" id="txtFullName" />
+                        </div>
+                    </div>
+                    <div class="form-group row nopadding">
+                        <div class="col-md-3 text-box-label">
+                            <label class="" for="Email">Email</label>
+                        </div>
+                        <div class="col-md-9 nopadding">
+                            <input type="text" class="form-control" name="Email" />
+                        </div>
+                    </div>
+                    <div class="form-group row nopadding" id="clientStatusss" hidden>
+                        <div class="col-md-3 text-box-label">
+                            <label class="" for="ClientStatus">Trạng thái</label>
+                        </div>
+                        <div class="col-md-9 nopadding">
+                            <select id="clClientStatus" name="ClientStatus" class="form-control">
+                                <option value="true">Đã kích hoạt</option>
+                                <option value="false">Đã xóa</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row d-flex justify-content-center col-12 padb20">
+                <button id="btnInsert" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                    Thêm
+                </button>
+                <button id="btnUpdate" class="btn btn-primary col-md-2 col-12 mt-3 col-2 ml-3 " hidden>
+                    Sửa
+                </button>
+                <button id="btnReset" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                    Làm mới
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+	$(document).ready( function() {
+
+        var renderColumns = [
+            {
+                data: "username",
+            },
+            {
+                data: "fullName",
+            }
+            ,
+            {
+                data: "email",
+            }
+            ,
+            {
+                data: "updateBy",
+            }
+            ,
+            {
+                data: "updateOn",
+                render: function (data) {
+                    return formatDateTimeToDate(data);
+                }
+            }
+            ,
+            {
+                data: "username",
+                render: function (data, type) {
+                    return `<div class="d-inline-flex w-100">
+                              <a class='EditAccount btn text-primary' data-id='${data}'><i class="far fa-edit"></i></a>
+                              <a class='DeleteAccount btn text-primary' data-id='${data}'><i class="fas fa-delete"></i></a>
+                            </div >`;
+                }
+            },
+        ]
+
+        var UserAdmin = function() {
+
+            this.init = function() {
+                loadData();
+                registerEvents();
+            }
+
+            var loadData = function () {
+
+                $('#listUser').DataTable({
+                    ordering: false,
+                    dom: "lti<'d-flex pagingListUser justify-content-center'p>",
+                    destroy: true,
+                    "ordering": false,
+                    searching: false,
+                    lengthChange: false,
+                    className: 'dt-body-right',
+                    "bInfo": true,
+                    ajax: {
+                        url: "@Url.Action("GetData","UserAdmin")",
+                        dataSrc: ""
+                    },
+                    columns: renderColumns
+                });
+
+            }
+
+            var registerEvents = function () {
+
+                // Action search
+                $('#btnSearch').click(function (e) {
+
+                    e.preventDefault();
+
+                    var form = $("#frmSearchUser");
+
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetData","UserAdmin")',
+                        data: form.serialize(), // serializes the form's elements.
+                        success: function (data) {
+                            $('#listUser').DataTable({
+                                ordering: false,
+                                dom: "lti<'d-flex pagingListUser justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                lengthChange: false,
+                                className: 'dt-body-right',
+                                "bInfo": true,
+                                data: data,
+                                columns: renderColumns
+                            });
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+
+                });
+
+                // Action click edit record
+                $('body').on('click', '.EditAccount', function (e) {
+                    e.preventDefault();
+
+                    // Action change tab
+                    //$("#liUser").removeClass("active");
+                    //$("#liCreateUser").addClass("active");
+
+                    //$("#aUser").attr('aria-selected', 'false');
+                    //$("#aCreateUser").attr('aria-selected', 'true');
+
+                    //$("#k_tabs_1").removeClass("active in");
+                    //$("#updateTab").addClass("active in");
+                    
+                    //$("#clientStatusss").removeAttr('aria-selected', 'false');
+
+                    var username = $(this).data('id');
+
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetData","UserAdmin")',
+                        data: { username: username} ,
+                        success: function (data) {
+                            console.log(data);
+
+                            if (data.length > 0) {
+                                $('#').value();
+                                $('#').value();
+                                $('#').value();
+                                $('#').value();
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+
+                });
+            }
+        }
+
+        var userAdmin = new UserAdmin();
+        userAdmin.init();
+
+    });
+</script>

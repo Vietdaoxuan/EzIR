@@ -1,0 +1,463 @@
+﻿
+@using EzIRSpecialist.Models.Admin
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@{ 
+    ViewData["Title"] = "Index";          
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
+}
+
+<style>
+    .titleBanner {
+        display: none;
+    }
+
+    .pathBanner {
+        display: none;
+    }
+</style>
+
+<link rel="stylesheet" href="~/Online/BaoCao_TienIch.css" />
+
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Báo cáo - tiện ích</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="@Url.Action("Index","QuanLyBanner")"><span>Quản lý Banners</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <div class="tab-content">
+        <div class="form-wrapper">
+
+            <form id="BannerForm" enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="form-row col-md-12 col-lg-8 col-xl-8 form-section-bns">
+                        <label for="BannerTitle">Tiêu đề Banner</label>
+                        <input type="text" class="form-control" id="BannerTitle" name="tieude">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-12 col-lg-8 col-xl-8 form-section-bns custom-file-input">
+                        <label for="filetxt">
+                            <input type="button" value="Tải lên Banner" id="upload" class="btn btn-primary upload">
+                        </label>
+                        <input type="file" id="select-file">
+                        <input type="text" class="form-control" id="filetxt" name="logo">
+
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-row col-md-12 col-lg-8 col-xl-8 form-section-bns">
+                        <label for="addlink">Chèn đường dẫn</label>
+                        <input type="text" class="form-control" id="addlink">
+                    </div>
+                </div>
+
+                <div id="imgElem">
+
+                </div>
+
+            </form>
+            <div class="btn-section col-md-8 col-lg-6 col-xl-6">
+                <button class="btn btn-primary save-banners-btn" id="save">Cập nhật</button>
+                <button class="btn btn-primary save-banners-btn" id="save-edit" style="display:none;">Sửa</button>
+                <button class="btn btn-primary reset-btn" id="reset">Làm mới</button>
+
+            </div>
+
+        </div>
+
+        <div style="display: none;" class="col-md-8 nopadding">
+            <input type="text" id="txtBannerID" name="BannerID">
+        </div>
+
+        <div class="content-tbl">
+            <table id="listBanners" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" style="width: 100%;">
+            </table>
+        </div>
+
+    </div>
+</div>
+<div id="loading"></div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.custom-file-input input[type="file"]').change(function (e) {
+            $(this).siblings('input[type="text"]').val(e.target.files[0].name);
+        });
+    });
+
+
+
+    $("#select-file").change(function (e) {
+
+        for (var i = 0; i < e.originalEvent.srcElement.files.length; i++) {
+            if ($('.custom-file-input > img').length) {
+                $('.custom-file-input > img').remove();
+            }
+            var file = e.originalEvent.srcElement.files[i];
+
+            var img = document.createElement("img");
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                img.src = reader.result;
+            }
+            reader.readAsDataURL(file);
+            $("#imgElem").html(img);
+
+        }
+    });
+
+
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        var QuanLyBanner = function () {
+            this.init = function () {
+                loadGridData();
+                registerEvents();
+
+            }
+
+
+
+            //load data banner
+            function loadGridData() {
+                var renderColumns = [
+                    {
+                        orderable: true,
+                        title: "STT",
+                        width: "5%",
+                        data: "index"
+
+                    },
+                    {
+                        orderable: true,
+
+                        title: "Tiêu đề",
+                        width: "30%",
+                        data: "atitle"
+
+                    },
+                    {
+                        orderable: true,
+                        title: "Đường dẫn ảnh",
+                        data: "imagelogo",
+                        className: 'pathBanner'
+                    },
+                    {
+                        orderable: false,
+
+                        title: "Ngày đăng tải",
+                        width: "10%",
+                        data: "acreateOn",
+                        render: (data) => (new Date(data)).toLocaleString().replace(",", "").replace("AM", "SA").replace("PM", "CH")
+                    },
+                    {
+                        orderable: false,
+
+                        title: "Đường link đã chèn",
+                        width: "10%",
+                        data: "aurl"
+                    },
+                    {
+                        orderable: false,
+
+                        title: "Tệp ảnh banner",
+                        width: "10%",
+                        data: "afileName"
+                    },
+
+                    {
+                        data: "abannerID",
+
+                        title: "Hành động",
+                        width: "10%",
+                        render: function (data, type, row) {
+                            return `<div class="d-inline-flex w-100">
+                              <a class='EditBanner btn text-primary' data-bannerid='${data}' data-isEdit ='${!row.abannerID}'><i class="far fa-edit"></i></a>
+                              <a class='DeleteBanner btn text-primary' data-bannerid='${data}' data-isDeleted = '${!row.abannerID}' ><i class="fas fa-delete"></i></a>
+                            </div >`;
+                        }
+                    }
+
+                ];
+                $('#loading').addClass('loading');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("BannerList", "QuanLyBanner")',
+                    dataType: 'json',
+                    data: {},
+                    success: function (data) {
+
+                        $('#loading').removeClass('loading');
+
+                        let index = 1;
+                        data.forEach(x => {
+                            x.index = index++;
+                        });
+                        if ($.isArray(data)) {
+                            $('#listBanners').DataTable({
+                                responsive: false,
+                                ordering: false,
+                                dom: "lti<'d-flex pagingBanner justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                "lengthChange": false,
+                                className: 'dt-body-right',
+                                "bInfo": true,
+                                data: data,
+                                columns: renderColumns
+                            });
+                            return;
+                        }
+
+                        isMessageSuccess(data);
+
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+
+            }
+
+
+            function resetForm() {
+                /*$('#BannerForm').trigger("reset");*/ //Reset giá trị trong form
+                $("#imgElem>img").remove(); // Reset khung ảnh
+                $('#BannerTitle').val('');
+                $('#filetxt').val('');
+                $('#addlink').val('');
+                $('#save-edit').hide();
+                $('#save').show();
+            }
+
+            function registerEvents() {
+                $('#reset').click(function () {
+                    resetForm();
+                });
+
+
+            //Thêm dữ liệu khi ấn nút cập nhập
+            $('#save').click((e) => {
+                e.preventDefault();
+
+                let formData = new FormData($('form')[0]);
+                var file_data = $('#select-file').prop("files")[0];
+
+                var bannerTitle = $('#BannerTitle').val();
+                var bannerLogo = $('#filetxt').val();
+                var addLink = $('#addlink').val();
+
+
+                if (!bannerTitle.trim()) {
+                    return toastr.warning('Tiêu Đề không được để trống!');
+                }
+
+                if (!bannerLogo.trim()) {
+                    return toastr.warning('Tải lên Banner không được để trống!');
+                }
+
+                if (!addLink.trim()) {
+                    return toastr.warning('Chèn đường dẫn không được để trống!');
+                }
+
+                formData.append("file", file_data);
+                formData.append("Atitle", bannerTitle);
+                formData.append("AfileName", bannerLogo);
+                formData.append("Aurl", addLink);
+
+
+                var check = true;
+                check = ValidURL('insert');
+                if (check) {
+                    postFormData('@Url.Action("InsertBanner")', formData).then(function (res) {
+
+                        if (res.code == "0") {
+                            loadGridData();
+
+                        }
+                        resetForm();
+
+                    });
+                }
+
+            });
+
+            //Sửa dữ liệu
+
+            $('body').on('click', '.EditBanner', function (e) {
+
+                e.preventDefault();
+                $("#imgElem>img").remove();
+                $('#save-edit').show();
+
+                $('#save').hide();
+
+                const bannerIdToEdit = $(this).data('bannerid');
+                $('#txtBannerID').val(bannerIdToEdit);
+
+
+                // Lấy index của tr chứa Banner muốn sửa
+                var rowIndex = $(this).closest("tr").index();
+
+                // Lấy ra thông tin của Banner muốn sửa
+
+                var tieudebanner = $("#listBanners tbody tr:eq(" + rowIndex + ") td:eq(1)").html();
+                var imglogo = $("#listBanners tbody tr:eq(" + rowIndex + ") td:eq(2)").html();
+                var tenbanner = $("#listBanners tbody tr:eq(" + rowIndex + ") td:eq(5)").html();
+                var linkbanner = $("#listBanners tbody tr:eq(" + rowIndex + ") td:eq(4)").html();
+
+                $('#BannerTitle').val(tieudebanner);
+                $('#filetxt').val(tenbanner);
+                $('#addlink').val(linkbanner);
+
+                if (imglogo != null) {
+                    var newImg = document.createElement('img');
+
+                    newImg.src = imglogo;
+
+                    document.querySelector('#imgElem')
+                        .innerHTML =
+                        newImg.outerHTML;
+                }
+                else {
+                    document.querySelector('#imgElem')
+                        .innerHTML = '';
+                }
+
+            });
+            var toggle = function () {
+                $('#save').show();
+                $('#save-edit').hide();
+            }
+            //edit dữ liệu
+            $('#save-edit').click((e) => {
+
+                e.preventDefault();
+
+                let formData = new FormData($('form')[0]);
+
+                var file_data = $('#select-file').prop("files")[0];
+
+                var bannerTitle = $('#BannerTitle').val();
+                var bannerLogo = $('#filetxt').val();
+                var addLink = $('#addlink').val();
+                var path = $('#txtPath').val();
+                var bid = $('#txtBannerID').val();
+
+                if (!bannerTitle.trim()) {
+                    return toastr.warning('Tiêu Đề không được để trống!');
+                }
+
+                if (!bannerLogo.trim()) {
+                    return toastr.warning('Tải lên Banner không được để trống!');
+                }
+
+                if (!addLink.trim()) {
+                    return toastr.warning('Chèn đường dẫn không được để trống!');
+                }
+
+                formData.append("file", file_data);
+                formData.append("Atitle", bannerTitle);
+                formData.append("AfileName", bannerLogo);
+                formData.append("Aurl", addLink);
+                formData.append("AbannerID", bid);
+                formData.append("Apath", path);
+
+                var check = true;
+                check = ValidURL('insert');
+                if (check) {
+                    postFormData('@Url.Action("EditBanner")', formData).then(function (res) {
+
+                        if (res.code == "0") {
+                            loadGridData();
+
+                        }
+                        resetForm();
+                        toggle();
+
+                    });
+                }
+
+
+            });
+
+            //Xóa banner
+            $('body').on('click', '.DeleteBanner', function (e) {
+
+                e.preventDefault();
+
+                var bannerid = $(this).data('bannerid');
+
+                Swal.fire({
+                    title: 'Thông báo',
+                    text: 'Bạn có muốn xóa nội dung này',
+                    type: 'warning',
+                    cancelButtonText: 'Hủy',
+                    showCancelButton: true,
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+
+                    if (result.value) {
+
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("DeleteBanner", "QuanLyBanner")',
+                            dataType: 'json',
+                            data: { AbannerID: bannerid },
+                            success: function (data) {
+
+                                isMessageSuccess(data);
+
+                                loadGridData();
+
+                                resetForm();
+
+                            },
+                            error: function (err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+                });
+            });
+            }
+
+            function ValidURL(i) {
+                if (i == 'insert') {
+                    var pattern = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+
+                    var url = $('#addlink').val();
+
+                    if (url != '') {
+                        if (!pattern.test(url)) {
+                            toastr.error('@SharedLocalizer["URL_ERROR"]');
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+        var quanlybanner = new QuanLyBanner();
+        quanlybanner.init();
+    });
+
+</script>

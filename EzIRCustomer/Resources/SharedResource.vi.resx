@@ -1,0 +1,840 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>Hành động</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Thêm</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="ANOTE_EMPTY" xml:space="preserve">
+    <value>Ghi chú không được để trống !</value>
+  </data>
+  <data name="AORGMODELDESC_EMPTY" xml:space="preserve">
+    <value>Mô tả sơ đồ không đc để trống !</value>
+  </data>
+  <data name="AORGMODELPATH_EMPTY" xml:space="preserve">
+    <value>Đường dẫn ảnh không đc để trống !</value>
+  </data>
+  <data name="Approving" xml:space="preserve">
+    <value>Nội dung đang chờ phê duyệt. Doanh nghiệp vui lòng liên hệ chuyên viên tư vấn để được hỗ trợ cập nhật thông tin.</value>
+  </data>
+  <data name="Associated_Company" xml:space="preserve">
+    <value>Công ty liên kết</value>
+  </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>Tải lên sơ yếu lý lịch</value>
+  </data>
+  <data name="Business" xml:space="preserve">
+    <value>Kinh doanh</value>
+  </data>
+  <data name="Business_lisence" xml:space="preserve">
+    <value>Đăng kí kinh doanh</value>
+  </data>
+  <data name="Business_operation" xml:space="preserve">
+    <value>Lĩnh Vực SXKD Chính</value>
+  </data>
+  <data name="Capital" xml:space="preserve">
+    <value>Vốn điều lệ</value>
+  </data>
+  <data name="CCDT" xml:space="preserve">
+    <value>Cơ cấu doanh thu theo sản phẩm/ lĩnh vực</value>
+  </data>
+  <data name="CCPL" xml:space="preserve">
+    <value>Căn cứ pháp lý</value>
+  </data>
+  <data name="Challenge" xml:space="preserve">
+    <value>Thách thức</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Đổi mật khẩu</value>
+  </data>
+  <data name="changePassWord_DOI_MAT_KHAU_THANH_CONG" xml:space="preserve">
+    <value>Đổi mật khẩu thành công!</value>
+  </data>
+  <data name="changePassWord_MAT_KHAU_CU__KHONG_DUOC_TRONG" xml:space="preserve">
+    <value>Mật khẩu cũ không được để trống!</value>
+  </data>
+  <data name="changePassWord__MAT_KHAU_MOI_KHONG_DUOC_lON_HON_8" xml:space="preserve">
+    <value>Mật khẩu mới không được lớn hơn 8 ký tự!</value>
+  </data>
+  <data name="changePassWord__MAT_KHAU_MOI_KHONG_DUOC_NHO_HON_6" xml:space="preserve">
+    <value>Mật khẩu mới không được ít hơn 6 ký tự!</value>
+  </data>
+  <data name="changePassWord__MAT_KHAU_MOI_KHONG_DUOC_TRONG" xml:space="preserve">
+    <value>Mật khẩu mới không được để trống!</value>
+  </data>
+  <data name="changePassWord__MAT_KHAU_NHAP_LAI_KHONG_KHOP" xml:space="preserve">
+    <value>Mật khẩu nhập lại không khớp!</value>
+  </data>
+  <data name="Chiu_trach_nhiem" xml:space="preserve">
+    <value>Chịu trách nhiệm chính: Ông Nguyễn Điệp Tùng - Tổng Giám đốc</value>
+  </data>
+  <data name="Choose_from_computer" xml:space="preserve">
+    <value>Chọn từ máy tính</value>
+  </data>
+  <data name="Choose_img" xml:space="preserve">
+    <value>Chọn ảnh</value>
+  </data>
+  <data name="Chucvu" xml:space="preserve">
+    <value>Chức vụ</value>
+  </data>
+  <data name="Company_Name" xml:space="preserve">
+    <value>Tên công ty</value>
+  </data>
+  <data name="Company_Position" xml:space="preserve">
+    <value>Vị thế doanh nghiệp</value>
+  </data>
+  <data name="Cong_Bo_Thong_tin" xml:space="preserve">
+    <value>Công bố thông tin</value>
+  </data>
+  <data name="CONTENT_MAXLENGTH" xml:space="preserve">
+    <value>Độ dài Mô tả sơ đồ không được quá 50 ký tự ! </value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Mật khẩu cũ</value>
+  </data>
+  <data name="Current_exchange" xml:space="preserve">
+    <value>Nơi niêm yết hiện tại</value>
+  </data>
+  <data name="Current_volume" xml:space="preserve">
+    <value>KL đang niêm yết hiện tại</value>
+  </data>
+  <data name="Danang_City" xml:space="preserve">
+    <value>Chi nhánh Đà Nẵng</value>
+  </data>
+  <data name="DataHasNotBeenChanged" xml:space="preserve">
+    <value>Dữ liệu chưa có sự thay đổi!</value>
+  </data>
+  <data name="Date_of_Birth" xml:space="preserve">
+    <value>Ngày sinh</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Tên biểu mẫu</value>
+  </data>
+  <data name="DevelopProgressesIsNotNull" xml:space="preserve">
+    <value>Giá trị Các mốc lịch sử không được rỗng!</value>
+  </data>
+  <data name="DiaChi_Danang" xml:space="preserve">
+    <value>Số 100 Quang Trung, phường Thạch Thang, quận Hải Châu, TP Đà Nẵng</value>
+  </data>
+  <data name="DiaChi_HaNoi" xml:space="preserve">
+    <value>52 Đường Lạc Long Quân, Phường Bưởi, Quận Tây Hồ, TP. Hà Nội</value>
+  </data>
+  <data name="DiaChi_TPHCM" xml:space="preserve">
+    <value>Tầng 3, Tòa nhà 136-138 Lê Thị Hồng Gấm, Phường Nguyễn Thái Bình, Quận 1, TP. Hồ Chí Minh</value>
+  </data>
+  <data name="Download_file" xml:space="preserve">
+    <value>Tải file</value>
+  </data>
+  <data name="DTCT" xml:space="preserve">
+    <value>Đối thủ cạnh tranh</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>Tiếng Anh</value>
+  </data>
+  <data name="EZIR" xml:space="preserve">
+    <value>Cổng quan hệ nhà đầu tư trực tuyến</value>
+  </data>
+  <data name="Face_value" xml:space="preserve">
+    <value>Mệnh giá</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File biểu mẫu</value>
+  </data>
+  <data name="FileIsNotAccepted" xml:space="preserve">
+    <value>File không đúng định dạng !</value>
+  </data>
+  <data name="FileIsNotExist" xml:space="preserve">
+    <value>File không tồn tại !</value>
+  </data>
+  <data name="FileIsOver30MB" xml:space="preserve">
+    <value>Kích thước file không được lớn hơn 30MB !</value>
+  </data>
+  <data name="FileNameLarge" xml:space="preserve">
+    <value>Tên file quá dài!</value>
+  </data>
+  <data name="First_listing" xml:space="preserve">
+    <value>Ngày niên yết lần đầu</value>
+  </data>
+  <data name="Forget_Email_KHONG_DUOC_TRONG" xml:space="preserve">
+    <value>Email không được để trống!</value>
+  </data>
+  <data name="ForgotPassword" xml:space="preserve">
+    <value>Quên mật khẩu</value>
+  </data>
+  <data name="forgotPassWord_LB_LAY_MAT_KHAU" xml:space="preserve">
+    <value>Lấy lại mật khẩu</value>
+  </data>
+  <data name="forgotPassWord_LB_QUAY_LAI_DANG_NHAP" xml:space="preserve">
+    <value>Quay lại đăng nhập</value>
+  </data>
+  <data name="Formats_supported" xml:space="preserve">
+    <value>Hỗ trợ định dạng *.doc, *.pdf, *.rar.</value>
+  </data>
+  <data name="FPTS" xml:space="preserve">
+    <value>Công ty cổ phần chứng khoán FPT</value>
+  </data>
+  <data name="FROMDATE_IS_GREATER_THAN_TODATE" xml:space="preserve">
+    <value>Khoảng thời gian tìm kiếm không hợp lệ.</value>
+  </data>
+  <data name="From_date" xml:space="preserve">
+    <value>Từ ngày</value>
+  </data>
+  <data name="General_Information" xml:space="preserve">
+    <value>Thông tin chung</value>
+  </data>
+  <data name="GET_TOKEN_SUCCESSFUL" xml:space="preserve">
+    <value>Lấy token thành công!</value>
+  </data>
+  <data name="Gui_email_thanh_cong" xml:space="preserve">
+    <value>Mật khẩu mới đã gửi vào Email của bạn!</value>
+  </data>
+  <data name="Gui_email_that_bai" xml:space="preserve">
+    <value>Gửi Email thất bại!</value>
+  </data>
+  <data name="Head_Office" xml:space="preserve">
+    <value>Trụ sở chính</value>
+  </data>
+  <data name="Highlighting_events" xml:space="preserve">
+    <value>Sự kiện tiêu biểu</value>
+  </data>
+  <data name="HoChiMinh_City" xml:space="preserve">
+    <value>Chi nhánh Tp.Hồ Chí Minh</value>
+  </data>
+  <data name="ImageIsInvalid" xml:space="preserve">
+    <value>File ảnh không hợp lệ!</value>
+  </data>
+  <data name="ImageMaxSize" xml:space="preserve">
+    <value>Ảnh có dung lượng quá lớn!</value>
+  </data>
+  <data name="Image_size_exceeds_2MB" xml:space="preserve">
+    <value>Kích thước ảnh vượt quá 2MB !</value>
+  </data>
+  <data name="IncorrectCaptcha" xml:space="preserve">
+    <value>Captcha nhập sai!</value>
+  </data>
+  <data name="IncorrectUsernameOrPassword" xml:space="preserve">
+    <value>Tên đăng nhập hoặc mật khẩu không chính xác!</value>
+  </data>
+  <data name="Index_minus" xml:space="preserve">
+    <value>Số thứ tự sắp xếp không được phép âm</value>
+  </data>
+  <data name="Industry" xml:space="preserve">
+    <value>Ngành nghề</value>
+  </data>
+  <data name="Infomation_Gateway" xml:space="preserve">
+    <value>Cổng thông tin điện tử</value>
+  </data>
+  <data name="Information_Disclosure" xml:space="preserve">
+    <value>Công bố thông tin</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>Đã xảy ra lỗi, vui lòng thử lại sau!</value>
+  </data>
+  <data name="InvalidInputData" xml:space="preserve">
+    <value>Dữ liệu đầu vào không hợp lệ!</value>
+  </data>
+  <data name="Invalid_data" xml:space="preserve">
+    <value>Thông tin chưa đúng định dạng. Đề nghị người dùng kiểm tra lại thông tin</value>
+  </data>
+  <data name="Invalid_Date" xml:space="preserve">
+    <value>Ngày không hợp lệ !</value>
+  </data>
+  <data name="Invalid_year" xml:space="preserve">
+    <value>Năm không hợp lệ !</value>
+  </data>
+  <data name="Knowledge" xml:space="preserve">
+    <value>Trình độ học vấn</value>
+  </data>
+  <data name="Law" xml:space="preserve">
+    <value>Việc sử dụng hay phát hành lại những thông tin này mà không được sự cho phép đều bị coi là vi phạm và bị ngăn cấm theo luật định</value>
+  </data>
+  <data name="Leadership" xml:space="preserve">
+    <value>Ban lãnh đạo</value>
+  </data>
+  <data name="Legal" xml:space="preserve">
+    <value>Đại diện pháp luật</value>
+  </data>
+  <data name="Liberty_of_law" xml:space="preserve">
+    <value>Thư viện pháp luật</value>
+  </data>
+  <data name="Listing_Information" xml:space="preserve">
+    <value>Thông tin niêm yết</value>
+  </data>
+  <data name="List_of_forms" xml:space="preserve">
+    <value>Danh mục biểu mẫu</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Đăng nhập</value>
+  </data>
+  <data name="login_TAI_KHOAN_KHONG_DUOC_TRONG" xml:space="preserve">
+    <value>Tài khoản không được để trống!</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Đăng xuất</value>
+  </data>
+  <data name="LOL_Company" xml:space="preserve">
+    <value>Cơ quan ban hành</value>
+  </data>
+  <data name="LOL_DateEff" xml:space="preserve">
+    <value>Ngày hiệu lực</value>
+  </data>
+  <data name="LOL_DatePub" xml:space="preserve">
+    <value>Ngày ban hành</value>
+  </data>
+  <data name="LOL_No" xml:space="preserve">
+    <value>Số/Ký hiệu</value>
+  </data>
+  <data name="LOL_TextNote" xml:space="preserve">
+    <value>Trích yếu</value>
+  </data>
+  <data name="LOL_Type" xml:space="preserve">
+    <value>Loại văn bản</value>
+  </data>
+  <data name="LOL_YearEff" xml:space="preserve">
+    <value>Năm hiệu lực</value>
+  </data>
+  <data name="LOL_YearPub" xml:space="preserve">
+    <value>Năm ban hành</value>
+  </data>
+  <data name="Look_up_published_news" xml:space="preserve">
+    <value>Tra cứu tin công bố</value>
+  </data>
+  <data name="Luu_y" xml:space="preserve">
+    <value>Xem lưu ý đặc biệt</value>
+  </data>
+  <data name="Major_shareholder" xml:space="preserve">
+    <value>Cổ đông lớn</value>
+  </data>
+  <data name="Management_Board" xml:space="preserve">
+    <value>Thành phần lãnh đạo</value>
+  </data>
+  <data name="Management_Competencies" xml:space="preserve">
+    <value>Năng lực quản lý</value>
+  </data>
+  <data name="Management_Structure" xml:space="preserve">
+    <value>Tổ chức bộ máy quản lý</value>
+  </data>
+  <data name="Market_Customer_Competitor" xml:space="preserve">
+    <value>Thị trường/ Khách hàng/ Đối thủ</value>
+  </data>
+  <data name="Milestones" xml:space="preserve">
+    <value>Các mốc lịch sử</value>
+  </data>
+  <data name="Ministry" xml:space="preserve">
+    <value>Thuộc ngành</value>
+  </data>
+  <data name="MSG_DU_LIEU_SAVE" xml:space="preserve">
+    <value>Dữ liệu cập nhật thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_AN_ERROR_OCCURRED" xml:space="preserve">
+    <value>Đã xảy ra lỗi, vui lòng liên hệ quản trị viên để được hỗ trợ!</value>
+  </data>
+  <data name="MSG_TEZIR_CAN_NOT_LOGIN" xml:space="preserve">
+    <value>Có lỗi xảy ra, không thể đăng nhập!</value>
+  </data>
+  <data name="MSG_TEZIR_COMPANY_CHECK_SIGNED" xml:space="preserve">
+    <value>Tài khoản chưa được kích hoạt!</value>
+  </data>
+  <data name="MSG_TEZIR_CPNY_NOT_EXISTS" xml:space="preserve">
+    <value>Công ty không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_APASSWORD_INCORRECT" xml:space="preserve">
+    <value>Mật khẩu cũ không chính xác!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_AUSERNAME_Empty" xml:space="preserve">
+    <value>Người dùng không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_AUSERNAME_INCORRECT" xml:space="preserve">
+    <value>Không tồn tại tên đăng nhập!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_CHECK_ACTIVE" xml:space="preserve">
+    <value>Tài khoản của bạn bị khóa!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_CHECK_USRPASS_WRONG" xml:space="preserve">
+    <value>Tên đăng nhập hoặc mật khẩu không chính xác!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_EMAIL_INCORRECT" xml:space="preserve">
+    <value>Email không đúng!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_INFO_INCORRECT" xml:space="preserve">
+    <value>Thông tin không chính xác!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_LOGIN_SUCCESSFUL" xml:space="preserve">
+    <value>Đăng nhập thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_CUSTOMER_UPDATE_PASSWORD_SUCCESS" xml:space="preserve">
+    <value>Mật khẩu mới đã gửi về Email của bạn!</value>
+  </data>
+  <data name="MSG_TEZIR_DATA_NOT_EXISTS" xml:space="preserve">
+    <value>Dữ liệu không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_DATA_NOT_MODIFIED" xml:space="preserve">
+    <value>Dự liệu đang chờ phê duyệt!</value>
+  </data>
+  <data name="MSG_TEZIR_DELETE_NEWS_SUCCESS_0" xml:space="preserve">
+    <value>Xóa tin thành công !</value>
+  </data>
+  <data name="MSG_TEZIR_DEVELOP_PROGRESS_NOT_EXISTS" xml:space="preserve">
+    <value>Các mốc lịch sử không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_INSERT_NEWS_SUCCESS_0" xml:space="preserve">
+    <value>Thêm tin mới thành công !</value>
+  </data>
+  <data name="MSG_TEZIR_INSERT_SUCCESSFUL" xml:space="preserve">
+    <value>Lưu dữ liệu thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_MENUS_ANAME_NOT_EXISTS" xml:space="preserve">
+    <value>Tên menu không tồn tại, vui long báo với Administrator!</value>
+  </data>
+  <data name="MSG_TEZIR_MENU_NOT_EXISTS" xml:space="preserve">
+    <value>Menus không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZIR_PARAM_IS_NULL" xml:space="preserve">
+    <value>Tham số truyền vào không được để trống!</value>
+  </data>
+  <data name="MSG_TEZIR_UPDATE_COMPANY_SUCCESS" xml:space="preserve">
+    <value>Cập nhật thông tin chung thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_UPDATE_DEVELOP_PROGRESS_SUCCESS" xml:space="preserve">
+    <value>Cập nhật các mốc lịch sử thành công!</value>
+  </data>
+  <data name="MSG_TEZIR_UPDATE_NEWS_SUCCESS_0" xml:space="preserve">
+    <value>Cập nhật tin thành công !</value>
+  </data>
+  <data name="MSG_TEZIR_UPDATE_SUCCESSFUL" xml:space="preserve">
+    <value>Sửa thành công !</value>
+  </data>
+  <data name="MSG_TEZS_SUBCOMPANY_NOT_EXISTS" xml:space="preserve">
+    <value>Thông tin công ty con/công ty liên kết không tồn tại!</value>
+  </data>
+  <data name="MSG_TEZS_SUBCOMPANY_UPDATE_SUCCESS" xml:space="preserve">
+    <value>Sửa thông tin công ty thành công</value>
+  </data>
+  <data name="MST" xml:space="preserve">
+    <value>MST</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="Name_Empty" xml:space="preserve">
+    <value>Họ tên không được để trống !</value>
+  </data>
+  <data name="NAME_MAXLENGTH" xml:space="preserve">
+    <value>Độ dài Họ và tên không được quá 500 ký tự !</value>
+  </data>
+  <data name="Name_Short" xml:space="preserve">
+    <value>Tên viết tắt</value>
+  </data>
+  <data name="Nationality" xml:space="preserve">
+    <value>Quốc tịch</value>
+  </data>
+  <data name="NATIONALITY_MAXLENGTH" xml:space="preserve">
+    <value>Độ dài Quốc tịch không được quá 200 ký tự !</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Mật khẩu mới</value>
+  </data>
+  <data name="NewsType" xml:space="preserve">
+    <value>Loại tin</value>
+  </data>
+  <data name="NLDV" xml:space="preserve">
+    <value>Nguyên liệu đầu vào, Nhà cung cấp</value>
+  </data>
+  <data name="NLQLCL" xml:space="preserve">
+    <value>Năng lực quản lý chất lượng</value>
+  </data>
+  <data name="NLQLK" xml:space="preserve">
+    <value>Năng lực quản lý khác</value>
+  </data>
+  <data name="NLQLNS" xml:space="preserve">
+    <value>Năng lực quản lý nhân sự</value>
+  </data>
+  <data name="NLQLTC" xml:space="preserve">
+    <value>Năng lực quản lý tài chính</value>
+  </data>
+  <data name="Opportunity" xml:space="preserve">
+    <value>Cơ hội</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="OrgModelDesc" xml:space="preserve">
+    <value>Mô tả sơ đồ</value>
+  </data>
+  <data name="OrgType" xml:space="preserve">
+    <value>Loại sơ đồ</value>
+  </data>
+  <data name="Owned" xml:space="preserve">
+    <value>Nắm giữ</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Mật khẩu</value>
+  </data>
+  <data name="PasswordIsNotToEmpty" xml:space="preserve">
+    <value>Mật khẩu không được để trống!</value>
+  </data>
+  <data name="PASSWORD_MAXLENGTH" xml:space="preserve">
+    <value>Mật khẩu mới không được lớn hơn 9 ký tự!</value>
+  </data>
+  <data name="PASSWORD_MINLENGTH" xml:space="preserve">
+    <value>Mật khẩu mới không được ít hơn 6 ký tự!</value>
+  </data>
+  <data name="Percentage_empty" xml:space="preserve">
+    <value>Tỷ lệ phần trăm nắm giữ không được để trống !</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Điện thoại</value>
+  </data>
+  <data name="Posting_date" xml:space="preserve">
+    <value>Ngày đăng tải</value>
+  </data>
+  <data name="Project_Investments" xml:space="preserve">
+    <value>Thông tin dự án đầu tư</value>
+  </data>
+  <data name="QUALITICATIONEN_MAXLENGTH" xml:space="preserve">
+    <value>Độ dài Trình độ chuyên môn EN không được quá 500 ký tự !</value>
+  </data>
+  <data name="QUALITICATION_MAXLENGTH" xml:space="preserve">
+    <value>Độ dài Trình độ chuyên môn không được quá 500 ký tự !</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>Tỷ lệ</value>
+  </data>
+  <data name="Reference_price" xml:space="preserve">
+    <value>Giá chào sàn</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Làm mới</value>
+  </data>
+  <data name="REQUEST_UNSUCCESSFUL" xml:space="preserve">
+    <value>Yêu cầu không thành công!</value>
+  </data>
+  <data name="Sai_cap_char" xml:space="preserve">
+    <value>Captchar nhập sai!</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="SaveAndSend" xml:space="preserve">
+    <value>Lưu và Gửi</value>
+  </data>
+  <data name="Save_send" xml:space="preserve">
+    <value>Lưu và gửi</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Tìm kiếm</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Chọn chức vụ</value>
+  </data>
+  <data name="Share" xml:space="preserve">
+    <value>Cổ phần</value>
+  </data>
+  <data name="Shareholder" xml:space="preserve">
+    <value>Cổ đông</value>
+  </data>
+  <data name="Shareholder_structure" xml:space="preserve">
+    <value>Cơ cấu sở hữu</value>
+  </data>
+  <data name="SHARERATE_DISTANCE" xml:space="preserve">
+    <value>Giá trị nắm giữ chỉ được trong khoảng từ 0 -&gt; 100!</value>
+  </data>
+  <data name="Sodobomay" xml:space="preserve">
+    <value>Sơ đồ bộ máy QL</value>
+  </data>
+  <data name="Sodotochuc" xml:space="preserve">
+    <value>Sơ đồ tổ chức</value>
+  </data>
+  <data name="Sodo_tochuc_bomay" xml:space="preserve">
+    <value>Sơ đồ Cơ cấu tổ chức/Bộ máy quản lý</value>
+  </data>
+  <data name="SongNgu" xml:space="preserve">
+    <value>Song ngữ Anh - Việt</value>
+  </data>
+  <data name="Sort" xml:space="preserve">
+    <value>Sắp xếp</value>
+  </data>
+  <data name="So_Giay_Phep" xml:space="preserve">
+    <value>Số giấy phép: 3438/GP-TTĐT ngày 04/07/2016</value>
+  </data>
+  <data name="Speciality" xml:space="preserve">
+    <value>Trình độ chuyên môn</value>
+  </data>
+  <data name="SpecialityEN" xml:space="preserve">
+    <value>Trình độ chuyên môn EN</value>
+  </data>
+  <data name="SPTT" xml:space="preserve">
+    <value>Sản phẩm thay thế</value>
+  </data>
+  <data name="StockCode" xml:space="preserve">
+    <value>Mã chứng khoán</value>
+  </data>
+  <data name="Strategy" xml:space="preserve">
+    <value>Chiến lược</value>
+  </data>
+  <data name="Strength" xml:space="preserve">
+    <value>Điểm mạnh</value>
+  </data>
+  <data name="STT" xml:space="preserve">
+    <value>STT</value>
+  </data>
+  <data name="STTOnlyNumberOrEmpty" xml:space="preserve">
+    <value>STT chỉ nhập số hoặc để trống!</value>
+  </data>
+  <data name="SubCompany" xml:space="preserve">
+    <value>Công ty con</value>
+  </data>
+  <data name="Subcompany_Type" xml:space="preserve">
+    <value>Loại hình công ty con</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Trợ giúp</value>
+  </data>
+  <data name="Support_staff" xml:space="preserve">
+    <value>Cán bộ hỗ trợ:</value>
+  </data>
+  <data name="SWOT_Analysis" xml:space="preserve">
+    <value>Phân tích SWOT</value>
+  </data>
+  <data name="Technological_Level" xml:space="preserve">
+    <value>Trình độ công nghệ</value>
+  </data>
+  <data name="Template" xml:space="preserve">
+    <value>Biểu mẫu số</value>
+  </data>
+  <data name="TemplateType" xml:space="preserve">
+    <value>Loại biểu mẫu</value>
+  </data>
+  <data name="Ten" xml:space="preserve">
+    <value>Tên</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Mốc thời gian</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Tiêu đề</value>
+  </data>
+  <data name="TITLE_MAXLENGTH" xml:space="preserve">
+    <value>Độ dài tiều đề không được quá 2000 ký tự !</value>
+  </data>
+  <data name="TITLE_NULL" xml:space="preserve">
+    <value>Tiêu đề không được để trống !</value>
+  </data>
+  <data name="Tong_Quan" xml:space="preserve">
+    <value>Tổng quan</value>
+  </data>
+  <data name="Total_listing" xml:space="preserve">
+    <value>Tổng giá trị niêm yết</value>
+  </data>
+  <data name="To_date" xml:space="preserve">
+    <value>Đến ngày</value>
+  </data>
+  <data name="TTKH" xml:space="preserve">
+    <value>Thị trường/ Khách hàng</value>
+  </data>
+  <data name="TTKHDTK" xml:space="preserve">
+    <value>Khác</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Loại hình</value>
+  </data>
+  <data name="Type_of_document" xml:space="preserve">
+    <value>Loại tài liệu</value>
+  </data>
+  <data name="Type_of_news" xml:space="preserve">
+    <value>Loại tin</value>
+  </data>
+  <data name="Unauthorized" xml:space="preserve">
+    <value>Bạn không có quyền!</value>
+  </data>
+  <data name="UnknowError" xml:space="preserve">
+    <value>Lỗi không xác định!</value>
+  </data>
+  <data name="Update_Infomation" xml:space="preserve">
+    <value>Cập nhật thông tin</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Tải lên</value>
+  </data>
+  <data name="Upload_file" xml:space="preserve">
+    <value>Tải file</value>
+  </data>
+  <data name="Upload_Image_is_not_to_blank" xml:space="preserve">
+    <value>Tải lên hình ảnh không được để trống !</value>
+  </data>
+  <data name="Up_to" xml:space="preserve">
+    <value>Dung lượng tối đa 30MB</value>
+  </data>
+  <data name="UserManual" xml:space="preserve">
+    <value>Hướng dẫn sử dụng</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Tên đăng nhập</value>
+  </data>
+  <data name="UsernameIsNotToEmpty" xml:space="preserve">
+    <value>Tên đăng nhập không được để trống!</value>
+  </data>
+  <data name="User_posted" xml:space="preserve">
+    <value>Người đăng tải</value>
+  </data>
+  <data name="VerifyPassword" xml:space="preserve">
+    <value>Nhập lại mật khẩu</value>
+  </data>
+  <data name="Vietnamese" xml:space="preserve">
+    <value>Tiếng Việt</value>
+  </data>
+  <data name="Vision" xml:space="preserve">
+    <value>Tầm nhìn</value>
+  </data>
+  <data name="Vision_Strategy" xml:space="preserve">
+    <value>Tầm nhìn chiến lược</value>
+  </data>
+  <data name="VTC" xml:space="preserve">
+    <value>Vị thế chung</value>
+  </data>
+  <data name="VTTTLVKD" xml:space="preserve">
+    <value>Vị thế trong từng lĩnh vực kinh doanh</value>
+  </data>
+  <data name="Weakness" xml:space="preserve">
+    <value>Điểm yếu</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Năm</value>
+  </data>
+  <data name="YEAR_NULL" xml:space="preserve">
+    <value>Năm không được để trống !</value>
+  </data>
+  <data name="YouNotHavePermission" xml:space="preserve">
+    <value>Bạn không có quyền !</value>
+  </data>
+</root>

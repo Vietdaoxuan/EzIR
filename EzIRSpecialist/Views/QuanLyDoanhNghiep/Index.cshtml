@@ -1,0 +1,1173 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model EzIRSpecialist.Models.ViewModel.QLTKViewModel.QLTKDoanhNghiepViewModel
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var _LinkSiteNhung = ViewBag._LinkClientSite;
+}
+<link href="~/Online/select2_restyle.css" rel="stylesheet" />
+<link href="~/Online/AccountManagement.css" rel="stylesheet" />
+
+
+<style>
+    .modal .modal-content .modal-header .close {
+        color: #ffffff;
+    }
+
+    .modal .modal-content {
+        border-radius: 4px;
+        border: none;
+    }
+
+    .modal-header .close {
+        margin-left: auto;
+    }
+</style>
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Quản lý tài khoản</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Quản lý doanh nghiệp</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist">
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link active show " data-toggle="tab" data-target="#k_tabs_1" role="tab"
+               aria-selected="true">
+                <span class="nav-link-title text-uppercase">Tra cứu doanh nghiệp</span>
+            </a>
+        </li>
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link" data-toggle="tab" data-target="#CreateEnterpriseTab" role="tab"
+               aria-selected="false">
+                <span class="nav-link-title text-uppercase">Quản lý doanh nghiệp</span>
+            </a>
+        </li>
+    </ul>
+    <div class="line_top col-md-12">
+
+    </div>
+    <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper">
+                <form action="" id="formSearch">
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="stockCode">Mã CK</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <select class="form-control select2-single" name="CompanyID" id="StockCode" asp-items="@(new SelectList(Model.listMCK,"CompanyID","AMack"))">
+                                    <option value="" selected>Tất cả</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="Username">Tài khoản đăng nhập</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <input type="text" class="form-control" id="Username" name="Username">
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label nopadding">
+                                <label for="Active">Niên độ BCTC</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9">
+                                <select class="form-control" id="nienDoBCTC" name="NDBC" asp-items="@(new SelectList(Model.listNienDo,"TypeCode","TypeName"))">
+                                    <option value="">Tất cả</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-lg-6 nopadding">
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label for="CompanyType">Loại hình</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                <select class="form-control" name="CompanyType" id="CompanyType" asp-items="@(new SelectList(Model.listCompanyType,"TypeCode","TypeName"))">
+                                    <option value="" selected>Tất cả</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label for="Expert">Chuyên viên phụ trách</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                <input type="text" class="form-control" id="ExpertSearch" name="Expert">
+                            </div>
+                        </div>
+                        <div class="form-group row nopadding">
+                            <div class="col-sm-12 col-md-3 col-lg-3 col-lg-3 text-box-label">
+                                <label for="Expert">Đơn vị kế toán trực thuộc/ Công ty con</label>
+                            </div>
+                            <div class="col-sm-12 col-md-9 col-lg-9 col-lg-9 nopadding">
+                                <select id="level" name="Level" class="form-control">
+                                    <option value=""selected>Tất cả</option>
+                                    <option value="0">Không</option>
+                                    <option value="1">Có</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row d-flex justify-content-center col-12 btn-search-wrapper">
+                <button id="btnSearch" class="btn btn-primary col-md-2 col-12 mt-3 col-md-2 col-sm-12 ml-3">
+                    Tìm kiếm
+                </button>
+            </div>
+        </div>
+        <div class="content-tbl">
+            <table id="listEnterprise" class="table table-striped dt-responsive dataTable no-footer dtr-inline"
+                   role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th>Mã CK</th>
+                        <th>Công ty</th>
+                        <th>Cán bộ phụ trách</th>
+                        <th>Loại hình</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="CreateEnterpriseTab" class="tab-pane fade tab-acc">
+        <div class="col-sm-12 col-md-9 col-lg-9 col-xl-9 form-filter">
+            <div class="form-row form-filter-wrapper">
+                <div class="form-group col-md-8">
+                    <label for="stockName">Mã chứng khoán</label>
+                    <select id="stockName" class="form-control select2-single" name="CompanyID" asp-items="@(new SelectList(Model.listMCK,"CompanyID","AMack"))">
+                        <option value="-1" selected></option>
+
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="CompanyType">Loại hình</label>
+                    <input type="text" class="form-control" id="CompanyType1" name="CompanyType" value="" readonly>
+                </div>
+            </div>
+            @*<div class="form-check form-active">
+                <input class="form-check-input" type="checkbox" id="ActiveCompany">
+                <label class="form-check-label" for="ActiveCompany">
+                    Kích hoạt
+                </label>
+            </div>*@
+            <div class="tbl-wrapper">
+                <table id="listEnterpriseAcc"
+                       class="table table-striped dt-responsive dataTable no-footer dtr-inline display" role="grid"
+                       cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Tài khoản</th>
+                            <th>Họ và tên</th>
+                            <th>Điện thoại</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="form-wrapper-staff col-sm-12 col-xl-12" id="menustaff">
+                <form action="" id="formUpdate">
+                    <div class="form-group row form-text">
+                        <label for="Expert" class="col-sm-12 col-lg-4 col-xl-4 col-md-12 col-form-label">
+                            Chuyên
+                            viên phụ trách <span>*</span>
+                        </label>
+                        <div class="col-sm-12 col-lg-8 col-xl-8 col-md-12">
+                            <select id="Expert" class="form-control select2-single" name="Expert" asp-items="@(new SelectList(Model.listChuyenVien,"Username","Username"))">
+                                <option value="-1" selected></option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+
+                            <div class="col-md-12 nopadding d-inline-block m-auto">
+                                <div class="form-group row nopadding">
+                                    <div class="col-sm-12 col-lg-4 col-xl-4 col-md-12 nopadding">
+                                        <label class="padt6">Niên độ BCTC</label>
+                                    </div>
+                                    <div class="col-sm-12 col-lg-8 col-xl-8 col-md-12 nopadding">
+                                        <select class="form-control" id="NienDoBCTC" name="NDBC" asp-items="@(new SelectList(Model.listNienDo,"TypeCode","TypeName"))">
+                                            @*<option value="1">Từ 01/01 - 31/12</option>
+                                            <option value="2">Từ 01/04 - 31/03</option>
+                                            <option value="3">Từ 01/07 - 30/06</option>
+                                            <option value="4">Từ 01/10 - 30/09</option>
+                                            <option value="5">Khác</option>*@
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        @*<label for="FicsYearMonth" class="col-sm-12 col-lg-4 col-xl-4 col-md-12 col-form-label">
+                            Niên
+                            độ bắt đầu từ <span>*</span>
+                        </label>
+                        <div class="col-sm-6 col-lg-4 col-xl-4 col-md-6" style="padding-right: 12px">
+                            <select id="FicsYearMonth" class="form-control" name="FicsYearMonth">
+                                <option value="-1" selected>Chọn tháng</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6 col-lg-4 col-xl-4 col-md-6">
+                            <select id="FicsYearDay" class="form-control" name="FicsYearDay">
+                            </select>
+                        </div>*@
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Level" class="col-sm-12 col-lg-4 col-xl-4 col-md-12 col-form-label">
+                            Đơn vị kế toán trực thuộc/ Công ty con
+                        </label>
+                        <div class="col-sm-12 col-lg-8 col-xl-8 col-md-12">
+                            <select id="Level" name="Level" class="form-control">
+                                <option value="0" selected>Không</option>
+                                <option value="1">Có</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Note" class="col-sm-12 col-lg-4 col-xl-4 col-md-12 col-form-label">
+                            Ghi
+                            chú
+                        </label>
+                        <div class="col-sm-12 col-lg-8 col-xl-8 col-md-12">
+                            <input type="text" class="form-control" name="Note" id="Note">
+                        </div>
+                    </div>
+                    <div class="form-group row form-text">
+                        <label for="Link" class="col-sm-12 col-lg-4 col-xl-4 col-md-12 col-form-label">Link liên kết</label>
+                        <div class="col-sm-12 col-lg-8 col-xl-8 col-md-12" style="display: inline-flex;">
+                            <input type="text" class="form-control" id="Link" name="Link" readonly style="border-radius: 4px 0 0 4px">
+                            <button class="btn btn-primary copy-btn" id="btnCopy" title="Sao chép liên kết"><i class="far fa-copy"></i></button>
+                        </div>
+                    </div>
+                    <div class="btn-section form-group row form-text col-sm-12 col-lg-12 col-xl-12 col-md-12">
+                        <label class="col-sm-12 col-lg-4 col-xl-4 col-md-12 col-form-label"></label>
+                        <div class="col-sm-12 col-lg-8 col-xl-8 col-md-12 btn-wrapper">
+                            <button class="btn btn-primary update-btn" id="btnUpdate">Cập nhật</button>
+                            <button class="btn btn-primary reset-btn" id="btnReset">Làm mới</button>
+                            <button class="btn btn-primary add-link-btn" id="btnAddLink">Gán Link</button>
+                            <button class="btn btn-primary remove-link-btn" id="btnRemoveLink">Bỏ Gán Link</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-lg-3 col-xl-3 fpts_filter-wrapper">
+            <div class="filter-wrapper" id="filter-section">
+                <ul class="filter-cate">
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TQ_TQ" id="TongQuan" checked><label for=""
+                                                                                                                                 class="form-check-label">Tổng quan</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TQ_TTC" id="ThongTinChung" checked><label for=""
+                                                                                                                                       class="form-check-label">Thông tin chung</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="TQ_TNCL" id="TamNhinChienLuoc"><label for=""
+                                                                                                                         class="form-check-label">Tầm nhìn chiến lược</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TQ_TCBMQL" id="ToChucBoMayQuanLy" checked><label for=""
+                                                                                                                                              class="form-check-label">Tổ chức bộ máy quản lý</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="TQ_TPLD" id="ThanhPhanLanhDao"><label for=""
+                                                                                                                         class="form-check-label">Thành phần lãnh đạo</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TQ_CCSH" id="CoCauSoHuu" checked><label for=""
+                                                                                                                                     class="form-check-label">Cơ cấu sở hữu</label>
+                    </li>
+                </ul>
+                <ul class="filter-cate">
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="LT_LT" id="LuuTru" checked><label for=""
+                                                                                                                               class="form-check-label">Lưu trữ</label>
+                    </li>
+                </ul>
+                <ul class="filter-cate">
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="KD_KD" id="KinhDoanh"><label for=""
+                                                                                                                class="form-check-label">Kinh doanh</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="KD_TTKHDT" id="tt_kh_dt"><label for=""
+                                                                                                                   class="form-check-label">Thị trường/Khách hàng/Đối thủ</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="KD_TDCN" id="TrinhDoCongNghe"><label for=""
+                                                                                                                        class="form-check-label">Trình độ công nghệ</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="KD_NLQL" id="NangLucQuanLy"><label for=""
+                                                                                                                      class="form-check-label">Năng lực quản lý</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="KD_TTDADT" id="ThongTinDuAnDauTu"><label for=""
+                                                                                                                            class="form-check-label">Thông tin dự án đầu tư</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="KD_PTSWOT" id="PhanTichSWOT"><label for=""
+                                                                                                                       class="form-check-label">Phân tích S.W.O.T</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="KD_VTDN" id="ViTheDoanhNghiep"><label for=""
+                                                                                                                         class="form-check-label">Vị thế doanh nghiệp</label>
+                    </li>
+
+                </ul>
+                <ul class="filter-cate">
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TC_TC" id="TaiChinh" checked><label for=""
+                                                                                                                                 class="form-check-label">Tài chính</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TC_HSTC" id="HeSoTaiChinh" checked><label for=""
+                                                                                                                                       class="form-check-label">Hệ số tài chính</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="TC_KHTC" id="KeToanTaiChinh"><label for=""
+                                                                                                                       class="form-check-label">Kế hoạch tài chính</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TC_CDKT" id="CanDoiKeToan" checked><label for=""
+                                                                                                                                       class="form-check-label">Cân đối kế toán</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TC_KQHDKD" id="KetQuaHoatDongKinhDoanh" checked><label for=""
+                                                                                                                                                    class="form-check-label">Kết quả hoạt động kinh doanh</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TC_ICF" id="LuuChuyenTienTeICF" checked><label for=""
+                                                                                                                                            class="form-check-label">Lưu chuyển tiền tệ (ICF)</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="TC_DCF" id="LuuChuyenTienTeDCF" checked><label for=""
+                                                                                                                                            class="form-check-label">Lưu chuyển tiền tệ (DCF)</label>
+                    </li>
+                </ul>
+                <ul class="filter-cate">
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="CP_CP" id="CoPhieu" checked><label for=""
+                                                                                                                                class="form-check-label">Cổ phiếu</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="CP_LSGD" id="lichSuGiaoDich" checked><label for=""
+                                                                                                                                         class="form-check-label">Lịch sử giao dịch</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="CP_LSTVTCT" id="LichSuTangVon" checked><label for=""
+                                                                                                                                           class="form-check-label">Lịch sử tăng vốn - Trả cổ tức</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" class="autocheck form-check-input" data-code="CP_DTKT" id="DoThiKyThuat" checked><label for=""
+                                                                                                                                       class="form-check-label">Đồ thị kỹ thuật</label>
+                    </li>
+                </ul>
+                <!-- <ul class="filter-cate">
+                    <li><input type="checkbox" class="form-check-input" disabled><label for=""
+                            class="form-check-label">Đối thoại doanh nghiệp</label></li>
+                </ul> -->
+                <ul class="filter-cate">
+                    <li>
+                        <input type="checkbox" class="form-check-input" data-code="PT_FPTS" id="PhanTichCuaFPTS"><label for=""
+                                                                                                                        class="form-check-label">Phân tích của FPTS</label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="burger-checkbox-menu-wrapper">
+            <button id="nav-toggle" class="collapsed burger-checkbox-menu">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+
+        <div class="burger-checkbox-menu-wrapper-right">
+            <button id="nav-toggle" class="collapsed burger-checkbox-menu-right">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<input id="cpnyID" type="text" hidden />
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-uppercase modaltitle">Thông tin doanh nghiệp</h3>
+                <button type="button" class="close" data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                @Component.InvokeAsync("DoanhNghiepDetail")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<div id="loading"></div>
+<script>
+    $(document).ready(function () {
+
+        //console.log($("#TongQuan").data("code"));
+
+        $(".nav-item.col.gsm-link-tab").first().addClass("active");
+
+        $('.select2-single').select2();
+
+        $('#btnRemoveLink').hide();
+
+        let selectMonth = $("#FicsYearMonth");
+        let selectDay = $("#FicsYearDay");
+        var d = new Date();
+        var month = d.getMonth();
+        var day = d.getDate();
+
+
+
+        selectMonth.on("change", AdjustDays);
+
+        AdjustDays();
+        function AdjustDays() {
+            var d = new Date();
+            var year = d.getFullYear();
+            var month = parseInt(selectMonth.val());
+            selectDay.empty();
+            selectDay.append('<option value = "-1" selected>Chọn ngày</option>');
+            var days = new Date(year, month, 0).getDate();
+
+            for (var d = 1; d <= days; d++) {
+                var dayElem = document.createElement("option");
+                dayElem.value = d;
+                dayElem.textContent = d;
+                selectDay.append(dayElem);
+            }
+        }
+
+        selectMonth.on("change", AdjustDays);
+
+        var renderColumns = [
+            {
+                data: "stockCode",
+            },
+            {
+                data: null,
+                render: function (data, type, full) {
+                    return `<h5>${full['companyName']}</h5>
+                        <div class="company_info">
+							<div>
+								<h6>Email:${full['email']}</h6>
+								<h6>Điện thoại: ${full['phone']}</h6>
+							</div>
+							<div>
+								<h6>Ngày tạo: ${formatDateTimeToDate(full['createOn'])}</h6>
+								
+							</div>
+						</div>`;
+                        //<h6>Trạng thái: ${full['companyStatusString']}</h6>
+                }
+            },
+            {
+                data: "expert",
+            }
+            ,
+            {
+                data: "typeName",
+            },
+            {
+                data: "companyID",
+                render: function (data, type, full) {
+                    if (full['companyStatus'] == 1) {
+                        return `<div class="d-inline-flex w-100">
+                              <a class='DetailInfo btn text-primary' data-id='${data}' data-toggle="modal" data-target="#myModal"><i class="fas fa-info-circle"></i></a>
+                              <a class='EditAccount btn text-primary' data-id='${data}'><i class="far fa-edit"></i></a>
+                              <a class='DeleteAccount btn text-primary' data-id='${data}' hidden><i class="fas fa-delete"></i></a>
+                            </div >`;
+                    } else {
+                        return `<div class="d-inline-flex w-100">
+                              <a class='DetailInfo btn text-primary' data-id='${data}' data-toggle="modal" data-target="#myModal"><i class="fas fa-info-circle"></i></a>
+                              <a class='EditAccount btn text-primary' data-id='${data}'><i class="far fa-edit"></i></a>
+                            </div >`;
+                    }
+
+                }
+            },
+        ];
+
+        var renderColumns1 = [
+            {
+                data: "username",
+            },
+            {
+                data: "fullName",
+            },
+            {
+                data: "phone",
+            },
+            {
+                data: "email",
+            }
+        ];
+
+        var form = $("#formSearch");
+        var form1 = $("#formUpdate");
+        var DoanhNghiep = function () {
+            this.init = function () {
+                loadData(form.serialize());
+                loadCustomer(form1.serialize());
+                registerEvents();
+            }
+
+            var loadData = function (data) {
+                $('#loading').addClass('loading');
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListDoanhNghiep", "QuanLyDoanhNghiep")',
+                    data: data,
+                    success: function (data) {
+                        //console.log(data[0].listRole);
+                        $('#loading').removeClass('loading');
+                        let enterpriseTbl = $('#listEnterprise').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: true,
+                            className: 'dt-body-right',
+                            "info": false,
+                            "lengthMenu": [10, 25, 50, 75, 100],
+                            language: {
+                                sLengthMenu: "_MENU_"
+                            },
+                            data: data,
+                            bAutoWidth: false,
+                            columns: renderColumns
+                        });
+
+
+                        function detailClick() {
+                            $('.DetailInfo').off();
+                            $('.DetailInfo').on('click', function (e) {
+                                var container = $(".modal-body");
+                                $.get("@Url.Action("DoanhNghiepViewComponent", "QuanLyDoanhNghiep")?Id=" + $(this).data('id'), function (data) { container.html(data); });
+                                $('#myModal').modal('show');
+                            });
+                        }
+
+                        detailClick();
+                        enterpriseTbl.on('draw', detailClick);
+
+                        function editClick() {
+                            $('.EditAccount').off();
+                            $('.EditAccount').click(function () {
+                                //$('#loading').addClass('loading');
+                                let companyID = $(this).data('id');
+                                //console.log(companyID);
+                                ////chuyển sang tab edit
+                                //$('.nav-pills > li:first-child').removeClass('active');
+                                //$('.nav-pills > li:last-child').addClass('active');
+                                ////$('.nav-pills > li:last-child').tab('show');
+                                //jQuery('#CreateEnterpriseTab').css('opacity', '1');
+                                //$('.nav-pills > li:last-child > a').trigger('click');
+
+                                $("#stockName").val(companyID).trigger('change',1);
+
+                                $('#loading').removeClass('loading');
+                                $('#stockName').attr('disabled', true);
+                                $('#cpnyID').val(companyID)
+
+                            })
+                        }
+
+                        //khi click sửa
+                        editClick();
+                        enterpriseTbl.on('draw', editClick);
+
+                        function deleteClick() {
+                            $('.DeleteAccount').off();
+                            $('.DeleteAccount').click(function () {
+                                let companyID = $(this).data('id');
+                                //console.log(companyID);
+                                Swal.fire({
+                                    title: 'Thông báo',
+                                    text: 'Bạn có chắc muốn xóa?',
+                                    type: 'warning',
+                                    cancelButtonText: 'Hủy',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'OK'
+                                }).then(result => {
+                                    //console.log(result);
+                                    if (result.dismiss == "cancel" || result.dismiss == "overlay") {
+                                        return;
+                                    }
+
+                                    $('#loading').addClass('loading');
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '@Url.Action("DeleteDoanhNghiep", "QuanLyDoanhNghiep")?CompanyID=' + companyID,
+                                        success: function (data) {
+                                            $('#loading').removeClass('loading');
+                                            //console.log(data);
+                                            if (data.code == 0) {
+                                                toastr.success(data.message);
+                                            } else {
+                                                toastr.error(data.message);
+                                            }
+                                            loadData();
+                                        }
+                                    });
+                                });
+
+                            })
+                        }
+
+                        //khi click xóa
+                        deleteClick();
+                        enterpriseTbl.on('draw', deleteClick);
+                    }
+                })
+            }
+
+            var loadCustomer = function (data) {
+                $('#loading').addClass('loading');
+                 $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ListCustomerByExpert", "QuanLyDoanhNghiep")',
+                    data: data,
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        let createEnterpriseTbl = $('#listEnterpriseAcc').DataTable({
+                            ordering: false,
+                            dom: "lti<'d-flex justify-content-center'p>",
+                            destroy: true,
+                            "pageLength": 6,
+                            "ordering": false,
+                            searching: false,
+                            lengthChange: false,
+                            className: 'dt-body-right',
+                            "paging": true,
+                            "info": false,
+                            data: data,
+                            columns: renderColumns1
+                        });
+
+                        createEnterpriseTbl.columns.adjust().draw();
+                    }
+                })
+            }
+
+
+            var registerEvents = function () {
+                $('.select2-single').select2();
+
+
+
+                $('.burger-checkbox-menu').click(function () {
+                    $('.filter-section').show();
+                    var x = document.getElementById("filter-section");
+                    if (x.style.display == "none") {
+                        x.style.display = "block";
+                    } else {
+                        x.style.display = "none";
+                    }
+                    $(window).resize(function () {
+                        var $win = $(this);
+                        if ($(window).width() > 991) {
+                            x.style.display = "block";
+                        }
+                    }).resize();
+                })
+
+                $('.burger-checkbox-menu-right').click(function () {
+                    // e.classList.toggle("show");
+                    var elem = document.getElementById("filter-section"),
+                        Style = window.getComputedStyle(elem),
+                        left = Style.getPropertyValue("left");
+                    if (left == "0px") {
+                        elem.style.left = "-500px";
+                    } else {
+                        elem.style.left = "0px";
+                    }
+                })
+
+                $('.autocheck').click(function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+
+
+                // Action search
+                $('#btnSearch').click(function (e) {
+                    e.preventDefault();
+                    //console.log(form.serialize());
+                    loadData(form.serialize());
+                });
+
+
+                $('body').on("change", "#Expert", function () {
+                    loadCustomer('Expert=' + this.value + '&CompanyID=' + $('#stockName').val());
+                    //$("#btnReset").trigger("click");
+                });
+
+                $('body').on("change", "#stockName", function (event,updclick) {
+                    var cpnyID = this.value;
+                    $('#loading').addClass('loading');
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("ListDoanhNghiep", "QuanLyDoanhNghiep")?CompanyID=' + this.value +'&updclick=' + updclick,
+                        success: function (data) {
+
+                            $('#loading').removeClass('loading');
+                            console.log(data);
+                            if (data.code == -1) {
+                                //chuyển sang tab edit
+                                $('.nav-pills > li:first-child').addClass('active');
+                                $('.nav-pills > li:last-child').removeClass('active');
+                                //$('.nav-pills > li:last-child').tab('show');
+                                jQuery('#k_tabs_1').css('opacity', '1');
+                                $('.nav-pills > li:first-child > a').trigger('click');
+                                toastr.error(data.message);
+                            }else if ($("#stockName").val() == -1) {
+                                //chuyển sang tab edit
+                                $('.nav-pills > li:first-child').addClass('active');
+                                $('.nav-pills > li:last-child').removeClass('active');
+                                //$('.nav-pills > li:last-child').tab('show');
+                                jQuery('#k_tabs_1').css('opacity', '1');
+                                $('.nav-pills > li:first-child > a').trigger('click');
+                            }else {
+                                $('.nav-pills > li:first-child').removeClass('active');
+                                $('.nav-pills > li:last-child').addClass('active');
+                                //$('.nav-pills > li:last-child').tab('show');
+                                jQuery('#CreateEnterpriseTab').css('opacity', '1');
+                                $('.nav-pills > li:last-child > a').trigger('click');
+                                
+                                if (data.length > 0) {
+                                    if (data[0].expert != null) {
+                                        loadCustomer('Expert=' + data[0].expert + '&CompanyID=' + cpnyID);
+                                        $("#Expert").val(data[0].expert).trigger('change');
+                                    }
+                                    if (data[0].companyStatus == 1) {
+                                        $("#ActiveCompany").prop('checked', data[0].companyStatus == 1);
+                                    } else {
+                                        $("#ActiveCompany").attr('checked', false);
+                                    }
+                                    
+                                    $("#CompanyType1").val(data[0].typeName);
+
+                                    if (data[0].fiscYearMonth != null && data[0].fiscYearDay != null) {
+                                        $("#FicsYearMonth").val(data[0].fiscYearMonth);
+                                        AdjustDays()
+                                        $("#FicsYearDay").val(data[0].fiscYearDay);
+                                    }
+
+                                    if (data[0].level != null) {
+                                        $("#Level").val(data[0].level);
+                                    } else {
+                                        $("#Level").val(0);
+                                    }
+
+                                    $('#NienDoBCTC').val(data[0].niendoBCTC);
+                                    $("#Note").val(data[0].note);
+                                    if (data[0].isDelete == 0) {
+                                        $('#btnAddLink').show();
+                                        $('#btnRemoveLink').hide();
+                                        $("#Link").val('');
+                                    } else {
+                                        $('#btnAddLink').hide();
+                                        $('#btnRemoveLink').show();
+                                        $("#Link").val( '@_LinkSiteNhung' + 'thongtindoanhnghiepclient/' + data[0].stockCode);
+                                    }
+
+                                    //$('#TongQuan').prop("checked", data[0].listRole.includes("Tổng quan"));
+                                    //$('#ThongTinChung').prop("checked", data[0].listRole.includes("Thông tin chung"));
+                                    //$('#TamNhinChienLuoc').prop("checked", data[0].listRole.includes("Tầm nhìn chiến lược"));
+                                    //$('#ToChucBoMayQuanLy').prop("checked", data[0].listRole.includes("Tổ chức bộ máy quản lý"));
+                                    //$('#ThanhPhanLanhDao').prop("checked", data[0].listRole.includes("Thành phần lãnh đạo"));
+                                    //$('#CoCauSoHuu').prop("checked", data[0].listRole.includes("Cơ cấu sở hữu"));
+                                    //$('#LuuTru').prop("checked", data[0].listRole.includes("Lưu trữ"));
+                                    //$('#KinhDoanh').prop("checked", data[0].listRole.includes("Kinh doanh"));
+                                    //$('#TrinhDoCongNghe').prop("checked", data[0].listRole.includes("Thị trường/Khách hàng/Đối thủ"));
+                                    //$('#TrinhDoCongNghe').prop("checked", data[0].listRole.includes("Trình độ công nghệ"));
+                                    //$('#NangLucQuanLy').prop("checked", data[0].listRole.includes("Năng lực quản lý"));
+                                    //$('#ThongTinDuAnDauTu').prop("checked", data[0].listRole.includes("Thông tin dự án đầu tư"));
+                                    //$('#PhanTichSWOT').prop("checked", data[0].listRole.includes("Phân tích S.W.O.T"));
+                                    //$('#ViTheDoanhNghiep').prop("checked", data[0].listRole.includes("Vị thế doanh nghiệp"));
+                                    //$('#TaiChinh').prop("checked", data[0].listRole.includes("Tài chính"));
+                                    //$('#KeToanTaiChinh').prop("checked", data[0].listRole.includes("Kế toán tài chính"));
+                                    //$('#CoPhieu').prop("checked", data[0].listRole.includes("Cổ phiếu"));
+                                    //$('#PhanTichCuaFPTS').prop("checked", data[0].listRole.includes("Phân tích của FPTS"));
+
+                                    $('#TongQuan').prop("checked", data[0].listRoleName.indexOf("Tổng quan") != -1);
+                                    $('#ThongTinChung').prop("checked", data[0].listRoleName.indexOf("Thông tin chung") != -1);
+                                    $('#TamNhinChienLuoc').prop("checked", data[0].listRoleName.indexOf("Tầm nhìn chiến lược") != -1);
+                                    $('#ToChucBoMayQuanLy').prop("checked", data[0].listRoleName.indexOf("Tổ chức bộ máy quản lý") != -1);
+                                    $('#ThanhPhanLanhDao').prop("checked", data[0].listRoleName.indexOf("Thành phần lãnh đạo") != -1);
+                                    $('#CoCauSoHuu').prop("checked", data[0].listRoleName.indexOf("Cơ cấu sở hữu") != -1);
+                                    $('#LuuTru').prop("checked", data[0].listRoleName.indexOf("Lưu trữ") != -1);
+                                    $('#KinhDoanh').prop("checked", data[0].listRoleName.indexOf("Kinh doanh") != -1);
+                                    $('#tt_kh_dt').prop("checked", data[0].listRoleName.indexOf("Thị trường/Khách hàng/Đối thủ") != -1);
+                                    $('#TrinhDoCongNghe').prop("checked", data[0].listRoleName.indexOf("Trình độ công nghệ") != -1);
+                                    $('#NangLucQuanLy').prop("checked", data[0].listRoleName.indexOf("Năng lực quản lý") != -1);
+                                    $('#ThongTinDuAnDauTu').prop("checked", data[0].listRoleName.indexOf("Thông tin dự án đầu tư") != -1);
+                                    $('#PhanTichSWOT').prop("checked", data[0].listRoleName.indexOf("Phân tích S.W.O.T") != -1);
+                                    $('#ViTheDoanhNghiep').prop("checked", data[0].listRoleName.indexOf("Vị thế doanh nghiệp") != -1);
+                                    $('#TaiChinh').prop("checked", data[0].listRoleName.indexOf("Tài chính") != -1);
+                                    $('#KeToanTaiChinh').prop("checked", data[0].listRoleName.indexOf("Kế hoạch tài chính") != -1);
+                                    $('#CoPhieu').prop("checked", data[0].listRoleName.indexOf("Cổ phiếu") != -1);
+                                    $('#PhanTichCuaFPTS').prop("checked", data[0].listRoleName.indexOf("Phân tích của FPTS") != -1);
+                                }
+                                else {
+                                    $("#formUpdate").trigger("reset");
+                                    //loadCustomer('Expert=' + 'abc');
+                                    var listCode = $(".filter-wrapper>.filter-cate > li");
+                                    const arrIdx = [0, 1, 3, 5, 6, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24];
+                                    listCode.each(function (idx, li) {
+                                        //console.log(idx);
+                                        if (!arrIdx.includes(idx)) {
+                                            $(this).children("input").attr('checked', false);
+                                        }
+                                    });
+                                    //$("#Expert").val(-1).trigger('change');
+                                    //$("#stockName").val(-1).trigger('change');
+                                    $.ajax({
+                                        type: "GET",
+                                        url: '@Url.Action("LoadAllCompany", "QuanLyDoanhNghiep")?CompanyID='+ cpnyID,
+                                        success: function (data) {
+                                            //console.log(data);
+                                            if (data.length > 0) {
+                                                $("#CompanyType").val(data[0].typeName);
+                                                $("#Expert").val(data[0].expert).trigger('change');
+                                                $("#Note").val(data[0].note);
+                                            }
+                                            $('#btnAddLink').show();
+                                            $('#btnRemoveLink').hide();
+                                        }
+                                    });
+                                    $('#btnAddLink').show();
+                                    $('#btnRemoveLink').hide();
+                                    //console.log('Không có dữ liệu');
+
+                                }
+                            }
+                            //console.log(data);
+
+
+                        }
+                    });
+
+                });
+
+
+                var Fyear = new Date().getFullYear().toString();
+                var fmonth = 5;
+                var fday = 10;
+
+                var mydate = new Date(Fyear + '-' + fmonth.toString() + '-' + fday.toString());
+                //console.log(mydate);
+
+                $('body').on('click', '#btnUpdate', function (e) {
+                    e.preventDefault();
+
+                    $('#loading').addClass('loading');
+
+                    //console.log($("#FicsYearMonth").val() + ',' + $("#FicsYearDay").val());
+                    var Fyear = new Date().getFullYear().toString();
+                    //var fiscYear = Fyear + '-' + $("#FicsYearMonth").val() + '-' + $("#FicsYearDay").val();
+                    var fiscYear = new Date();
+                    var NienDoBCTC = $('#NienDoBCTC').val();
+                    
+                    var listCode = $(".filter-wrapper>.filter-cate > li");
+                    var lststatus = '';
+                    listCode.each(function (idx, li) {
+                        //console.log($(this).children("input").data("code"));
+
+                        if ($(this).children("input").is(':checked')) {
+                            lststatus += '1';
+                        } else {
+                            lststatus += '0';
+                        }
+                        lststatus += ',';
+                    })
+
+                    if ($('#ActiveCompany').is(':checked')) {
+                        status = 1;
+                    } else {
+                        status = 0;
+                    }
+
+                    //console.log(lststatus);
+                    if (Validate()) {
+                        $.ajax({
+                            url: '@Url.Action("UpdateDoanhNghiep", "QuanLyDoanhNghiep")?CompanyID=' + $("#stockName").val()
+                                + '&Expert=' + ($("#Expert").val() == -1 ? "" : $("#Expert").val())
+                                + '&FiscalYear=' + fiscYear
+                                + '&Note=' + $("#Note").val()
+                                + '&Level=' + $("#Level").val()
+                                + '&ListStatus=' + lststatus
+                                + '&Status=' + status
+                                + '&NienDoBCTC=' + NienDoBCTC,
+                            type: 'POST',
+                            success: function (data) {
+                                $('#loading').removeClass('loading');
+                                //console.log(data);
+                                if (data.code == 0) {
+                                    $('.nav-pills > li:first-child').addClass('active');
+                                    $('.nav-pills > li:last-child').removeClass('active');
+                                    jQuery('#k_tabs_1').css('opacity', '1');
+                                    $('.nav-pills > li:first-child > a').trigger('click');
+
+                                    //var listCode = $(".filter-wrapper>.filter-cate > li");
+
+                                    toastr.success(data.message);
+                                    $('#FormUpdate').trigger("reset");
+                                    //$('#btnReset').trigger("click");
+                                    $('#stockName').val(-1).trigger("change");
+                                    $('#CompanyType').val('');
+                                    $('#Expert').val(-1).trigger("change");
+                                    $("#NienDoBCTC").val(-1).trigger("change");
+                                    var listCode = $(".filter-wrapper>.filter-cate > li");
+                                    const arrIdx = [0, 1, 3, 5, 6, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24];
+                                    listCode.each(function (idx, li) {
+                                        //console.log(idx);
+                                        if (!arrIdx.includes(idx)) {
+                                            $(this).children("input").attr('checked', false);
+                                        }
+                                    })
+                                    
+                                    $('#btnAddLink').show();
+                                    $('#btnRemoveLink').hide();
+                                    $('#stockName').attr('disabled', false);
+                                    loadData();
+                                } else {
+                                    toastr.error(data.message);
+                                }
+
+                            },
+                            error: function (err) {
+                                console.log(err);
+                                $('#loading').removeClass('loading');
+                            }
+                        })
+                    } else {
+                        $('#loading').removeClass('loading');
+                    }
+                })
+
+                $('#btnAddLink').click(function (e) {
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+                    $.ajax({
+                        url: '@Url.Action("UpdateLinkDoanhNghiep", "QuanLyDoanhNghiep")?CompanyID=' + $("#stockName").val()
+                            + '&IsDelete=1',
+                        type: 'POST',
+                        success: function (data) {
+                            $('#loading').removeClass('loading');
+                            //console.log(data)
+                            if (data.code == 0) {
+                                $("#Link").val( '@_LinkSiteNhung' + 'thongtindoanhnghiepclient/' + data.data); @*ezir.fpts.com.vn/*@
+                                $('#btnAddLink').hide();
+                                $('#btnRemoveLink').show();
+                                toastr.success(data.message);
+                            } else if (data.code == -1) {
+                                toastr.error(data.message);
+                            }
+                            else {
+                                toastr.error("Lỗi khi gán link doanh nghiệp");
+                            }
+                        },
+                        error: function (err) {
+                            $('#loading').removeClass('loading');
+                            console.log(err);
+                        }
+                    })
+
+                });
+
+                $('#btnRemoveLink').click(function (e) {
+                    $('#loading').addClass('loading');
+                    e.preventDefault();
+                    $.ajax({
+                        url: '@Url.Action("UpdateLinkDoanhNghiep", "QuanLyDoanhNghiep")?CompanyID=' + $("#stockName").val()
+                            + '&IsDelete=0',
+                        type: 'POST',
+                        success: function (data) {
+                            $('#loading').removeClass('loading');
+                            if (data.code == 0) {
+                                $("#Link").val('');
+                                $('#btnAddLink').show();
+                                $('#btnRemoveLink').hide();
+                                toastr.success("Đã bỏ gán link cho doanh nghiệp");
+                            } else if (data.code == -1) {
+                                toastr.error(data.message);
+                            } else {
+                                toastr.error("Lỗi khi bỏ gán link doanh nghiệp");
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            $('#loading').removeClass('loading');
+                        }
+                    })
+                });
+
+                $('#btnCopy').click(function (e) {
+                    e.preventDefault();
+                    copyToClipboard(document.getElementById("Link"));
+                });
+
+                function copyToClipboard(elem) {
+                    var targetId = "_hiddenCopyText_";
+                    var isInput = elem.tagName === "INPUT" || elem.tagName === "TEXTAREA";
+                    var origSelectionStart, origSelectionEnd;
+                    if (isInput) {
+                        target = elem;
+                        origSelectionStart = elem.selectionStart;
+                        origSelectionEnd = elem.selectionEnd;
+                    } else {
+                        target = document.getElementById(targetId);
+                        if (!target) {
+                            var target = document.createElement("textarea");
+                            target.style.position = "absolute";
+                            target.style.left = "-9999px";
+                            target.style.top = "0";
+                            target.id = targetId;
+                            document.body.appendChild(target);
+                        }
+                        target.textContent = elem.textContent;
+                    }
+                    var currentFocus = document.activeElement;
+                    target.focus();
+                    target.setSelectionRange(0, target.value.length);
+
+                    var succeed;
+                    try {
+                        succeed = document.execCommand("copy");
+                    } catch (e) {
+                        succeed = false;
+                    }
+                    if (currentFocus && typeof currentFocus.focus === "function") {
+                        currentFocus.focus();
+                    }
+
+                    if (isInput) {
+                        elem.setSelectionRange(origSelectionStart, origSelectionEnd);
+                    } else {
+                        target.textContent = "";
+                    }
+                    if (succeed) {
+                        toastr.success('Đã sao chép liên kết');
+                    } else {
+                        toastr.error('Lỗi sao chép liên kết');
+                    }
+                    return succeed;
+                }
+
+                $('#btnReset').click(function (e) {
+                    e.preventDefault();
+                    $("#formUpdate").trigger("reset");
+                    $('#stockName').val(-1);
+                    $('#CompanyType').val('');
+                    $('#Expert').val(-1);
+
+                    var listCode = $(".filter-wrapper>.filter-cate > li");
+                    const arrIdx = [0, 1, 3, 5, 6, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24];
+                    listCode.each(function (idx, li) {
+                        //console.log(idx);
+                        if (!arrIdx.includes(idx)) {
+                            $(this).children("input").attr('checked', false);
+                        }
+                    })
+                    $("#Expert").val(-1).trigger('change');
+                    $("#stockName").val(-1).trigger('change');
+
+
+                    $('#btnAddLink').show();
+                    $('#btnRemoveLink').hide();
+                    $('#stockName').attr('disabled', false);
+                })
+
+                function Validate() {
+                    if ($('#stockName').val() == -1) {
+                        toastr.error('@SharedLocalizer["ACPNYID_EMPTY"]');
+                        return false;
+                    }
+                    if ($('#Expert').val() == -1) {
+                        toastr.error('@SharedLocalizer["AEXPERT_Empty"]');
+                        return false;
+                    }
+                    if ($('#FicsYearMonth').val() == -1) {
+                        toastr.error('@SharedLocalizer["FISCYEARMONTH_EMPTY"]');
+                        return false;
+                    }
+                    if ($('#FicsYearDay').val() == -1) {
+                        toastr.error('@SharedLocalizer["FISCYEARDAY_EMPTY"]');
+                        return false;
+                    }
+
+                    return true;
+                }
+
+
+            }
+        }
+
+        var doanhNghiep = new DoanhNghiep();
+        doanhNghiep.init();
+
+
+
+
+
+
+    })
+
+    // function myFnc(e){
+
+    //     }
+</script>

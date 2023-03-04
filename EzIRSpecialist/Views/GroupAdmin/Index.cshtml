@@ -1,0 +1,369 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+
+@{
+    ViewData["Title"] = "Quản lý nhóm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Online/BaoCao_TienIch.css" rel="stylesheet" />
+
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#">
+                    <span>Báo cáo - tiên ích</span>
+                </a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#">
+                    <span>Phân quyền</span>
+                </a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="@Url.Action("Index", "GroupAdmin")">
+                    <span>Quản lý nhóm</span>
+                </a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist">
+        <li class="nav-item col gsm-link-tab active" id="liGroup">
+            <a class="nav-link active show " data-toggle="tab" data-target="#k_tabs_1" role="tab" aria-selected="true" id="aGroup">
+                <span class="nav-link-title text-uppercase">Quản lý Nhóm</span>
+            </a>
+        </li>
+        <li class="nav-item col gsm-link-tab" id="liCreateGroup">
+            <a class="nav-link" data-toggle="tab" data-target="#updateTab" role="tab" aria-selected="false" id="aCreateGroup">
+                <span class="nav-link-title text-uppercase">Tạo Nhóm</span>
+            </a>
+        </li>
+    </ul>
+    <div class="line_top col-md-12">
+
+    </div>
+    <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+        <div class="content-tbl">
+            <table id="listGroup" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" style="width: 1138px;">
+                <thead>
+                    <tr>
+                        <th>Mã Nhóm</th>
+                        <th>Tên Nhóm</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="updateTab" class="tab-pane fade tab-acc">
+        <div class="tab-content">
+            <div class="form-group-wrapper col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <form action="" name="formTaoNhom">
+                    <div class="col-md-12  nopadding">
+                        <div class="form-group row required">
+                            <div class="col-md-3 text-box-label control-label">
+                                <label for="GroupCode">Mã Nhóm</label>
+                            </div>
+                            <div class="col-md-9 nopadding">
+                                <input type="text" class="form-control" name="GroupCode" id="txtGroupCode" maxlength="50" />
+                            </div>
+                        </div>
+                        <div class="form-group row required">
+                            <div class="col-md-3 text-box-label control-label">
+                                <label class="" for="GroupName">Tên Nhóm</label>
+                            </div>
+                            <div class="col-md-9 nopadding">
+                                <input type="text" class="form-control" name="GroupName" id="txtGroupName" maxlength="200" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="row d-flex justify-content-center col-12 padb20">
+                    <button type="button" class="btn btn-primary col-md-2 col-12 mt-3 col-2" id="btnInsert">
+                        Thêm
+                    </button>
+                    <button type="button" class="btn btn-primary col-md-2 col-12 mt-3 col-2" id="btnUpdate" hidden>
+                        Sửa
+                    </button>
+                    <button id="btnReset" class="btn btn-primary col-md-2 col-12 mt-3 col-2 ml-3">
+                        Làm mới
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="loading"></div>
+<script type="text/javascript">
+
+	$(document).ready( function() {
+
+        var renderColumns = [
+            {
+                data: "groupCode",
+            },
+            {
+                data: "groupName",
+            },
+            {
+                data: "groupCode",
+                render: function (data) {
+                    return `<div class="d-inline-flex w-100">
+                              <a class='EditAccount btn text-primary' data-id='${data}'><i class="far fa-edit"></i></a>
+                              <a class='DeleteAccount btn text-primary' data-id='${data}'><i class="fas fa-delete"></i></a>
+                            </div >`;
+                }
+            },
+        ]
+
+        var GroupAdmin = function() {
+
+            this.init = function() {
+                loadData();
+                registerEvents();
+            }
+
+            var loadData = function () {
+
+                $('#loading').addClass('loading');
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetGroup", "GroupAdmin")',
+                    dataType: 'json',
+                    data: {} ,
+                    success: function (data) {
+
+                        if ($.isArray(data)) {
+
+                            $('#listGroup').DataTable({
+                                ordering: false,
+                                dom: "lti<'d-flex justify-content-center'p>",
+                                destroy: true,
+                                "ordering": false,
+                                searching: false,
+                                lengthChange: false,
+                                className: 'dt-body-right',
+                                "bInfo": false,
+                                data: data,
+                                columns: renderColumns
+                            });
+
+                            $('#loading').removeClass('loading');
+
+                            return;
+                        }
+
+                        
+                        isMessageSuccess(data);
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+
+            }
+
+            var registerEvents = function () {
+
+                // Action click edit record
+                $('body').on('click', '.EditAccount', function (e) {
+                    e.preventDefault();
+
+                    // Action change tab
+                    $("#liGroup").removeClass("active");
+                    $("#liCreateGroup").addClass("active");
+
+                    $("#aGroup").attr('aria-selected', 'false');
+                    $("#aCreateGroup").attr('aria-selected', 'true');
+
+                    $("#k_tabs_1").removeClass("active show in");
+                    $("#updateTab").addClass("active show in");
+
+                    $("#btnInsert").attr('hidden', 'true');
+                    $("#btnUpdate").removeAttr('hidden');
+
+                    $("#txtGroupCode").attr('readonly', 'true');
+
+                    var groupCode = $(this).data('id');
+
+                    $('#loading').addClass('loading');
+
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("GetGroup", "GroupAdmin")',
+                        dataType: 'json',
+                        data: { GroupCode: groupCode} ,
+                        success: function (data) {
+
+                            $('#loading').removeClass('loading');
+
+                            if ($.isArray(data)) {
+                                $('#txtGroupCode').val(data[0].groupCode);
+                                $('#txtGroupName').val(data[0].groupName);
+                                return;
+                            }
+
+                            isMessageSuccess(data);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            $('#loading').removeClass('loading');
+                        }
+                    });
+
+                });
+
+                // Action click button Insert
+                $('#btnInsert').click((e) => {
+                    e.preventDefault();
+
+                    var groupCode1 = $('#txtGroupCode').val();
+                    var groupName1 = $('#txtGroupName').val();
+                    var groupCode = groupCode1.trim();
+                    var groupName = groupName1.trim();
+                    if (!groupCode.trim()) return toastr.warning('Trường mã nhóm không được để trống!');
+                    if (!groupName.trim()) return toastr.warning('Trường tên nhóm không được để trống!');
+
+                    $('#loading').addClass('loading');
+                    
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("InsertGroup", "GroupAdmin")',
+                        dataType: 'json',
+                        data: { GroupCode: groupCode, GroupName: groupName },
+                        success: function (data) {
+
+                            $('#loading').removeClass('loading');
+
+                            isMessageSuccess(data);
+                            reloadData();
+                            document.forms['formTaoNhom'].reset();
+
+                        },
+                        error: function (err) {
+                            $('#loading').removeClass('loading');
+                            console.log(err);
+                        }
+                    });
+
+                });
+
+                // Action click button Upadte
+                $('#btnUpdate').click((e) => {
+                    e.preventDefault();
+
+                    var groupCode = $('#txtGroupCode').val();
+                    var groupName = $('#txtGroupName').val();
+
+                    if (!groupCode.trim()) return toastr.warning('Trường mã nhóm không được để trống!');
+                    if (!groupName.trim()) return toastr.warning('Trường tên nhóm không được để trống!');
+
+                    $('#loading').addClass('loading');
+
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("UpdateGroup", "GroupAdmin")',
+                        dataType: 'json',
+                        data: { GroupCode: groupCode, GroupName: groupName },
+                        success: function (data) {
+                            console.log(data);
+                            isMessageSuccess(data);
+                            reloadData();
+
+                            $('#loading').removeClass('loading');
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+
+                });
+
+                // Action click button Upadte
+                $('body').on('click', '.DeleteAccount', function (e) {
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Thông báo',
+                        text: 'Bạn có chắc chắn muốn xóa nhóm đang chọn?',
+                        type: 'warning',
+                        cancelButtonText: 'Hủy',
+                        showCancelButton: true,
+                        confirmButtonText: 'OK'
+                    }).then(result => {
+                        if (result.value) {
+                            var groupCode = $(this).data('id');
+                            //if (!groupCode.trim()) {
+                            //    return toastr.warning('Không tìm thấy nhóm!');
+                            //}
+                            $('#loading').addClass('loading');
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("DeleteGroup", "GroupAdmin")',
+                                dataType: 'json',
+                                data: { GroupCode: groupCode },
+                                success: function (data) {
+
+                                    isMessageSuccess(data);
+                                    reloadData();
+
+                                    $('#loading').removeClass('loading');
+
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            });
+
+                        }
+                    });
+
+
+
+                });
+
+                // Refresh page
+                $('#btnReset').click(function () {
+                    $('#txtGroupCode').val('');
+                    $('#txtGroupName').val('');
+                    $("#btnUpdate").attr('hidden', 'true');
+                    $("#btnInsert").removeAttr('hidden');
+                    $("#txtGroupCode").removeAttr('readonly');
+                });
+
+
+            }
+
+            function reloadData() {
+                $('#listGroup').DataTable({
+                    ordering: false,
+                    dom: "lti<'d-flex justify-content-center'p>",
+                    destroy: true,
+                    "ordering": false,
+                    searching: false,
+                    lengthChange: false,
+                    className: 'dt-body-right',
+                    "bInfo": true,
+                    ajax: {
+                        url: "@Url.Action("GetGroup", "GroupAdmin")",
+                        dataSrc: ""
+                    },
+                    columns: renderColumns
+                });
+            }
+        }
+
+        var groupAdmin = new GroupAdmin();
+        groupAdmin.init();
+
+    });
+
+</script>

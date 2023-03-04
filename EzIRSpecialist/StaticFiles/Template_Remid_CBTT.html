@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<!--======================================================HEAD/INCLUDE======================================================-->
+	<!--======================================================/HEAD/INCLUDE======================================================-->
+	<style>
+		.Contenton li {
+			list-style: disc !important;
+		}
+
+		.Content li {
+			list-style: none;
+		}
+
+		.bang tr td {
+			border: 1px solid #000 !important;
+			padding: 5px;
+		}
+
+		.bang {
+			border-spacing: 0px;
+			margin-left: 15px;
+			width: 98.4%;
+		}
+
+		span.spannd {
+			font-size: 16px;
+			font-weight: bold;
+		}
+
+		span.spanheader {
+			padding-top: 10px;
+			font-size: 14px;
+			text-transform: uppercase;
+			font-weight: bold;
+		}
+
+		.box_top {
+			padding-top: 10px;
+		}
+
+		body {
+			font-size: 16px;
+			font-family: 'Times New Roman', helvetica, sans-serif !important;
+			color: #000;
+		}
+
+		ul.Content {
+			text-align: justify;
+			padding-left: 15px;
+		}
+
+		.subTitle {
+			font-size: 16px;
+			font-weight: bold;
+		}
+
+		.time_bophieu {
+			font-style: italic;
+			font-size: 16px;
+		}
+
+		.logo_FPTS {
+			text-align: left;
+			width: 20%;
+			padding-top: 10px;
+			padding-left: 14px;
+		}
+
+		.table_content {
+			padding: 10px;
+		}
+
+		.footer ul {
+			display: flex;
+			float: right;
+		}
+
+		#table_first tr td {
+			border: none;
+		}
+
+		table {
+			border: none;
+		}
+
+		.floatleft {
+			float: left;
+		}
+
+		.floatright {
+			float: right;
+		}
+
+
+
+		.special_text {
+			display: inline;
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+
+
+
+	<table align="center" border="1" cellpadding="0" cellspacing="0" style="width:80%" id="table_first">
+
+		<tbody>
+			<tr>
+				<td colspan="7" style="text-align:center">
+					<table border="0" cellpadding="0" cellspacing="0"
+						   style="margin-left:12pt; margin-right:12pt; width:89%">
+						<tbody>
+							<table class="table_content" style="width:100%">
+								<tbody>
+									<tr>
+										<td class="logo_FPTS">
+											<!--<img src="../wwwroot/images/icon/fpts.png" width="50%">-->
+											{!logoFPTS}
+										</td>
+										<td colspan="" style="width:100%; color: #007eb3; font-size: 19px;text-align:right;">
+											<span>
+												Công ty cổ phần chứng khoán FPT 
+											</span>
+											<span style="margin-right: 50px;">
+												| FPT Securities Join Stock Company
+											</span>
+										</td>
+
+									</tr>
+								</tbody>
+							</table>
+							<table class="table_content">
+								<tbody>
+									<tr>
+										<td colspan="" style=" ">
+											<div class="box_top" style="">
+
+
+												<span class="spanheader">Công ty cổ phần chứng khoán FPT </span><br />
+												<span class="spanheader">
+													Phòng Tư vấn Tài chính doanh nghiệp
+												</span><br /><br />
+												<span class="">CV số: 24-2020/FPTS-FCF</span><br />
+												<span class="">V/v: Công bố thông tin quý I/2021 </span><br>
+												<span class="">của DN {!tensan}</span>
+											</div>
+										</td>
+
+										<td colspan="" style="">
+											<div class="box_top" style="">
+
+												<span class="spanheader">Cộng hòa xã hội chủ nghĩa Việt Nam</span><br />
+												<span class="spanheader">
+													Độc lập - Tự do - Hạnh phúc
+												</span><br /><br />
+												<span class="">
+													Hà Nội , ngày {!day} tháng {!month} năm
+													{!year}
+												</span><br /><br><br>
+
+											</div>
+										</td>
+
+									</tr>
+									<tr>
+										<td><br /></td>
+									</tr>
+									<tr>
+										<td colspan="7">
+											<span class="subTitle">Kính gửi: Quý công ty {!tencongty}</span>
+										</td>
+									</tr>
+
+									<tr>
+										<td><br /></td>
+									</tr>
+
+									<tr>
+										<td colspan="7" style="text-align:left;">
+											<span style="margin-left: 85px;">
+												Công ty Cổ phần Chứng khoán
+												FPT (FPTS) xin gủi lời chào trân trọng tới Quý Công ty.
+											</span><br>
+
+										</td>
+									</tr>
+									<tr>
+										<td colspan="7" style="text-align: left;">
+											<span style="margin-left: 40px;">
+												Cảm ơn Quý
+												công
+												ty đã
+												tin
+												tưởng sử dụng các dịch vụ tư vấn của chúng tôi trong thời gian qua.
+											</span>
+										</td>
+
+									</tr>
+									<tr>
+										<td colspan="7" style="text-align: left;">
+											<span style="margin-left: 85px;">
+												FPTS xin được lưu ý Quý
+												Công ty về thời gian thực hiện nghĩa vụ công bố thông tin (CBTT) quý
+												I/2021
+												như
+												sau:
+											</span><br>
+
+										</td>
+									</tr>
+
+									<tr>
+										<td colspan="7" style="text-align:left;">
+											<ul class="Content">
+												<li>
+													<span class="spannd">I/ Đối tượng Công bố thông tin</span>
+													<br /><span>
+														&nbsp;&nbsp;&nbsp;&nbsp;Quý công ty hiện đang niêm yết trên Sở
+														giao dịch
+														chứng khoán TP Hồ Chí Minh (SGDCK TP Hồ Chí Minh).
+														Vì vậy, Quý công ty phải tuân thủ các quy định về CBTT được
+														quy định tại Thông tư 155/2015/TT-BTC, Thông Tư
+														96/2020/TT-BTC và Quy chế CBTT của SGDCK TP Hồ Chí Minh.
+
+													</span>
+												</li>
+
+												<li>
+													<span class="spannd">II. Lịch công bố thông tin đinh kỳ</span>
+													<span></span>
+
+												</li>
+
+
+											</ul>
+
+										</td>
+									</tr>
+
+									<tr>
+
+										<td colspan="7">
+											<table class="bang" id="table_tin" style="border-collapse: collapse;">
+												<thead>
+													<tr style="background-color: #d9d9d9;">
+														<td><span class="spannd">STT</span></td>
+														<td><span class="spannd">Báo cáo</span></td>
+														<td><span class="spannd">Thời điểm công bố thông tin</span></td>
+														<td><span class="spannd">Thời hạn cuối cùng</span></td>
+														<td><span class="spannd">Biểu mẫu</span></td>
+														<td><span class="spannd">Căn cứ cuối cùng </span></td>
+													</tr>
+												</thead>
+												<tbody>
+													{!noidungbang}
+
+													
+
+												</tbody>
+
+
+											</table>
+										</td>
+									</tr>
+
+									<tr>
+										<td colspan="7" style="text-align:left;">
+											<ul class="Content">
+												<li>
+													Ngoài ra, trường hợp Quý công ty huy động
+													vốn để thực hiện dự án đầu
+													tư, định kỳ 06 tháng kể từ ngày kết thúc đợt chào bán cho đến khi
+													hoàn
+													thành dự án; hoặc cho đến khi đã giải ngân hết số tiền huy động
+													được,
+													công ty đại chúng phải báo cáo Ủy ban Chứng khoán Nhà nước và công
+													bố
+													thông tin về tiến độ sử dụng vốn thu được từ đợt chào bán.
+												</li>
+											</ul>
+											<!-- <span style="margin-left: 85px;"></span> -->
+
+										</td>
+									</tr>
+									<tr>
+										<td colspan="7" style="text-align:left; ">
+											<ul class="Content" style="margin-top: 0px;">
+												<li>
+													<span class="spannd">
+														III/ Lưu ý CBTT về việc tổ chức Đại hội đồng cổ
+														đông (ĐHĐCĐ):
+													</span>
+													<ul class="Contenton">
+														<li>
+															<span>
+																Căn cứ quy định tại khoản 1 điều 8 Nghị định
+																71/2017/NĐ-CP. Hướng dẫn về quản trị
+																công ty áp dụng với công ty đại chúng có hiệu lực từ
+																01/08/2017: "Công ty đại chúng
+																phải công bố thông tin về việc lập danh sách cổ đông có
+																quyền tham dự họp Đại hội đồng cổ đông tối thiểu 20 ngày
+																trước ngày
+																đăng ký cuối cùng", Quý công ty cần lưu ý quy định này
+																trong trường hợp tổ chức ĐHĐCĐ (thường niên, bất thường
+																và xin ý kiến bằng văn bản).
+															</span>
+														</li>
+														<li>
+															<span>
+																Theo Điểm a, Khoản 3 Điều 10 Thông tư 96/2020/TT-BTC,
+																tối thiểu 21 ngày trước ngày khai mạc họp ĐHĐCĐ nếu Điều
+																lệ công ty không quy định thời hạn dài hơn, công ty phải
+																công bố về việc họp ĐHĐCĐ trong đó nêu rõ đường dẫn đến
+																toàn bộ tài liệu họp.
+															</span>
+														</li>
+													</ul>
+
+												</li>
+												<!-- <li><span class="spannd">IV. Phương tiện và hình thức công bố:</li> -->
+
+											</ul>
+
+
+											<ul class="Content">
+												<li>
+													<span class="spannd">
+														IV. Phương tiện và hình thức công bố:
+													</span>
+													<ul class="Contenton">
+														<li>
+															<span class="">
+																Đối với SGDCK TP Hồ Chí Minh: Quý công ty
+																tiến hành gửi bản cứng qua đường bưu điện và gửi bản mềm
+																qua
+																email của chuyên viên phụ trách.
+															</span>
+														</li>
+														<li>
+															<span class="">
+																Đối với UBCKNN: Quý công ty có thể đăng ký và
+																gửi các báo cáo thông qua hệ thống IDS Pro của UBCKNN.
+															</span>
+
+														<li>
+															<span class="">
+																Quý công ty đăng tải các báo cáo trên lên mục
+																Quan hệ cổ đông trên trang thông tin điện tử.
+															</span>
+														</li>
+														<li>
+															<span class="">
+																Trong trường hợp không thể công bố qua các hệ
+																thống trên, Quý công ty phải kịp thời gửi bản cứng cho
+																UBCKNN,
+																SGDCK TP Hồ Chí Minh qua đường bưu điện.
+															</span>
+
+														</li>
+													</ul>
+												</li>
+
+
+
+
+
+											</ul>
+										</td>
+									</tr>
+									<tr>
+										<td style="text-align: left;" colspan="7">
+
+											<ul class="Content">
+												<div class="floatleft">
+													<li class="special_text">Trân trọng!</li>
+												</div>
+												<div class="floatright">
+													<li class="special_text">
+														Công ty cổ
+														phần chứng khoán
+													</li>
+
+												</div>
+											</ul>
+
+										</td>
+									</tr>
+
+
+								</tbody>
+							</table>
+
+							<!--<table style="width:100%">
+								<tbody>
+									<tr>
+										<td colspan="7" style="text-align: right;">
+											{!signature_fcf}
+
+
+										</td>
+									</tr>
+
+								</tbody>
+							</table>-->
+
+						</tbody>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+
+</html>

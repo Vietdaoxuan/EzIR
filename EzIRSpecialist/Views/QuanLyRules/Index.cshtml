@@ -1,0 +1,1583 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@{ ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<link rel="stylesheet" href="~/Online/BaoCao_TienIch.css" />
+<link href="~/css/siteStyle.css" rel="stylesheet" />
+<style>
+    .loaitailieu {
+        display: none;
+    }
+
+    .note:after {
+        content: '*';
+        padding-left: 5px;
+        color: red;
+    }
+
+    .content-tbl {
+        margin-top: 3rem;
+    }
+
+    div#listRules_length {
+        left: 100%;
+        position: absolute;
+        top: -4rem;
+    }
+
+    select.custom-select.custom-select-sm.form-control.form-control-sm {
+        width: 5rem;
+        font-size: 10pt;
+    }
+
+    label[for="Active"] {
+        margin-left: 0px;
+    }
+
+    table#listRules th {
+        padding: 15px 10px;
+        color: #2999ce;
+        font-weight: 500;
+    }
+</style>
+<div>
+    <nav aria-label="breadcrumb " class="first d-md-flex">
+        <ol class="breadcrumb indigo lighten-6 first-1 mb-5 bar-menu">
+            <li class="font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Báo cáo tiện ích</span></a>
+            </li>
+            <div class="triangle-right"></div>
+            <li class="breadcrumb-item font-weight-bold">
+                <a class="breadcrumb-link" href="#"><span>Quản lý Rules</span></a>
+            </li>
+        </ol>
+    </nav>
+</div>
+
+<div class="k-portlet__body">
+    <ul class="nav nav-pills nav-tabs-btn nav-pills-btn-success row" role="tablist">
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link active show" data-toggle="tab" data-target="#k_tabs_1" role="tab" aria-selected="true">
+                <span class="nav-link-title text-uppercase">Quản lý Rules</span>
+            </a>
+        </li>
+        <li class="nav-item col gsm-link-tab">
+            <a class="nav-link" data-toggle="tab" data-target="#updateTab" role="tab" aria-selected="false">
+                <span class="nav-link-title text-uppercase">Tạo mới Rules</span>
+            </a>
+        </li>
+    </ul>
+    <div class="line_top col-md-12">
+
+    </div>
+    <div id="k_tabs_1" class="tab-pane fade in active tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper">
+                <form id="formSearch">
+                    <div class="form-row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-section">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4 EnterpriseType_wrapper">
+                                <label for="EnterpriseType">Loại hình</label>
+                                <select class="form-control" id="loaihinh" name="ACompanyType" asp-items="@(new SelectList(Model.ListLoaiHinhDN, "TypeCode","TypeName"))">
+                                    <option value="-1" selected>
+                                        Tất cả
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4 ">
+                                <label for="DocType">Loại tài liệu</label>
+                                <select id="DocType_tab1" class="form-control" name="ADocType" asp-items="@(new SelectList(Model.ListLoaiTaiLieu, "TypeCode","TypeName"))">
+                                    <option value="-1" selected>
+                                        Tất cả
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4 ">
+                                <label for="FormType">Loại tin</label>
+                                <select id="NewType_tab1" class="form-control" name="ANewType" asp-items="@(new SelectList(Model.ListTin, "TypeCode","TypeName"))">
+                                    <option value="-1" selected>
+                                        Tất cả
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-section">
+                            <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4 ReportType_wrapper">
+                                <label for="type">Niên độ BCTC</label>
+                                <select class="form-control" id="slNienDoSearch" name="NienDo" style="width: 99.4% !important;">
+                                    <option value="0">Tất cả</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4 ReportType_wrapper">
+                                <label for="type">Loại biểu mẫu</label>
+                                <select class="form-control" id="slLoaiBieuMauSearch" name="LoaiBieuMau" style="width: 99.4% !important;">
+                                    <option value="1">Tiếng việt</option>
+                                    <option value="2">Tiếng anh</option>
+                                    <option value="3">Song ngữ</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4 ReportType_wrapper">
+                                <label for="type">Biểu mẫu số</label>
+                                <select class="form-control" id="slBieuMauSoSearch" name="BieuMauSo" style="width: 99.4% !important;">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4 ReportType_wrapper">
+                            <label for="DoiTuongAD">Đối tượng áp dụng</label>
+                            <select id="Object_tab1" class="form-control" name="AObject" asp-items="@(new SelectList(Model.ListDoiTuongAD, "TypeCode","TypeName"))">
+                                <option value="0" selected>
+                                    Tất cả
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4 ReportType_wrapper">
+                            <label for="FicsYearMonth" class="">Từ ngày</label>
+                            <div class="">
+                                <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-left: 0 !important;">
+                                    <select id="FicsYearMonth" class="form-control">
+                                        <option value="0" selected>Chọn tháng</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-right: 0 !important;">
+                                    <select id="FicsYearDay" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="date" class="form-control" id="FromDateSearch" name="FormDate" hidden>
+                        </div>
+                        <div class="form-group col-sm-12 col-md-12 col-lg-4 col-xl-4 ReportType_wrapper">
+                            <label for="FicsYearMonth" class="">Đến ngày</label>
+                            <div>
+                                <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-left: 0 !important; ">
+                                    <select id="FicsYearMonth2" class="form-control">
+                                        <option value="0" selected>Chọn tháng</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-right: 0 !important;">
+                                    <select id="FicsYearDay2" class="form-control">
+                                    </select>
+                                </div>
+                            </div>
+                            <input type="date" class="form-control" id="ToDateSearch" name="ToDate" hidden>
+                        </div>
+                    </div>
+                </form>
+                <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-section form-group btn-save-section" style="margin-bottom: 1.9rem !important">
+                    <button class=" btn btn-primary save-rules-btn" id="Search">Tìm Kiếm</button>
+                    <button class=" btn btn-primary export-btn" id="Export">Xuất báo cáo</button>
+                </div>
+            </div>
+            <div class="content-tbl">
+                <table id="listRules" class="table table-striped dt-responsive dataTable no-footer dtr-inline" role="grid" style="width: 1138px;">
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Tab tạo Rules-->
+    <div id="updateTab" class="tab-pane fade tab-acc">
+        <div class="tab-content">
+            <div class="form-wrapper">
+                <form id="FormUpdate">
+                    <div class="form-row">
+                        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12 form-section">
+
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+
+                                <input type="text" class="form-control" name="ARuleID" id="rulesid" style="display:none;">
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7 " style="">
+                                <label for="EnterpriseType" class="note">Loại hình</label>
+                                <select class="form-control" name="multiselect[]" id="example-getting-started" multiple="multiple">
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <label for="type">Niên độ BCTC</label><br />
+                                <select class="form-control" id="slNienDoBCTC">
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <label for="DocType">Loại tài liệu</label>
+                                <select id="DocType" class="form-control" name="ADocType" asp-items="@(new SelectList(Model.ListLoaiTaiLieu, "TypeCode","TypeName"))">
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <label for="FormType">Loại tin</label>
+                                <select id="NewsType" class="form-control" name="ANewType" asp-items="@(new SelectList(Model.ListTin, "TypeCode","TypeName"))">
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <label for="">Quy định CBTT</label>
+                                <input type="text" class="form-control" name="AQDCBTT" id="quydinhcbtt">
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <label for="">Căn cứ pháp lý CBTT</label>
+                                <input type="text" class="form-control" name="ACCPLCBTT" id="phaplycbtt">
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <label for="type">Loại biểu mẫu</label>
+                                <select class="form-control" id="slLoaiBM">
+                                    <option value="1">Tiếng việt</option>
+                                    <option value="2">Tiếng anh</option>
+                                    <option value="3">Song ngữ</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <label for="type">Biểu mẫu số</label>
+                                <select class="form-control" id="slBieuMau" name="">
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <label for="DoiTuongAD">Đối tượng áp dụng</label>
+                                <select id="DoiTuongAD" class="form-control" name="AObject" asp-items="@(new SelectList(Model.ListDoiTuongAD, "TypeCode","TypeName"))">
+                                </select>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 " style="padding: 0 !important">
+                                    <label for="Deadline">DeadlineCBTT <span>*</span></label>
+                                    <input type="number" id="dlcbtt" name="ADeadline" class="form-control">
+                                </div>
+                                <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7" style="padding: 0 !important; margin-left: 8%;">
+                                    <label for="FicsYearMonth" class="">ngày tính từ thời điểm</label>
+                                    <div>
+                                        <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-left: 0 !important;">
+                                            <select id="Month1" class="form-control">
+                                                <option value="0" selected>Chọn tháng</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-right: 0 !important;">
+                                            <select id="Day1" class="form-control">
+                                                <option value="0" selected>Chọn ngày</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7">
+                                <div class="form-group col-sm-12 col-md-4 col-lg-4 col-xl-4 " style="padding: 0 !important">
+                                    <label for="Deadline">DeadlineCBTT (gia hạn)</label>
+                                    <input type="number" class="form-control" name="ADatelineExtend" id="dlcbttgh">
+                                </div>
+                                <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7" style="padding: 0!important; margin-left: 8%;">
+                                    <label for="FicsYearMonth" class="">ngày tính từ thời điểm</label>
+                                    <div>
+                                        <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-left: 0 !important;">
+                                            <select id="Month2" class="form-control">
+                                                <option value="0" selected>Chọn tháng</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-sm-6 col-lg-6 col-xl-6 col-md-6" style="padding-right: 0 !important;">
+                                            <select id="Day2" class="form-control">
+                                                <option value="0" selected>Chọn ngày</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="form-group col-sm-12 col-md-7 col-lg-7 col-xl-7 btn-save-section">
+                    <button class=" btn btn-primary update-btn" id="Insert">Cập nhật</button>
+                    <button class=" btn btn-primary reset-btn" id="Reset">Làm mới</button>
+                    <button class=" btn btn-primary update-btn" id="Update">Sửa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-uppercase modaltitle">Thông tin Rule</h3>
+                <button type="button" class="close" data-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                @Component.InvokeAsync("RuleDetail")
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="loading"></div>
+
+<script>
+    $(document).ready(function () {
+
+        //function change DocType, NewType
+        $('#DocType_tab1').change(function () {
+                    $('#loading').addClass('loading');
+
+                    var doctypeCode = $('#DocType_tab1').find(":selected").val();
+                    //console.log(doctypeCode);
+                    $.get("@Url.Action("Index", "DoanhNghiepCongBo")?value=" + doctypeCode, function (data) {
+                        //console.log(data);
+
+                        $('#loading').removeClass('loading');
+                        $("#NewType_tab1").html("");
+                        var htmlOption = `<option value="-1" selected>Tất cả</option>`;
+                        if (doctypeCode != 'Tất cả') {
+                            $.each(data, function (index, value) {
+
+                                htmlOption = htmlOption + '<option value="' + value.typeCode + '" data-id="' + value.acategory + '">' + value.typeName + '</option>';
+                            });
+                        }
+                        else {
+                            htmlOption += ``
+                        }
+
+                        $("#NewType_tab1").html(htmlOption);
+
+                    });
+
+                });
+
+        $('#DocType').change(function () {
+
+             var doctypeCode = $('#DocType').find(":selected").val();
+
+             $.get("@Url.Action("Index", "QuanLyRules")?value=" + doctypeCode, function (data) {
+
+
+                 $("#NewsType").html("");
+
+                 var htmlOption = '';
+
+                     $.each(data, function (index, value) {
+
+                         htmlOption = htmlOption + '<option value="' + value.typeCode + '" data-id="' + value.acategory + '">' + value.typeName + '</option>';
+                     });
+
+                 $("#NewsType").html(htmlOption);
+
+             });
+
+        });
+
+        $(".nav-item.col.gsm-link-tab").first().addClass("active");
+
+        $('#Update').hide();
+
+        $('#menuenterprise').hide();
+
+        $("#stafftab").click(function () {
+            //console.log("click");
+            $('#menustaff').show();
+            $('#menuenterprise').hide();
+        });
+
+        $("#enterprisetab").click(function () {
+            $('#menustaff').hide();
+            $('#menuenterprise').show();
+        });
+
+        var renderColumns = [
+             {
+                data: "aDocType",
+                className: "loaitailieu"
+             },
+             {
+                orderable: true,
+                width: "4%",
+                title:"STT",
+                data: "index"
+             },
+
+             {
+                 orderable: false,
+                 width: "12%",
+                 title: "Loại doanh nghiệp",
+                 data: "aloaiDoanhNghiep"
+             },
+
+             {
+                 orderable: false,
+                 width: "12%",
+                 title: "Loại tin",
+                 data: "aloaiTin"
+            },
+            {
+                orderable: false,
+                width: "10%",
+                title: "Niên độ BCTC",
+                data: "aTenNienDoBCTC"
+            },
+            {
+                orderable: false,
+                width: "13%",
+                title: "Biểu mẫu số",
+                data: "aTenBieuMauSo"
+            },
+            {
+                orderable: false,
+                width: "11%",
+                title: "Đối tượng áp dụng",
+                data: "aDoiTuongApDung"
+            },
+             {
+                 orderable: false,
+                 width: "10%",
+                 title: "DeadlineCBTT",
+                 data: "aDate",
+                 render: function (data, type, rule) {
+                     if (data == null) return '';
+                     var date = new Date(data);
+                     date.setDate(date.getDate() + rule['aDeadline'])
+                     let arr = date.toLocaleDateString().split('/');
+                     return `${arr[1]}/${arr[0]}`;
+                 }
+             },
+             {
+                 orderable: false,
+                 width: "13%",
+                 title: "DeadlineCBTT (gia hạn)",
+                 data: "aDateExtend",
+                 render: function (data, type, rule) {
+                     if (data == null) return '';
+                     var date = new Date(data);
+                     date.setDate(date.getDate() + rule['aDeadline_Giahan'])
+                     let arr = date.toLocaleDateString().split('/');
+                     return `${arr[1]}/${arr[0]}`;
+                 }
+            },
+             {
+                 title: "Hành động",
+                 width: "10%",
+                 data: "aRuleID",
+                render: function (data, type, rule) {
+                    return `<div class="d-inline-flex w-100">
+                              <a class='DetailInfo btn text-primary' data-id='${data}' data-toggle="modal" data-target="#myModal"><i class="fas fa-info-circle"></i></a>
+                              <a class='EditRules btn text-primary' data-id='${data}'><i class="far fa-edit"></i></a>
+                              <a class='DeleteRules btn text-primary' data-id='${data}' data-cpnytype='${rule['aCompanyType']}'><i class="fas fa-delete"></i></a>
+                            </div >`;
+                }
+            },
+        ]
+
+
+        var RuleCommon = {
+            TempID: null
+        };
+
+        var form = $("#formSearch");
+
+        var Rules = function () {
+
+            this.init = function () {
+                setTimeout(function () {
+                    loadData(form.serialize());
+                }, 1000);
+                registerEvents();
+            }
+
+
+            var loadData = function () {
+                $('#DocType').val(1).trigger('change');
+                $('#DoiTuongAD').val(1).trigger('change');
+                /*changeDocType();*/
+
+                $('#loading').addClass('loading');
+
+                let loaiHinh = $('#loaihinh').val();
+
+
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("RulesList", "QuanLyRules")',
+                    data: $("#formSearch").serialize(),
+                    success: function (data) {
+                        $('#loading').removeClass('loading');
+                        let index = 1;
+                        data.forEach(x => {
+                            x.index = index++;
+                        });
+
+                        let rulestable = $('#listRules').DataTable({
+
+                            ordering: false,
+                            dom: "lti<'d-flex pagingList justify-content-center'p>",
+                            destroy: true,
+                            "ordering": false,
+                            searching: false,
+                            className: 'dt-body-right',
+                            "bInfo": true, // thông tin Showing 1 to 6 of 6 entries
+
+                            /* phân trang theo số lượng data */
+                            lengthChange: true, //thay đổi số lượng dữ liệu hiển thị
+                            lengthMenu: [10, 25, 50, 75, 100],
+                            language: {
+                                sLengthMenu: "_MENU_"
+                            },
+                            pageLength: 10,
+                            data: data,
+                            columns: renderColumns
+
+                        });
+
+                        function detailClick() {
+                            $('.DetailInfo').off();
+                            $('.DetailInfo').on('click', function (e) {
+                                var container = $(".modal-body");
+                                $.get("@Url.Action("RuleViewComponent", "QuanLyRules")?Id=" + $(this).data('id'), function (data) {
+                                    container.html(data);
+                                });
+                                $('#myModal').modal('show');
+                            });
+                        }
+
+                        detailClick();
+                        rulestable.on('draw', detailClick);
+
+                        // click nút edit trên lưới chuyển sang form sửa thông tin Rule
+                        function editClick() {
+                            $('.EditRules').off();
+                            $('.EditRules').click(function () {
+
+                                var rules = $(this).data('id');
+                                var loaiBieuMau = $('#slLoaiBieuMauSearch').val();
+
+                                $.ajax({
+                                    url: '@Url.Action("UpdateCheck", "QuanLyRules")',
+                                    type: 'POST',
+                                    success: function (data) {
+                                        $('#loading').removeClass('loading');
+                                        if (data.code == 0) {
+
+                                            //chuyển sang tab edit
+                                            $('.nav-pills > li:first-child').removeClass('active');
+                                            $('.nav-pills > li:last-child').addClass('active');
+                                            $('.nav-pills > li:last-child').tab('show');
+                                            jQuery('#updateTab').css('opacity', '1');
+                                            $('.nav-pills > li:last-child > a').trigger('click');
+                                            $("#Update").show();
+                                            $("#Insert").hide();
+
+                                            var rowIndex = $(this).closest("tr").index();
+
+                                            //View data Rules to tab Update
+                                            $.ajax({
+                                                type: "GET",
+                                                url: '@Url.Action("RulesList", "QuanLyRules")?aRuleID=' + rules + '&loaiBieuMau=' + loaiBieuMau,
+                                                success: function (data) {
+                                                    //console.log(data);
+                                                    data.forEach(x => {
+                                                        x.index = index++;
+                                                    });
+
+                                                    //chuyển sang tab edit
+                                                    $('.nav-pills > li:first-child').removeClass('active');
+                                                    $('.nav-pills > li:last-child').addClass('active');
+                                                    $('.nav-pills > li:last-child').tab('show');
+                                                    jQuery('#updateTab').css('opacity', '1');
+                                                    $('.nav-pills > li:last-child > a').trigger('click');
+                                                    $("#Update").show();
+                                                    $("#Insert").hide();
+                                                    $('#rulesid').val(data[0].aRuleID)
+                                                    $("#EnterpriseType").val(data[0].aCompanyType);
+                                                    RuleCommon.TempID = data[0].aBieuMauSo;
+                                                    $('#slLoaiBM').val($('#slLoaiBieuMauSearch').val());
+
+                                                    // set data on form Tao moi Rules
+                                                    // set select lại cho Loại hình
+                                                    bindDataLoaiHinhDN();
+
+                                                    let aCompanyTypes = [];
+                                                    data.forEach(x => {
+                                                        aCompanyTypes.push(x.aCompanyType);
+                                                    });
+
+                                                    //console.log(aCompanyTypes);
+
+                                                    setTimeout(function () {
+                                                        $('#example-getting-started').multiselect('refresh');
+                                                        $('#example-getting-started').multiselect('select', aCompanyTypes);
+
+                                                        $("#quydinhcbtt").val(data[0].aqdcbtt);
+                                                        $("#phaplycbtt").val(data[0].accplcbtt);
+
+                                                        $("#dlcbtt").val(data[0].aDeadline);
+                                                        let arrDate1 = data[0].aDate.split('-');
+                                                        $('#Month1').val(parseInt(arrDate1[1]));
+                                                        $('#Day1').val(parseInt(arrDate1[2].substring(0, 2)));
+
+                                                        $("#dlcbttgh").val(data[0].aDeadline_Giahan);
+                                                        if (data[0].aDateExtend != null) {
+                                                            let arrDate2 = data[0].aDateExtend.split('-');
+                                                            $('#Month2').val(parseInt(arrDate2[1]));
+                                                            $('#Day2').val(parseInt(arrDate2[2].substring(0, 2)));
+                                                        } else {
+                                                            $('#Month2').val(0);
+                                                            $('#Day2').val(0);
+                                                        }
+
+                                                        $("#DocType").val(data[0].aDocType);
+                                                        $("#DoiTuongAD").val(data[0].aObject);
+
+                                                        console.log($("#DoiTuongAD").val());
+                                                        resetNewsType();
+
+                                                        setTimeout(function () {
+                                                            $('#slNienDoBCTC').val(data[0].aNienDoBCTC);
+                                                            $("#NewsType").val(data[0].aNewType);
+                                                            bindDataBieuMauCBTT();
+                                                        }, 300);
+
+
+                                                        setTimeout(function () {
+                                                            $('#slBieuMau').val(data[0].aBieuMauSo);
+                                                        }, 800);
+
+                                                    }, 1000);
+                                                }
+                                            });
+
+                                        } else {
+                                            toastr.error(data.message);
+                                        }
+                                    },
+                                    error: function (err) {
+                                        //console.log(err);
+                                        $('#loading').removeClass('loading');
+                                    }
+                                });
+
+                            });
+                        }
+
+                        // render option và append vào multi select
+                        function bindDataLoaiHinhDN() {
+                            $.ajax({
+                                url: '@Url.Action("GetCommonType", "QuanLyRules")',
+                                method: 'GET',
+                                dataType: 'json',
+                                success: function (res) {
+                                    if (res == null) return;
+                                    var html = '';
+
+                                    $('#example-getting-started option').remove();
+
+                                    res.listLoaiHinhDN.forEach((item) => {
+                                        html += `<option value='${item.typeCode}'>${item.typeName}</option>`;
+                                    });
+
+                                    $('#example-getting-started').append(html);
+
+                                    // cấu hình multi select
+                                    $('#example-getting-started').multiselect({
+                                        templates: {
+                                            button: '<button type="button" style="width:691px; height:100%" class="multiselect dropdown-toggle form-control" data-toggle="dropdown" title="Chọn loại hình"><span class="multiselect-selected-text">Chọn loại hình</span></button>',
+                                            popupContainer: '<div style="width:100%;" class="multiselect-container dropdown-menu"></div>',
+                                            buttonGroup: '<div class="multiselect-buttons btn-group" style="display:flex;"></div>',
+                                            option: '<button style="width:100%;"  type="button" class="multiselect-option dropdown-item"></button>',
+                                            //filter: '<div class="multiselect-filter d-flex align-items-center"><i class="fas fa-sm fa-search text-muted"></i><input type="search" class="multiselect-search form-control" /></div>',
+                                            //buttonGroupReset: '<button type="button" class="multiselect-reset btn btn-secondary btn-block"></button>',
+                                            //divider: '<div class="dropdown-divider"></div>',
+                                            //optionGroup: '<button type="button" class="multiselect-group dropdown-item"></button>',
+                                            //resetButton: '<div class="multiselect-reset text-center p-2"><button type="button" class="btn btn-sm btn-block btn-outline-secondary"></button></div>'
+                                        },
+                                        includeSelectAllOption: true,
+                                        enableClickableOptGroups: true,
+                                        // Set lại Biểu mẫu số khi chọn Loại hình
+                                        onChange: function (option, checked, select) {
+                                            bindDataBieuMauCBTT();
+                                        }
+                                    });
+
+                                    // Set lại Biểu mẫu số khi chọn select all của Loại hình
+                                    setTimeout(() => {
+                                        var eventClickChecksAll = $('.multiselect-container').find('button.dropdown-item.multiselect-all');
+                                        eventClickChecksAll.click(() => {
+                                            setTimeout(() => {
+                                                bindDataBieuMauCBTT();
+                                            }, 500);
+                                        });
+                                    }, 1000);
+
+                                    // style css
+                                    $('.form-check-label').css('margin-left', '20px');
+                                    $('.multiselect').css('border', '1px solid #CCC');
+                                    $('.multiselect').css('border-radius', '4px');
+                                    $('.multiselect-all span label').text('Chọn tất cả');
+                                    $('.multiselect-selected-text').text('Chọn loại hình')
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            });
+                        }
+
+                        function bindDataBieuMauCBTT() {
+                            let cpnyTypes = getArrayLoaiHinh();
+                            let tempType = $('#slLoaiBieuMauSearch').val();
+
+                            $.ajax({
+                                url: '@Url.Action("GetBieuMauCBTT", "QuanLyRules")',
+                                method: 'GET',
+                                dataType: 'json',
+                                data: { cpnyTypes: cpnyTypes, tempType: tempType },
+                                success: function (res) {
+
+                                    $('#slBieuMau option').remove();
+
+                                    if (res == null) return;
+
+                                    var html = '';
+
+                                    res.forEach((item) => {
+                                        html += `<option value='${item.templateID}'>${item.title}</option>`;
+                                    });
+
+                                    $('#slBieuMau').append(html);
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                }
+                            });
+                        }
+
+                        function resetNewsType() {
+
+                            var doctypeCode = $('#DocType').find(":selected").val();
+
+                            $.get("@Url.Action("Index", "QuanLyRules")?value=" + doctypeCode, function (data) {
+
+
+                                $("#NewsType").html("");
+
+                                var htmlOption = '';
+
+                                $.each(data, function (index, value) {
+
+                                    htmlOption = htmlOption + '<option value="' + value.typeCode + '" data-id="' + value.acategory + '">' + value.typeName + '</option>';
+                                });
+
+                                $("#NewsType").html(htmlOption);
+
+                            });
+                        }
+
+                        // mảng loại hình DN đã chọn
+                        function getArrayLoaiHinh() {
+                            let strTypesID = '';
+                            $('#example-getting-started option:selected').map(function (a, item) {
+                                strTypesID += item.value + ',';
+                            });
+                            return strTypesID;
+                        }
+
+                        //khi click sửa
+                        editClick();
+                        rulestable.on('draw', editClick);
+
+                        //Xóa Rules
+                        function deleteClick() {
+                            $('.DeleteRules').off();
+                            $('.DeleteRules').click(function () {
+                                let rulesid = $(this).data('id');
+                                let cpnyType = $(this).data('cpnytype');
+
+                                Swal.fire({
+                                    title: 'Thông báo',
+                                    text: 'Bạn có muốn xóa nội dung này',
+                                    type: 'warning',
+                                    cancelButtonText: 'Hủy',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'OK'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: `@Url.Action("DeleteRules", "QuanLyRules")?aRuleID=${rulesid}&aCompanyType=${cpnyType}`,
+                                            success: function (data) {
+                                                //console.log(data);
+                                                if (data.code == 0) {
+                                                    toastr.success(data.message);
+                                                } else {
+                                                    toastr.error(data.message);
+                                                }
+                                                loadData();
+                                            }
+                                        });
+                                    }
+                                });
+
+                            });
+                        }
+
+                        //khi click xóa
+                        deleteClick();
+                        rulestable.on('draw', deleteClick);
+
+
+                    },
+                    error: function (err) {
+                        console.log(err);
+                        $('#loading').removeClass('loading');
+                    }
+                });
+            }
+
+
+
+            var registerEvents = function () {
+
+
+                function resetNewsType() {
+
+                    var doctypeCode = $('#DocType').find(":selected").val();
+
+                    $.get("@Url.Action("Index", "QuanLyRules")?value=" + doctypeCode, function (data) {
+
+
+                        $("#NewsType").html("");
+
+                        var htmlOption = '';
+
+                        $.each(data, function (index, value) {
+
+                            htmlOption = htmlOption + '<option value="' + value.typeCode + '" data-id="' + value.acategory + '">' + value.typeName + '</option>';
+                        });
+
+                        $("#NewsType").html(htmlOption);
+
+                    });
+                }
+
+                // set data cho input date Từ ngày
+                $('body').on('change', '#FicsYearDay', function (e) {
+                    e.preventDefault();
+
+                    $('#FromDateSearch').val('');
+
+                    let day = $('#FicsYearDay').val();
+                    let month = $('#FicsYearMonth').val();
+                    let year = new Date().getFullYear();
+
+                    if (month != null && day != null) {
+                        let strDate = year + '-' + (month) + '-' + (day);
+                        let date = new Date(strDate);
+
+                        var day2 = ("0" + date.getDate()).slice(-2);
+                        var month2 = ("0" + (date.getMonth() + 1)).slice(-2);
+
+                        var today = date.getFullYear() + "-" + (month2) + "-" + (day2);
+
+                        $('#FromDateSearch').val(today);
+                    }
+
+
+                });
+
+                // set data cho input date Đến ngày
+                $('body').on('change', '#FicsYearDay2', function (e) {
+                    e.preventDefault();
+
+                    $('#ToDateSearch').val('');
+
+                    let day = $('#FicsYearDay2').val();
+                    let month = $('#FicsYearMonth2').val();
+                    let year = new Date().getFullYear();
+
+                    if (month != null && day != null) {
+                        let strDate = year + '-' + (month) + '-' + (day);
+                        let date = new Date(strDate);
+
+                        var day2 = ("0" + date.getDate()).slice(-2);
+                        var month2 = ("0" + (date.getMonth() + 1)).slice(-2);
+
+                        var today = date.getFullYear() + "-" + (month2) + "-" + (day2);
+
+                        $('#ToDateSearch').val(today);
+                    }
+                });
+
+                // Từ ngày -- tháng
+                $('body').on('change', '#FicsYearMonth', function (e) {
+                    e.preventDefault();
+
+                    if ($('#FicsYearMonth').val() == 0 || $('#FicsYearMonth').val() == '') $('#FromDateSearch').val('');
+                });
+
+                // Đến ngày  -- tháng
+                $('body').on('change', '#FicsYearMonth2', function (e) {
+                    e.preventDefault();
+
+                    if ($('#FicsYearMonth2').val() == 0 || $('#FicsYearMonth2').val() == '') $('#ToDateSearch').val('');
+                });
+
+                // Action search
+                $('#Search').click(function (e) {
+
+                    e.preventDefault();
+                    //console.log(form.serialize());
+                    var check = true;
+
+                    check = validdeadline('search');
+
+                    if (check) {
+                        loadData(form.serialize());
+                    }
+
+                });
+
+                // insert new Rules
+                $('body').on('click', '#Insert', function (e) {
+
+                    e.preventDefault();
+
+                    //var form = $("#FormUpdate");
+                    //console.log(form.serialize());
+                    //var formdate = "";
+                    //formdate= $('#FromDate').val()
+                    //console.log(formdate)
+
+                    let dsLoaiHinh = getArrayLoaiHinh();
+                    let nienDo = $('#slNienDoBCTC').val();
+                    let loaiTaiLieu = $('#DocType').val();
+                    let loaiTin = $('#NewsType').val();
+                    let quyDinhCBTT = $('#quydinhcbtt').val();
+                    let phaplyCBTT = $('#phaplycbtt').val();
+                    let bieuMauSo = $('#slBieuMau').val();
+                    let deadlineCBTT = $('#dlcbtt').val();
+                    let doiTuongApDung = $('#DoiTuongAD').val();
+                    let fromDate_deadlineCBTT = formatDate(getDateFrom().date1);
+                    let deadlineCBTT_giaHan = $('#dlcbttgh').val();
+                    let fromDate_deadlineCBTT_giaHan = formatDate(getDateFrom().date2);
+
+                    let rulesViewModel = {
+                        LoaiHinhIDs: dsLoaiHinh,
+                        NienDo: nienDo,
+                        ADocType: loaiTaiLieu,
+                        ANewType: loaiTin,
+                        Aqdcbtt: quyDinhCBTT,
+                        Accplcbtt: phaplyCBTT,
+                        BieuMauSo: bieuMauSo,
+                        ADeadline: deadlineCBTT,
+                        StrADate: fromDate_deadlineCBTT,
+                        ADatelineExtend: deadlineCBTT_giaHan,
+                        AObject: doiTuongApDung,
+                        StrADateExtend: fromDate_deadlineCBTT_giaHan
+                    };
+
+                    //console.log(rulesViewModel);
+
+                    //check valid
+                    var Check = true;
+                    Check = Validate('insert');
+
+                    if (Check) {
+                        $.ajax({
+                            url: '@Url.Action("InsertRules", "QuanLyRules")',
+                            type: 'POST',
+                            data: { rulesViewModel },//$("#FormUpdate").serialize(),
+                            success: function (data) {
+
+                                //console.log(data);
+                                $('.nav-pills > li:first-child').addClass('active');
+                                $('.nav-pills > li:last-child').removeClass('active');
+                                jQuery('#k_tabs_1').css('opacity', '1');
+                                $('.nav-pills > li:first-child > a').trigger('click');
+                                if (data.code == 0) {
+                                    toastr.success(data.message);
+                                    $('#FormUpdate').trigger("reset");
+                                    resetForm(); // load lại data
+                                    loadData();
+                                    $('.nav-item a[href="#k_tabs_1"]').tab('show');
+                                } else {
+                                    toastr.error(data.message);
+
+                                }
+
+                            },
+                            error: function (err) {
+                                console.log(err);
+                            }
+                        });
+                    }
+
+                });
+
+                function formatDate(date) {
+                    if (date == null) return null;
+                    let day = date.getDate();
+                    let month = date.getMonth();
+                    let year = date.getFullYear();
+
+                    return `${year}-${month + 1}-${day} 00:00:00`;
+                }
+
+                // làm mới form
+                function resetForm() {
+                    $('#FormUpdate').trigger("reset");
+                    $('#example-getting-started').multiselect('refresh');
+                    bindDataBieuMauCBTT();
+
+                    $('#Month1').val(0);
+                    $('#Month2').val(0);
+                    $('#Day1').val(0);
+                    $('#Day2').val(0);
+
+                    resetNewsType();
+
+                    $("#Update").hide();
+                    $("#Insert").show();
+
+                    bindDataLoaiHinhDN();
+                }
+
+                // click reset form
+                $('body').on('click', '#Reset', function (e) {
+                    e.preventDefault();
+                    resetForm();
+
+                });
+
+
+                // update Rule
+                $('body').on('click', '#Update', function (e) {
+                    e.preventDefault();
+
+                    //var form = $("#FormUpdate");
+                    //console.log(form.serialize());
+                    //console.log(getDateFrom());
+
+                    let ruleID = $('#rulesid').val();
+                    let dsLoaiHinh = getArrayLoaiHinh();
+                    let nienDo = $('#slNienDoBCTC').val();
+                    let loaiTaiLieu = $('#DocType').val();
+                    let loaiTin = $('#NewsType').val();
+                    let quyDinhCBTT = $('#quydinhcbtt').val();
+                    let phaplyCBTT = $('#phaplycbtt').val();
+                    let bieuMauSo = $('#slBieuMau').val();
+                    let deadlineCBTT = $('#dlcbtt').val();
+                    let doiTuongApDung = $('#DoiTuongAD').val();
+                    let fromDate_deadlineCBTT = formatDate(getDateFrom().date1);
+                    let deadlineCBTT_giaHan = $('#dlcbttgh').val();
+                    let fromDate_deadlineCBTT_giaHan = formatDate(getDateFrom().date2);
+
+                    let rulesViewModel = {
+                        ARuleID: ruleID,
+                        LoaiHinhIDs: dsLoaiHinh,
+                        NienDo: nienDo,
+                        ADocType: loaiTaiLieu,
+                        ANewType: loaiTin,
+                        Aqdcbtt: quyDinhCBTT,
+                        Accplcbtt: phaplyCBTT,
+                        BieuMauSo: bieuMauSo,
+                        ADeadline: deadlineCBTT,
+                        StrADate: fromDate_deadlineCBTT,
+                        ADatelineExtend: deadlineCBTT_giaHan,
+                        AObject: doiTuongApDung,
+                        StrADateExtend: fromDate_deadlineCBTT_giaHan
+                    };
+
+                    //console.log(rulesViewModel);
+
+                    //Check Valid
+                    var Check = true;
+                    Check = Validate('insert');
+                    if (Check) {
+                        $.ajax({
+                            url: '@Url.Action("EditRules", "QuanLyRules")',
+                            type: 'POST',
+                            data: { rulesViewModel },
+                            success: function (data) {
+
+                                //console.log(data);
+                                $('.nav-pills > li:first-child').addClass('active');
+                                $('.nav-pills > li:last-child').removeClass('active');
+                                jQuery('#k_tabs_1').css('opacity', '1');
+                                $('.nav-pills > li:first-child > a').trigger('click');
+                                if (data.code == 0) {
+                                    toastr.success(data.message);
+                                    $('#FormUpdate').trigger("reset");
+                                    //resetForm(); // load lại data
+                                    loadData();
+
+                                    $('.nav-item a[href="#k_tabs_1"]').tab('show');
+                                } else {
+                                    toastr.error(data.message);
+                                    //resetForm();
+                                }
+
+                            },
+                            error: function (err) {
+
+                                console.log(err);
+                            }
+                        });
+                    }
+
+                });
+
+                $('#Export').click(
+                    function () {
+                        $('#loading').addClass('loading');
+
+                        var form = $("#formSearch");
+
+                        $.postNative('@Url.Action("ExportExcel", "QuanLyRules")', form.serialize())
+                            .done((response, statusCode, xhr) => {
+                                $('#loading').removeClass('loading');
+                                //console.log(response);
+                                if (response.code) {
+                                    //console.log(response);
+                                    return isMessageSuccess(response);
+                                }
+                                const type = xhr.getResponseHeader('Content-Type');
+                                const blob = new Blob([response], { type: type });
+
+
+                                //check nếu là response message , không phải file thì hiển thị lỗi
+                                if (type.includes("application/json")) {
+                                    //phải đọc file vì respone ở dạng arraybuffer
+                                    const fileReader = new FileReader();
+                                    fileReader.onload = function () {
+                                        $('#loading').removeClass('loading');
+                                        isMessageSuccess(JSON.parse(this.result));
+                                    };
+                                    fileReader.readAsText(blob);
+                                    return;
+                                }
+
+                                const currentTime = new Date();
+                                const filename = `DanhSachRules${currentTime.getSeconds()}.xlsx`;
+                                saveAs(blob, filename);
+                                $('#loading').removeClass('loading');
+                            })
+                            .fail(() => {
+                                $('#loading').removeClass('loading');
+                            });
+
+
+                    });
+
+
+
+                function Validate(i) {
+                    if (getArrayLoaiHinh() == '' || getArrayLoaiHinh() == null) {
+                        toastr.error('Bạn chưa chọn loại hình');
+                        return false;
+                    }
+
+                    if (i == 'insert' && $('#quydinhcbtt').val().length > 1000) {
+                        toastr.error('@SharedLocalizer["QUYDINHCBTT_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#phaplycbtt').val().length > 1000) {
+                        toastr.error('@SharedLocalizer["PHAPLYCBTT_MAXLENGTH"]');
+                        return false;
+                    }
+                    if ($('#dlcbtt').val() == '') {
+                        toastr.error('@SharedLocalizer["DLCBTT_EMPTY"]');
+                        return false;
+                    }
+                    if ($('#FromDate').val() == '') {
+                        toastr.error('@SharedLocalizer["FROMDATEDLCBTT_EMPTY"]');
+                        return false;
+                    }
+
+                    return true;
+                }
+
+
+                function validdeadline(i) {
+
+                    if (i == 'search') {
+
+                        if ($('#dlcbtt_tab1').val() != '') {
+                            if ($('#FromDate_tab1').val() == '') {
+
+                                    toastr.error('@SharedLocalizer["FROMADATE_EMPTY"]');
+                                    return false;
+                            }
+                        }
+
+
+                        if ($('#adeadlineextend_tab1').val() != '') {
+                            if ($('#aDateExtend_tab1').val() == '') {
+                                toastr.error('@SharedLocalizer["FROMADATEEXTEND_EMPTY"]');
+                                return false;
+
+                            }
+                        }
+                        var fromdate = $('#FromDateSearch').val();
+                        var todate = $('#ToDateSearch').val();
+                           var Fromdate = Date.parse(fromdate);
+                           var Todate = Date.parse(todate);
+                        if (fromdate.length === 0 && todate.length === 0) {
+                            return true;
+                        }
+                        else if (Fromdate <= Todate) {
+                            return true;
+                        }
+                        else {
+                            toastr.error('@SharedLocalizer["DATE_Empty"]');
+                            return false;
+                        }
+                    }
+                    return true;
+
+
+                }
+
+                ///////////////////////////////////////////////////////////////////////////
+                // render option và append vào multi select
+                function bindDataLoaiHinhDN() {
+                    $.ajax({
+                        url: '@Url.Action("GetCommonType", "QuanLyRules")',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res == null) return;
+                            var html = '';
+
+                            res.listLoaiHinhDN.forEach((item) => {
+                                html += `<option value='${item.typeCode}'>${item.typeName}</option>`;
+                            });
+
+                            $('#example-getting-started').append(html);
+
+                            // cấu hình multi select
+                            $('#example-getting-started').multiselect({
+                                templates: {
+                                    button: '<button type="button" style="width:691px; height:100%" class="multiselect dropdown-toggle form-control" data-toggle="dropdown" title="Chọn loại hình"><span class="multiselect-selected-text">Chọn loại hình</span></button>',
+                                    popupContainer: '<div style="width:100%;" class="multiselect-container dropdown-menu"></div>',
+                                    buttonGroup: '<div class="multiselect-buttons btn-group" style="display:flex;"></div>',
+                                    option: '<button style="width:100%;"  type="button" class="multiselect-option dropdown-item"></button>',
+                                    //filter: '<div class="multiselect-filter d-flex align-items-center"><i class="fas fa-sm fa-search text-muted"></i><input type="search" class="multiselect-search form-control" /></div>',
+                                    //buttonGroupReset: '<button type="button" class="multiselect-reset btn btn-secondary btn-block"></button>',
+                                    //divider: '<div class="dropdown-divider"></div>',
+                                    //optionGroup: '<button type="button" class="multiselect-group dropdown-item"></button>',
+                                    //resetButton: '<div class="multiselect-reset text-center p-2"><button type="button" class="btn btn-sm btn-block btn-outline-secondary"></button></div>'
+                                },
+                                includeSelectAllOption: true,
+                                enableClickableOptGroups: true,
+                                // Set lại Biểu mẫu số khi chọn Loại hình
+                                onChange: function (option, checked, select) {
+                                    bindDataBieuMauCBTT();
+                                }
+                            });
+
+                            // Set lại Biểu mẫu số khi chọn select all của Loại hình
+                            setTimeout(() => {
+                                var eventClickChecksAll = $('.multiselect-container').find('button.dropdown-item.multiselect-all');
+                                eventClickChecksAll.click(() => {
+                                    setTimeout(() => {
+                                        bindDataBieuMauCBTT();
+                                    }, 1000);
+                                });
+                            }, 1000);
+
+                            // style css
+                            $('.form-check-label').css('margin-left', '20px');
+                            $('.multiselect').css('border', '1px solid #CCC');
+                            $('.multiselect').css('border-radius', '4px');
+                            $('.multiselect-all span label').text('Chọn tất cả');
+                            $('.multiselect-selected-text').text('Chọn loại hình')
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+                bindDataLoaiHinhDN();
+
+                // Load lại biểu mẫu số khi chọn Loại biểu mẫu - site Insert
+                $('body').on('change', '#slLoaiBM', function (e) {
+                    e.preventDefault();
+                    //console.log('aaaaaaaa');
+                    bindDataBieuMauCBTT();
+                });
+
+                // Load lại biểu mẫu số khi chọn Loại biểu mẫu - site Search
+                $('body').on('change', '#slLoaiBieuMauSearch', function (e) {
+                    e.preventDefault();
+                    bindDataBieuMauCBTTSearch();
+                });
+
+                // Load lại biểu mẫu số khi chọn Loại hình - site Search
+                $('body').on('change', '#loaihinh', function (e) {
+                    e.preventDefault();
+                    bindDataBieuMauCBTTSearch();
+                });
+
+                // mảng loại hình DN đã chọn
+                function getArrayLoaiHinh() {
+                    let strTypesID = '';
+                    $('#example-getting-started option:selected').map(function (a, item) {
+                        strTypesID += item.value + ',';
+                    });
+                    return strTypesID;
+                }
+
+                // Niên độ BCTC
+                function bindDataNienDoBCTC() {
+                    $.ajax({
+                        url: '@Url.Action("GetCommonType", "QuanLyRules")',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (res) {
+                            if (res == null) return;
+                            var html = '';
+
+                            res.listNienDoBCTC.forEach((item) => {
+                                html += `<option value='${item.typeCode}'>${item.typeName}</option>`;
+                            });
+
+                            $('#slNienDoBCTC').append(html);
+                            $('#slNienDoSearch').append(html);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+                bindDataNienDoBCTC();
+
+                // Biểu mẫu CBTT - site Insert
+                function bindDataBieuMauCBTT() {
+                    let cpnyTypes = getArrayLoaiHinh();
+                    let tempType = $('#slLoaiBM').val();
+
+                    $.ajax({
+                        url: '@Url.Action("GetBieuMauCBTT", "QuanLyRules")',
+                        method: 'GET',
+                        dataType: 'json',
+                        data: { cpnyTypes: cpnyTypes, tempType: tempType },
+                        success: function (res) {
+                            //console.log(res);
+                            $('#slBieuMau option').remove();
+
+                            if (res == null) return;
+
+                            var html = '';
+
+                            res.forEach((item) => {
+                                html += `<option value='${item.templateID}'>${item.title}</option>`;
+                            });
+
+                            $('#slBieuMau').append(html);
+
+                            if (RuleCommon.TempID != null) {
+                                $('#slBieuMau').val(RuleCommon.TempID);
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+
+                // Biểu mẫu CBTT - site Search
+                function bindDataBieuMauCBTTSearch() {
+                    let cpnyTypes = $('#loaihinh').val();
+                    let tempType = $('#slLoaiBieuMauSearch').val();
+
+                    $.ajax({
+                        url: '@Url.Action("GetBieuMauCBTT", "QuanLyRules")',
+                        method: 'GET',
+                        dataType: 'json',
+                        data: { cpnyTypes: cpnyTypes, tempType: tempType },
+                        success: function (res) {
+
+                            $('#slBieuMauSoSearch option').remove();
+                            $('#slBieuMauSoSearch').append('<option value="null">Tất cả</option>');
+
+                            if (res == null) return;
+
+                            var html = '';
+
+                            res.forEach((item) => {
+                                html += `<option value='${item.templateID}'>${item.title}</option>`;
+                            });
+
+                            $('#slBieuMauSoSearch').append(html);
+
+                        },
+                        error: function (err) {
+                            console.log(err);
+                        }
+                    });
+                }
+                bindDataBieuMauCBTTSearch();
+
+                // Ngày tính từ thời điểm
+                function bindDataInputDate() {
+
+                    let months = 12, days = 31;
+
+                    let htmlMonths = '', htmlDays = '';
+
+                    // binding data for input month
+                    for (var i = 1; i <= months; i++) {
+                        htmlMonths += `<option value='${i}'>${i}</option>`;
+                    }
+
+                    $('#Month1').append(htmlMonths);
+                    $('#Month2').append(htmlMonths);
+                }
+                bindDataInputDate();
+
+                // get Ngày tính từ thời điểm
+                function getDateFrom() {
+                    let day1 = $('#Day1').val();
+                    let month1 = $('#Month1').val();
+                    let day2 = $('#Day2').val();
+                    let month2 = $('#Month2').val();
+                    let year = new Date().getFullYear();
+                    let dates = { date1: null, date2: null};
+
+                    if (validDateForm(day1, month1, day2, month2) == false) return dates;
+
+                    if (month1 > 0) {
+                        let date = new Date(year, month1 - 1, day1);
+                        dates.date1 = date
+                    }
+
+                    if (month2 > 0) {
+                        let date = new Date(year, month2 - 1, day2);
+                        dates.date2 = date
+                    }
+
+                    return dates;
+                }
+
+                // check ngày của tháng có đúng hay không
+                function validDateForm(day1, month1, day2, month2) {
+                    let today = new Date();
+                    //console.log(`${day1} ${day2} ${month1} ${month2}`);
+                    if (day1 != 0) {
+                        if (month1 == 0) {
+                            toastr.error(`Bạn chưa chọn tháng`);
+                            return false;
+                        }
+                    }
+
+                    if (day2 != 0) {
+                        if (month2 == 0) {
+                            toastr.error(`Bạn chưa chọn tháng`);
+                            return false;
+                        }
+                    }
+
+                    if (month1 != 0) {
+                        let lastDayOfMonth = new Date(today.getFullYear(), month1, 0).getDate();
+
+                        if (day1 == 0) {
+                            toastr.error(`Bạn chưa chọn ngày`);
+                            return false;
+                        }
+
+                        if (day1 > lastDayOfMonth) {
+                            toastr.error(`Ngày của tháng ${month1} không được lớn hơn ${lastDayOfMonth}`);
+                            return false;
+                        }
+                    }
+
+                    if (month2 != 0) {
+                        let lastDayOfMonth = new Date(today.getFullYear(), month2, 0).getDate();
+
+                        if (day2 == 0) {
+                            toastr.error(`Bạn chưa chọn ngày`);
+                            return false;
+                        }
+
+                        if (day2 > lastDayOfMonth) {
+                            toastr.error(`Ngày của tháng ${month2} không được lớn hơn ${lastDayOfMonth}`);
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
+                selectdate("#FicsYearMonth", "#FicsYearDay");
+                selectdate("#FicsYearMonth2", "#FicsYearDay2");
+                selectdate("#Month1", "#Day1");
+                selectdate("#Month2", "#Day2");
+
+                function selectdate(month, day) {
+
+
+                    let selectMonth = $(month);
+                    let selectDay = $(day);
+                    var d = new Date();
+                    var month = d.getMonth() + 1;
+                    var day = d.getDate();
+
+                    selectMonth.on("change", AdjustDays);
+
+                    AdjustDays();
+
+                    function AdjustDays() {
+
+                        var d = new Date();
+                        var year = d.getFullYear();
+                        var month = parseInt(selectMonth.val());
+                        selectDay.empty();
+                        selectDay.append('<option value="0" selected>Chọn ngày</option>');
+                        var days = new Date(year, month, 0).getDate();
+
+                        for (var d = 1; d <= days; d++) {
+                            var dayElem = document.createElement("option");
+                            dayElem.value = d;
+                            dayElem.textContent = d;
+                            selectDay.append(dayElem);
+                        }
+                    }
+
+                    selectMonth.on("change", AdjustDays);
+                }
+            }
+
+        }
+
+        var rules = new Rules();
+        rules.init();
+    });
+
+</script>
+

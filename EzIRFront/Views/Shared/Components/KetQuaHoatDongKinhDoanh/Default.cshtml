@@ -1,0 +1,496 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Mvc.Localization;
+@inject IHtmlLocalizer<SharedResource> Localizer;
+@using Microsoft.AspNetCore.Localization;
+@{
+    var requestCulture = Context.Features.Get<IRequestCultureFeature>();
+}
+<link href="~/css/taichinh.css" rel="stylesheet" />
+<link href="~/css/dropdownTaichinh.css" rel="stylesheet" />
+<style>
+    #menu-table-HDKD {
+        overflow-x: auto;
+        white-space: nowrap;
+        height: 5px;
+    }
+
+    #menu-table-HDKD {
+        border: #dcdcdc 1px solid;
+    }
+
+    .chitieu {
+        cursor: default;
+    }
+
+    
+    /* Css text level1*/
+    .text-level1 {
+        font-weight: bold;
+    }
+  
+    .titlecontent:hover {
+        background-color: #abd373;
+    }
+
+    
+
+    .hide {
+        display: none;
+    }
+
+  
+
+    /* Css cố định Title Left*/
+
+
+    /* Css hover Title*/
+    tr:hover .heightauto {
+        background-color: #abd373;
+    }
+
+    .titlecontent {
+        padding: 10px 35px !important;
+        cursor: pointer;
+    }
+
+
+</style>
+<div class="container-fluid">
+
+    <div class="contentt">
+        <p>@Localizer["Balance_sheet"].Value</p>
+
+    </div>
+
+    <div class="form_content">
+        <div id="taichinhform">
+
+            <div class="form-groups row">
+                <div class="col-md-1">
+                    <label>@Localizer["REPORTING_PERIOD"].Value</label>
+                </div>
+
+                <div class=" col-md-1">
+                    <select class="form-item" id="Period" name="platform">
+
+                        <option class="Y" value="12Y">@Localizer["WHOLEYEAR"]</option>
+                        <option class="Q" value="3">@Localizer["QUARTER1"]</option>
+                        <option class="Q" value="6">@Localizer["QUARTER2"]</option>
+                        <option class="Y" value="6Y">@Localizer["6MONTHS"] </option>
+                        <option class="Q" value="9" selected>@Localizer["QUARTER3"]</option>
+                        <option class="Q" value="12">@Localizer["QUARTER4"]</option>
+
+                    </select>
+
+                </div>
+                <div class="col-md-1">
+                    <select class="form-item" id="Year">
+                    </select>
+                </div>
+
+                <div class="col-md-1">
+                    <label>@Localizer["NUM_OF_PERIOD"].Value</label>
+                </div>
+                <div class="col-md-1">
+
+                    <select class="form-item" id="NumOfPeriod">
+                        <option value="5" selected>5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <label>@Localizer["UNIT"].Value</label>
+                </div>
+                <div class="col-md-1">
+                    <select class="form-item" id="Unit">
+                        <option value="b">@Localizer["BILLION"]</option>
+                        <option value="m">@Localizer["MILLION"]</option>
+                        <option value="t">@Localizer["THOUSANDS"]</option>
+                        <option value="d" selected>@Localizer["DONG"]</option>
+                    </select>
+                </div>
+                <div class="col-md-2" id="new_year">
+
+                    <select class="form-item" id="DataType">
+                        <option value="1" selected>@Localizer["CALENDER_YEAR"]</option>
+                        <option value="2">@Localizer["FINANCIAL_YEAR"]</option>
+
+                    </select>
+                </div>
+                <div class="col-md-3 btn-view">
+                    <button class="btn btn-success" type="submit" id="btnxem">
+                        @Localizer["View"].Value
+                    </button>
+
+                    <button class="btn btn-success btnSearchHSTC" type="button" id="btnExport">
+                        @Localizer["Export"].Value
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Page Heading -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+    <!-- Content Row -->
+
+
+    <div class="table_content">
+        <!--Table tai chinh-->
+        <div class="wmd-view-topscroll">
+            <div class="scroll-div1">
+            </div>
+        </div>
+        <div class="wmd-view">
+            <div class="scroll-div2">
+                <table id="menu-table-HDKD" class="itemler" cellspacing="0" cellpadding="0" border="0"
+                       >
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!--End Table tai chinh-->
+    </div>
+</div>
+    
+
+<div id="loading"></div>
+<script>
+    // set up two scroll bars on content
+    $(function () {
+        $(".wmd-view-topscroll").scroll(function () {
+            $(".wmd-view")
+                .scrollLeft($(".wmd-view-topscroll").scrollLeft());
+        });
+        $(".wmd-view").scroll(function () {
+            $(".wmd-view-topscroll")
+                .scrollLeft($(".wmd-view").scrollLeft());
+        });
+    });
+
+    // hide all children
+    function hideChildrenHDKD(arCode) {
+        const table = document.getElementById('menu-table-HDKD');
+        const tdList = table.getElementsByClassName(arCode);
+
+        const idList = Array.from(tdList).map(td => td.id);
+
+        let flag = false;
+
+        idList.map((item) => {
+            const td = document.getElementById(item);
+            if (td.classList.contains('hide')) {
+                flag = true;
+                td.classList.remove('hide');
+            }
+        })
+
+        if (flag) {
+            recurse(idList, true);
+        } else {
+            recurse(idList, false);
+        }
+    }
+
+     // recurse to find all children
+    function recurse(idList, toggleTag) {
+        if (idList.length == 0) return;
+        const table = document.getElementById('menu-table-HDKD');
+        idList.filter((id) => {
+            const td = document.getElementById(id);
+            if (toggleTag) {
+                td.parentElement.classList.remove('hide');
+                td.classList.remove('hide');
+            } else {
+                td.parentElement.classList.add('hide');
+                td.classList.add('hide');
+            }
+            const tdList = table.getElementsByClassName(id);
+            const idListTemp = Array.from(tdList).map(td => td.id);
+            recurse(idListTemp);
+        })
+    }
+
+    // get all id via class of parent
+    function getAllId(parentId) {
+        const table = document.getElementById('menu-table-HDKD');
+        const tdList = table.getElementsByClassName(parentId);
+        const idList = Array.from(tdList).map(td => td.id);
+        return idList;
+    }
+
+    // find all parent of id
+    function findLastChild(flatDataHDKD) {
+        const table = document.getElementById('menu-table-HDKD');
+        const tdList = table.getElementsByClassName('hide');
+        const idList = flatDataHDKD.map((item) => {
+            return item.arCode;
+        })
+        return idList;
+    }
+
+    // remove all class hide
+    function removeIconChild(idList) {
+        idList.map((item) => {
+            const cl = document.getElementsByClassName(item);
+            if (cl.length == 0) {
+                const td = document.getElementById(item);
+                // remove tag i in td
+                td.innerHTML = td.innerHTML.replace('<i class="fas fa-caret-down"></i>', '');
+            }
+        })
+    }
+
+    $(document).ready(function () {
+        var KQHDKD = function () {
+            this.init = function () {
+                loadYear();
+                let month = new Date().getMonth() + 1;
+                if (month < 3) {
+                    $('#Period').val(12);
+                    $('#Year').val($('#Year').val() - 1);
+                } else if (month < 6) {
+                    $('#Period').val(3);
+                } else if (month < 9) {
+                    $('#Period').val(6);
+                } else $('#Period').val(9);
+                var width = screen.width;
+                if (width <= 567) {
+                    $('#Unit').val('m');
+                };
+                loadDataKQKD($('#Year').val(), $('#DataType').val(), $('#Period').val(), 'Q');
+                registerEventsKQKD();
+
+            }
+            // Mã CK của cty hiện tại
+            var stock_code = window.location.href.split('?')[0].split('/')[4];
+            var stockcode = stock_code.toUpperCase().replace('?', '');
+
+            // Lấy ngôn ngữ trên site
+            var Language = "VN";
+            var lang = ReturnLanguage().split("-")[1];
+            var langLink = ReturnLinkLanguage();
+            if (lang == "US") {
+                Language = "EN";
+            }
+            else {
+                Language;
+            }
+           // console.log(Language);
+            var loadDataKQKD = function (year, dataType, period, DateType) {
+                $('#loading').addClass('loading')
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("GetKQHDKD", "ThongTinDoanhNghiep")',
+                    data: {
+                        stock_code: stockcode,
+                        language: Language,
+                        year: year,
+                        datatype: dataType,
+                        period: period,
+                        dateType: DateType
+                    },
+
+                    success: function (data) {
+                        // Kiểm tra nếu có dữ liệu thì thực thi
+                        if (data != null) {
+                            @* console.log(data);*@
+                            $('#loading').removeClass('loading');
+                            // Số kì => số lượng cột hiển trị trong bảng
+                            var numOfPeriods = $('#NumOfPeriod').val();
+
+                            // Đơn vị (Tỷ đồng, Triệu đồng ....)
+                            var unit = $('#Unit').val();
+                            // Khai báo hàm dùng lại
+                            function metricLoop() {
+                                var k = 0;
+                                var obj = data[0].table1[i]
+                                console.log(data);
+                                for (var key in obj) {
+                                    // Kiểm tra khác null và xác định giá trị col trong bảng
+                                    if (key.includes('col') && obj[key] != null) {
+                                        switch (unit) {
+                                            // Tỷ đồng
+                                            case 'b':
+                                                obj[key] = parseInt(obj[key] / 1e9);
+                                                break;
+                                            // Triệu đồng
+                                            case 'm':
+                                                obj[key] = parseInt(obj[key] / 1e6);
+                                                break;
+                                            // Ngàn đồng
+                                            case 't':
+                                                obj[key] = parseInt(obj[key] / 1e3);
+                                                break;
+                                        }
+                                    }
+                                    // Chèn dấu phẩy vào sau 3 chữ số trong chuỗi
+                                    if (obj[key] != null) {
+                                        obj[key] = obj[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                    }
+                                    // Kiểm tra nếu số liệu bằng null thì hiển thị "-"
+                                    if (obj[key] == null) {
+                                        obj[key] = "-";
+                                    }
+                                    // Kiểm tra nếu số liệu - thì hiển ()
+                                    if (obj[key].includes('-') && obj[key] != '-') {
+                                        obj[key] = '(' + obj[key].replace('-', '') + ')';
+                                    }
+
+                                    // Kiểm tra nếu số liệu bằng null thì hiển thị "-"
+                                    if (obj[key] == "0") {
+                                        obj[key] = "-";
+                                    }
+
+                                    // add số liệu sau khi xử lý vào td
+                                    html += `<td class="reportTitle heightauto" width="100px">${obj[key]}</td>`
+                                    k++;
+                                    // kiểm tra nếu k số cột bằng numOfPeriods thì dừng
+                                    if (k == numOfPeriods) {
+                                        break;
+                                    }
+                                }
+                            }
+                            var html = `<tr class="chitieu"><th class="ReportTitleLeft headcol"><div class="text-title">@Localizer["Items"].Value</div></th>`;
+
+                            // Duyệt bảng 1
+                            for (var i = 0; i < data[0].table.length; i++) {
+
+                                // k số lượng cột
+                                var k = 0;
+                                var obj = data[0].table[i]
+
+                                // Duyêt từng phần tử trong bảng 1 add vào từng cột <th>
+                                for (var key in obj) {
+                                    html += `<th class="reportTitle" >${obj[key]}</th>`
+                                    k++;
+                                    // Nếu giá trị k = numOfPeriods thì dừng duyệt
+                                    if (k == numOfPeriods) {
+                                        break;
+                                    }
+                                }
+                            };
+                            html += `</tr>`
+                            // Duyêt bảng 2
+                            for (var i = 0; i < data[0].table1.length; i++) {
+                                if (data[0].table1[i].alev == '1') {
+                                    html += `<tr>
+                                            <td id="${data[0].table1[i].arCode}" class="${data[0].table1[i].aparentCode} ReportTitleLeft heightauto headcol"  onclick="hideChildrenHDKD('${data[0].table1[i].arCode}')"><div class="text-title"><i class="fas fa-caret-down"></i>${data[0].table1[i].adescription}</div></td>`
+                                    metricLoop();
+                                    html += `</tr>`
+                                }
+                                else if (data[0].table1[i].alev == '2') {
+                                    html += `<tr>
+                                            <td id="${data[0].table1[i].arCode}" class="${data[0].table1[i].aparentCode} ReportTitleLeft heightauto headcol"  onclick="hideChildrenHDKD('${data[0].table1[i].arCode}')"><div class="text-title1"><i class="fas fa-caret-down"></i>${data[0].table1[i].adescription}</div></td>`
+                                    metricLoop();
+                                    html += `</tr>`
+                                }
+                                else if (data[0].table1[i].alev == '3') {
+                                    html += `<tr>
+                                            <td id="${data[0].table1[i].arCode}" class="${data[0].table1[i].aparentCode} ReportTitleLeft heightauto headcol"  onclick="hideChildrenHDKD('${data[0].table1[i].arCode}')"><div class="text-title2"><i class="fas fa-caret-down"></i>${data[0].table1[i].adescription}</div></td>`
+                                    metricLoop();
+                                    html += `</tr>`
+                                } else  {
+                                    html += `<tr>
+                                            <td id="${data[0].table1[i].arCode}" class="${data[0].table1[i].aparentCode} ReportTitleLeft heightauto headcol"  onclick="hideChildrenHDKD('${data[0].table1[i].arCode}')"><div class="text-title3"><i class="fas fa-caret-down"></i>${data[0].table1[i].adescription}</div></td>`
+                                    metricLoop();
+                                    html += `</tr>`
+                                }
+                            }
+                            // Mỗi lần search dữ liệu thay đổi thì xóa dữ liệu hiển thị trước đi
+                            $('#menu-table-HDKD tbody').empty();
+                            $('#menu-table-HDKD tbody').append(html);
+                            // css icon menu-table-HDKD
+                            let flatDataHDKD = data[0].table1;
+                            const idList = findLastChild(flatDataHDKD);
+                            removeIconChild(idList);
+                            isScroll();
+                        }
+                        // Không có dữ liệu thì thực thi
+                        else {
+                            $('#loading').removeClass('loading');
+                            $('#menu-table-HDKD tbody').empty();
+                            $('#menu-table-HDKD tbody').hide();
+                            isScroll();
+                        }
+                    }
+                });
+            }
+
+            //Load dữ liệu tìm kiếm theo năm (năm hiện tại + thêm 1 năm và tìm kiếm trong khoảng 10 năm)
+            var loadYear = function () {
+                var htmlYear = ``
+                for (var i = new Date().getFullYear() + 1; i >= new Date().getFullYear() - 9; i--) {
+                    if (i == new Date().getFullYear() - 2) {
+                        htmlYear += `<option value="${i}" selected>${i}</option>`
+                    } else {
+                        htmlYear += `<option value="${i}">${i}</option>`
+                    }
+
+                    $('#Year').empty();
+                    $('#Year').append(htmlYear);
+                } $('#Year').val(new Date().getFullYear());
+            }
+
+            var registerEventsKQKD = function () {
+                // Tìm kiếm theo các điều kiện
+                $('body').on('click', '#btnxem', function (e) {
+                    // Lấy DateType (Y là cả năm/nửa năm, Q là quý)
+                    //var DateType = $('select[name="platform"] :selected').attr('class');
+                    //loadDataKQKD($('#Year').val(), $('#DataType').val(), $('#Period').val(), DateType);
+                    if ($('#Period').val().includes('Y')) {
+                        loadDataKQKD($('#Year').val(), $('#DataType').val(), $('#Period').val().substring(0, $('#Period').val().length - 1), 'Y');
+                    } else {
+                        loadDataKQKD($('#Year').val(), $('#DataType').val(), $('#Period').val(), 'Q');
+                    }
+                });
+
+                $('#btnExport').click(function () {
+                    let period = 12;
+                    let dateType = "Q";
+                    if ($('#Period').val().includes('Y')) {
+                        period = $('#Period').val().substring(0, $('#Period').val().length - 1);
+                        dateType = "Y"
+                    } else {
+                        period = $('#Period').val();
+                        dateType = "Q"
+                    }
+                    langLink = langLink.replace('?', '&');
+                    var a = document.createElement("a");
+                    var urlDownload = '@Url.Action("ExcelKQHDKD", "ThongTinDoanhNghiep")' + "?stock_code=" + stockcode + "&year=" + $('#Year').val() + "&datatype=" + $('#DataType').val() + "&period=" + period + "&unit=" + $('#Unit').val() + "&dateType=" + dateType + "&numofPeriod=" + $('#NumOfPeriod').val() + langLink;
+                    a.href = urlDownload;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+
+                });
+               
+            }
+            var isScroll = function () {
+                // Get on screen image
+                var tableWidth = $("#menu-table-HDKD").width() + 2;
+            
+                var screenWidth1 = screen.width;
+                var widthpx = tableWidth + "px"
+                console.log(tableWidth);
+                $(".scroll-div1").css("width", widthpx);
+                if (screenWidth1 > 1024) {
+                    $(".wmd-view-topscroll").css("height", "5px");
+                } else {
+                    $(".wmd-view-topscroll").css("height", "0px");
+                }
+            }
+
+        }
+        var kqhdkd = new KQHDKD();
+        kqhdkd.init();
+    })
+</script>

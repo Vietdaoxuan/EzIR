@@ -1,0 +1,44 @@
+﻿<div class="k-content	k-grid__item k-grid__item--fluid k-grid k-grid--hor DaiHoiform"
+     id="k_content">
+    <div id="content">
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <!-- Content Row -->
+            <div class="row">
+                <div class="col-md-12 fpts-info-left" id="dothikythuat">
+                   @* <img class="dothikythuat" src="images/dothikythuat.png" width="100%" />*@
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+
+    <!-- End of Main Content -->
+
+
+</div>
+<script>
+    $(document).ready(function () {
+
+        var Dothi = function () {
+            this.init = function () {
+                Chart();              
+            }
+            
+            var Chart = function () {
+                var stockcode = window.location.href.split('?')[0].split('/')[4];
+                let html = '';
+                html += `<iframe src="@Url.Action("Chart","ThongTinDoanhNghiep")/${stockcode}" class="dothikythuat" style="height:530px; width: 100%;border:none;"></iframe>`;
+                $('#dothikythuat').append(html);
+            }         
+        }      
+        var doThi = new Dothi();
+        doThi.init();
+       
+    });
+</script>
